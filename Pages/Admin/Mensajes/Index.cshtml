@@ -1,0 +1,23 @@
+@page
+@model Love.Pages.Admin.Mensajes.IndexModel
+@{ ViewData["Title"] = "Frases y poemas"; }
+<div class="cab"><a class="volver" href="/Admin">‹</a><h1>Frases y poemas</h1><a class="accion" href="/Admin/Mensajes/Editar">+ Nuevo</a></div>
+<form method="get" class="mb"><input type="search" name="q" value="@Model.Q" placeholder="Buscar en los textos" /></form>
+@if (Model.Q == null)
+{
+    <div class="pestanas">
+        @for (int m = 1; m <= 12; m++) { <a href="?mes=@m" class="@(m == Model.Mes ? "on" : "")">@Love.Pages.Admin.Mensajes.IndexModel.Meses[m - 1]</a> }
+    </div>
+}
+<div class="lista">
+    @foreach (var m in Model.Lista)
+    {
+        <a class="tarjeta enlace msg-fila @(m.Activo ? "" : "suave")" href="/Admin/Mensajes/Editar/@m.Id">
+            <div class="dia">@m.Dia@(Model.Q != null ? "/" + m.Mes : "")</div>
+            <div class="crece">
+                <div class="txt">@(m.Texto.Length > 110 ? m.Texto[..110].Replace("\n", " · ") + "…" : m.Texto.Replace("\n", " · "))</div>
+                <div class="sub suave">@m.Tipo @(m.Activo ? "" : "· desactivado")</div>
+            </div>
+        </a>
+    }
+</div>

@@ -1,0 +1,43 @@
+@page "{id:int?}"
+@model Love.Pages.Gastos.EditarModel
+@{ ViewData["Title"] = Model.Nuevo ? "Nuevo gasto" : "Gasto"; var g = Model.Gasto; }
+<div class="cab">
+    <a class="volver" href="/Gastos?anio=@g.Fecha.Year&mes=@g.Fecha.Month">‹</a>
+    <h1>@ViewData["Title"]</h1>
+</div>
+<form method="post" enctype="multipart/form-data" id="fg">
+    <input type="hidden" asp-for="Gasto.Id" />
+    <span class="etiqueta">Tipo</span>
+    <div class="chips mb">
+        <label class="chip veva"><input type="radio" asp-for="Gasto.Tipo" value="Veva" data-importe="@Model.ImporteVeva.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" /> Veva</label>
+        <label class="chip"><input type="radio" asp-for="Gasto.Tipo" value="Compra" data-importe="" /> Compra</label>
+        <label class="chip hipoteca"><input type="radio" asp-for="Gasto.Tipo" value="Hipoteca" data-importe="@Model.ImporteHipoteca.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" /> Hipoteca</label>
+    </div>
+    <label class="campo"><span>Importe (€)</span><input asp-for="ImporteTexto" inputmode="decimal" placeholder="0,00" autocomplete="off" style="font-size:1.6rem;font-weight:800" /></label>
+    @if (Model.Error != null) { <p class="error">@Model.Error</p> }
+    <label class="campo"><span>Fecha</span><input asp-for="Gasto.Fecha" type="date" /></label>
+    <label class="campo"><span>Nota (opcional)</span><input asp-for="Gasto.Nota" placeholder="Mercadona, frutería…" /></label>
+    <label class="campo"><span>Foto o fichero</span><input type="file" asp-for="Adjunto" accept="image/*,application/pdf" /></label>
+    @if (g.AdjuntoPath != null)
+    {
+        <div class="tarjeta fila">
+            @if (g.AdjuntoMime?.StartsWith("image/") == true) { <a href="/Gastos/Adjunto/@g.Id" target="_blank"><img class="miniatura" src="/Gastos/Adjunto/@g.Id" alt="" style="width:80px;height:80px" /></a> }
+            else { <a href="/Gastos/Adjunto/@g.Id" target="_blank">📎 @g.AdjuntoNombre</a> }
+            <label class="chip" style="margin-left:auto"><input type="checkbox" asp-for="QuitarAdjunto" style="display:inline" /> Quitar</label>
+        </div>
+    }
+    <button class="btn primario ancho">Guardar</button>
+</form>
+@if (!Model.Nuevo)
+{
+    <form method="post" asp-page-handler="Borrar" asp-route-id="@g.Id" data-confirm="¿Borrar este gasto?" class="mt"><button class="btn peligro ancho">Borrar</button></form>
+}
+@section Scripts {
+<script>
+document.querySelectorAll('input[name="Gasto.Tipo"]').forEach(r => r.addEventListener('change', () => {
+  const imp = document.getElementById('ImporteTexto');
+  if (r.dataset.importe) imp.value = r.dataset.importe; else { imp.value = ''; imp.focus(); }
+}));
+@if (Model.Nuevo) { <text>document.getElementById('ImporteTexto').focus();</text> }
+</script>
+}

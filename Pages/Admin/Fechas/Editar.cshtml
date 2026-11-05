@@ -1,0 +1,33 @@
+@page "{id:int?}"
+@model Love.Pages.Admin.Fechas.EditarModel
+@{ ViewData["Title"] = Model.Nueva ? "Nueva fecha especial" : "Fecha especial"; }
+<div class="cab"><a class="volver" href="/Admin/Fechas">‹</a><h1>@ViewData["Title"]</h1></div>
+<form method="post">
+    <input type="hidden" asp-for="Fecha.Id" />
+    <div asp-validation-summary="ModelOnly" class="error"></div>
+    <label class="campo"><span>Nombre</span><input asp-for="Fecha.Nombre" placeholder="Nuestro aniversario" /></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Día</span><input asp-for="Fecha.Dia" type="number" min="1" max="31" inputmode="numeric" /></label>
+        <label class="campo"><span>Mes</span><select asp-for="Fecha.Mes">@for (int m = 1; m <= 12; m++) { <option value="@m">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)</option> }</select></label>
+    </div>
+    <div class="cuadricula">
+        <label class="campo"><span>Emoji</span><input asp-for="Fecha.Emoji" placeholder="💍" /></label>
+        <label class="campo"><span>Tema visual</span>
+            <select asp-for="Fecha.Tema"><option value="">El de la época</option>@foreach (var t in TemaService.Temas.Values) { <option value="@t.Clave">@t.Emoji @t.Nombre</option> }</select></label>
+    </div>
+    <div class="cuadricula">
+        <label class="campo"><span>Año de origen</span><input asp-for="Fecha.AnioOrigen" type="number" inputmode="numeric" placeholder="2024" /></label>
+        <label class="campo"><span>Texto contador</span><input asp-for="Fecha.TextoContador" placeholder="{n} años juntos" /></label>
+    </div>
+    <label class="campo"><span>Mensaje · cada línea es un verso</span><textarea asp-for="Fecha.Texto" rows="6" style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic"></textarea></label>
+    <div class="chips mb">
+        <label class="chip"><input type="checkbox" asp-for="Fecha.CuentaAtras" style="display:inline" /> Mostrar cuenta atrás los días antes</label>
+        <label class="chip"><input type="checkbox" asp-for="Fecha.Activo" style="display:inline" /> Activa</label>
+    </div>
+    <button class="btn primario ancho">Guardar</button>
+</form>
+@if (!Model.Nueva)
+{
+    <a class="btn ancho mt" href="/Amor?fecha=@(new DateOnly(Reloj.Hoy.Year, Model.Fecha.Mes, Math.Min(Model.Fecha.Dia, 28)).ToString("yyyy-MM-dd"))">Ver cómo lo verá Raquel</a>
+    <form method="post" asp-page-handler="Borrar" asp-route-id="@Model.Fecha.Id" data-confirm="¿Borrar esta fecha?" class="mt"><button class="btn peligro ancho">Borrar</button></form>
+}

@@ -1,0 +1,36 @@
+@page
+@model Love.Pages.LoginModel
+@{ ViewData["Title"] = "Entrar"; ViewData["SinNav"] = true; }
+<div class="login">
+    <div class="login-logo">♥</div>
+    <h1>Nosotros</h1>
+    <p class="suave">Escribe tu PIN</p>
+    <form method="post" id="fpin">
+        <input type="hidden" name="pin" id="pin" />
+        <div class="puntos" id="puntos"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        @if (Model.Error != null) { <p class="error">@Model.Error</p> }
+        <div class="teclado">
+            @foreach (var n in new[] { "1","2","3","4","5","6","7","8","9" }) { <button type="button" data-k="@n">@n</button> }
+            <button type="button" data-k="borrar" class="aux">⌫</button>
+            <button type="button" data-k="0">0</button>
+            <button type="button" data-k="ok" class="aux">→</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+<script>
+(() => {
+  const pin = document.getElementById('pin'), puntos = document.getElementById('puntos'), f = document.getElementById('fpin');
+  let v = '';
+  const pinta = () => [...puntos.children].forEach((p, i) => p.classList.toggle('on', i < v.length));
+  document.querySelectorAll('.teclado button').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.k;
+    if (k === 'borrar') v = v.slice(0, -1);
+    else if (k === 'ok') { if (v.length >= 4) { pin.value = v; f.submit(); } }
+    else if (v.length < 6) { v += k; }
+    pinta();
+    if (navigator.vibrate) navigator.vibrate(8);
+  }));
+})();
+</script>
+}

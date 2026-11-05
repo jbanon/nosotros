@@ -1,0 +1,32 @@
+@page "{id:int}"
+@model Love.Pages.Menu.Recetas.VerModel
+@{ ViewData["Title"] = Model.Receta.Nombre; var r = Model.Receta; }
+<div class="cab">
+    <a class="volver" href="/Menu/Recetas">‹</a>
+    <h1>@r.Nombre</h1>
+    <a class="accion" href="/Menu/Recetas/Editar/@r.Id">Editar</a>
+</div>
+@if (r.FotoPath != null) { <img src="/Menu/Recetas/Foto/@r.Id" alt="" style="width:100%;border-radius:var(--radio);max-height:260px;object-fit:cover" class="mb" /> }
+<p class="suave" style="margin-top:0">@r.Raciones raciones@(string.IsNullOrWhiteSpace(r.Etiquetas) ? "" : " · " + r.Etiquetas)</p>
+@if (!string.IsNullOrWhiteSpace(r.Descripcion)) { <p>@r.Descripcion</p> }
+
+<form method="post" asp-page-handler="Semana" asp-route-id="@r.Id" class="mb">
+    <button class="btn ancho @(Model.EnSemana ? "" : "primario")">@(Model.EnSemana ? "✓ En la semana · quitar" : "+ Añadir a esta semana")</button>
+</form>
+
+<div class="tarjeta">
+    <h2 class="mb">Ingredientes</h2>
+    <table class="tabla-ing">
+        @foreach (var i in r.Ingredientes)
+        {
+            <tr>
+                <td><span class="etiq-zona z-@ZonaInfo.Css(i.Ingrediente.Zona) t-@ZonaInfo.Css(i.Ingrediente.Zona)">@ZonaInfo.Emoji(i.Ingrediente.Zona)</span> @i.Ingrediente.Nombre @if (i.Ingrediente.Despensa) { <span class="suave peq">(despensa)</span> } @if (i.Nota != null) { <span class="suave peq">· @i.Nota</span> }</td>
+                <td>@(i.Cantidad is decimal c ? c.ToString("0.##") : "") @i.Unidad</td>
+            </tr>
+        }
+    </table>
+</div>
+@if (!string.IsNullOrWhiteSpace(r.Preparacion))
+{
+    <div class="tarjeta"><h2 class="mb">Preparación</h2><p style="white-space:pre-line;margin:0">@r.Preparacion</p></div>
+}

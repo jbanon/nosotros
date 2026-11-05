@@ -1,0 +1,19 @@
+# /etc/systemd/system/love.service
+[Unit]
+Description=Nosotros (love) - app privada
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/love
+ExecStart=/opt/love/Love
+Restart=always
+RestartSec=5
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_ROOT=/usr/share/dotnet
+# PINs y rutas se pueden sobreescribir aquí en vez de en appsettings.json:
+# Environment=Pins__Admin=200524
+# Environment=Pins__Raquel=2005
+
+[Install]
+WantedBy=multi-user.target

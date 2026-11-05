@@ -1,0 +1,46 @@
+@page
+@model Love.Pages.Menu.SemanaModel
+@{
+    ViewData["Title"] = "Semana";
+    var sel = Model.Semana.Recetas.ToDictionary(r => r.RecetaId, r => r.Veces);
+    var esta = Model.Lunes == Reloj.Lunes(Reloj.Hoy);
+}
+<div class="cab">
+    <h1>Esta semana</h1>
+    <a class="accion" href="/Menu/Lista?lunes=@Model.Lunes.ToString("yyyy-MM-dd")">Ver lista 🛒</a>
+</div>
+<div class="segmento">
+    <a href="?lunes=@Model.Lunes.AddDays(-7).ToString("yyyy-MM-dd")">‹</a>
+    <div class="titulo">@Model.Lunes.ToString("d MMM") – @Model.Lunes.AddDays(6).ToString("d MMM") @(esta ? "" : "")</div>
+    <a href="?lunes=@Model.Lunes.AddDays(7).ToString("yyyy-MM-dd")">›</a>
+</div>
+<p class="suave peq" style="margin-top:-6px">Marca lo que vais a cocinar. La lista de la compra se actualiza sola.</p>
+@if (sel.Count > 0)
+{
+    <div class="aviso fila mb"><span class="crece"><b>@sel.Count</b> recetas marcadas</span>
+        <form method="post" asp-page-handler="Vaciar" asp-route-lunes="@Model.Lunes.ToString("yyyy-MM-dd")" data-confirm="¿Quitar todas las recetas de la semana?"><button class="btn pequeno fantasma">Vaciar</button></form>
+    </div>
+}
+<div class="lista">
+    @foreach (var r in Model.Recetas)
+    {
+        var on = sel.TryGetValue(r.Id, out var veces);
+        <div class="item" style="@(on ? "outline:2px solid var(--acento)" : "")">
+            <form method="post" asp-page-handler="Toggle" asp-route-lunes="@Model.Lunes.ToString("yyyy-MM-dd")" asp-route-recetaId="@r.Id" class="crece">
+                <button class="fila" style="background:none;border:0;padding:0;width:100%;text-align:left;font:inherit;color:inherit">
+                    <span class="check @(on ? "on" : "")">@(on ? "✓" : "")</span>
+                    <span class="crece"><span class="nombre">@r.Nombre</span><br /><span class="sub">@r.Raciones raciones</span></span>
+                </button>
+            </form>
+            @if (on)
+            {
+                <form method="post" asp-page-handler="Veces" asp-route-lunes="@Model.Lunes.ToString("yyyy-MM-dd")" asp-route-recetaId="@r.Id" class="fila" style="gap:4px">
+                    <button name="delta" value="-1" class="btn pequeno">−</button>
+                    <b style="min-width:2ch;text-align:center">@veces×</b>
+                    <button name="delta" value="1" class="btn pequeno">+</button>
+                </form>
+            }
+        </div>
+    }
+</div>
+@if (!Model.Recetas.Any()) { <div class="vacio"><span class="ico">🍲</span>Aún no hay recetas. <a href="/Menu/Recetas/Editar">Crea la primera</a>.</div> }

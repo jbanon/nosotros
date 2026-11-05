@@ -1,0 +1,178 @@
+[
+  { "nombre": "Carne en salsa", "raciones": 4, "etiquetas": "comida", "ingredientes": [
+    { "n": "Carne de ternera para guisar", "c": 800, "u": "g", "z": "Carniceria" },
+    { "n": "Cebolla", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Zanahoria", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Ajo", "c": 3, "u": "dientes", "z": "Fruteria" },
+    { "n": "Pimiento rojo", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Tomate frito", "c": 200, "u": "g", "z": "Otros" },
+    { "n": "Vino tinto", "c": 150, "u": "ml", "z": "Otros" },
+    { "n": "Laurel", "c": 2, "u": "hoja", "z": "Otros" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true },
+    { "n": "Pimienta", "z": "Otros", "d": true } ],
+    "preparacion": "Sellar la carne, retirar. Pochar cebolla, ajo, pimiento y zanahoria. Añadir la carne, el vino, el tomate y el laurel. Cubrir de agua y guisar a fuego lento 1,5 h." },
+
+  { "nombre": "Magro con tomate", "raciones": 4, "etiquetas": "comida", "ingredientes": [
+    { "n": "Magro de cerdo", "c": 700, "u": "g", "z": "Carniceria" },
+    { "n": "Tomate triturado", "c": 800, "u": "g", "z": "Otros" },
+    { "n": "Cebolla", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Ajo", "c": 2, "u": "dientes", "z": "Fruteria" },
+    { "n": "Pimiento verde", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Azúcar", "z": "Otros", "d": true },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Dorar el magro troceado. Pochar cebolla, ajo y pimiento, añadir el tomate con una pizca de azúcar y cocinar 30 min. Juntar con la carne y dejar 15 min más." },
+
+  { "nombre": "Filetes", "raciones": 2, "etiquetas": "cena, rápido", "ingredientes": [
+    { "n": "Filetes de ternera", "c": 4, "u": "ud", "z": "Carniceria" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Plancha bien caliente, vuelta y vuelta, sal al final." },
+
+  { "nombre": "Salmón", "raciones": 2, "etiquetas": "cena, rápido", "ingredientes": [
+    { "n": "Lomos de salmón", "c": 2, "u": "ud", "z": "Pescaderia" },
+    { "n": "Limón", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Plancha o horno 12 min a 200 °C con un chorrito de limón." },
+
+  { "nombre": "Merluza rebozada", "raciones": 2, "etiquetas": "cena", "ingredientes": [
+    { "n": "Filetes de merluza", "c": 500, "u": "g", "z": "Pescaderia" },
+    { "n": "Huevos", "c": 2, "u": "ud", "z": "Otros" },
+    { "n": "Harina", "c": 100, "u": "g", "z": "Otros" },
+    { "n": "Limón", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Salar, pasar por harina y huevo, freír en aceite caliente. Servir con limón." },
+
+  { "nombre": "Lentejas con chorizo", "raciones": 4, "etiquetas": "comida, cuchara", "ingredientes": [
+    { "n": "Lentejas", "c": 400, "u": "g", "z": "Otros" },
+    { "n": "Chorizo", "c": 150, "u": "g", "z": "Charcuteria" },
+    { "n": "Cebolla", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Zanahoria", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Patata", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Ajo", "c": 2, "u": "dientes", "z": "Fruteria" },
+    { "n": "Pimentón", "z": "Otros", "d": true },
+    { "n": "Laurel", "c": 1, "u": "hoja", "z": "Otros" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Todo en la olla con agua fría, 40 min a fuego medio. Rectificar de sal." },
+
+  { "nombre": "Arroz al horno", "raciones": 4, "etiquetas": "comida, domingo", "ingredientes": [
+    { "n": "Arroz", "c": 400, "u": "g", "z": "Otros" },
+    { "n": "Costillas de cerdo", "c": 400, "u": "g", "z": "Carniceria" },
+    { "n": "Morcilla", "c": 2, "u": "ud", "z": "Charcuteria" },
+    { "n": "Garbanzos cocidos", "c": 200, "u": "g", "z": "Otros" },
+    { "n": "Patata", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Tomate", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Ajo", "c": 1, "u": "cabeza", "z": "Fruteria" },
+    { "n": "Caldo de carne", "c": 1, "u": "l", "z": "Otros" },
+    { "n": "Pimentón", "z": "Otros", "d": true },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Dorar costillas, patata y morcilla. Sofreír el arroz con pimentón, añadir garbanzos, tomate, ajo y caldo caliente. Horno 200 °C, 20 min." },
+
+  { "nombre": "Tortilla de patatas", "raciones": 4, "etiquetas": "cena", "ingredientes": [
+    { "n": "Patata", "c": 1, "u": "kg", "z": "Fruteria" },
+    { "n": "Huevos", "c": 6, "u": "ud", "z": "Otros" },
+    { "n": "Cebolla", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Pochar patata y cebolla en aceite a fuego suave. Mezclar con el huevo batido, cuajar por ambos lados." },
+
+  { "nombre": "Pollo al ajillo", "raciones": 4, "etiquetas": "comida", "ingredientes": [
+    { "n": "Pollo troceado", "c": 1.2, "u": "kg", "z": "Carniceria" },
+    { "n": "Ajo", "c": 8, "u": "dientes", "z": "Fruteria" },
+    { "n": "Vino blanco", "c": 100, "u": "ml", "z": "Otros" },
+    { "n": "Perejil", "c": 1, "u": "manojo", "z": "Fruteria" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Dorar el pollo bien, añadir los ajos, el vino y el perejil. Tapar 15 min." },
+
+  { "nombre": "Macarrones con tomate y atún", "raciones": 4, "etiquetas": "cena, rápido", "ingredientes": [
+    { "n": "Macarrones", "c": 400, "u": "g", "z": "Otros" },
+    { "n": "Tomate frito", "c": 400, "u": "g", "z": "Otros" },
+    { "n": "Atún en lata", "c": 3, "u": "lata", "z": "Otros" },
+    { "n": "Queso rallado", "c": 100, "u": "g", "z": "Charcuteria" },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Cocer la pasta, mezclar con tomate y atún, gratinar con queso." },
+
+  { "nombre": "Albóndigas en salsa", "raciones": 4, "etiquetas": "comida", "ingredientes": [
+    { "n": "Carne picada mixta", "c": 600, "u": "g", "z": "Carniceria" },
+    { "n": "Huevos", "c": 1, "u": "ud", "z": "Otros" },
+    { "n": "Pan rallado", "c": 50, "u": "g", "z": "Otros" },
+    { "n": "Cebolla", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Ajo", "c": 2, "u": "dientes", "z": "Fruteria" },
+    { "n": "Zanahoria", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Vino blanco", "c": 100, "u": "ml", "z": "Otros" },
+    { "n": "Caldo de carne", "c": 300, "u": "ml", "z": "Otros" },
+    { "n": "Harina", "c": 50, "u": "g", "z": "Otros" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Formar las albóndigas, enharinar y dorar. Salsa de cebolla, ajo y zanahoria con vino y caldo; triturar y cocer las albóndigas 20 min." },
+
+  { "nombre": "Pisto con huevo", "raciones": 2, "etiquetas": "cena, verdura", "ingredientes": [
+    { "n": "Calabacín", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Berenjena", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Pimiento rojo", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Cebolla", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Tomate triturado", "c": 400, "u": "g", "z": "Otros" },
+    { "n": "Huevos", "c": 2, "u": "ud", "z": "Otros" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Pochar todo a fuego medio, tomate al final 20 min. Servir con huevo frito." },
+
+  { "nombre": "Sopa de pollo con fideos", "raciones": 4, "etiquetas": "cena, cuchara", "ingredientes": [
+    { "n": "Carcasa y muslo de pollo", "c": 1, "u": "ud", "z": "Carniceria" },
+    { "n": "Fideos finos", "c": 150, "u": "g", "z": "Otros" },
+    { "n": "Puerro", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Zanahoria", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Apio", "c": 1, "u": "rama", "z": "Fruteria" },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Caldo con el pollo y las verduras 1 h. Colar, desmenuzar el pollo y cocer los fideos 5 min." },
+
+  { "nombre": "Pollo asado con patatas", "raciones": 4, "etiquetas": "comida, domingo", "ingredientes": [
+    { "n": "Pollo entero", "c": 1, "u": "ud", "z": "Carniceria" },
+    { "n": "Patata", "c": 1, "u": "kg", "z": "Fruteria" },
+    { "n": "Cebolla", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Limón", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Ajo", "c": 4, "u": "dientes", "z": "Fruteria" },
+    { "n": "Vino blanco", "c": 150, "u": "ml", "z": "Otros" },
+    { "n": "Tomillo", "z": "Otros", "d": true },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Horno 190 °C, 1 h 15 min, regando con el jugo. Patatas y cebolla en la bandeja desde el principio." },
+
+  { "nombre": "Garbanzos con espinacas", "raciones": 4, "etiquetas": "comida, cuchara, verdura", "ingredientes": [
+    { "n": "Garbanzos cocidos", "c": 600, "u": "g", "z": "Otros" },
+    { "n": "Espinacas", "c": 300, "u": "g", "z": "Fruteria" },
+    { "n": "Ajo", "c": 3, "u": "dientes", "z": "Fruteria" },
+    { "n": "Pan", "c": 1, "u": "rebanada", "z": "Otros" },
+    { "n": "Pimentón", "z": "Otros", "d": true },
+    { "n": "Comino", "z": "Otros", "d": true },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Freír ajo y pan, majar con comino y pimentón. Saltear espinacas, añadir garbanzos, el majado y un poco de agua. 10 min." },
+
+  { "nombre": "Ensalada mixta", "raciones": 2, "etiquetas": "cena, rápido, verdura", "ingredientes": [
+    { "n": "Lechuga", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Tomate", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Cebolla", "c": 0.5, "u": "ud", "z": "Fruteria" },
+    { "n": "Atún en lata", "c": 1, "u": "lata", "z": "Otros" },
+    { "n": "Huevos", "c": 2, "u": "ud", "z": "Otros" },
+    { "n": "Aceitunas", "c": 1, "u": "bote", "z": "Otros" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Vinagre", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ] },
+
+  { "nombre": "Puré de verduras", "raciones": 4, "etiquetas": "cena, verdura", "ingredientes": [
+    { "n": "Calabacín", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Puerro", "c": 1, "u": "ud", "z": "Fruteria" },
+    { "n": "Zanahoria", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Patata", "c": 2, "u": "ud", "z": "Fruteria" },
+    { "n": "Quesitos", "c": 2, "u": "ud", "z": "Charcuteria" },
+    { "n": "Aceite de oliva", "z": "Otros", "d": true },
+    { "n": "Sal", "z": "Otros", "d": true } ],
+    "preparacion": "Cocer 25 min con agua justa, triturar con los quesitos y un chorro de aceite." }
+]

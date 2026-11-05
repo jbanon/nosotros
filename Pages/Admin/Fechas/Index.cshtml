@@ -1,0 +1,15 @@
+@page
+@model Love.Pages.Admin.Fechas.IndexModel
+@{ ViewData["Title"] = "Fechas especiales"; }
+<div class="cab"><a class="volver" href="/Admin">‹</a><h1>Fechas especiales</h1><a class="accion" href="/Admin/Fechas/Editar">+ Nueva</a></div>
+<p class="suave peq">Estos días se muestra su mensaje en lugar del de calendario, y pueden cambiar el tema visual.</p>
+<div class="lista">
+    @foreach (var f in Model.Lista)
+    {
+        <a class="item" href="/Admin/Fechas/Editar/@f.Id" style="@(f.Activo ? "" : "opacity:.5")">
+            <span style="font-size:1.6rem">@(f.Emoji ?? "📅")</span>
+            <div class="crece"><div class="nombre">@f.Nombre</div><div class="sub">@f.Dia de @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(f.Mes)@(f.AnioOrigen != null ? $" · desde {f.AnioOrigen}" : "")@(f.Tema != null ? $" · tema {f.Tema}" : "")</div></div>
+            <span class="suave">›</span>
+        </a>
+    }
+</div>

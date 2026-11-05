@@ -1,0 +1,47 @@
+@using System.Security.Claims
+@{
+    var esAdmin = User.EsAdmin();
+    var path = Context.Request.Path.Value ?? "";
+    string act(string p) => path.StartsWith(p, StringComparison.OrdinalIgnoreCase) ? "activo" : "";
+    var tema = ViewData["Tema"] as string;
+    var sinNav = ViewData["SinNav"] as bool? ?? false;
+}
+<!DOCTYPE html>
+<html lang="es"@Html.Raw(tema != null ? $" data-tema=\"{tema}\"" : "")>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fbf6f0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " · " : "")Nosotros</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/app.css?v=@(typeof(Program).Assembly.GetName().Version)" />
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body class="@(sinNav ? "sin-nav" : "")">
+    <main class="contenido">
+        @RenderBody()
+    </main>
+    @if (!sinNav && User.Identity?.IsAuthenticated == true)
+    {
+        <nav class="barra">
+            <a href="/Amor" class="@act("/Amor")"><span class="ico">♥</span><span>@(esAdmin ? "Raquel" : "Para ti")</span></a>
+            <a href="/Menu/Recetas" class="@act("/Menu/Recetas")"><span class="ico">🍲</span><span>Recetas</span></a>
+            <a href="/Menu/Lista" class="@(act("/Menu/Lista"))@(act("/Menu/Semana"))"><span class="ico">🛒</span><span>Compra</span></a>
+            @if (esAdmin)
+            {
+                <a href="/Gastos" class="@act("/Gastos")"><span class="ico">€</span><span>Gastos</span></a>
+                <a href="/Admin" class="@act("/Admin")"><span class="ico">⚙</span><span>Admin</span></a>
+            }
+        </nav>
+    }
+    <script src="/js/app.js?v=2"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

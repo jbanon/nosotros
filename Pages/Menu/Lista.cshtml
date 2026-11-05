@@ -1,0 +1,83 @@
+@page
+@model Love.Pages.Menu.ListaModel
+@{
+    ViewData["Title"] = "Lista de la compra";
+    var l = Model.Lunes.ToString("yyyy-MM-dd");
+    var incluidos = Model.Semana.Lista.Where(i => i.Incluido).ToList();
+    var excluidos = Model.Semana.Lista.Where(i => !i.Incluido).OrderBy(i => i.Nombre).ToList();
+    var pendientes = incluidos.Count(i => !i.Comprado);
+}
+<div class="cab">
+    <h1>La compra</h1>
+    <button type="button" class="btn pequeno" data-share="texto-lista">Compartir ⤴</button>
+</div>
+<div class="segmento">
+    <a href="?lunes=@Model.Lunes.AddDays(-7).ToString("yyyy-MM-dd")">‹</a>
+    <div class="titulo">@Model.Lunes.ToString("d MMM") – @Model.Lunes.AddDays(6).ToString("d MMM")</div>
+    <a href="?lunes=@Model.Lunes.AddDays(7).ToString("yyyy-MM-dd")">›</a>
+</div>
+<p class="suave peq fila" style="margin-top:-6px">
+    <span class="crece">@Model.Semana.Recetas.Count recetas · @pendientes por comprar</span>
+    <a href="/Menu/Semana?lunes=@l">Cambiar recetas →</a>
+</p>
+
+@if (!incluidos.Any())
+{
+    <div class="vacio"><span class="ico">🛒</span>La lista está vacía.<br /><a href="/Menu/Semana?lunes=@l">Marca recetas para la semana</a> o añade algo abajo.</div>
+}
+@foreach (var g in incluidos.GroupBy(i => i.Zona).OrderBy(g => g.Key))
+{
+    <section class="bloque-zona z-@ZonaInfo.Css(g.Key)">
+        <div class="zona-cab">@ZonaInfo.Emoji(g.Key) @ZonaInfo.Nombre(g.Key) <span class="suave" style="font-weight:600;letter-spacing:0;text-transform:none">· @g.Count(i => !i.Comprado)</span></div>
+        @foreach (var it in g.OrderBy(i => i.Comprado).ThenBy(i => i.Nombre))
+        {
+            <div class="linea-compra @(it.Comprado ? "comprado" : "")">
+                <form method="post" asp-page-handler="Comprado" asp-route-lunes="@l" asp-route-id="@it.Id" class="crece fila" style="gap:10px">
+                    <button class="check" style="cursor:pointer">@(it.Comprado ? "✓" : "")</button>
+                    <button style="background:none;border:0;padding:0;text-align:left;font:inherit;color:inherit;flex:1">
+                        <div class="nombre">@it.Nombre @if (it.Manual) { <span class="suave peq">· extra</span> }</div>
+                        @if (!string.IsNullOrEmpty(it.Origen)) { <div class="para">para @it.Origen</div> }
+                    </button>
+                    <span class="cant">@ListaCompraService.Cant(it)</span>
+                </form>
+                <form method="post" asp-page-handler="Incluir" asp-route-lunes="@l" asp-route-id="@it.Id" asp-route-incluir="false">
+                    <button class="quitar" title="@(it.Manual ? "Quitar" : "No comprar esta vez")">×</button>
+                </form>
+            </div>
+        }
+    </section>
+}
+
+<div class="tarjeta">
+    <h2 class="mb">Añadir algo más</h2>
+    <form method="post" asp-page-handler="Anadir" asp-route-lunes="@l">
+        <div class="fila mb">
+            <input type="text" name="nombre" placeholder="Papel de cocina" required class="crece" />
+            <input type="text" name="cantidad" placeholder="2 ud" style="width:90px" />
+        </div>
+        <div class="fila">
+            <select name="zona" class="crece">@foreach (var z in ZonaInfo.Todas) { <option value="@z" selected="@(z == Zona.Otros)">@ZonaInfo.Emoji(z) @ZonaInfo.Nombre(z)</option> }</select>
+            <button class="btn primario">Añadir</button>
+        </div>
+    </form>
+</div>
+
+@if (excluidos.Any())
+{
+    <div class="tarjeta">
+        <h2 class="mb">No se compra esta vez <span class="suave peq" style="font-weight:600">(sal, aceite… toca para incluir)</span></h2>
+        <div class="chips">
+            @foreach (var it in excluidos)
+            {
+                <form method="post" asp-page-handler="Incluir" asp-route-lunes="@l" asp-route-id="@it.Id" asp-route-incluir="true">
+                    <button class="chip">+ @it.Nombre</button>
+                </form>
+            }
+        </div>
+    </div>
+}
+@if (incluidos.Any(i => i.Comprado))
+{
+    <form method="post" asp-page-handler="Limpiar" asp-route-lunes="@l" data-confirm="¿Desmarcar lo comprado?"><button class="btn ancho">Desmarcar lo comprado</button></form>
+}
+<pre id="texto-lista" hidden>@Model.TextoCompartir</pre>

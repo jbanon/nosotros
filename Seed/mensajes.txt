@@ -1,0 +1,367 @@
+# Formato: MM-DD|F(rase)/P(oema)|texto  (en poemas, " / " separa versos)
+01-01|F|Empieza el año y lo primero que pienso es que quiero pasarlo entero contigo.
+01-02|P|Enero tiene las manos frías / y yo tengo las tuyas. / No necesito más calendario / que el de tus días.
+01-03|F|Hay gente que colecciona cosas. Yo colecciono mañanas contigo.
+01-04|F|Hoy hace frío fuera y tú estás dentro. No se me ocurre mejor plan.
+01-05|P|Esta noche los Reyes vienen de lejos, / pero yo ya tengo lo que pedí: / un año más durmiendo a tu lado, / despertando a tu lado, viviendo así.
+01-06|F|Hoy no hay regalo bajo el árbol que valga tanto como tenerte al lado para abrirlos.
+01-07|F|Si la felicidad fuera un sitio, sería nuestro sofá un domingo por la tarde.
+01-08|P|Me gusta cómo arrastras la manta / cuando te acercas a mí, / cómo robas la mitad del cojín, / cómo me robaste a mí.
+01-09|F|No sé qué hice para merecerte, pero pienso seguir haciéndolo cada día.
+01-10|F|Quiérete un poco hoy. Lo demás lo pongo yo.
+01-11|P|Hoy lleva lloviendo desde temprano. / Fuera, el mundo gris. / Dentro, tú con tu café, / y a mí me sale el sol.
+01-12|F|Cuando te ríes se te arruga la nariz. Es mi lugar favorito del mundo.
+01-13|F|Lo bueno de los días largos es que al final de todos estás tú.
+01-14|P|No te escribo poemas / porque sea poeta. / Te los escribo / porque eres tú quien me los dicta.
+01-15|F|Llevamos media vida esperando enero para quejarnos del frío. Contigo solo me quejo de que se me hace corto el día.
+01-16|F|Te quiero con esa tranquilidad de quien ya no necesita buscar nada más.
+01-17|P|Pequeñas cosas: / tus pies fríos en mi pierna, / tu voz diciendo «¿vienes?», / tu nombre en mi móvil. / Pequeñas cosas / que me hacen grande el día.
+01-18|F|Hoy quiero que sepas que me siento afortunado. Sin más. Solo eso.
+01-19|F|Qué bonito es volver a casa y que casa seas tú.
+01-20|P|Si tuviera que explicar el amor / a alguien que nunca lo ha sentido, / le enseñaría una foto tuya / dormida, con el pelo revuelto.
+01-21|F|Hay abrazos que son de pasada y otros que son de quedarse. Los tuyos son de quedarse.
+01-22|F|Me gustas cuando callas, cuando hablas, cuando cantas mal en el coche y cuando dices que no cantas mal.
+01-23|P|Enero se va enfriando / y yo me voy calentando / de tanto pensarte, / de tanto quererte, / de tanto esperarte / aunque estés aquí.
+01-24|F|Cada día descubro algo nuevo de ti. Y cada día me gusta más lo que descubro.
+01-25|F|Hoy te mando un beso de los que no hacen ruido pero se notan todo el día.
+01-26|P|Yo no creía en eso / de la media naranja. / Luego llegaste tú / y me sobró la mitad del mundo.
+01-27|F|Si hoy el día se te hace cuesta arriba, piensa que al final de la cuesta estoy yo con los brazos abiertos.
+01-28|F|Tú eres de esas personas que hacen que todo parezca más fácil. Hasta los lunes.
+01-29|P|Cuando duermes / se te escapa una sonrisa / y yo me pregunto / qué estarás soñando / y si yo salgo.
+01-30|F|Gracias por elegirme cada día, incluso los días en que no soy fácil de elegir.
+01-31|F|Un mes del año ya contigo. Quedan once y pienso aprovecharlos todos.
+02-01|F|Febrero es corto, como lo bueno. Menos tú, que eres lo bueno que no se acaba.
+02-02|P|Hoy me he despertado antes / solo para mirarte un rato. / Hay películas peores / y ninguna con esta actriz.
+02-03|F|Si te pregunto qué quieres cenar y dices «lo que tú quieras», tranquila: yo también te quiero igual.
+02-04|F|Tienes una forma de decir mi nombre que hace que todo lo demás se calle.
+02-05|P|Sé que a veces dudas de ti. / Yo nunca he dudado. / Si no te ves, / mírate en mis ojos un rato.
+02-06|F|Que el frío de fuera no se te meta en el pecho. Ahí ya vivo yo.
+02-07|F|A veces te miro y pienso: menos mal.
+02-08|P|El amor no es fuegos artificiales, / es la luz de la cocina encendida / cuando llego tarde / y tú me has esperado.
+02-09|F|Si alguna vez tienes un mal día, recuerda que hay alguien que te quiere incluso en tus malos días.
+02-10|F|Te quiero con mis días buenos y con mis días torpes. Los dos son más bonitos contigo.
+02-11|P|Tú y yo / somos dos tazas de café / en una mesa pequeña / una mañana cualquiera. / Y eso es todo. / Y eso es tanto.
+02-12|F|No prometo que todo vaya a ser perfecto. Prometo que estaré. Siempre.
+02-13|F|Mañana es el día de los enamorados, pero yo llevo tiempo celebrándolo cada mañana.
+02-14|F|Feliz San Valentín. Te quiero hoy, que es el día oficial, y los otros 364, que son los míos.
+02-15|P|Pasó San Valentín / y aquí sigo yo, / sin rosas ni cartel, / pero con lo mismo de siempre: / contigo.
+02-16|F|Me gusta tu manera de cuidar a los demás. Déjame hoy que te cuide yo a ti.
+02-17|F|Hoy no hay poema. Hoy solo un «te quiero» a secas, de los que van en serio.
+02-18|P|Si un día me pierdo, / búscame donde estés tú. / Es el único sitio / donde siempre acabo.
+02-19|F|Qué raro es esto de querer a alguien tanto y que aún me parezca poco.
+02-20|F|Las mejores cosas de mi vida tienen tu nombre o tu risa o las dos.
+02-21|P|Tú entras en una habitación / y yo dejo de mirar el móvil. / Es la mejor definición / de quererte que conozco.
+02-22|F|Si hoy el espejo te dice algo feo, no le hagas caso. Yo te veo mejor que él.
+02-23|F|Te lo digo hoy por si se me olvida mañana: estás preciosa cuando no te das cuenta.
+02-24|P|Antes buscaba planes / para llenar los sábados. / Ahora busco sábados / para no hacer planes contigo.
+02-25|F|Lo nuestro es sencillo: tú me quieres, yo te quiero, y lo demás se va arreglando.
+02-26|F|No existe un día tan normal que no se arregle con un beso tuyo.
+02-27|P|Febrero se termina / y no he dicho ni la mitad / de lo que te quiero. / Me quedan diez meses. / Me quedan todos los años.
+02-28|F|Gracias por quererme sin pedirme que sea otro.
+02-29|F|Este día solo existe cada cuatro años. Como los días en los que no pienso en ti: ninguno.
+03-01|F|Marzo entra con luz nueva. Tú ya la tenías.
+03-02|P|Ya huele a primavera / en la calle, en la ropa, / en tu pelo cuando te acercas, / en el aire que dejas al pasar.
+03-03|F|Hoy quiero que descanses un poco. Deja que el mundo gire solo un rato.
+03-04|F|Eres mi persona. Así de simple y así de grande.
+03-05|P|Me gusta cómo cocinas / aunque digas que no cocinas. / Me gusta cómo discutes / aunque digas que no discutes. / Me gusta todo lo que haces / y todo lo que dices que no haces.
+03-06|F|Hay cosas que no se pueden explicar. Como lo tranquilo que me quedo cuando tú estás.
+03-07|F|Si alguna vez te preguntas si sigo enamorado, la respuesta es sí. Siempre va a ser sí.
+03-08|F|Hoy es el día de la mujer y yo tengo a la mejor de todas en casa. Feliz día, Raquel.
+03-09|P|No sé si crees en el destino. / Yo no creía / hasta que me sentó / en la misma mesa que tú.
+03-10|F|Tu risa debería estar en la lista de cosas que curan.
+03-11|F|Me gustas hasta cuando tienes razón. Que es casi siempre.
+03-12|P|Los días se van alargando / y yo me alegro: / una hora más de luz / es una hora más de verte.
+03-13|F|Te quiero sin prisa, que es la forma más seria de querer.
+03-14|F|Sé que el día a día cansa. Por eso estoy: para empujar contigo cuando pese.
+03-15|P|Si la casa está desordenada / y tú estás en ella, / la casa está perfecta. / Lo demás son detalles.
+03-16|F|Tienes el don de hacer que la gente se sienta bien. Yo soy el que más lo nota.
+03-17|F|Hoy, mientras haces tus cosas, piensa que alguien te está pensando. Soy yo.
+03-18|P|Hay palabras que se gastan / de tanto decirlas. / Te quiero no. / Te quiero se afila.
+03-19|F|Hoy es el último día del invierno. Y contigo ni me he enterado del frío.
+03-20|F|Llega la primavera. Lo nuestro ya florecía antes.
+03-21|P|Primavera: / los árboles se visten de nuevo, / los pájaros vuelven a gritar, / y yo vuelvo a enamorarme / como si fuera la primera vez.
+03-22|F|No sé cómo lo haces, pero cada día me gustas un poco más que ayer.
+03-23|F|Si hoy te cuesta, hazlo despacio. Pero no lo hagas sola: yo voy contigo.
+03-24|P|Dicen que el amor es ciego. / El mío no: / te ve entera / y le gusta todo.
+03-25|F|Qué suerte tengo de tener alguien a quien escribirle cosas bonitas.
+03-26|F|Hoy quiero recordarte que eres fuerte, aunque a ratos no lo sientas.
+03-27|P|Esta mañana había un pájaro / en el balcón, cantando a lo loco. / Me he reído solo / porque hacía lo mismo que yo / cada vez que te veo.
+03-28|F|A tu lado los problemas siguen siendo problemas, pero se vuelven más pequeños.
+03-29|F|Te lo digo bajito para que no se asusten los vecinos: te quiero una barbaridad.
+03-30|P|Si te lo dijera todo / se acabarían las frases. / Así que hoy te digo solo una: / contigo, siempre.
+03-31|F|Se acaba marzo y me quedo con la luz, con las tardes largas y con tus ojos.
+04-01|F|Abril, aguas mil. Y yo, besos mil. Hoy tienes el primero.
+04-02|P|Tú eres mi primavera / aunque llueva, / aunque el cielo esté torcido, / aunque haga frío de repente. / Tú eres la estación / que siempre viene.
+04-03|F|Me gusta pensar que el mundo te hizo para mí, pero sé que me quedo corto: te hizo para que yo fuera mejor.
+04-04|F|Hoy te mando una tregua: nada de prisas, nada de listas. Solo tú y lo que te apetezca.
+04-05|P|No es que te eche de menos / cuando no estás. / Es que la casa / se queda sin bajo.
+04-06|F|Eres mi rincón favorito, mi plan favorito y mi persona favorita. Lo demás es ruido.
+04-07|F|Que hoy te pasen cosas bonitas. Y si no te pasan, yo te las traigo.
+04-08|P|Me vuelve loco / cómo te quitas los zapatos / nada más entrar / y vienes a buscarme. / Como si yo fuera / la parte buena de la casa.
+04-09|F|Las flores están saliendo en todas partes. Tú llevas en flor desde que te conozco.
+04-10|F|Gracias por aguantar mis manías con tanta paciencia. Y por tener las tuyas, que me encantan.
+04-11|P|Hay quien se enamora en los viajes / y quien se enamora en las fiestas. / Yo me enamoré de ti / en una conversación cualquiera / que todavía no ha terminado.
+04-12|F|Hoy el día es tuyo. Ponlo a tu nombre y haz con él lo que quieras.
+04-13|F|No me hace falta nada más: te tengo a ti y tengo tiempo. Lo demás ya se verá.
+04-14|P|Eres el sol de abril: / tibio, limpio, / sin quemar, / imprescindible.
+04-15|F|Te quiero en pijama, en vaqueros, arreglada, dormida y despeinada. Sobre todo despeinada.
+04-16|F|Si la vida fuera una receta, tú serías el ingrediente que no se puede quitar.
+04-17|P|Ya huele a campo. / Ya huele a verano cerca. / Ya huele a tu crema de manos / cuando me acaricias la cara.
+04-18|F|Lo mejor de las tardes largas es que nos sobra luz para quedarnos sin hacer nada.
+04-19|F|Me gustaría darte las gracias por existir, pero suena cursi. Así que solo te digo: gracias.
+04-20|P|A veces pienso en todo lo que tuvo que pasar / para que tú y yo coincidiéramos. / Tantas vueltas, tantas calles, / tantos azares / para llegar a esta cocina.
+04-21|F|Hoy, aunque estés liada, regálate cinco minutos para ti. Yo te los guardo.
+04-22|F|Que no se te olvide: eres mucho más de lo que crees ser.
+04-23|F|Hoy es el día del libro. Si alguien escribiera mi vida, tú serías el capítulo en que todo empieza a tener sentido.
+04-24|P|Me gusta cuando te sientas / con las piernas encogidas / y me miras / como si fuera a decir algo importante. / Lo importante es que me miras.
+04-25|F|Se me da fatal lo de las flores. Pero se me da bien quererte, que dura más.
+04-26|F|Me encanta cómo te emocionas con las cosas pequeñas. Me recuerda a mirar el mundo bien.
+04-27|P|Abril se va cerrando / como se cierran tus ojos / cuando te beso la frente / antes de dormir.
+04-28|F|Eres mi casa, mi calma y, de vez en cuando, mi caos favorito.
+04-29|F|Si tuviera que volver a empezar, elegiría exactamente la misma cola para encontrarte.
+04-30|P|Mañana es mayo, / el mes en que te dije que sí / sin que me lo preguntaras. / Nos queda mucho mayo por delante.
+05-01|F|Primer día de mayo, nuestro mes. Cada día de este mes es una pequeña fiesta por dentro.
+05-02|P|Mayo llega con flores / y yo con lo mismo de siempre: / un te quiero / recién hecho.
+05-03|F|Hay personas que llegan a tu vida y cambian el decorado. Tú cambiaste la obra entera.
+05-04|F|Hoy me he acordado de cómo te reías el primer día. Sigo intentando hacerte reír igual.
+05-05|P|Me quedo con tu forma de mirar / las cosas que te gustan, / sin esconderlo. / Como yo te miro a ti.
+05-06|F|Tú me haces mejor sin pedírmelo. Es la magia más silenciosa que conozco.
+05-07|F|Si hoy te sientes cansada, apóyate. Para eso estoy.
+05-08|P|Nuestra historia no tiene castillo / ni dragones. / Tiene cenas en la cocina / y una manta en el sofá. / Y es la mejor que conozco.
+05-09|F|Mi día mejora cada vez que escucho tus llaves en la puerta.
+05-10|F|Que sepas que no se me pasa. Ni un día. Lo de quererte, digo.
+05-11|P|Mayo va contando días / hacia el veinte. / Yo voy contando besos / para que lleguen justos.
+05-12|F|Me encanta que seas tan tuya. No cambies ni una coma.
+05-13|F|Cada vez que me dices «te quiero» como quien dice «buenos días», me vuelves a ganar.
+05-14|P|Faltan seis días / para nuestro día. / Pero cada día / es también nuestro día. / Lo celebro igual.
+05-15|F|La gente dice que el tiempo pasa rápido. A tu lado pasa bonito, que es mejor.
+05-16|F|Tengo claro que la mejor decisión que he tomado nunca fue decirte que sí a todo.
+05-17|P|Tres días. / Ya huele a aniversario. / Ya me pongo tonto. / Ya te quiero más de la cuenta.
+05-18|F|No necesito que sea una fecha para acordarme de lo que siento. Pero no se me ocurre mejor excusa.
+05-19|F|Mañana celebramos. Hoy ya estoy nervioso, como la primera vez.
+05-20|F|Feliz aniversario, mi amor. Cada año a tu lado me parece poco y me parece todo.
+05-21|P|El día después / sigue siendo nuestro día. / Lo son todos. / Lo serán siempre.
+05-22|F|Gracias por un año más. Gracias por lo que viene.
+05-23|F|Me gusta cómo cuidas lo nuestro sin hacer ruido. Yo lo veo todo.
+05-24|P|Y si vuelve a ser mayo / y vuelvo a verte / como la primera vez, / no será casualidad: / será que miro bien.
+05-25|F|Si en algún momento del día dudas de ti, recuerda que hay alguien que te eligió y lo volvería a hacer.
+05-26|F|Lo bueno de quererte tanto es que no me deja tiempo para pensar en otra cosa.
+05-27|P|Tienes una luz / que no sale en las fotos. / Hay que verte en directo, / a la hora del desayuno, / sin filtro.
+05-28|F|Me gusta nuestra manera de estar: sin esfuerzo, sin tener que demostrar nada.
+05-29|F|Mayo se acaba, pero lo que empezó un mayo no se acaba nunca.
+05-30|P|Te quiero cuando callas / y cuando no callas. / Te quiero cuando tienes razón, / que es siempre, / y cuando yo creo que no.
+05-31|F|Último día de nuestro mes. Lo he pasado entero queriéndote. Ha sido fácil.
+06-01|F|Junio y ya huele a verano. Y a ti, que hueles a verano todo el año.
+06-02|P|Los días crecen / como la luz que te sale / cuando te ríes. / Tenemos tanto día por delante.
+06-03|F|Hoy te mando un plan: cuando acabe el día, tú, yo y una terraza. Y si no hay terraza, el balcón.
+06-04|F|Me encantas con el sol en la cara y los ojos medio cerrados. Pareces una foto antigua.
+06-05|P|Tú y yo / en una tarde de junio / sin nada que hacer. / No se me ocurre / un sitio mejor.
+06-06|F|Me gusta cómo nos miramos cuando alguien dice algo raro. Esa complicidad no tiene precio.
+06-07|F|Hoy quiero que te quieras tanto como te quiero yo. Aunque sea un rato.
+06-08|P|El verano se asoma / como tú te asomas / a la cocina / preguntando qué hay. / Hay esto: tú y yo.
+06-09|F|A veces te pillo mirándome y me pregunto qué ves. Sea lo que sea, gracias por seguir mirando.
+06-10|F|Eres de esas personas que hacen que uno quiera ser mejor. Y no lo digo por decir.
+06-11|P|Me gusta el calor / porque te quita la chaqueta / y te deja los hombros al aire / y yo tengo donde besar.
+06-12|F|Tengo un plan a largo plazo y es muy sencillo: tú.
+06-13|F|Hoy te lo digo claro: eres lo mejor que me ha pasado, y me han pasado cosas buenas.
+06-14|P|Hay un sitio en tu cuello / donde cabe mi cara / exactamente. / Lo midieron bien.
+06-15|F|Me gusta pensar en nosotros de viejos, en un banco, quejándonos del calor. Juntos.
+06-16|F|No hace falta que seas perfecta. Ya eres tú, que es más difícil.
+06-17|P|Sandía fría, / pies descalzos, / ventana abierta, / tú en la silla de al lado. / Eso es el verano. / Eso eres tú.
+06-18|F|Las mejores conversaciones las tenemos sin querer, mientras hacemos otra cosa. Me encanta.
+06-19|F|Cuando no sé qué decirte, te miro. Normalmente funciona.
+06-20|P|Última noche de primavera. / Mañana cambia la estación / y yo sigo igual: / enamorado hasta las cejas.
+06-21|F|Empieza el verano. Contigo todos los días son un poco verano.
+06-22|F|Que el sol te dé en la cara y yo en el corazón. Hoy y siempre.
+06-23|P|Noche de San Juan. / Si hay que pedir un deseo / yo ya lo tengo: / que todo siga igual, / que siga siendo contigo.
+06-24|F|Hoy tengo ganas de hacer una tontería contigo. Lo que sea, pero contigo.
+06-25|F|No te cambio ni por un verano entero en la playa. Bueno, te llevaría a ti a la playa.
+06-26|P|Cuando el calor aprieta / y no se puede dormir, / me quedo escuchándote respirar. / Es mi canción de verano.
+06-27|F|Te quiero con los pies en la tierra y la cabeza llena de planes contigo.
+06-28|F|Hoy vale todo: helado antes de comer, siesta larga, lo que tú digas.
+06-29|P|Junio se despide / con las tardes más largas del año. / Yo me quedo con una: / la que estemos juntos.
+06-30|F|Medio año ya. Y si fuera un examen, lo habrías aprobado con nota. Lo nuestro, digo.
+07-01|F|Julio: calor, chanclas y tú. No necesito más vacaciones que esas.
+07-02|P|El ventilador gira / y mueve el aire de la casa / y mueve tu pelo / y me mueve a mí.
+07-03|F|Si pudiera guardar un momento en un bote, sería tú riéndote con la boca llena.
+07-04|F|Hoy te mando sombra, agua fresca y un beso de los lentos.
+07-05|P|Tengo la piel llena de verano / y el pecho lleno de ti. / No sé cuál de las dos cosas / me quema más.
+07-06|F|Contigo las noches de calor no son un problema: son una excusa para no dormir.
+07-07|F|Que hoy tengas un día ligero, como la ropa de verano.
+07-08|P|Tú eres mi verano: / la hora en que baja el sol, / la cerveza fría, / la ventana abierta, / la siesta sin prisa.
+07-09|F|Hay días en que te veo pasar por casa y pienso: qué suerte, qué suerte, qué suerte.
+07-10|F|Eres la mejor compañera de viaje para cualquier sitio, aunque el sitio sea el supermercado.
+07-11|P|Bañador, toalla, crema / y tú tirándome del brazo / para meterme en el agua. / Que no se acabe nunca.
+07-12|F|Me gusta que me conozcas tanto que ya no haga falta explicarme.
+07-13|F|Hoy, sin motivo, quiero decirte lo bien que me haces.
+07-14|P|Me quedo mirando / cómo se te ponen las mejillas rojas / con el sol. / Me quedo mirando / cómo se me pone el corazón.
+07-15|F|Media vida pensando que el verano era lo mejor del año. Luego llegaste tú.
+07-16|F|Hazme un favor: hoy no te exijas tanto. Ya haces mucho.
+07-17|P|No tenemos palmeras / ni mar en la ventana, / pero tenemos una cocina / donde cada noche / hay un concierto para dos.
+07-18|F|Si alguna vez te sientes lejos, acuérdate: para mí estás siempre a un beso de distancia.
+07-19|F|Eres mi persona favorita para no hacer nada. Y para hacerlo todo.
+07-20|P|Hay noches de julio / en que el cielo está tan claro / que da pena dormir. / Contigo da pena dormir / cualquier noche.
+07-21|F|Te quiero con el calor de julio y la calma de las siestas. A todas horas, vaya.
+07-22|F|Lo de quererte no es una decisión. Es lo que me sale.
+07-23|P|Tú cantando en la ducha / y yo fuera, escuchando. / No hay festival / que mejore eso.
+07-24|F|Gracias por reírte de mis chistes malos. Es la prueba más grande de amor que conozco.
+07-25|F|Hoy quiero un paseo contigo a la hora en que baja el sol. Sin rumbo, como siempre.
+07-26|P|Me gusta cómo te das la vuelta / cuando crees que duermo / y me buscas la mano. / Yo no duermo. / Yo estoy esperando eso.
+07-27|F|Cada día a tu lado es un día bien vivido, aunque no hagamos nada.
+07-28|F|Te lo digo con el calor que hace: te quiero y no hay ventilador que me enfríe.
+07-29|P|Julio ya se va / arrastrando el sol por el suelo. / Yo arrastro los pies / solo para quedarme más tiempo / a tu lado.
+07-30|F|Si alguien pregunta por qué sonrío, le diré que no es nada. Pero eres tú.
+07-31|F|Julio se acaba. Lo que no se acaba son las ganas de pasar agosto contigo.
+08-01|F|Agosto, y la ciudad medio vacía. Contigo está llena.
+08-02|P|Eres de esos días de agosto / que empiezan con el sol muy fuerte / y acaban con una brisa / que te hace cerrar los ojos.
+08-03|F|Hoy te mando un beso con sabor a melón, que es lo que toca.
+08-04|F|No sé si lo sabes, pero cuando te concentras frunces el ceño. Y me derrito.
+08-05|P|Vamos a quedarnos aquí / sin reloj, / con el mar en la tele / o en la cabeza, / que da igual / si estás tú.
+08-06|F|Lo nuestro es como el verano: nunca es suficiente y siempre es lo mejor.
+08-07|F|Que hoy no te falte sombra, agua ni mi mano en la tuya.
+08-08|P|Noche de verano, / luz de cocina, / dos platos, dos copas, / y tú contando el día. / Mi momento favorito.
+08-09|F|Eres el tipo de persona por la que uno no quiere que se acaben las vacaciones. Ni los lunes.
+08-10|F|Hoy quiero que descanses. De verdad. Deja que el verano te cuide un rato.
+08-11|P|Las noches de estrellas / son para pedir deseos. / Yo las uso para mirarte / y confirmar / que ya se cumplió.
+08-12|F|Si te paras a pensarlo, somos un buen equipo. Yo no me paro a pensarlo: lo sé.
+08-13|F|Lo que más me gusta de agosto eres tú con el pelo mojado.
+08-14|P|Hay mucha gente en la playa / y yo solo te veo a ti. / No es poesía. / Es que te busco siempre.
+08-15|F|Hoy es fiesta en todas partes. En mi corazón lo es desde que apareciste.
+08-16|F|Gracias por tener paciencia conmigo. Y por no tenerla cuando hace falta.
+08-17|P|Tu risa de verano / es diferente: / más suelta, / más tuya. / Guárdame un poco / para el invierno.
+08-18|F|Me gusta cómo huele la casa cuando vuelves de la calle. A sol y a ti.
+08-19|F|Eres mi planazo de verano y mi plan tranquilo de invierno. Mi plan de todo.
+08-20|P|Tres meses ya / desde que celebramos mayo. / Lo sigo celebrando / cada vez que entras en casa.
+08-21|F|No sé qué me gusta más, si tu risa o el silencio después. Los dos son nuestros.
+08-22|F|Hoy, aunque haga calor, abrázame fuerte. Que lo demás se aguanta.
+08-23|P|Entre tú y yo / no hay mar, / pero hay una ola / cada vez que me miras / así.
+08-24|F|Me encanta tu forma de querer a la gente. Me siento afortunado de estar en esa lista.
+08-25|F|Hoy te quiero más que ayer y menos que mañana. Lo sé porque ya pasó con ayer.
+08-26|P|Agosto se va yendo despacio / como tú te quitas el bañador / y te quedas en casa, / descalza, / mía.
+08-27|F|Me gusta cuando cuentas algo con las manos. Te escucho con los ojos.
+08-28|F|A ti te quiero así, sin peros. Es lo único que hago sin peros.
+08-29|P|Se acaba el verano / y yo no quiero que acabe. / Pero luego recuerdo / que el otoño también es contigo. / Y se me pasa.
+08-30|F|Cuatro días para tu cumpleaños. Ya empiezo a ponerme nervioso con tu regalo.
+08-31|F|Último día de agosto. Me quedo con cada tarde que hemos pasado sin hacer nada.
+09-01|F|Septiembre: empieza todo otra vez. Y con tu cumpleaños, que es el mejor comienzo posible.
+09-02|P|Mañana es tu día. / Hoy ya te quiero más de la cuenta / para que mañana / no me quede corto.
+09-03|F|Feliz cumpleaños, mi vida. Gracias por nacer. Gracias por quedarte.
+09-04|P|El día después de tu cumpleaños / sigue siendo tu día. / Para mí / todos los días son tu cumpleaños.
+09-05|F|Me gusta este mes porque huele a empezar. Y empezar contigo es lo mío.
+09-06|F|Hoy quiero decirte que eres más valiente de lo que crees. Lo veo todos los días.
+09-07|P|Vuelve la rutina / y me alegro: / la rutina contigo / es la mejor parte / de mi vida.
+09-08|F|Que tu septiembre sea suave, como tus manos cuando me despiertas.
+09-09|F|Te quiero con la cabeza y con el estómago. Con todo lo que tengo.
+09-10|P|El verano se va / como se van los amigos / que saben que volverán. / Tú no te vas. / Tú te quedas.
+09-11|F|Hoy quiero agradecerte lo de siempre: que estés. Que es lo más difícil.
+09-12|F|No hay nada que me guste más que verte con tu taza por la mañana, con cara de no estar aún.
+09-13|P|Las tardes empiezan a caer antes. / No importa. / Yo tengo luz propia / desde que estás.
+09-14|F|Hoy te mando una tregua de las buenas: que lo urgente espere a mañana.
+09-15|F|Tú me ordenas la vida sin tocarla. Solo con estar.
+09-16|P|Hay un verano en tu piel / que todavía no se ha ido. / Yo lo miro cuando duermes / y me lo guardo.
+09-17|F|Si pudiera elegir con quién pasar cada otoño, cada invierno y cada verano, te elegiría a ti las tres veces.
+09-18|F|Me gusta que me hagas reír a horas en las que nadie debería tener gracia.
+09-19|P|Me gusta el otoño porque vuelves / a ponerte mis sudaderas. / Y yo vuelvo a no poder / ponérmelas nunca.
+09-20|F|Cuatro meses desde nuestro aniversario. Y yo sigo igual de tonto por ti.
+09-21|F|Último día de verano. Gracias por hacerlo el mejor hasta ahora.
+09-22|P|Llega el otoño / y las hojas se sueltan. / Yo no me suelto. / Yo me agarro a ti.
+09-23|F|Mi plan de otoño: mantas, sofá, lluvia en la ventana y tú contándome algo.
+09-24|F|Si hoy el día se nubla, acuérdate de que tú tienes luz de sobra.
+09-25|P|Cuando el aire se vuelve fresco / tú te acercas más. / Yo le doy las gracias al otoño / por el empujón.
+09-26|F|Gracias por aguantarme en mis días de mal humor. Los pocos que tengo. Bueno, los que tengo.
+09-27|F|Quererte es la cosa más fácil que hago cada día. Y de las pocas que me salen bien.
+09-28|P|Septiembre se acaba / y me doy cuenta / de que no te he dicho hoy / lo guapa que estás. / Lo guapa que estás.
+09-29|F|Hoy quiero que sepas que estoy orgulloso de ti. Mucho más de lo que digo.
+09-30|F|Septiembre se va. Me llevo tu cumpleaños y me llevo tu risa de los últimos días del verano.
+10-01|F|Octubre entra con las hojas y yo con lo de siempre: te quiero.
+10-02|P|Las hojas caen despacio / y se quedan en el suelo / como yo me quedo en ti / cuando me miras.
+10-03|F|Un mes desde tu cumple. Sigo pensando que fue el mejor día del año. Después del 20 de mayo, claro.
+10-04|F|Hoy quiero una tarde de sofá y manta. Tú eliges la película y yo me quedo dormido a tu lado, como siempre.
+10-05|P|Castañas, / jersey, / una taza entre las manos, / tu cabeza en mi hombro. / Octubre lo ha entendido todo.
+10-06|F|Me gusta cuando te quedas mirando la lluvia por la ventana. Yo me quedo mirándote a ti.
+10-07|F|Si hoy el día está gris, yo me encargo de ponerle color. Tengo práctica contigo.
+10-08|P|Me gusta que tengas frío / porque te acercas más. / Me gusta el otoño / por eso / y por nada más.
+10-09|F|Cada día que pasa me convenzo más de que lo mejor de mi vida tiene tu nombre.
+10-10|F|Hoy te mando un abrazo de los de envolver entero. De los que valen para toda la semana.
+10-11|P|Se ha ido el verano, / se ha ido la luz de las nueve, / se ha ido el calor. / Tú no te has ido. / Nada se ha ido.
+10-12|F|Día de fiesta. Y yo celebro lo único que celebro de verdad: que estés.
+10-13|F|Tengo claro que si tuviera que elegir una canción para nosotros, tendría tu risa de fondo.
+10-14|P|El otoño se ha metido en casa / por la ventana del salón. / Tú le has dado una manta / y se ha quedado. / Como yo.
+10-15|F|Que hoy no se te olvide: alguien te quiere exactamente como eres.
+10-16|F|Me encanta cómo arrugas la nariz cuando no te gusta algo. Me lo quedo todo.
+10-17|P|Lluvia en el cristal / y tú dormida en el sofá. / Me he quedado quieto / para no estropear / lo perfecto.
+10-18|F|Te quiero tanto que a veces me asusta. Pero es un miedo bueno, de los que dan ganas.
+10-19|F|No te pido nada. Ya me das más de lo que sé devolver.
+10-20|P|Cinco meses desde mayo. / Sigo contando / como si fuera la primera vez. / Siempre va a ser la primera vez.
+10-21|F|Hoy quiero recordarte que, aunque el mundo no se entere, yo sí veo todo lo que haces.
+10-22|F|Si quieres saber mi secreto para estar bien, es muy simple: tú.
+10-23|P|Me gusta tu voz / cuando te despiertas / y aún no sabes qué día es. / Me gusta ser / lo primero que ves.
+10-24|F|Mañana empieza la semana de Halloween. Tú ya me tienes hechizado desde hace tiempo.
+10-25|F|Que los sustos de esta semana sean de mentira y los besos de verdad.
+10-26|P|No me asustan los fantasmas / ni las calabazas con cara. / Me asustaría / una vida sin ti. / Esa sí.
+10-27|F|Soy tuyo con hechizo y sin hechizo. No hace falta brujería para esto.
+10-28|F|Si fueras una bruja, sería la bruja buena de la película. Y yo iría voluntario al caldero.
+10-29|P|Noche de luna, / gato en el tejado, / tú en mi cama / robándome la manta. / Eso sí que es un misterio.
+10-30|F|Mañana Halloween. Prefiero tu cara sin disfraz, pero si te disfrazas, me gustará igual.
+10-31|F|Feliz Halloween. Lo único que me da miedo es lo mucho que te quiero. Y me gusta.
+11-01|F|Noviembre llega gris, pero en casa hay luz. Eres tú.
+11-02|P|Hoy nos acordamos / de los que ya no están. / Yo me abrazo fuerte / a los que sí: / a ti.
+11-03|F|Dos meses desde tu cumple y sigo acordándome de tu cara al abrir el regalo.
+11-04|F|Te quiero con jersey, con bufanda, con la nariz roja de frío. Así, más.
+11-05|P|Noviembre tiene mala fama. / A mí me gusta: / anochece pronto / y tú y yo / nos quedamos en casa.
+11-06|F|Hoy quiero que te cuides. Un café tranquilo, una ducha larga, un rato para ti.
+11-07|F|Me encanta que seas mi «¿qué cenamos?» de cada noche. Y mi respuesta.
+11-08|P|Hay días que pesan. / Hoy quizás pese. / Pues te lo sostengo yo / un rato / mientras respiras.
+11-09|F|Eres la razón de que vuelva a casa con prisa y salga sin ganas.
+11-10|F|Si pudiera, te regalaría un día entero sin obligaciones. Mientras, te regalo esta frase.
+11-11|P|Lluvia, / calefacción, / dos sopas humeando / y tú con las manos en la taza. / Noviembre ha ganado.
+11-12|F|Te quiero sin anestesia, sin medida y sin fecha de caducidad.
+11-13|F|Hoy te lo digo claro: contigo todo es mejor. Incluso los martes.
+11-14|P|Cuando dices mi nombre / con esa voz de regaño, / me río por dentro. / Es la mejor bronca del mundo.
+11-15|F|La vida es más fácil cuando alguien te espera en casa. Gracias por esperarme.
+11-16|F|Si hoy no te sale nada bien, ven. A mí me sales bien tú.
+11-17|P|Me he fijado hoy / en cómo doblas la ropa / mientras tarareas. / No sé qué canción era. / Era la mía.
+11-18|F|Tienes el récord de hacerme sonreír sin decir nada. Nadie se te acerca.
+11-19|F|Hoy quiero una cena lenta contigo. Sin móvil. Solo hablar de lo que sea.
+11-20|P|Medio año desde nuestro aniversario / y ya noto que se acerca la Navidad / en la forma en que te brillan los ojos / cuando pasas por las tiendas.
+11-21|F|Eres mi persona de confianza, mi plan seguro y mi lugar de descanso. Todo en uno.
+11-22|F|Gracias por reírte de mí con cariño. Es la mejor manera de quererme.
+11-23|P|El cielo lleva gris desde el lunes. / Tú llevas luz desde siempre. / Gana la luz.
+11-24|F|Hoy, cuando te mires al espejo, hazlo con mis ojos. Verás algo precioso.
+11-25|F|No sé qué nos deparará el año que viene, pero sé con quién quiero averiguarlo.
+11-26|P|Mantas, / series, / un plato de algo caliente / y tus pies en mi regazo. / Si esto es rutina, / viva la rutina.
+11-27|F|Te quiero a diario y en los días de fiesta. En los días de fiesta, con más decoración.
+11-28|F|Ya queda poco para la Navidad y yo tengo claro mi regalo: una Navidad más contigo.
+11-29|P|Noviembre se acaba / como se acaba un buen libro: / con pena / y con ganas del siguiente.
+11-30|F|Último día de noviembre. Mañana empieza la magia, pero tú la traes puesta todo el año.
+12-01|F|Diciembre. Enciende las luces, pon música de Navidad y ven aquí que te quiero abrazar.
+12-02|P|Ya huele a Navidad / en las calles, en las tiendas, / en tu forma de mirar / los escaparates. / Yo te miro a ti.
+12-03|F|Tres meses desde tu cumpleaños y ya empiezo a pensar en el siguiente. No sé parar.
+12-04|F|Este mes, los días son cortos. Pero los ratos contigo son largos. Equilibra.
+12-05|P|Si pusiéramos luces / por cada vez que me has hecho reír, / la casa se vería / desde la luna.
+12-06|F|Hoy es fiesta. Tú también lo eres.
+12-07|F|No hay bola de Navidad tan bonita como tu cara cuando se encienden las luces de la calle.
+12-08|P|Puente, / mantas, / villancicos a destiempo / y tú cocinando algo que huele a todo. / Diciembre es contigo.
+12-09|F|Gracias por hacer que cada diciembre sea diferente. Y por hacer que cada diciembre sea igual: contigo.
+12-10|F|Te quiero como se quieren las cosas que no se van a acabar.
+12-11|P|Diciembre va contando luces / hacia la Nochebuena. / Yo voy contando días / que llevo queriéndote. / Ganan los míos.
+12-12|F|Hoy te doy las gracias por todo lo que has hecho este año sin que nadie te lo pidiera.
+12-13|F|Si la Navidad es estar con quien quieres, yo ya llevo todo el año de Navidad.
+12-14|P|La calle llena de gente / y de bolsas / y de prisa. / Y tú, / que vas de mi mano, / sin prisa.
+12-15|F|Hoy te mando un villancico sin música: te quiero, te quiero, te quiero. Se repite y no cansa.
+12-16|F|Que este diciembre te trate bien. Yo me encargo de la parte que me toca.
+12-17|P|Cuando te veo decorar la casa / con esa cara de niña, / vuelvo a entender / para qué existe diciembre.
+12-18|F|Puede que no sea un regalo perfecto, pero te tengo a ti, y es más de lo que pedí.
+12-19|F|Lo nuestro no cabe en una carta a los Reyes. Y mira que escribo pequeño.
+12-20|P|Siete meses desde mayo / y a una semana de Nochebuena. / Entre una fecha y otra / solo hay una cosa: / tú.
+12-21|F|Es el día más corto del año. Aprovecho para decírtelo rápido: te quiero.
+12-22|F|Hoy suena la lotería. Yo ya me tocó, y no fue en diciembre.
+12-23|P|Mañana Nochebuena. / No necesito que nieve. / Me vale con tu cara / al abrir la puerta.
+12-24|F|Feliz Nochebuena, mi amor. De todas las mesas del mundo, me quedo con la tuya al lado.
+12-25|F|Feliz Navidad. Mi mejor regalo no tiene envoltorio: eres tú, desde hace tiempo.
+12-26|P|Pasó la Navidad / y queda lo importante: / tú, yo, / y un par de días de sobras / para comerlas juntos.
+12-27|F|Entre fiesta y fiesta, quiero una tarde tranquila contigo. Sin más.
+12-28|F|Hoy es el día de los inocentes. Lo único que no es broma es cuánto te quiero.
+12-29|P|Se acaba el año / y yo hago balance: / lo mejor tiene tu nombre. / Lo demás / ni me acuerdo.
+12-30|F|Un año que termina a tu lado es un año bien gastado.
+12-31|F|Feliz Nochevieja. Doce uvas, doce deseos: todos te tienen a ti.

@@ -1,0 +1,27 @@
+@page "{id:int?}"
+@model Love.Pages.Admin.Mensajes.EditarModel
+@{ ViewData["Title"] = Model.Nuevo ? "Nuevo mensaje" : "Editar mensaje"; }
+<div class="cab"><a class="volver" href="/Admin/Mensajes?mes=@Model.Mensaje.Mes">‹</a><h1>@ViewData["Title"]</h1></div>
+<form method="post">
+    <input type="hidden" asp-for="Mensaje.Id" />
+    <div class="cuadricula">
+        <label class="campo"><span>Día</span><input asp-for="Mensaje.Dia" type="number" min="1" max="31" inputmode="numeric" /></label>
+        <label class="campo"><span>Mes</span><select asp-for="Mensaje.Mes">@for (int m = 1; m <= 12; m++) { <option value="@m">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)</option> }</select></label>
+    </div>
+    <span asp-validation-for="Mensaje.Dia" class="error"></span>
+    <span class="etiqueta">Tipo</span>
+    <div class="chips mb">
+        <label class="chip"><input type="radio" asp-for="Mensaje.Tipo" value="Frase" /> Frase</label>
+        <label class="chip"><input type="radio" asp-for="Mensaje.Tipo" value="Poema" /> Poema</label>
+    </div>
+    <label class="campo"><span>Título (opcional, solo poemas)</span><input asp-for="Mensaje.Titulo" /></label>
+    <label class="campo"><span>Texto · cada línea es un verso</span><textarea asp-for="Mensaje.Texto" rows="7" style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic"></textarea></label>
+    <span asp-validation-for="Mensaje.Texto" class="error"></span>
+    <label class="chip mb"><input type="checkbox" asp-for="Mensaje.Activo" style="display:inline" /> Activo</label>
+    <button class="btn primario ancho">Guardar</button>
+</form>
+@if (!Model.Nuevo)
+{
+    <a class="btn ancho mt" href="/Amor?fecha=@(new DateOnly(Reloj.Hoy.Year, Model.Mensaje.Mes, Math.Min(Model.Mensaje.Dia, DateTime.DaysInMonth(Reloj.Hoy.Year, Model.Mensaje.Mes))).ToString("yyyy-MM-dd"))">Ver cómo lo verá Raquel</a>
+    <form method="post" asp-page-handler="Borrar" asp-route-id="@Model.Mensaje.Id" data-confirm="¿Borrar este mensaje?" class="mt"><button class="btn peligro ancho">Borrar</button></form>
+}

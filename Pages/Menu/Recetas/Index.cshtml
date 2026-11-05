@@ -1,0 +1,30 @@
+@page
+@model Love.Pages.Menu.Recetas.IndexModel
+@{ ViewData["Title"] = "Recetas"; }
+<div class="cab">
+    <h1>Recetas</h1>
+    <a class="accion" href="/Menu/Semana">Esta semana →</a>
+</div>
+<form method="get" class="mb">
+    <input type="search" name="q" value="@Model.Q" placeholder="Buscar receta o ingrediente" />
+</form>
+@if (!Model.Lista.Any())
+{
+    <div class="vacio"><span class="ico">🍲</span>No hay recetas@(Model.Q != null ? " con eso" : ""). Pulsa + para crear la primera.</div>
+}
+<div class="lista">
+    @foreach (var r in Model.Lista)
+    {
+        <a class="tarjeta enlace receta-card" href="/Menu/Recetas/Ver/@r.Id">
+            @if (r.FotoPath != null) { <img class="foto" src="/Menu/Recetas/Foto/@r.Id" alt="" loading="lazy" /> }
+            else { <div class="foto">@(r.Etiquetas?.Contains("pescado") == true ? "🐟" : "🍽️")</div> }
+            <div class="crece">
+                <div class="nombre" style="font-weight:800">@r.Nombre</div>
+                <div class="sub">@r.Ingredientes.Count ingredientes · @r.Raciones raciones</div>
+                @if (!string.IsNullOrWhiteSpace(r.Etiquetas)) { <div class="sub">@r.Etiquetas</div> }
+            </div>
+            <span class="suave">›</span>
+        </a>
+    }
+</div>
+<a class="fab" href="/Menu/Recetas/Editar" aria-label="Nueva receta">+</a>

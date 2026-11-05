@@ -1,0 +1,52 @@
+@page
+@model Love.Pages.Amor.IndexModel
+@{
+    ViewData["Title"] = "Para " + Model.Nombre;
+    var t = Model.Msg.Tema;
+    var versos = Model.Msg.Texto.Split('\n');
+}
+@section Head {
+    <meta name="theme-color" content="var(--fondo-1)" />
+}
+<div class="amor" data-particulas="@t.Particulas">
+    <div class="cielo"></div>
+    <div class="particulas" id="particulas"></div>
+
+    <header class="amor-cab">
+        <p class="saludo">@Model.Saludo, @Model.Nombre</p>
+        <p class="fecha">@Model.Fecha.ToString("dddd d 'de' MMMM")</p>
+    </header>
+
+    <article class="tarjeta-amor @(Model.Msg.Tipo == TipoMensaje.Poema ? "poema" : "frase") @(Model.Msg.Especial != null ? "especial" : "")">
+        @if (Model.Msg.Especial != null)
+        {
+            <div class="especial-cab">
+                <span class="emoji">@Model.Msg.Especial.Emoji</span>
+                <span class="nombre">@Model.Msg.Especial.Nombre</span>
+                @if (Model.Msg.Contador != null) { <span class="contador">@Model.Msg.Contador</span> }
+            </div>
+        }
+        else if (Model.Msg.Titulo != null)
+        {
+            <p class="titulo">@Model.Msg.Titulo</p>
+        }
+        <div class="texto">
+            @foreach (var v in versos) { <p>@v</p> }
+        </div>
+        <p class="firma">— @Model.Firma</p>
+    </article>
+
+    <footer class="amor-pie">
+        <button class="corazon" id="corazon" type="button" aria-label="Corazón">♥</button>
+        @if (Model.DiasJuntos > 0) { <p class="dias">Llevamos <b>@Model.DiasJuntos.ToString("N0")</b> días juntos</p> }
+        @if (Model.Proximo != null)
+        {
+            <p class="proximo">@Model.Proximo.Fecha.Emoji @(Model.Proximo.DiasFaltan == 1 ? "Mañana es" : $"Faltan {Model.Proximo.DiasFaltan} días para") @Model.Proximo.Fecha.Nombre.ToLowerInvariant()</p>
+        }
+    </footer>
+
+    @if (Model.Preview)
+    {
+        <div class="preview-aviso">Vista previa del @Model.Fecha.ToString("d/M/yyyy") · tema @t.Nombre</div>
+    }
+</div>

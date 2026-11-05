@@ -1,0 +1,37 @@
+@page
+@model Love.Pages.Admin.ConfigModel
+@{ ViewData["Title"] = "Configuración"; }
+<div class="cab"><a class="volver" href="/Admin">‹</a><h1>Configuración</h1></div>
+@if (Model.Mensaje != null) { <div class="aviso mb">@Model.Mensaje</div> }
+<form method="post" class="tarjeta">
+    <h2 class="mb">Gastos</h2>
+    <label class="campo"><span>Objetivo de compra al mes (€)</span><input asp-for="Objetivo" inputmode="decimal" /></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Veva fijo (€)</span><input asp-for="Veva" inputmode="decimal" /></label>
+        <label class="campo"><span>Hipoteca fija (€)</span><input asp-for="Hipoteca" inputmode="decimal" /></label>
+    </div>
+    <h2 class="mb">Página de amor</h2>
+    <div class="cuadricula">
+        <label class="campo"><span>Firma</span><input asp-for="Firma" /></label>
+        <label class="campo"><span>Su nombre</span><input asp-for="NombreElla" /></label>
+    </div>
+    <button class="btn primario ancho">Guardar</button>
+</form>
+<form method="post" asp-page-handler="Pin" class="tarjeta">
+    <h2 class="mb">Cambiar PIN</h2>
+    <label class="campo"><span>Usuario</span><select name="rol"><option value="Raquel">Raquel</option><option value="Admin">Admin</option></select></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Nuevo PIN</span><input type="password" name="pin1" inputmode="numeric" minlength="4" maxlength="6" required /></label>
+        <label class="campo"><span>Repetir</span><input type="password" name="pin2" inputmode="numeric" minlength="4" maxlength="6" required /></label>
+    </div>
+    <button class="btn ancho">Cambiar PIN</button>
+</form>
+<form method="post" asp-page-handler="Importar" enctype="multipart/form-data" class="tarjeta">
+    <h2 class="mb">Importar recetas (JSON)</h2>
+    <p class="suave peq">Mismo formato que <code>Seed/recetas.json</code>. Las que ya existan por nombre se saltan.</p>
+    <div class="fila"><input type="file" name="recetas" accept="application/json" required class="crece" /><button class="btn">Importar</button></div>
+</form>
+<div class="tarjeta">
+    <h2 class="mb">Copia de seguridad</h2>
+    <a class="btn ancho" href="/Admin/Config?handler=Backup">Descargar base de datos y adjuntos</a>
+</div>

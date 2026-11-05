@@ -1,0 +1,76 @@
+@page "{id:int?}"
+@model Love.Pages.Menu.Recetas.EditarModel
+@{ ViewData["Title"] = Model.Nueva ? "Nueva receta" : "Editar receta"; }
+<div class="cab">
+    <a class="volver" href="@(Model.Nueva ? "/Menu/Recetas" : $"/Menu/Recetas/Ver/{Model.Receta.Id}")">‹</a>
+    <h1>@ViewData["Title"]</h1>
+</div>
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Receta.Id" />
+    <input type="hidden" asp-for="Receta.FotoPath" />
+    <label class="campo"><span>Nombre</span><input asp-for="Receta.Nombre" placeholder="Lentejas con chorizo" /></label>
+    <span asp-validation-for="Receta.Nombre" class="error"></span>
+    <div class="cuadricula">
+        <label class="campo"><span>Raciones</span><input asp-for="Receta.Raciones" type="number" inputmode="numeric" min="1" /></label>
+        <label class="campo"><span>Etiquetas</span><input asp-for="Receta.Etiquetas" placeholder="comida, cena, rápido" /></label>
+    </div>
+    <label class="campo"><span>Foto (opcional)</span><input type="file" asp-for="Foto" accept="image/*" /></label>
+
+    <div class="tarjeta">
+        <h2 class="mb">Ingredientes</h2>
+        <div id="ings">
+            @for (int i = 0; i < Model.IngNombre.Count; i++)
+            {
+                <div class="ingrediente-fila">
+                    <input name="IngNombre" list="maestro" value="@Model.IngNombre[i]" placeholder="Ingrediente" />
+                    <input name="IngCantidad" value="@Model.IngCantidad[i]" placeholder="Cant." inputmode="decimal" />
+                    <input name="IngUnidad" value="@Model.IngUnidad[i]" placeholder="ud" />
+                    <button type="button" class="quitar" aria-label="Quitar">×</button>
+                    <select name="IngZona" class="zona-sel">
+                        @foreach (var z in ZonaInfo.Todas) { <option value="@z" selected="@(z == Model.IngZona[i])">@ZonaInfo.Emoji(z) @ZonaInfo.Nombre(z)</option> }
+                    </select>
+                </div>
+            }
+        </div>
+        <button type="button" class="btn pequeno" id="mas">+ Ingrediente</button>
+        <p class="suave peq" style="margin-bottom:0">Al escribir un ingrediente que ya existe, la zona se rellena sola.</p>
+    </div>
+
+    <label class="campo"><span>Preparación (opcional)</span><textarea asp-for="Receta.Preparacion"></textarea></label>
+    <button class="btn primario ancho">Guardar</button>
+</form>
+@if (!Model.Nueva)
+{
+    <form method="post" asp-page-handler="Borrar" asp-route-id="@Model.Receta.Id" data-confirm="¿Borrar esta receta?" class="mt">
+        <button class="btn peligro ancho">Borrar receta</button>
+    </form>
+}
+<datalist id="maestro">@foreach (var m in Model.Maestro) { <option value="@m.Nombre"></option> }</datalist>
+<template id="fila">
+    <div class="ingrediente-fila">
+        <input name="IngNombre" list="maestro" placeholder="Ingrediente" />
+        <input name="IngCantidad" placeholder="Cant." inputmode="decimal" />
+        <input name="IngUnidad" placeholder="ud" />
+        <button type="button" class="quitar" aria-label="Quitar">×</button>
+        <select name="IngZona" class="zona-sel">
+            @foreach (var z in ZonaInfo.Todas) { <option value="@z">@ZonaInfo.Emoji(z) @ZonaInfo.Nombre(z)</option> }
+        </select>
+    </div>
+</template>
+@section Scripts {
+<script>
+(() => {
+  const zonas = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Maestro.ToDictionary(m => m.Nombre.ToLowerInvariant(), m => m.Zona.ToString())));
+  const ings = document.getElementById('ings'), tpl = document.getElementById('fila');
+  const add = () => { ings.appendChild(tpl.content.cloneNode(true)); ings.lastElementChild.querySelector('input').focus(); };
+  document.getElementById('mas').addEventListener('click', add);
+  ings.addEventListener('click', e => { if (e.target.classList.contains('quitar')) e.target.closest('.ingrediente-fila').remove(); });
+  ings.addEventListener('change', e => {
+    if (e.target.name !== 'IngNombre') return;
+    const z = zonas[e.target.value.trim().toLowerCase()];
+    if (z) e.target.closest('.ingrediente-fila').querySelector('select').value = z;
+  });
+  if (!ings.children.length) { add(); add(); add(); }
+})();
+</script>
+}
