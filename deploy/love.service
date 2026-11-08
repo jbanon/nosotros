@@ -11,6 +11,8 @@ RestartSec=5
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_ROOT=/usr/lib/dotnet
+# HOME para que las claves de DataProtection (cookies de login) persistan en App_Data/.aspnet
+Environment=HOME=/opt/love/App_Data
 # Kestrel solo en localhost (nginx hace de proxy); sobreescribe el 0.0.0.0 de appsettings.json
 Environment=Kestrel__Endpoints__Http__Url=http://127.0.0.1:5100
 # PIN iniciales (solo se usan al crear la base de datos)
