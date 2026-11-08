@@ -68,7 +68,7 @@ Las cantidades de cada receta son para sus `raciones`; la lista de la compra las
 ```bash
 ./deploy/publicar.sh        # publica en /opt/love y arranca el servicio systemd (puerto 5100)
 sudo cp deploy/nginx-love.conf /etc/nginx/sites-available/love && sudo ln -s /etc/nginx/sites-available/love /etc/nginx/sites-enabled/
-sudo certbot --nginx -d love.winsoft.es
+sudo certbot --nginx -d nosotros.winsoft.es
 ```
 
 Copia de seguridad: Admin → Configuración → Descargar (zip con la base de datos y los adjuntos).
