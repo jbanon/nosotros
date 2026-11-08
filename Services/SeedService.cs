@@ -30,7 +30,8 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
                 new Config { Clave = ConfigClaves.ImporteVeva, Valor = "300" },
                 new Config { Clave = ConfigClaves.ImporteHipoteca, Valor = "900" },
                 new Config { Clave = ConfigClaves.Firma, Valor = "Javier" },
-                new Config { Clave = ConfigClaves.NombreElla, Valor = "Raquel" });
+                new Config { Clave = ConfigClaves.NombreElla, Valor = "Raquel" },
+                new Config { Clave = ConfigClaves.RacionesLista, Valor = "12" });
 
         if (!await db.FechasEspeciales.AnyAsync())
             db.FechasEspeciales.AddRange(

@@ -4,8 +4,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Love.Services;
 
-public class ListaCompraService(AppDb db)
+public class ListaCompraService(AppDb db, ConfigService config)
 {
+    /// <summary>Raciones por defecto para las que se calcula la lista (somos una gran familia).</summary>
+    public const int RacionesPorDefecto = 12;
+
+    /// <summary>Raciones para las que se calcula la lista de la compra (configurable en Admin).</summary>
+    public async Task<int> Raciones()
+    {
+        var v = (int)await config.GetDecimal(ConfigClaves.RacionesLista, RacionesPorDefecto);
+        return v < 1 ? RacionesPorDefecto : v;
+    }
+
     public async Task<Semana> SemanaDe(DateOnly lunes)
     {
         var s = await db.Semanas.Include(x => x.Recetas).ThenInclude(r => r.Receta)
@@ -30,6 +40,7 @@ public class ListaCompraService(AppDb db)
                                 .Include(x => x.Lista)
                                 .FirstAsync(x => x.Id == semanaId);
 
+        var raciones = await Raciones();
         // clave: ingrediente + unidad normalizada
         var agregados = new Dictionary<(int ingId, string unidad), (Ingrediente ing, decimal? cant, List<string> origen, string? unidadOriginal)>();
         foreach (var sr in s.Recetas)
@@ -37,7 +48,9 @@ public class ListaCompraService(AppDb db)
             {
                 var key = (ri.IngredienteId, NormUnidad(ri.Unidad));
                 agregados.TryGetValue(key, out var cur);
-                var cant = ri.Cantidad is decimal c ? c * sr.Veces : (decimal?)null;
+                // Cantidades escaladas a las raciones de la lista: la receta trae las suyas para sr.Receta.Raciones.
+                var factor = (decimal)raciones / Math.Max(1, sr.Receta.Raciones);
+                var cant = ri.Cantidad is decimal c ? Math.Round(c * sr.Veces * factor, 2) : (decimal?)null;
                 var total = cur.cant is decimal t && cant is decimal n ? t + n : cur.cant ?? cant;
                 var origen = cur.origen ?? new List<string>();
                 if (!origen.Contains(sr.Receta.Nombre)) origen.Add(sr.Receta.Nombre);
@@ -76,10 +89,10 @@ public class ListaCompraService(AppDb db)
         return u.Length > 3 && u.EndsWith('s') ? u[..^1] : u;
     }
 
-    public static string TextoCompartir(Semana s)
+    public static string TextoCompartir(Semana s, int raciones)
     {
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"🛒 Lista de la compra ({s.LunesInicio:d MMM} – {s.LunesInicio.AddDays(6):d MMM})");
+        sb.AppendLine($"🛒 Lista de la compra ({s.LunesInicio:d MMM} – {s.LunesInicio.AddDays(6):d MMM}) · {raciones} raciones");
         foreach (var g in s.Lista.Where(l => l.Incluido && !l.Comprado).GroupBy(l => l.Zona).OrderBy(g => g.Key))
         {
             sb.AppendLine();
@@ -91,7 +104,15 @@ public class ListaCompraService(AppDb db)
     }
 
     public static string Cant(ListaItem l) =>
-        l.Cantidad is decimal c ? $" {c:0.##} {l.Unidad}".TrimEnd() : (l.Unidad != null ? " " + l.Unidad : "");
+        l.Cantidad is decimal c ? $" {c:0.##} {Plural(l.Unidad, c)}".TrimEnd() : (l.Unidad != null ? " " + l.Unidad : "");
+
+    /// <summary>"hoja" → "hojas", "diente" → "dientes" cuando la cantidad es mayor que 1. Abreviaturas (g, kg, ud, ml) se dejan igual.</summary>
+    public static string Plural(string? u, decimal c)
+    {
+        u = (u ?? "").Trim();
+        if (c <= 1 || u.Length <= 3 || u.EndsWith('s') || !u.All(char.IsLetter)) return u;
+        return "aeiouáéíóú".Contains(char.ToLowerInvariant(u[^1])) ? u + "s" : u + "es";
+    }
 }
 
 public static class ZonaInfo

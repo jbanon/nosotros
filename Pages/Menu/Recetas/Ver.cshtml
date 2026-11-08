@@ -25,6 +25,10 @@
             </tr>
         }
     </table>
+    @if (r.Raciones != Model.RacionesLista)
+    {
+        <p class="suave peq" style="margin:10px 0 0">Cantidades para @r.Raciones raciones. En la lista de la compra se multiplican por @(((decimal)Model.RacionesLista / Math.Max(1, r.Raciones)).ToString("0.##")) para llegar a @Model.RacionesLista.</p>
+    }
 </div>
 @if (!string.IsNullOrWhiteSpace(r.Preparacion))
 {

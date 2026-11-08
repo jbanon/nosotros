@@ -154,4 +154,5 @@ public static class ConfigClaves
     public const string ImporteHipoteca = "ImporteHipoteca";
     public const string Firma = "Firma";
     public const string NombreElla = "NombreElla";
+    public const string RacionesLista = "RacionesLista";
 }

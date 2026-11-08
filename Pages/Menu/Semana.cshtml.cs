@@ -12,6 +12,7 @@ public class SemanaModel(AppDb db, ListaCompraService lista) : PageModel
     public Semana Semana { get; set; } = null!;
     public List<Receta> Recetas { get; set; } = new();
     public DateOnly Lunes { get; set; }
+    public int Raciones { get; set; }
 
     DateOnly Resolver(DateOnly? lunes) => Reloj.Lunes(lunes ?? Reloj.Hoy);
 
@@ -20,6 +21,7 @@ public class SemanaModel(AppDb db, ListaCompraService lista) : PageModel
         Lunes = Resolver(lunes);
         Semana = await lista.SemanaDe(Lunes);
         Recetas = await db.Recetas.OrderBy(r => r.Nombre).ToListAsync();
+        Raciones = await lista.Raciones();
     }
 
     public async Task<IActionResult> OnPostToggle(DateOnly lunes, int recetaId)

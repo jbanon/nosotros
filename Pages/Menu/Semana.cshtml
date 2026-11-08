@@ -14,7 +14,7 @@
     <div class="titulo">@Model.Lunes.ToString("d MMM") – @Model.Lunes.AddDays(6).ToString("d MMM") @(esta ? "" : "")</div>
     <a href="?lunes=@Model.Lunes.AddDays(7).ToString("yyyy-MM-dd")">›</a>
 </div>
-<p class="suave peq" style="margin-top:-6px">Marca lo que vais a cocinar. La lista de la compra se actualiza sola.</p>
+<p class="suave peq" style="margin-top:-6px">Marca lo que vais a cocinar. La lista de la compra se actualiza sola, calculada para <b>@Model.Raciones raciones</b>.</p>
 @if (sel.Count > 0)
 {
     <div class="aviso fila mb"><span class="crece"><b>@sel.Count</b> recetas marcadas</span>

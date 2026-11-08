@@ -58,6 +58,8 @@ Admin → Configuración → Importar recetas (JSON), mismo formato que `Seed/re
 
 `z` = Fruteria | Charcuteria | Carniceria | Pescaderia | Otros. `d: true` = de despensa (no entra en la lista por defecto).
 
+Las cantidades de cada receta son para sus `raciones`; la lista de la compra las escala siempre a las raciones configuradas en Admin → Configuración (12 por defecto).
+
 ## Despliegue
 
 ```bash

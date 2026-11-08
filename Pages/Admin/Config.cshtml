@@ -10,6 +10,9 @@
         <label class="campo"><span>Veva fijo (€)</span><input asp-for="Veva" inputmode="decimal" /></label>
         <label class="campo"><span>Hipoteca fija (€)</span><input asp-for="Hipoteca" inputmode="decimal" /></label>
     </div>
+    <h2 class="mb">Lista de la compra</h2>
+    <label class="campo"><span>Raciones para las que se calcula la lista</span><input asp-for="RacionesLista" type="number" inputmode="numeric" min="1" max="50" /></label>
+    <p class="suave peq" style="margin-top:-6px">Cada receta guarda sus cantidades para sus raciones; la lista las escala a este número.</p>
     <h2 class="mb">Página de amor</h2>
     <div class="cuadricula">
         <label class="campo"><span>Firma</span><input asp-for="Firma" /></label>

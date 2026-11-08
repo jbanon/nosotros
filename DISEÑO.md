@@ -280,6 +280,7 @@ Importes y objetivo editables en Admin → Config sin tocar código. Descarga de
 - El admin puede añadir fechas especiales nuevas.
 - La lista de la compra es ampliable (extras) y desmarcable (× por línea; despensa desmarcada por defecto).
 - La selección semanal no asigna día concreto.
+- La lista se calcula siempre para 12 raciones (somos una gran familia; configurable en Admin): cada receta guarda sus cantidades para sus raciones y se escalan.
 - Las cantidades se suman por ingrediente y unidad (singular/plural se unifican); no hay conversión g↔kg.
 - Los mensajes van firmados como "Javier" (cambiable en Config).
 - Despliegue previsto con systemd + nginx + HTTPS (ficheros en `deploy/`).

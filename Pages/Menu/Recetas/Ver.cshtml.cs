@@ -11,6 +11,7 @@ public class VerModel(AppDb db, ListaCompraService lista) : PageModel
 {
     public Receta Receta { get; set; } = null!;
     public bool EnSemana { get; set; }
+    public int RacionesLista { get; set; }
 
     public async Task<IActionResult> OnGet(int id)
     {
@@ -19,6 +20,7 @@ public class VerModel(AppDb db, ListaCompraService lista) : PageModel
         Receta = r;
         var lunes = Reloj.Lunes(Reloj.Hoy);
         EnSemana = await db.SemanaRecetas.AnyAsync(s => s.Semana.LunesInicio == lunes && s.RecetaId == id);
+        RacionesLista = await lista.Raciones();
         return Page();
     }
 

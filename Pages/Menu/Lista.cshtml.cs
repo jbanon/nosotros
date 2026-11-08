@@ -13,6 +13,7 @@ public class ListaModel(AppDb db, ListaCompraService lista) : PageModel
     public Semana Semana { get; set; } = null!;
     public DateOnly Lunes { get; set; }
     public string TextoCompartir { get; set; } = "";
+    public int Raciones { get; set; }
 
     public async Task OnGet(DateOnly? lunes)
     {
@@ -20,7 +21,8 @@ public class ListaModel(AppDb db, ListaCompraService lista) : PageModel
         Semana = await lista.SemanaDe(Lunes);
         await lista.Regenerar(Semana.Id);
         Semana = await lista.SemanaDe(Lunes);
-        TextoCompartir = ListaCompraService.TextoCompartir(Semana);
+        Raciones = await lista.Raciones();
+        TextoCompartir = ListaCompraService.TextoCompartir(Semana, Raciones);
     }
 
     public async Task<IActionResult> OnPostComprado(DateOnly lunes, int id)
