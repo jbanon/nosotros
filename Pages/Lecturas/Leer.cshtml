@@ -1,0 +1,48 @@
+@page "{id:int}"
+@model Love.Pages.Lecturas.LeerModel
+@{
+    var l = Model.Lectura;
+    ViewData["Title"] = l.Titulo;
+    ViewData["SinNav"] = true;
+}
+<div class="lector-cab">
+    <a class="volver" href="/Lecturas" aria-label="Volver">‹</a>
+    <span class="titulo-corto">@l.Titulo</span>
+    <div class="tam" aria-label="Tamaño de letra">
+        <button type="button" class="menor" id="tam-menos" aria-label="Letra más pequeña">A</button>
+        <button type="button" class="mayor" id="tam-mas" aria-label="Letra más grande">A</button>
+    </div>
+</div>
+<article class="lector" id="lector">
+    <header class="cabecera">
+        <h1>@l.Titulo</h1>
+        <div class="meta">@(l.Autor ?? "")@(l.Autor != null && l.Fuente != null ? " · " : "")@(l.Fuente ?? "") · @l.Minutos min</div>
+        @if (!string.IsNullOrWhiteSpace(l.Dedicatoria)) { <div class="dedicatoria"><b>Para ti</b>@l.Dedicatoria</div> }
+    </header>
+    <div class="cuerpo">@Html.Raw(LecturaFormato.Html(l.Texto))</div>
+    <div class="fin">
+        <span class="orn">❦</span>
+        @if (!l.Leida)
+        {
+            <form method="post" asp-page-handler="Leida" asp-route-id="@l.Id" asp-route-leida="true"><button class="btn primario">Ya la he leído ♥</button></form>
+        }
+        else
+        {
+            <p class="suave">Leída el @(l.LeidaEl?.ToLocalTime().ToString("d MMM yyyy"))</p>
+            <form method="post" asp-page-handler="Leida" asp-route-id="@l.Id" asp-route-leida="false"><button class="btn pequeno fantasma">Marcar como no leída</button></form>
+        }
+        @if (User.EsAdmin()) { <p><a href="/Admin/Lecturas/Editar/@l.Id">Editar esta lectura</a></p> }
+    </div>
+</article>
+@section Scripts {
+<script>
+(function () {
+  const k = 'lectura-tam', el = document.getElementById('lector'), min = 1.0, max = 2.2, paso = 0.1;
+  let t = 1.3; try { t = parseFloat(localStorage.getItem(k)) || t; } catch (e) {}
+  function aplicar() { el.style.setProperty('--lect', t.toFixed(2) + 'rem'); try { localStorage.setItem(k, t); } catch (e) {} }
+  document.getElementById('tam-menos').addEventListener('click', () => { t = Math.max(min, t - paso); aplicar(); });
+  document.getElementById('tam-mas').addEventListener('click', () => { t = Math.min(max, t + paso); aplicar(); });
+  aplicar();
+})();
+</script>
+}

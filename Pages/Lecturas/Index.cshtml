@@ -1,0 +1,18 @@
+@page
+@model Love.Pages.Lecturas.IndexModel
+@{ ViewData["Title"] = "Lecturas"; }
+<div class="cab"><a class="volver" href="/Amor">‹</a><h1>Lecturas 📖</h1>@if (User.EsAdmin()) { <a class="accion" href="/Admin/Lecturas">Gestionar</a> }</div>
+<p class="suave peq" style="margin-top:-6px">Cosas que he leído y quiero que leas tú. Sin prisa.</p>
+@if (!Model.Lecturas.Any()) { <div class="vacio"><span class="ico">📖</span>Todavía no hay lecturas.</div> }
+<div class="lista">
+@foreach (var l in Model.Lecturas)
+{
+    <a class="item lect-item" href="/Lecturas/Leer/@l.Id">
+        <div class="crece">
+            <div class="titulo">@l.Titulo</div>
+            <div class="sub">@(l.Autor ?? "")@(l.Autor != null && l.Fuente != null ? " · " : "")@(l.Fuente ?? "") · @l.Minutos min de lectura</div>
+        </div>
+        @if (l.Leida) { <span class="pill ok">leída</span> } else { <span class="pill mal" style="background:var(--acento-claro);color:var(--acento)">nueva</span> }
+    </a>
+}
+</div>

@@ -22,6 +22,7 @@ public class AppDb : DbContext
     public DbSet<Idea> Ideas => Set<Idea>();
     public DbSet<Pelicula> Peliculas => Set<Pelicula>();
     public DbSet<TicketLinea> TicketLineas => Set<TicketLinea>();
+    public DbSet<Lectura> Lecturas => Set<Lectura>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {

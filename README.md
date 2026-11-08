@@ -34,6 +34,7 @@ las fechas especiales y `Seed/recetas.json`.
 Pages/Amor        página de Raquel (tema por época, mensaje del día, contadores)
 Pages/Menu        recetas, selección semanal y lista de la compra
 Pages/Gastos      gastos del mes, alta con adjunto e histórico por meses (los dos usuarios)
+Pages/Lecturas    lector cómodo (tamaño de letra ajustable) de textos que Javi deja a Raquel; gestión en Pages/Admin/Lecturas
 Pages/Ideas       cosas que Raquel quiere que se hagan solas (ideas para automatizar)
 Pages/Peliculas   películas que ver juntos, pendientes y vistas
 Pages/Gastos      gastos por mes (solo Admin)
@@ -61,7 +62,9 @@ Admin → Configuración → Importar recetas (JSON), mismo formato que `Seed/re
 
 `z` = Fruteria | Charcuteria | Carniceria | Pescaderia | Otros. `d: true` = de despensa (no entra en la lista por defecto).
 
-Las cantidades de cada receta son para sus `raciones`; la lista de la compra las escala siempre a las raciones configuradas en Admin → Configuración (12 por defecto).
+Las cantidades de cada receta son para sus `raciones`; la lista de la compra las escala siempre a las raciones configuradas en Admin → Configuración (12 por defecto). Al primer arranque tras la actualización, las recetas existentes se pasan a esas raciones (marca `RecetasEscaladas` en Config).
+
+La página Semana sugiere hasta 4 recetas según el historial (las que hace más tiempo que no se hacen, las más repetidas y las nunca hechas). En los gastos de compra se pueden apuntar las líneas del ticket (producto e importe); con ellas, Gastos → Recurrentes calcula cada cuántos días se compra cada producto y la lista de la compra avisa con "Quizá toca reponer".
 
 ## Despliegue
 

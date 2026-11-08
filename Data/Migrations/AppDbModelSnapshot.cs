@@ -172,6 +172,46 @@ namespace Love.Data.Migrations
                     b.ToTable("Ingredientes");
                 });
 
+            modelBuilder.Entity("Love.Models.Lectura", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Autor")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Dedicatoria")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Fuente")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Leida")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("LeidaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Publicada")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Lecturas");
+                });
+
             modelBuilder.Entity("Love.Models.ListaItem", b =>
                 {
                     b.Property<int>("Id")

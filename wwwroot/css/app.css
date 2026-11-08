@@ -177,6 +177,34 @@ details.ticket[open] summary::before { rotate: 90deg; }
 .pill.ok { background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); }
 .pill.neutro { background: var(--linea); color: var(--suave); }
 
+/* Lecturas */
+.lectura-aviso { position: relative; z-index: 2; display: flex; align-items: center; gap: 12px; background: var(--tarjeta-amor); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.55); border-radius: 20px; padding: 14px 16px; color: inherit; animation: aparecer 1.2s .6s ease both; }
+.lectura-aviso .ico { font-size: 1.8rem; } .lectura-aviso b { font-weight: 800; } .lectura-aviso span span { font-size: .9rem; opacity: .85; }
+.lectura-aviso .flecha { font-size: 1.4rem; opacity: .6; }
+.lectura-enlace { position: relative; z-index: 2; text-align: center; display: block; font-size: .85rem; font-weight: 700; opacity: .8; color: inherit; }
+.lect-item .titulo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
+.lector-cab { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: color-mix(in srgb, var(--crema) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--linea); }
+.lector-cab .volver { font-size: 1.5rem; line-height: 1; padding: 4px 10px 4px 4px; color: var(--tinta); }
+.lector-cab .titulo-corto { flex: 1; font-weight: 700; font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lector-cab .tam { display: flex; gap: 4px; }
+.lector-cab .tam button { width: 40px; height: 36px; border-radius: 10px; border: 1px solid var(--linea); background: var(--tarjeta); color: var(--tinta); font-family: 'Cormorant Garamond', serif; font-weight: 700; cursor: pointer; }
+.lector-cab .tam button.menor { font-size: .9rem; } .lector-cab .tam button.mayor { font-size: 1.3rem; }
+.lector { --lect: 1.3rem; max-width: 46rem; margin: 0 auto; padding: 22px 20px calc(60px + env(safe-area-inset-bottom)); font-family: 'Cormorant Garamond', serif; font-size: var(--lect); line-height: 1.55; color: var(--tinta); }
+@media (min-width: 700px) { .lector { padding: 32px 40px 80px; } }
+.lector .cabecera { margin-bottom: 1.6em; }
+.lector h1 { font-size: 1.9em; line-height: 1.1; margin: 0 0 .25em; font-weight: 700; }
+.lector .meta { font-family: 'Nunito', system-ui, sans-serif; font-size: .62em; color: var(--suave); font-weight: 700; letter-spacing: .02em; }
+.lector .dedicatoria { margin: 1em 0 0; padding: .8em 1em; border-radius: 14px; background: var(--acento-claro); font-style: italic; font-size: .92em; line-height: 1.45; white-space: pre-line; }
+.lector .dedicatoria b { display: block; font-style: normal; font-family: 'Nunito', system-ui, sans-serif; font-size: .6em; letter-spacing: .1em; text-transform: uppercase; opacity: .7; margin-bottom: .4em; }
+.lector .cuerpo p { margin: 0 0 1em; hyphens: auto; -webkit-hyphens: auto; }
+.lector .cuerpo p.verso { white-space: pre-line; }
+.lector .cuerpo h2 { font-size: 1.2em; margin: 1.6em 0 .5em; line-height: 1.2; }
+.lector .cuerpo blockquote { margin: 1em 0; padding: .2em 0 .2em 1em; border-left: 3px solid var(--acento); font-style: italic; }
+.lector .cuerpo p:first-of-type::first-letter { font-size: 2.6em; float: left; line-height: .85; padding: .08em .1em 0 0; font-weight: 700; color: var(--acento); }
+.lector .fin { margin-top: 2.5em; text-align: center; font-family: 'Nunito', system-ui, sans-serif; font-size: .7em; }
+.lector .fin .orn { display: block; font-family: 'Cormorant Garamond', serif; font-size: 2em; color: var(--acento); margin-bottom: .4em; }
+
 /* Ideas para automatizar */
 .idea { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-top: 1px solid rgba(0,0,0,.05); }
 .idea:first-of-type { border-top: 0; }

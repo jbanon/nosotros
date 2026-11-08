@@ -44,6 +44,19 @@
         </section>
     }
 
+    @if (Model.LecturaNueva != null)
+    {
+        <a class="lectura-aviso" href="/Lecturas/Leer/@Model.LecturaNueva.Id">
+            <span class="ico">📖</span>
+            <span class="crece"><b>Te he dejado una lectura</b><br /><span>«@Model.LecturaNueva.Titulo»@(Model.LecturaNueva.Autor != null ? $", de {Model.LecturaNueva.Autor}" : "") · @Model.LecturaNueva.Minutos min</span></span>
+            <span class="flecha">›</span>
+        </a>
+    }
+    else if (Model.NumLecturas > 0)
+    {
+        <a class="lectura-enlace" href="/Lecturas">📖 Lecturas</a>
+    }
+
     <footer class="amor-pie">
         <button class="corazon" id="corazon" type="button" aria-label="Corazón">♥</button>
         @if (Model.DiasJuntos > 0) { <p class="dias"><b>@Model.DiasJuntos.ToString("N0")</b> días juntos</p> }

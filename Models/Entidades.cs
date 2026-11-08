@@ -171,6 +171,26 @@ public class Pelicula
     public DateTime? VistaEl { get; set; }
 }
 
+/// <summary>Una lectura que Javi le deja a Raquel: artículo, cuento, poema… con su texto completo.</summary>
+public class Lectura
+{
+    public int Id { get; set; }
+    public string Titulo { get; set; } = "";
+    public string? Autor { get; set; }
+    /// <summary>De dónde sale: "El País, 2008", "Libro X"…</summary>
+    public string? Fuente { get; set; }
+    /// <summary>Unas líneas de Javi explicando por qué se la deja.</summary>
+    public string? Dedicatoria { get; set; }
+    /// <summary>Texto completo. Párrafos separados por línea en blanco; "## " subtítulo; "> " cita.</summary>
+    public string Texto { get; set; } = "";
+    public bool Publicada { get; set; } = true;
+    public bool Leida { get; set; }
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
+    public DateTime? LeidaEl { get; set; }
+    public int Palabras => string.IsNullOrWhiteSpace(Texto) ? 0 : Texto.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
+    public int Minutos => Math.Max(1, (int)Math.Round(Palabras / 200.0));
+}
+
 /// <summary>Meses en los que ya se crearon los fijos (para no recrearlos si el admin los borra).</summary>
 public class MesInicializado
 {

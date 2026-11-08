@@ -1,0 +1,19 @@
+@page
+@model Love.Pages.Admin.Lecturas.IndexModel
+@{ ViewData["Title"] = "Lecturas"; }
+<div class="cab"><a class="volver" href="/Admin">‹</a><h1>Lecturas</h1><a class="accion" href="/Lecturas">Ver como Raquel</a></div>
+<p class="suave peq" style="margin-top:-6px">Pega el texto de un artículo, cuento o poema y Raquel lo tendrá en un lector cómodo. Las nuevas se anuncian en su página.</p>
+@if (!Model.Lecturas.Any()) { <div class="vacio"><span class="ico">📖</span>Aún no hay lecturas. Crea la primera con el +.</div> }
+<div class="lista">
+@foreach (var l in Model.Lecturas)
+{
+    <a class="item lect-item" href="/Admin/Lecturas/Editar/@l.Id">
+        <div class="crece">
+            <div class="titulo">@l.Titulo</div>
+            <div class="sub">@(l.Autor ?? "sin autor") · @l.Palabras palabras · @l.Creada.ToLocalTime().ToString("d MMM yyyy")</div>
+        </div>
+        @if (!l.Publicada) { <span class="pill neutro">borrador</span> } else if (l.Leida) { <span class="pill ok">leída</span> } else { <span class="pill neutro">pendiente</span> }
+    </a>
+}
+</div>
+<a class="fab" href="/Admin/Lecturas/Editar" aria-label="Nueva lectura">+</a>

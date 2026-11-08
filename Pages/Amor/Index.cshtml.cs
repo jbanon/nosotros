@@ -16,6 +16,8 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db)
     public string Firma { get; set; } = "";
     public string Nombre { get; set; } = "";
     public string Declaracion { get; set; } = "";
+    public Lectura? LecturaNueva { get; set; }
+    public int NumLecturas { get; set; }
     public string Saludo { get; set; } = "";
     public bool Preview { get; set; }
 
@@ -28,6 +30,8 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db)
         Firma = await config.Get(ConfigClaves.Firma, "Javier");
         Nombre = await config.Get(ConfigClaves.NombreElla, "Raquel");
         Declaracion = await config.Get(ConfigClaves.Declaracion, ConfigClaves.DeclaracionPorDefecto);
+        NumLecturas = await db.Lecturas.CountAsync(l => l.Publicada);
+        LecturaNueva = await db.Lecturas.Where(l => l.Publicada && !l.Leida).OrderByDescending(l => l.Creada).FirstOrDefaultAsync();
 
         var aniversario = await db.FechasEspeciales.Where(x => x.AnioOrigen != null && x.Tema == "aniversario").FirstOrDefaultAsync();
         if (aniversario != null)

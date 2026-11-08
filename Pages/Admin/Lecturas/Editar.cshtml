@@ -1,0 +1,25 @@
+@page "{id:int?}"
+@model Love.Pages.Admin.Lecturas.EditarModel
+@{ ViewData["Title"] = Model.Nueva ? "Nueva lectura" : "Lectura"; var l = Model.Lectura; }
+<div class="cab"><a class="volver" href="/Admin/Lecturas">‹</a><h1>@ViewData["Title"]</h1>@if (!Model.Nueva) { <a class="accion" href="/Lecturas/Leer/@l.Id">Ver</a> }</div>
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Lectura.Id" />
+    <div asp-validation-summary="All" class="error"></div>
+    <label class="campo"><span>Título</span><input asp-for="Lectura.Titulo" placeholder="¡Oigan!" /></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Autor</span><input asp-for="Lectura.Autor" placeholder="Javier Marías" /></label>
+        <label class="campo"><span>Fuente</span><input asp-for="Lectura.Fuente" placeholder="El País, 2010" /></label>
+    </div>
+    <label class="campo"><span>Para ella · por qué se la dejas (opcional)</span><textarea asp-for="Lectura.Dedicatoria" rows="3" placeholder="Lo leí el otro día y pensé en ti…"></textarea></label>
+    <label class="campo"><span>Texto · párrafos separados por una línea en blanco. "## " para un subtítulo, "> " para una cita</span>
+        <textarea asp-for="Lectura.Texto" rows="18" style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;line-height:1.45"></textarea></label>
+    <label class="campo"><span>…o sube un .txt (sustituye al texto de arriba)</span><input type="file" asp-for="Fichero" accept=".txt,text/plain" /></label>
+    <div class="chips mb">
+        <label class="chip"><input type="checkbox" asp-for="Lectura.Publicada" style="display:inline" /> Visible para Raquel</label>
+    </div>
+    <button class="btn primario ancho">Guardar</button>
+</form>
+@if (!Model.Nueva)
+{
+    <form method="post" asp-page-handler="Borrar" asp-route-id="@l.Id" data-confirm="¿Borrar esta lectura?" class="mt"><button class="btn peligro ancho">Borrar</button></form>
+}
