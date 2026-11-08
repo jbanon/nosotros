@@ -64,6 +64,7 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config) : Pa
     {
         var g = await db.Gastos.FindAsync(id);
         if (g == null) return Redirect("/Gastos");
+        if (g.EsFijo && !User.EsAdmin()) return Forbid();
         files.Borrar(g.AdjuntoPath);
         db.Gastos.Remove(g);
         await db.SaveChangesAsync();

@@ -28,7 +28,7 @@
     }
     <button class="btn primario ancho">Guardar</button>
 </form>
-@if (!Model.Nuevo)
+@if (!Model.Nuevo && (!g.EsFijo || User.EsAdmin()))
 {
     <form method="post" asp-page-handler="Borrar" asp-route-id="@g.Id" data-confirm="¿Borrar este gasto?" class="mt"><button class="btn peligro ancho">Borrar</button></form>
 }

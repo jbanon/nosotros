@@ -119,6 +119,16 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); ou
 .totales { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .totales div { background: var(--crema); border-radius: 12px; padding: 10px; text-align: center; }
 .totales b { display: block; font-size: 1.05rem; }
+.hist-anio { display: flex; align-items: baseline; justify-content: space-between; margin: 18px 4px 8px; }
+.hist-anio h2 { margin: 0; font-size: 1.15rem; } .hist-anio span { font-size: .85rem; color: var(--suave); font-weight: 700; }
+.hist-mes { display: block; color: inherit; background: var(--tarjeta); border-radius: 14px; padding: 12px 14px; box-shadow: var(--sombra); margin-bottom: 8px; }
+.hist-mes .fila { align-items: baseline; }
+.hist-mes .mes { font-weight: 800; text-transform: capitalize; }
+.hist-mes .total { margin-left: auto; font-weight: 800; }
+.hist-mes .progreso { height: 8px; margin: 8px 0 6px; }
+.hist-mes .detalle { display: flex; gap: 12px; font-size: .78rem; color: var(--suave); }
+.hist-mes .detalle b { color: var(--tinta); }
+.hist-mes .detalle .mal { color: var(--mal); font-weight: 800; } .hist-mes .detalle .ok { color: var(--ok); font-weight: 800; }
 .dia-cab { font-size: .8rem; font-weight: 800; color: var(--suave); text-transform: uppercase; letter-spacing: .05em; margin: 14px 0 6px; }
 .miniatura { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; background: var(--linea); }
 

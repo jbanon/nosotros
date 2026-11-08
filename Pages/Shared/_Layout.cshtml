@@ -34,6 +34,7 @@
             <a href="/Amor" class="@act("/Amor")"><span class="ico">♥</span><span>@(esAdmin ? "Raquel" : "Para ti")</span></a>
             <a href="/Menu/Recetas" class="@act("/Menu/Recetas")"><span class="ico">🍲</span><span>Recetas</span></a>
             <a href="/Menu/Lista" class="@(act("/Menu/Lista"))@(act("/Menu/Semana"))"><span class="ico">🛒</span><span>Compra</span></a>
+            <a href="/Gastos" class="@act("/Gastos")"><span class="ico">€</span><span>Gastos</span></a>
             @if (!esAdmin)
             {
                 <a href="/Ideas" class="@act("/Ideas")"><span class="ico">✨</span><span>Ideas</span></a>
@@ -41,7 +42,6 @@
             }
             else
             {
-                <a href="/Gastos" class="@act("/Gastos")"><span class="ico">€</span><span>Gastos</span></a>
                 <a href="/Admin" class="@act("/Admin")"><span class="ico">⚙</span><span>Admin</span></a>
             }
         </nav>

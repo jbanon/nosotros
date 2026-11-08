@@ -22,6 +22,25 @@ public class GastoService(AppDb db, ConfigService config)
         await db.SaveChangesAsync();
     }
 
+    public record ResumenMes(int Anio, int Mes, decimal Compra, decimal Veva, decimal Hipoteca, int Movimientos)
+    {
+        public decimal Total => Compra + Veva + Hipoteca;
+        public DateOnly Inicio => new(Anio, Mes, 1);
+    }
+
+    /// <summary>Un resumen por cada mes con movimientos, del más reciente al más antiguo.</summary>
+    public async Task<List<ResumenMes>> Historico()
+    {
+        var todos = await db.Gastos.Select(g => new { g.Fecha.Year, g.Fecha.Month, g.Tipo, g.Importe }).ToListAsync();
+        return todos.GroupBy(g => (g.Year, g.Month))
+            .Select(gr => new ResumenMes(gr.Key.Year, gr.Key.Month,
+                gr.Where(x => x.Tipo == TipoGasto.Compra).Sum(x => x.Importe),
+                gr.Where(x => x.Tipo == TipoGasto.Veva).Sum(x => x.Importe),
+                gr.Where(x => x.Tipo == TipoGasto.Hipoteca).Sum(x => x.Importe),
+                gr.Count()))
+            .OrderByDescending(r => r.Anio).ThenByDescending(r => r.Mes).ToList();
+    }
+
     public Task<List<Gasto>> DelMes(int anio, int mes)
     {
         var ini = new DateOnly(anio, mes, 1);

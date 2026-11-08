@@ -1,0 +1,35 @@
+@page
+@model Love.Pages.Gastos.HistoricoModel
+@{
+    ViewData["Title"] = "Histórico de gastos";
+    var inv = System.Globalization.CultureInfo.InvariantCulture;
+}
+<div class="cab"><a class="volver" href="/Gastos">‹</a><h1>Histórico</h1></div>
+<p class="suave peq" style="margin-top:-6px">Un resumen por mes. Toca uno para ver sus movimientos. Objetivo de compra: @Model.Objetivo.ToString("N0") € al mes.</p>
+
+@if (!Model.Meses.Any()) { <div class="vacio"><span class="ico">📊</span>Todavía no hay meses con gastos.</div> }
+
+@foreach (var anio in Model.Meses.GroupBy(m => m.Anio))
+{
+    var compraAnio = anio.Sum(m => m.Compra); var totalAnio = anio.Sum(m => m.Total);
+    <div class="hist-anio"><h2>@anio.Key</h2><span>compra @compraAnio.ToString("N0") € · total @totalAnio.ToString("N0") €</span></div>
+    @foreach (var m in anio)
+    {
+        var pct = Model.Objetivo > 0 ? (double)(m.Compra / Model.Objetivo) * 100 : 0;
+        var clase = pct > 100 ? "mal" : pct >= 70 ? "aviso" : "";
+        var resto = Model.Objetivo - m.Compra;
+        <a class="hist-mes" href="/Gastos?anio=@m.Anio&mes=@m.Mes">
+            <div class="fila">
+                <span class="mes">@m.Inicio.ToString("MMMM")</span>
+                <span class="suave peq">· @m.Movimientos mov.</span>
+                <span class="total">@m.Total.ToString("N0") €</span>
+            </div>
+            <div class="progreso @clase"><i style="width:@(Math.Min(100, pct).ToString(inv))%"></i></div>
+            <div class="detalle">
+                <span>Compra <b>@m.Compra.ToString("N0") €</b></span>
+                <span class="@(resto < 0 ? "mal" : "ok")">@(resto >= 0 ? $"+{resto:N0}" : $"{resto:N0}") €</span>
+                <span style="margin-left:auto">Veva <b>@m.Veva.ToString("N0")</b> · Hipoteca <b>@m.Hipoteca.ToString("N0")</b></span>
+            </div>
+        </a>
+    }
+}

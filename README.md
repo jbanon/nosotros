@@ -33,6 +33,7 @@ las fechas especiales y `Seed/recetas.json`.
 ```
 Pages/Amor        página de Raquel (tema por época, mensaje del día, contadores)
 Pages/Menu        recetas, selección semanal y lista de la compra
+Pages/Gastos      gastos del mes, alta con adjunto e histórico por meses (los dos usuarios)
 Pages/Ideas       cosas que Raquel quiere que se hagan solas (ideas para automatizar)
 Pages/Peliculas   películas que ver juntos, pendientes y vistas
 Pages/Gastos      gastos por mes (solo Admin)

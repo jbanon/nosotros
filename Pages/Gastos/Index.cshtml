@@ -8,7 +8,7 @@
     var ant = Model.Inicio.AddMonths(-1); var sig = Model.Inicio.AddMonths(1);
     string tipo(TipoGasto t) => t.ToString().ToLowerInvariant();
 }
-<div class="cab"><h1>Gastos</h1></div>
+<div class="cab"><h1>Gastos</h1><a class="accion" href="/Gastos/Historico">Histórico 📊</a></div>
 <div class="segmento">
     <a href="?anio=@ant.Year&mes=@ant.Month">‹</a>
     <div class="titulo">@Model.Inicio.ToString("MMMM yyyy")</div>

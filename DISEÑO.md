@@ -275,7 +275,8 @@ Importes y objetivo editables en Admin → Config sin tocar código. Descarga de
 
 ## 9. Decisiones cerradas
 
-- Raquel no tiene Admin ni Gastos. Sí puede crear y editar recetas y usar la lista de la compra.
+- Raquel no tiene Admin. Sí puede crear y editar recetas, usar la lista de la compra y registrar gastos (cambio de criterio 8/11/2026); solo el admin borra los fijos.
+- Histórico de gastos por meses en /Gastos/Historico (resumen compra/objetivo, Veva, Hipoteca, total; agrupado por año).
 - Los fijos del mes (Veva, Hipoteca) se crean solos; el admin puede borrarlos para un mes concreto y no se regeneran.
 - El admin puede añadir fechas especiales nuevas.
 - La lista de la compra es ampliable (extras) y desmarcable (× por línea; despensa desmarcada por defecto).

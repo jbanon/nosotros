@@ -17,7 +17,6 @@ builder.Services.AddRazorPages(o =>
     o.Conventions.AuthorizeFolder("/");
     o.Conventions.AllowAnonymousToPage("/Login");
     o.Conventions.AuthorizeFolder("/Admin", "Admin");
-    o.Conventions.AuthorizeFolder("/Gastos", "Admin");
 });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(o =>
