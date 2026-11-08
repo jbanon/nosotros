@@ -7,12 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Love.Pages.Menu;
 
-public class SemanaModel(AppDb db, ListaCompraService lista) : PageModel
+public class SemanaModel(AppDb db, ListaCompraService lista, SugerenciaService sugerencias) : PageModel
 {
     public Semana Semana { get; set; } = null!;
     public List<Receta> Recetas { get; set; } = new();
     public DateOnly Lunes { get; set; }
     public int Raciones { get; set; }
+    public List<Sugerencia> Sugerencias { get; set; } = new();
 
     DateOnly Resolver(DateOnly? lunes) => Reloj.Lunes(lunes ?? Reloj.Hoy);
 
@@ -22,6 +23,7 @@ public class SemanaModel(AppDb db, ListaCompraService lista) : PageModel
         Semana = await lista.SemanaDe(Lunes);
         Recetas = await db.Recetas.OrderBy(r => r.Nombre).ToListAsync();
         Raciones = await lista.Raciones();
+        Sugerencias = await sugerencias.Para(Lunes);
     }
 
     public async Task<IActionResult> OnPostToggle(DateOnly lunes, int recetaId)

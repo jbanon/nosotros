@@ -61,7 +61,7 @@ public class Receta
     public int Id { get; set; }
     [Required] public string Nombre { get; set; } = "";
     public string? Descripcion { get; set; }
-    public int Raciones { get; set; } = 2;
+    public int Raciones { get; set; } = 12;
     public string? Etiquetas { get; set; }
     public string? Preparacion { get; set; }
     public string? FotoPath { get; set; }
@@ -131,6 +131,18 @@ public class Gasto
     public string? AdjuntoMime { get; set; }
     public bool EsFijo { get; set; }
     public DateTime Creado { get; set; } = DateTime.UtcNow;
+    public List<TicketLinea> Lineas { get; set; } = new();
+}
+
+/// <summary>Una línea de un ticket de compra (producto e importe), para detectar compras recurrentes.</summary>
+public class TicketLinea
+{
+    public int Id { get; set; }
+    public int GastoId { get; set; }
+    public Gasto Gasto { get; set; } = null!;
+    public string Producto { get; set; } = "";
+    public decimal? Importe { get; set; }
+    public int Orden { get; set; }
 }
 
 /// <summary>Cosas que Raquel (o el admin) quieren que se hagan solas: ideas para automatizar.</summary>
@@ -185,4 +197,6 @@ public static class ConfigClaves
     public const string NombreElla = "NombreElla";
     public const string RacionesLista = "RacionesLista";
     public const string Declaracion = "Declaracion";
+    /// <summary>Marca de que las recetas existentes ya se escalaron a las raciones de la lista.</summary>
+    public const string RecetasEscaladas = "RecetasEscaladas";
 }

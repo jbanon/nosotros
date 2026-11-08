@@ -45,7 +45,7 @@ public class GastoService(AppDb db, ConfigService config)
     {
         var ini = new DateOnly(anio, mes, 1);
         var fin = ini.AddMonths(1);
-        return db.Gastos.Where(g => g.Fecha >= ini && g.Fecha < fin)
+        return db.Gastos.Include(g => g.Lineas).Where(g => g.Fecha >= ini && g.Fecha < fin)
                         .OrderByDescending(g => g.Fecha).ThenByDescending(g => g.Creado).ToListAsync();
     }
 }

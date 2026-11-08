@@ -3,16 +3,20 @@ using Love.Models;
 using Love.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace Love.Pages.Gastos;
 
-public class EditarModel(AppDb db, FileStorage files, ConfigService config) : PageModel
+public class EditarModel(AppDb db, FileStorage files, ConfigService config, RecurrenteService recurrentes) : PageModel
 {
     [BindProperty] public Gasto Gasto { get; set; } = new();
     [BindProperty] public string ImporteTexto { get; set; } = "";
     [BindProperty] public IFormFile? Adjunto { get; set; }
     [BindProperty] public bool QuitarAdjunto { get; set; }
+    [BindProperty] public List<string> LinProducto { get; set; } = new();
+    [BindProperty] public List<string> LinImporte { get; set; } = new();
+    public List<string> ProductosConocidos { get; set; } = new();
     public decimal ImporteVeva { get; set; }
     public decimal ImporteHipoteca { get; set; }
     public bool Nuevo => Gasto.Id == 0;
@@ -22,6 +26,7 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config) : Pa
     {
         ImporteVeva = await config.GetDecimal(ConfigClaves.ImporteVeva, 300);
         ImporteHipoteca = await config.GetDecimal(ConfigClaves.ImporteHipoteca, 900);
+        ProductosConocidos = await recurrentes.Productos();
     }
 
     public async Task<IActionResult> OnGet(int? id, DateOnly? fecha)
@@ -29,14 +34,22 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config) : Pa
         await Cargar();
         if (id is int i)
         {
-            var g = await db.Gastos.FindAsync(i);
+            var g = await db.Gastos.Include(x => x.Lineas.OrderBy(l => l.Orden)).FirstOrDefaultAsync(x => x.Id == i);
             if (g == null) return NotFound();
             Gasto = g;
             ImporteTexto = g.Importe.ToString("0.##", CultureInfo.InvariantCulture);
+            foreach (var l in g.Lineas)
+            {
+                LinProducto.Add(l.Producto);
+                LinImporte.Add(l.Importe?.ToString("0.##", CultureInfo.InvariantCulture) ?? "");
+            }
         }
         else Gasto = new Gasto { Fecha = fecha ?? Reloj.Hoy, Tipo = TipoGasto.Compra };
         return Page();
     }
+
+    static decimal? Num(string? s) =>
+        decimal.TryParse((s ?? "").Replace("€", "").Replace(',', '.').Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v) ? v : null;
 
     public async Task<IActionResult> OnPost()
     {
@@ -46,8 +59,22 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config) : Pa
 
         Gasto g;
         if (Gasto.Id == 0) { g = new Gasto(); db.Gastos.Add(g); }
-        else g = await db.Gastos.FindAsync(Gasto.Id) ?? throw new InvalidOperationException();
+        else g = await db.Gastos.Include(x => x.Lineas).FirstOrDefaultAsync(x => x.Id == Gasto.Id) ?? throw new InvalidOperationException();
         g.Fecha = Gasto.Fecha; g.Tipo = Gasto.Tipo; g.Importe = importe; g.Nota = Gasto.Nota?.Trim();
+
+        // Líneas del ticket: se sustituyen por las del formulario (solo en compras)
+        db.TicketLineas.RemoveRange(g.Lineas);
+        g.Lineas.Clear();
+        if (g.Tipo == TipoGasto.Compra)
+        {
+            int orden = 0;
+            for (int i = 0; i < LinProducto.Count; i++)
+            {
+                var prod = (LinProducto[i] ?? "").Trim();
+                if (prod == "") continue;
+                g.Lineas.Add(new TicketLinea { Producto = prod, Importe = i < LinImporte.Count ? Num(LinImporte[i]) : null, Orden = orden++ });
+            }
+        }
 
         if (QuitarAdjunto) { files.Borrar(g.AdjuntoPath); g.AdjuntoPath = null; g.AdjuntoNombre = null; g.AdjuntoMime = null; }
         if (Adjunto != null && Adjunto.Length > 0)

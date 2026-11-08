@@ -48,6 +48,22 @@
     </section>
 }
 
+@if (Model.Reponer.Any())
+{
+    <div class="tarjeta">
+        <h2 class="mb">Quizá toca reponer <span class="suave peq" style="font-weight:600">(según los tickets · toca para añadir)</span></h2>
+        <div class="chips">
+            @foreach (var p in Model.Reponer)
+            {
+                <form method="post" asp-page-handler="Anadir" asp-route-lunes="@l">
+                    <input type="hidden" name="nombre" value="@p.Nombre" /><input type="hidden" name="zona" value="Otros" />
+                    <button class="chip">+ @p.Nombre <span class="suave peq">· cada ~@p.CadaDias días</span></button>
+                </form>
+            }
+        </div>
+    </div>
+}
+
 <div class="tarjeta">
     <h2 class="mb">Añadir algo más</h2>
     <form method="post" asp-page-handler="Anadir" asp-route-lunes="@l">

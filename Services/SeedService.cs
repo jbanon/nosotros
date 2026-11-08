@@ -93,6 +93,29 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
 
         if (!await db.Recetas.AnyAsync() && File.Exists(Ruta("recetas.json")))
             await CargarRecetas(await File.ReadAllTextAsync(Ruta("recetas.json")));
+
+        await EscalarRecetas();
+    }
+
+    /// <summary>Una sola vez: pasa todas las recetas a las raciones de la lista (12) multiplicando sus cantidades.</summary>
+    async Task EscalarRecetas()
+    {
+        if (await db.Configs.AnyAsync(c => c.Clave == ConfigClaves.RecetasEscaladas)) return;
+        var cfgRaciones = (await db.Configs.FindAsync(ConfigClaves.RacionesLista))?.Valor;
+        var objetivo = int.TryParse(cfgRaciones, out var v) && v > 0 ? v : ListaCompraService.RacionesPorDefecto;
+        int n = 0;
+        foreach (var r in await db.Recetas.Include(x => x.Ingredientes).ToListAsync())
+        {
+            if (r.Raciones == objetivo || r.Raciones < 1) continue;
+            var f = (decimal)objetivo / r.Raciones;
+            foreach (var ri in r.Ingredientes)
+                if (ri.Cantidad is decimal c) ri.Cantidad = Math.Round(c * f, 2);
+            r.Raciones = objetivo;
+            n++;
+        }
+        db.Configs.Add(new Config { Clave = ConfigClaves.RecetasEscaladas, Valor = "1" });
+        await db.SaveChangesAsync();
+        if (n > 0) log.LogInformation("Escaladas {n} recetas a {r} raciones", n, objetivo);
     }
 
     record IngSeed(string n, decimal? c, string? u, string z, bool d);

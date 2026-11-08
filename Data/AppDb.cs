@@ -21,6 +21,7 @@ public class AppDb : DbContext
     public DbSet<Config> Configs => Set<Config>();
     public DbSet<Idea> Ideas => Set<Idea>();
     public DbSet<Pelicula> Peliculas => Set<Pelicula>();
+    public DbSet<TicketLinea> TicketLineas => Set<TicketLinea>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -35,6 +36,9 @@ public class AppDb : DbContext
         b.Entity<SemanaReceta>().HasOne(sr => sr.Receta).WithMany().OnDelete(DeleteBehavior.Cascade);
         b.Entity<ListaItem>().HasOne(l => l.Semana).WithMany(s => s.Lista).OnDelete(DeleteBehavior.Cascade);
         b.Entity<Gasto>().Property(g => g.Importe).HasConversion<double>();
+        b.Entity<TicketLinea>().HasOne(l => l.Gasto).WithMany(g => g.Lineas).OnDelete(DeleteBehavior.Cascade);
+        b.Entity<TicketLinea>().Property(l => l.Importe).HasConversion<double?>();
+        b.Entity<TicketLinea>().HasIndex(l => l.Producto);
         b.Entity<RecetaIngrediente>().Property(g => g.Cantidad).HasConversion<double?>();
         b.Entity<ListaItem>().Property(g => g.Cantidad).HasConversion<double?>();
     }

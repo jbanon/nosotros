@@ -409,6 +409,34 @@ namespace Love.Data.Migrations
                     b.ToTable("SemanaRecetas");
                 });
 
+            modelBuilder.Entity("Love.Models.TicketLinea", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("GastoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double?>("Importe")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Producto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GastoId");
+
+                    b.HasIndex("Producto");
+
+                    b.ToTable("TicketLineas");
+                });
+
             modelBuilder.Entity("Love.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -478,6 +506,22 @@ namespace Love.Data.Migrations
                     b.Navigation("Receta");
 
                     b.Navigation("Semana");
+                });
+
+            modelBuilder.Entity("Love.Models.TicketLinea", b =>
+                {
+                    b.HasOne("Love.Models.Gasto", "Gasto")
+                        .WithMany("Lineas")
+                        .HasForeignKey("GastoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gasto");
+                });
+
+            modelBuilder.Entity("Love.Models.Gasto", b =>
+                {
+                    b.Navigation("Lineas");
                 });
 
             modelBuilder.Entity("Love.Models.Ingrediente", b =>

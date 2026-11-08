@@ -17,6 +17,21 @@
     @if (Model.Error != null) { <p class="error">@Model.Error</p> }
     <label class="campo"><span>Fecha</span><input asp-for="Gasto.Fecha" type="date" /></label>
     <label class="campo"><span>Nota (opcional)</span><input asp-for="Gasto.Nota" placeholder="Mercadona, frutería…" /></label>
+    <details class="ticket" id="ticket" @(Model.LinProducto.Any(x => !string.IsNullOrWhiteSpace(x)) ? "open" : "")>
+        <summary>Detalle del ticket <span class="suave peq" style="font-weight:600">· opcional, para detectar compras recurrentes</span></summary>
+        <div id="lineas">
+            @for (int i = 0; i < Model.LinProducto.Count; i++)
+            {
+                <div class="linea-ticket">
+                    <input type="text" name="LinProducto" list="productos" value="@Model.LinProducto[i]" placeholder="Producto" class="crece" autocomplete="off" />
+                    <input type="text" name="LinImporte" value="@(i < Model.LinImporte.Count ? Model.LinImporte[i] : "")" inputmode="decimal" placeholder="€" style="width:84px" />
+                    <button type="button" class="quitar" aria-label="Quitar línea">×</button>
+                </div>
+            }
+        </div>
+        <button type="button" class="btn pequeno mt" id="mas-linea">+ línea</button>
+        <datalist id="productos">@foreach (var pr in Model.ProductosConocidos) { <option value="@pr"></option> }</datalist>
+    </details>
     <label class="campo"><span>Foto o fichero</span><input type="file" asp-for="Adjunto" accept="image/*,application/pdf" /></label>
     @if (g.AdjuntoPath != null)
     {
@@ -39,5 +54,20 @@ document.querySelectorAll('input[name="Gasto.Tipo"]').forEach(r => r.addEventLis
   if (r.dataset.importe) imp.value = r.dataset.importe; else { imp.value = ''; imp.focus(); }
 }));
 @if (Model.Nuevo) { <text>document.getElementById('ImporteTexto').focus();</text> }
+// Líneas del ticket
+const lineas = document.getElementById('lineas'), ticket = document.getElementById('ticket');
+function nuevaLinea(foco) {
+  const d = document.createElement('div'); d.className = 'linea-ticket';
+  d.innerHTML = '<input type="text" name="LinProducto" list="productos" placeholder="Producto" class="crece" autocomplete="off" />'
+              + '<input type="text" name="LinImporte" inputmode="decimal" placeholder="€" style="width:84px" />'
+              + '<button type="button" class="quitar" aria-label="Quitar línea">×</button>';
+  lineas.appendChild(d); if (foco) d.querySelector('input').focus();
+}
+lineas.addEventListener('click', e => { if (e.target.classList.contains('quitar')) { e.target.parentElement.remove(); if (!lineas.children.length) nuevaLinea(false); } });
+lineas.addEventListener('input', e => { const ult = lineas.lastElementChild; if (ult && ult.contains(e.target) && ult.querySelector('input').value.trim()) nuevaLinea(false); });
+document.getElementById('mas-linea').addEventListener('click', () => nuevaLinea(true));
+if (!lineas.children.length) nuevaLinea(false);
+function tipoCompra() { const t = document.querySelector('input[name="Gasto.Tipo"]:checked'); ticket.style.display = (!t || t.value === 'Compra') ? '' : 'none'; }
+document.querySelectorAll('input[name="Gasto.Tipo"]').forEach(r => r.addEventListener('change', tipoCompra)); tipoCompra();
 </script>
 }

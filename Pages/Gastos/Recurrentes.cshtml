@@ -1,0 +1,22 @@
+@page
+@model Love.Pages.Gastos.RecurrentesModel
+@{ ViewData["Title"] = "Compras recurrentes"; }
+<div class="cab"><a class="volver" href="/Gastos">‹</a><h1>Recurrentes 🔁</h1></div>
+<p class="suave peq" style="margin-top:-6px">Lo que compramos una y otra vez, según las líneas de ticket apuntadas en los gastos de compra. Con dos compras del mismo producto ya calcula cada cuánto.</p>
+@if (!Model.Productos.Any()) { <div class="vacio"><span class="ico">🧾</span>Aún no hay líneas de ticket.<br />Al guardar una compra, abre "Detalle del ticket" y apunta los productos.</div> }
+<div class="lista">
+@foreach (var p in Model.Productos)
+{
+    <div class="item">
+        <div class="crece">
+            <div class="nombre">@p.Nombre</div>
+            <div class="sub">
+                @(p.CadaDias is int c ? $"cada ~{c} días" : "una sola vez") · @p.Veces @(p.Veces == 1 ? "compra" : "compras") · última @p.Ultima.ToString("d MMM")@(p.PrecioMedio is decimal pm ? $" · ~{pm:N2} €" : "")
+            </div>
+        </div>
+        @if (p.TocaReponer) { <span class="pill mal">Toca reponer</span> }
+        else if (p.FaltanDias is int f) { <span class="pill ok">en @f días</span> }
+        else { <span class="pill neutro">sin patrón</span> }
+    </div>
+}
+</div>

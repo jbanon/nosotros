@@ -156,6 +156,27 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); ou
 .linea-compra .quitar { border: 0; background: transparent; color: inherit; opacity: .45; font-size: 1.2rem; padding: 4px 6px; }
 .linea-compra.excluido { opacity: .6; }
 
+/* Sugerencias de recetas */
+.sugerencias form + form .sug { border-top: 1px solid rgba(0,0,0,.05); }
+.sug { display: flex; align-items: center; gap: 12px; width: 100%; padding: 9px 2px; background: none; border: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.sug .mas { width: 28px; height: 28px; border-radius: 50%; background: var(--acento); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none; }
+.sug .nombre { font-weight: 700; } .sug .sub { font-size: .8rem; color: var(--suave); }
+:root:not([data-tema]) .sugerencias form + form .sug { border-top-color: rgba(255,255,255,.07); }
+
+/* Detalle del ticket */
+details.ticket { background: var(--tarjeta); border-radius: var(--radio); padding: 12px 14px; margin-bottom: 14px; box-shadow: var(--sombra); }
+details.ticket summary { cursor: pointer; font-weight: 800; list-style: none; display: flex; align-items: center; gap: 8px; }
+details.ticket summary::-webkit-details-marker { display: none; }
+details.ticket summary::before { content: "›"; display: inline-block; transition: rotate .2s; font-size: 1.3rem; line-height: 1; }
+details.ticket[open] summary::before { rotate: 90deg; }
+.linea-ticket { display: flex; gap: 8px; margin-top: 8px; }
+.linea-ticket input { margin: 0; }
+.linea-ticket .quitar { border: 0; background: transparent; color: inherit; opacity: .45; font-size: 1.2rem; padding: 0 6px; }
+.pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: .72rem; font-weight: 800; letter-spacing: .03em; white-space: nowrap; }
+.pill.mal { background: color-mix(in srgb, var(--mal) 18%, transparent); color: var(--mal); }
+.pill.ok { background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); }
+.pill.neutro { background: var(--linea); color: var(--suave); }
+
 /* Ideas para automatizar */
 .idea { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-top: 1px solid rgba(0,0,0,.05); }
 .idea:first-of-type { border-top: 0; }

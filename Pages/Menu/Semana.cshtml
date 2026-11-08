@@ -21,6 +21,18 @@
         <form method="post" asp-page-handler="Vaciar" asp-route-lunes="@Model.Lunes.ToString("yyyy-MM-dd")" data-confirm="¿Quitar todas las recetas de la semana?"><button class="btn pequeno fantasma">Vaciar</button></form>
     </div>
 }
+@if (Model.Sugerencias.Any() && sel.Count < 7)
+{
+    <div class="tarjeta sugerencias">
+        <h2 class="mb">¿Qué tal estas? <span class="suave peq" style="font-weight:600">· según lo que hemos cocinado</span></h2>
+        @foreach (var s in Model.Sugerencias)
+        {
+            <form method="post" asp-page-handler="Toggle" asp-route-lunes="@Model.Lunes.ToString("yyyy-MM-dd")" asp-route-recetaId="@s.Receta.Id">
+                <button class="sug"><span class="mas">+</span><span class="crece"><span class="nombre">@s.Receta.Nombre</span><br /><span class="sub">@s.Motivo</span></span></button>
+            </form>
+        }
+    </div>
+}
 <div class="lista">
     @foreach (var r in Model.Recetas)
     {
@@ -29,7 +41,7 @@
             <form method="post" asp-page-handler="Toggle" asp-route-lunes="@Model.Lunes.ToString("yyyy-MM-dd")" asp-route-recetaId="@r.Id" class="crece">
                 <button class="fila" style="background:none;border:0;padding:0;width:100%;text-align:left;font:inherit;color:inherit">
                     <span class="check @(on ? "on" : "")">@(on ? "✓" : "")</span>
-                    <span class="crece"><span class="nombre">@r.Nombre</span><br /><span class="sub">@r.Raciones raciones</span></span>
+                    <span class="crece"><span class="nombre">@r.Nombre</span>@if (r.Raciones != Model.Raciones || !string.IsNullOrWhiteSpace(r.Etiquetas)) { <br /><span class="sub">@(r.Raciones != Model.Raciones ? $"{r.Raciones} raciones" : r.Etiquetas)</span> }</span>
                 </button>
             </form>
             @if (on)

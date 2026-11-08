@@ -8,12 +8,13 @@ using System.Globalization;
 
 namespace Love.Pages.Menu;
 
-public class ListaModel(AppDb db, ListaCompraService lista) : PageModel
+public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService recurrentes) : PageModel
 {
     public Semana Semana { get; set; } = null!;
     public DateOnly Lunes { get; set; }
     public string TextoCompartir { get; set; } = "";
     public int Raciones { get; set; }
+    public List<ProductoRecurrente> Reponer { get; set; } = new();
 
     public async Task OnGet(DateOnly? lunes)
     {
@@ -23,6 +24,8 @@ public class ListaModel(AppDb db, ListaCompraService lista) : PageModel
         Semana = await lista.SemanaDe(Lunes);
         Raciones = await lista.Raciones();
         TextoCompartir = ListaCompraService.TextoCompartir(Semana, Raciones);
+        var enLista = Semana.Lista.Select(i => RecurrenteService.Clave(i.Nombre)).ToHashSet();
+        Reponer = (await recurrentes.Reponer(Reloj.Hoy)).Where(p => !enLista.Contains(RecurrenteService.Clave(p.Nombre))).Take(8).ToList();
     }
 
     public async Task<IActionResult> OnPostComprado(DateOnly lunes, int id)

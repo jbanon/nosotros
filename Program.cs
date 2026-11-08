@@ -41,6 +41,8 @@ builder.Services.AddScoped<ConfigService>();
 builder.Services.AddScoped<MensajeService>();
 builder.Services.AddScoped<ListaCompraService>();
 builder.Services.AddScoped<GastoService>();
+builder.Services.AddScoped<SugerenciaService>();
+builder.Services.AddScoped<RecurrenteService>();
 builder.Services.AddScoped<PinAuth>();
 builder.Services.AddScoped<SeedService>();
 
