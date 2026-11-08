@@ -18,6 +18,7 @@
         <label class="campo"><span>Firma</span><input asp-for="Firma" /></label>
         <label class="campo"><span>Su nombre</span><input asp-for="NombreElla" /></label>
     </div>
+    <label class="campo"><span>Declaración permanente (una línea por verso; vacío para ocultarla)</span><textarea asp-for="Declaracion" rows="6"></textarea></label>
     <button class="btn primario ancho">Guardar</button>
 </form>
 <form method="post" asp-page-handler="Pin" class="tarjeta">

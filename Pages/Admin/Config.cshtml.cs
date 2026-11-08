@@ -16,6 +16,7 @@ public class ConfigModel(ConfigService config, PinAuth auth, FileStorage files, 
     [BindProperty] public string Firma { get; set; } = "";
     [BindProperty] public string NombreElla { get; set; } = "";
     [BindProperty] public int RacionesLista { get; set; } = 12;
+    [BindProperty] public string Declaracion { get; set; } = "";
     public string? Mensaje { get; set; }
 
     public async Task OnGet() => await Cargar();
@@ -28,6 +29,7 @@ public class ConfigModel(ConfigService config, PinAuth auth, FileStorage files, 
         Firma = await config.Get(ConfigClaves.Firma, "Javier");
         NombreElla = await config.Get(ConfigClaves.NombreElla, "Raquel");
         RacionesLista = (int)await config.GetDecimal(ConfigClaves.RacionesLista, 12);
+        Declaracion = await config.Get(ConfigClaves.Declaracion, ConfigClaves.DeclaracionPorDefecto);
     }
 
     static decimal D(string s, decimal def) => decimal.TryParse(s.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out var v) ? v : def;
@@ -40,6 +42,7 @@ public class ConfigModel(ConfigService config, PinAuth auth, FileStorage files, 
         await config.Set(ConfigClaves.Firma, Firma.Trim());
         await config.Set(ConfigClaves.NombreElla, NombreElla.Trim());
         await config.Set(ConfigClaves.RacionesLista, Math.Clamp(RacionesLista, 1, 50).ToString());
+        await config.Set(ConfigClaves.Declaracion, (Declaracion ?? "").Replace("\r", "").Trim());
         Mensaje = "Guardado";
         await Cargar();
         return Page();

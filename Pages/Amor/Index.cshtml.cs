@@ -15,6 +15,7 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db)
     public int DiasJuntos { get; set; }
     public string Firma { get; set; } = "";
     public string Nombre { get; set; } = "";
+    public string Declaracion { get; set; } = "";
     public string Saludo { get; set; } = "";
     public bool Preview { get; set; }
 
@@ -26,6 +27,7 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db)
         Proximo = await mensajes.Proxima(Fecha);
         Firma = await config.Get(ConfigClaves.Firma, "Javier");
         Nombre = await config.Get(ConfigClaves.NombreElla, "Raquel");
+        Declaracion = await config.Get(ConfigClaves.Declaracion, ConfigClaves.DeclaracionPorDefecto);
 
         var aniversario = await db.FechasEspeciales.Where(x => x.AnioOrigen != null && x.Tema == "aniversario").FirstOrDefaultAsync();
         if (aniversario != null)

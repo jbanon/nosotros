@@ -36,6 +36,14 @@
         <p class="firma">— @Model.Firma</p>
     </article>
 
+    @if (!string.IsNullOrWhiteSpace(Model.Declaracion))
+    {
+        <section class="declaracion" aria-label="Declaración">
+            <span class="orn">❧</span>
+            @foreach (var v in Model.Declaracion.Replace("\r", "").Split('\n', StringSplitOptions.RemoveEmptyEntries)) { <p>@v</p> }
+        </section>
+    }
+
     <footer class="amor-pie">
         <button class="corazon" id="corazon" type="button" aria-label="Corazón">♥</button>
         @if (Model.DiasJuntos > 0) { <p class="dias">Llevamos <b>@Model.DiasJuntos.ToString("N0")</b> días juntos</p> }

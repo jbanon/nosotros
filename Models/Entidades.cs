@@ -173,10 +173,14 @@ public class Config
 
 public static class ConfigClaves
 {
+    /// <summary>Declaración permanente de la página principal (líneas separadas por salto de línea).</summary>
+    public const string DeclaracionPorDefecto = "Eres el amor de mi vida.\nHasta que te conocí había perdido la esperanza.\nLlegaste tú, y volví a creer.\nEres completamente especial:\nno hay otra mujer como tú.";
+
     public const string ObjetivoCompra = "ObjetivoCompra";
     public const string ImporteVeva = "ImporteVeva";
     public const string ImporteHipoteca = "ImporteHipoteca";
     public const string Firma = "Firma";
     public const string NombreElla = "NombreElla";
     public const string RacionesLista = "RacionesLista";
+    public const string Declaracion = "Declaracion";
 }

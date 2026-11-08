@@ -31,7 +31,8 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
                 new Config { Clave = ConfigClaves.ImporteHipoteca, Valor = "900" },
                 new Config { Clave = ConfigClaves.Firma, Valor = "Javier" },
                 new Config { Clave = ConfigClaves.NombreElla, Valor = "Raquel" },
-                new Config { Clave = ConfigClaves.RacionesLista, Valor = "12" });
+                new Config { Clave = ConfigClaves.RacionesLista, Valor = "12" },
+                new Config { Clave = ConfigClaves.Declaracion, Valor = ConfigClaves.DeclaracionPorDefecto });
 
         if (!await db.Ideas.AnyAsync())
             db.Ideas.Add(new Idea { Texto = "Pago basket", Nota = "Que el pago del baloncesto se haga solo cada mes, sin tener que acordarnos.", Autor = "Raquel" });

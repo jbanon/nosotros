@@ -199,7 +199,13 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); ou
   background: linear-gradient(170deg, var(--fondo-1) 0%, var(--fondo-2) 55%, var(--fondo-3) 100%); }
 .amor > :not(.cielo):not(.particulas) { width: 100%; max-width: 560px; margin-left: auto; margin-right: auto; }
 .amor .cielo, .amor .particulas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.amor-cab, .amor-pie, .tarjeta-amor { position: relative; z-index: 2; }
+.amor-cab, .amor-pie, .tarjeta-amor, .declaracion { position: relative; z-index: 2; }
+.declaracion { text-align: center; padding: 6px 18px 0; animation: aparecer 1.2s .35s ease both; }
+.declaracion .orn { display: block; font-size: 1.5rem; color: var(--acento-amor); opacity: .85; margin-bottom: 6px; line-height: 1; }
+.declaracion p { margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 1.22rem; line-height: 1.5; font-weight: 500; opacity: .92;
+  text-shadow: 0 1px 0 color-mix(in srgb, var(--tarjeta-amor) 60%, transparent); }
+.declaracion p:first-of-type { font-size: 1.5rem; font-weight: 700; font-style: italic; letter-spacing: .01em; color: var(--acento-amor); margin-bottom: 4px; }
+.declaracion p:last-of-type { font-weight: 700; margin-top: 6px; }
 .amor-cab { text-align: center; }
 .saludo { margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 600; }
 .fecha { margin: 2px 0 0; font-size: .85rem; opacity: .75; text-transform: capitalize; letter-spacing: .04em; }
