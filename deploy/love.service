@@ -10,10 +10,11 @@ Restart=always
 RestartSec=5
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
-Environment=DOTNET_ROOT=/usr/share/dotnet
-# PINs y rutas se pueden sobreescribir aquí en vez de en appsettings.json:
-# Environment=Pins__Admin=200524
-# Environment=Pins__Raquel=2005
+Environment=DOTNET_ROOT=/usr/lib/dotnet
+# Kestrel solo en localhost (nginx hace de proxy); sobreescribe el 0.0.0.0 de appsettings.json
+Environment=Kestrel__Endpoints__Http__Url=http://127.0.0.1:5100
+# PIN iniciales (solo se usan al crear la base de datos)
+EnvironmentFile=/etc/love.env
 
 [Install]
 WantedBy=multi-user.target

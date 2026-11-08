@@ -63,7 +63,7 @@ Admin → Configuración → Importar recetas (JSON), mismo formato que `Seed/re
 ```bash
 ./deploy/publicar.sh        # publica en /opt/love y arranca el servicio systemd (puerto 5100)
 sudo cp deploy/nginx-love.conf /etc/nginx/sites-available/love && sudo ln -s /etc/nginx/sites-available/love /etc/nginx/sites-enabled/
-sudo certbot --nginx -d nosotros.tudominio.es
+sudo certbot --nginx -d love.winsoft.es
 ```
 
 Copia de seguridad: Admin → Configuración → Descargar (zip con la base de datos y los adjuntos).
