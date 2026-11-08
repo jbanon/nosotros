@@ -16,10 +16,15 @@
   :root:not([data-tema]) {
     --crema: #1d1816; --tinta: #f1e9e3; --suave: #a79790; --linea: #342b28;
     --tarjeta: #292220; --sombra: 0 6px 24px rgba(0,0,0,.35); --acento-claro: #3d2a26;
-    --z-fruteria: #22342a; --z-fruteria-t: #8fd3a3; --z-charcuteria: #3b2824; --z-charcuteria-t: #f2a494;
-    --z-carniceria: #3b2323; --z-carniceria-t: #f29a9a; --z-pescaderia: #1f2f3c; --z-pescaderia-t: #93c5ea;
-    --z-otros: #352e1f; --z-otros-t: #e5c56b;
+    --z-fruteria: #243a2c; --z-fruteria-t: #9fdcae; --z-charcuteria: #3e2a27; --z-charcuteria-t: #f4ae9f;
+    --z-carniceria: #402627; --z-carniceria-t: #f4a3a3; --z-pescaderia: #22323f; --z-pescaderia-t: #9ccbee;
+    --z-otros: #332d26; --z-otros-t: #e9cc7a;
   }
+  :root:not([data-tema]) .chip { border-color: #4a3e3a; background: #332a27; }
+  :root:not([data-tema]) .check { background: #3a302c; border-color: rgba(255,255,255,.35); }
+  :root:not([data-tema]) .check.on, :root:not([data-tema]) .linea-compra.comprado .check { background: var(--ok); border-color: var(--ok); }
+  :root:not([data-tema]) .linea-compra { border-top-color: rgba(255,255,255,.07); }
+  :root:not([data-tema]) .idea { border-top-color: rgba(255,255,255,.07); }
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -28,7 +33,8 @@ body {
   font-family: 'Nunito', system-ui, sans-serif; font-size: 16px; line-height: 1.45;
   min-height: 100dvh; -webkit-font-smoothing: antialiased;
 }
-body:not(.sin-nav) .contenido { padding: 0 16px calc(var(--nav-alto) + env(safe-area-inset-bottom) + 24px); max-width: 640px; margin: 0 auto; }
+body:not(.sin-nav) .contenido { padding: 0 16px calc(var(--nav-alto) + env(safe-area-inset-bottom) + 48px); max-width: 640px; margin: 0 auto; }
+[hidden] { display: none !important; }
 a { color: var(--acento); text-decoration: none; }
 h1, h2, h3 { margin: 0; line-height: 1.2; }
 h1 { font-size: 1.6rem; font-weight: 800; }
@@ -157,7 +163,10 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); ou
 .idea .texto { font-weight: 700; font-size: 1.02rem; }
 .idea .nota { font-size: .85rem; color: var(--suave); margin-top: 2px; line-height: 1.35; }
 .idea .meta { font-size: .72rem; color: var(--suave); margin-top: 4px; opacity: .8; }
-.idea.hecha .texto { text-decoration: line-through; opacity: .55; }
+.idea.hecha .texto { text-decoration: none; opacity: .85; }
+.idea .resumen { margin-top: 8px; padding: 10px 12px; border-radius: 12px; background: var(--acento-claro); font-size: .88rem; line-height: 1.4; white-space: pre-line; }
+.idea .resumen b { display: block; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-bottom: 3px; }
+.idea .editar { font-size: .78rem; font-weight: 700; margin-top: 4px; display: inline-block; }
 .idea .quitar { border: 0; background: transparent; color: inherit; opacity: .45; font-size: 1.2rem; padding: 2px 6px; margin-left: auto; }
 .ideas-intro { background: linear-gradient(135deg, #fff1e4, #fde6ef); border-radius: var(--radio); padding: 16px 18px; margin-bottom: 14px; font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; line-height: 1.35; color: #5a3a3a; }
 .ideas-intro.pelis { background: linear-gradient(135deg, #e8e4f6, #fde6ef); }

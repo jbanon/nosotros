@@ -1,0 +1,22 @@
+@page
+@model Love.Pages.Ideas.HechasModel
+@{ ViewData["Title"] = "Tareas realizadas"; }
+<div class="cab"><a class="volver" href="/Ideas">‹</a><h1>Ya funcionan solas 🎉</h1></div>
+<p class="suave peq" style="margin-top:-6px">Resumen de lo que ya está automatizado y cómo funciona. Toca una para editarla.</p>
+@if (!Model.Hechas.Any()) { <div class="vacio"><span class="ico">🪄</span>Todavía no hay ninguna automatizada. Pronto.</div> }
+@foreach (var i in Model.Hechas)
+{
+    <div class="tarjeta">
+        <div class="idea" style="padding:0;border:0">
+            <span class="check on">✓</span>
+            <div class="crece">
+                <div class="texto">@i.Texto</div>
+                @if (i.Nota != null) { <div class="nota">@i.Nota</div> }
+                <div class="meta">Pedida por @i.Autor · hecha el @(i.HechaEl?.ToLocalTime().ToString("d MMM yyyy"))</div>
+                @if (i.Resumen != null) { <div class="resumen"><b>Qué se hizo</b>@i.Resumen</div> }
+                else { <div class="resumen suave"><b>Qué se hizo</b>Pendiente de contar.</div> }
+                <a class="editar" href="/Ideas/Editar/@i.Id">Editar ›</a>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,16 @@
+@page "{id:int}"
+@model Love.Pages.Ideas.EditarModel
+@{ ViewData["Title"] = "Editar idea"; var i = Model.Idea; }
+<div class="cab"><a class="volver" href="@(i.Hecha ? "/Ideas/Hechas" : "/Ideas")">‹</a><h1>Idea</h1></div>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="error"></div>
+    <label class="campo"><span>Qué quieres que se haga solo</span><input asp-for="Idea.Texto" required /></label>
+    <label class="campo"><span>Detalle (opcional)</span><textarea asp-for="Idea.Nota" rows="3"></textarea></label>
+    <div class="chips mb">
+        <label class="chip"><input type="checkbox" asp-for="Idea.Hecha" style="display:inline" /> Ya está automatizada</label>
+    </div>
+    <label class="campo"><span>Resumen de lo que se ha hecho · cómo funciona ahora</span><textarea asp-for="Idea.Resumen" rows="5" placeholder="Ej.: el recibo del basket se paga solo por domiciliación el día 5 de cada mes. Llega un aviso al móvil cuando se cobra."></textarea></label>
+    <p class="suave peq" style="margin-top:-8px">@i.Autor la apuntó el @i.Creada.ToLocalTime().ToString("d MMM yyyy")@(i.HechaEl != null ? $" · hecha el {i.HechaEl.Value.ToLocalTime():d MMM yyyy}" : "")</p>
+    <button class="btn primario ancho">Guardar</button>
+</form>
+<form method="post" asp-page-handler="Borrar" data-confirm="¿Borrar esta idea?" class="mt"><button class="btn peligro ancho">Borrar</button></form>

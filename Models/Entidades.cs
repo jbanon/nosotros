@@ -143,6 +143,8 @@ public class Idea
     public bool Hecha { get; set; }
     public DateTime Creada { get; set; } = DateTime.UtcNow;
     public DateTime? HechaEl { get; set; }
+    /// <summary>Qué se automatizó y cómo funciona, para que Raquel lo vea cuando la idea está hecha.</summary>
+    public string? Resumen { get; set; }
 }
 
 /// <summary>Películas que queremos ver juntos.</summary>

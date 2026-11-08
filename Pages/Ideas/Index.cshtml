@@ -28,31 +28,20 @@
         {
             <div class="idea">
                 <form method="post" asp-page-handler="Hecha" asp-route-id="@i.Id"><button class="check" title="Marcar como hecha"></button></form>
-                <div class="crece">
+                <a class="crece" href="/Ideas/Editar/@i.Id" style="color:inherit">
                     <div class="texto">@i.Texto</div>
                     @if (i.Nota != null) { <div class="nota">@i.Nota</div> }
-                    <div class="meta">@i.Autor · @i.Creada.ToLocalTime().ToString("d MMM yyyy")</div>
-                </div>
-                <form method="post" asp-page-handler="Borrar" asp-route-id="@i.Id"><button class="quitar" title="Borrar" data-confirm="¿Borrar esta idea?">×</button></form>
+                    <div class="meta">@i.Autor · @i.Creada.ToLocalTime().ToString("d MMM yyyy") · toca para editar</div>
+                </a>
             </div>
         }
     </div>
 }
 @if (Model.Hechas.Any())
 {
-    <div class="tarjeta">
-        <h2 class="mb">Ya funcionan solas 🎉</h2>
-        @foreach (var i in Model.Hechas)
-        {
-            <div class="idea hecha">
-                <form method="post" asp-page-handler="Hecha" asp-route-id="@i.Id"><button class="check on" title="Volver a pendiente">✓</button></form>
-                <div class="crece">
-                    <div class="texto">@i.Texto</div>
-                    @if (i.Nota != null) { <div class="nota">@i.Nota</div> }
-                    <div class="meta">Hecha el @(i.HechaEl?.ToLocalTime().ToString("d MMM yyyy"))</div>
-                </div>
-                <form method="post" asp-page-handler="Borrar" asp-route-id="@i.Id"><button class="quitar" title="Borrar" data-confirm="¿Borrar esta idea?">×</button></form>
-            </div>
-        }
-    </div>
+    <a class="tarjeta enlace" href="/Ideas/Hechas" style="display:flex;align-items:center;gap:12px;color:inherit">
+        <span class="ico" style="font-size:1.6rem">🎉</span>
+        <div class="crece"><b>Ya funcionan solas</b><div class="sub suave">@Model.Hechas.Count @(Model.Hechas.Count == 1 ? "tarea realizada" : "tareas realizadas") · ver el resumen</div></div>
+        <span class="suave">›</span>
+    </a>
 }

@@ -136,6 +136,9 @@ namespace Love.Data.Migrations
                     b.Property<string>("Nota")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Resumen")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Texto")
                         .IsRequired()
                         .HasColumnType("TEXT");
