@@ -33,6 +33,12 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
                 new Config { Clave = ConfigClaves.NombreElla, Valor = "Raquel" },
                 new Config { Clave = ConfigClaves.RacionesLista, Valor = "12" });
 
+        if (!await db.Ideas.AnyAsync())
+            db.Ideas.Add(new Idea { Texto = "Pago basket", Nota = "Que el pago del baloncesto se haga solo cada mes, sin tener que acordarnos.", Autor = "Raquel" });
+
+        if (!await db.Peliculas.AnyAsync())
+            db.Peliculas.Add(new Pelicula { Titulo = "Full Monty", Nota = "Comedia británica de 1997. Para reírnos juntos en el sofá.", Autor = "Javier" });
+
         // Gastos iniciales (compras ya hechas antes de estrenar la app). Idempotente: no se duplican.
         var gastosIniciales = new[]
         {

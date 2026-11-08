@@ -139,6 +139,19 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); ou
 .linea-compra .cant { margin-left: auto; font-weight: 800; white-space: nowrap; }
 .linea-compra .quitar { border: 0; background: transparent; color: inherit; opacity: .45; font-size: 1.2rem; padding: 4px 6px; }
 .linea-compra.excluido { opacity: .6; }
+
+/* Ideas para automatizar */
+.idea { display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; border-top: 1px solid rgba(0,0,0,.05); }
+.idea:first-of-type { border-top: 0; }
+.idea .check { margin-top: 2px; cursor: pointer; }
+.idea .texto { font-weight: 700; font-size: 1.02rem; }
+.idea .nota { font-size: .85rem; color: var(--suave); margin-top: 2px; line-height: 1.35; }
+.idea .meta { font-size: .72rem; color: var(--suave); margin-top: 4px; opacity: .8; }
+.idea.hecha .texto { text-decoration: line-through; opacity: .55; }
+.idea .quitar { border: 0; background: transparent; color: inherit; opacity: .45; font-size: 1.2rem; padding: 2px 6px; margin-left: auto; }
+.ideas-intro { background: linear-gradient(135deg, #fff1e4, #fde6ef); border-radius: var(--radio); padding: 16px 18px; margin-bottom: 14px; font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; line-height: 1.35; color: #5a3a3a; }
+.ideas-intro.pelis { background: linear-gradient(135deg, #e8e4f6, #fde6ef); }
+:root:not([data-tema]) .ideas-intro { background: linear-gradient(135deg, rgba(201,107,90,.18), rgba(224,122,154,.14)); color: inherit; }
 .etiq-zona { font-size: .7rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; letter-spacing: .03em; }
 .badge { background: var(--acento); color: #fff; border-radius: 999px; padding: 2px 9px; font-size: .75rem; font-weight: 800; }
 
@@ -222,7 +235,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); ou
 [data-tema=aniversario] { --fondo-1: #fbe3d4; --fondo-2: #f9d4c8; --fondo-3: #f3c1a6; --texto-amor: #4d2c22; --acento-amor: #c8873f; --tarjeta-amor: rgba(255,255,255,.62); }
 [data-tema=verano]      { --fondo-1: #ffd59e; --fondo-2: #ff9a76; --fondo-3: #2ab3b1; --texto-amor: #3a2420; --acento-amor: #e4572e; --tarjeta-amor: rgba(255,255,255,.6); }
 [data-tema=cumple]      { --fondo-1: #ffe9a8; --fondo-2: #ffc2d1; --fondo-3: #b5e0ff; --texto-amor: #3f2a3a; --acento-amor: #e04c8c; --tarjeta-amor: rgba(255,255,255,.66); }
-[data-tema=otono]       { --fondo-1: #f4d9a6; --fondo-2: #e9a86b; --fondo-3: #8c3b2c; --texto-amor: #3f2416; --acento-amor: #b4472c; --tarjeta-amor: rgba(255,250,240,.62); }
+[data-tema=otono]       { --fondo-1: #f9ead4; --fondo-2: #ecc097; --fondo-3: #c4785a; --texto-amor: #47261a; --acento-amor: #a9442a; --tarjeta-amor: rgba(255,248,238,.7); }
 [data-tema=halloween]   { --fondo-1: #1b1033; --fondo-2: #2d1b4e; --fondo-3: #4a1e3a; --texto-amor: #fbe9d2; --acento-amor: #ff8c2b; --tarjeta-amor: rgba(255,255,255,.12); }
 [data-tema=navidad] .tarjeta-amor, [data-tema=halloween] .tarjeta-amor { border-color: rgba(255,255,255,.25); }
 [data-tema=navidad] .barra, [data-tema=halloween] .barra { background: rgba(20,10,30,.55); border-top-color: rgba(255,255,255,.12); }
@@ -236,8 +249,14 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); ou
 [data-tema=halloween] .cielo::after { content: "🎃  🎃"; position: absolute; bottom: calc(var(--nav-alto) + 8px); left: 0; right: 0; text-align: center; font-size: 2.2rem; opacity: .9; letter-spacing: 1.5em; }
 [data-tema=aniversario] .cielo::before, [data-tema=cumple] .cielo::before { content: ""; position: absolute; inset: 0;
   background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.55), transparent 55%); }
-[data-tema=otono] .cielo::before { content: ""; position: absolute; top: -80px; left: -60px; width: 260px; height: 260px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,235,180,.8), transparent 70%); }
+[data-tema=otono] .amor { background: linear-gradient(175deg, var(--fondo-1) 0%, var(--fondo-2) 50%, var(--fondo-3) 100%); }
+[data-tema=otono] .cielo::before { content: ""; position: absolute; top: -140px; left: -100px; width: 380px; height: 380px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,246,220,.95) 0, rgba(255,214,150,.45) 40%, transparent 70%); animation: respirar 8s ease-in-out infinite; }
+[data-tema=otono] .cielo::after { content: ""; position: absolute; left: -10%; right: -10%; bottom: 0; height: 34%;
+  background: radial-gradient(ellipse at 50% 100%, rgba(120,52,32,.45), rgba(150,80,50,.18) 55%, transparent 75%); }
+[data-tema=otono] .tarjeta-amor { border-color: rgba(169,68,42,.22); box-shadow: 0 20px 60px rgba(110,50,30,.18); }
+[data-tema=otono] .barra { background: rgba(255,244,230,.7); border-top-color: rgba(169,68,42,.15); }
+[data-tema=otono] .p-hoja { opacity: .85; filter: saturate(.9) drop-shadow(0 4px 6px rgba(80,30,20,.2)); }
 [data-tema=invierno] .cielo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
   background: linear-gradient(to top, rgba(255,255,255,.7), transparent); }
 [data-tema=navidad] .luces { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 10px 6px 0; }

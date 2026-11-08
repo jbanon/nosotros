@@ -8,7 +8,7 @@
     const cfg = {
       nieve:       { n: 40, clase: 'p-nieve', dur: [9, 18] },
       petalos:     { n: 24, clase: 'p-petalo', dur: [10, 18] },
-      hojas:       { n: 16, clase: 'p-hoja', dur: [10, 20], txt: ['🍂', '🍁', '🍃'] },
+      hojas:       { n: 16, clase: 'p-hoja', dur: [10, 20], txt: ['🍂', '🍁', '🍂'] },
       corazones:   { n: 18, clase: 'p-corazon', dur: [8, 16], txt: ['♥', '♥', '❤'] },
       luciernagas: { n: 26, clase: 'p-luciernaga', dur: [3, 7], fijo: true },
       confeti:     { n: 60, clase: 'p-confeti', dur: [5, 10], color: true },

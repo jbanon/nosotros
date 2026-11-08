@@ -34,14 +34,19 @@
             <a href="/Amor" class="@act("/Amor")"><span class="ico">♥</span><span>@(esAdmin ? "Raquel" : "Para ti")</span></a>
             <a href="/Menu/Recetas" class="@act("/Menu/Recetas")"><span class="ico">🍲</span><span>Recetas</span></a>
             <a href="/Menu/Lista" class="@(act("/Menu/Lista"))@(act("/Menu/Semana"))"><span class="ico">🛒</span><span>Compra</span></a>
-            @if (esAdmin)
+            @if (!esAdmin)
+            {
+                <a href="/Ideas" class="@act("/Ideas")"><span class="ico">✨</span><span>Ideas</span></a>
+                <a href="/Peliculas" class="@act("/Peliculas")"><span class="ico">🎬</span><span>Pelis</span></a>
+            }
+            else
             {
                 <a href="/Gastos" class="@act("/Gastos")"><span class="ico">€</span><span>Gastos</span></a>
                 <a href="/Admin" class="@act("/Admin")"><span class="ico">⚙</span><span>Admin</span></a>
             }
         </nav>
     }
-    <script src="/js/app.js?v=2"></script>
+    <script src="/js/app.js?v=3"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

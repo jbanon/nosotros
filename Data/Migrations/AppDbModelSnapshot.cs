@@ -114,6 +114,37 @@ namespace Love.Data.Migrations
                     b.ToTable("Gastos");
                 });
 
+            modelBuilder.Entity("Love.Models.Idea", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Autor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Hecha")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("HechaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nota")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ideas");
+                });
+
             modelBuilder.Entity("Love.Models.Ingrediente", b =>
                 {
                     b.Property<int>("Id")
@@ -232,6 +263,37 @@ namespace Love.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("MesesInicializados");
+                });
+
+            modelBuilder.Entity("Love.Models.Pelicula", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Anadida")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Autor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nota")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Vista")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("VistaEl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Peliculas");
                 });
 
             modelBuilder.Entity("Love.Models.Receta", b =>

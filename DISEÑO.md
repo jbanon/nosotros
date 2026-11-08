@@ -284,3 +284,4 @@ Importes y objetivo editables en Admin → Config sin tocar código. Descarga de
 - Las cantidades se suman por ingrediente y unidad (singular/plural se unifican); no hay conversión g↔kg.
 - Los mensajes van firmados como "Javier" (cambiable en Config).
 - Despliegue previsto con systemd + nginx + HTTPS (ficheros en `deploy/`).
+- Páginas compartidas "Ideas" (cosas que automatizar, primera: pago basket) y "Pelis" (películas que ver, primera: Full Monty). Raquel las tiene en la barra; el admin las ve desde su menú.

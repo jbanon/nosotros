@@ -1,0 +1,58 @@
+@page
+@model Love.Pages.Peliculas.IndexModel
+@{ ViewData["Title"] = "Películas"; }
+<div class="cab"><h1>Pelis 🎬</h1></div>
+<div class="ideas-intro pelis">
+    Películas que queremos ver juntos. Cuando veamos una, la marcamos y pasa a la lista de recuerdos.
+</div>
+
+<div class="tarjeta">
+    <form method="post" asp-page-handler="Anadir">
+        <input type="text" name="titulo" placeholder="Título de la película" required class="mb" style="width:100%" />
+        <div class="fila">
+            <input type="text" name="nota" placeholder="Por qué, dónde está… (opcional)" class="crece" />
+            <button class="btn primario">Apuntar</button>
+        </div>
+    </form>
+</div>
+
+@if (!Model.Pendientes.Any() && !Model.Vistas.Any())
+{
+    <div class="vacio"><span class="ico">🍿</span>Todavía no hay películas. Apunta la primera.</div>
+}
+@if (Model.Pendientes.Any())
+{
+    <div class="tarjeta">
+        <h2 class="mb">Por ver <span class="suave peq" style="font-weight:600">· @Model.Pendientes.Count</span></h2>
+        @foreach (var p in Model.Pendientes)
+        {
+            <div class="idea">
+                <form method="post" asp-page-handler="Vista" asp-route-id="@p.Id"><button class="check" title="Ya la hemos visto"></button></form>
+                <div class="crece">
+                    <div class="texto">@p.Titulo</div>
+                    @if (p.Nota != null) { <div class="nota">@p.Nota</div> }
+                    <div class="meta">La apuntó @p.Autor · @p.Anadida.ToLocalTime().ToString("d MMM yyyy")</div>
+                </div>
+                <form method="post" asp-page-handler="Borrar" asp-route-id="@p.Id"><button class="quitar" title="Borrar" data-confirm="¿Borrar esta película?">×</button></form>
+            </div>
+        }
+    </div>
+}
+@if (Model.Vistas.Any())
+{
+    <div class="tarjeta">
+        <h2 class="mb">Ya vistas 🍿</h2>
+        @foreach (var p in Model.Vistas)
+        {
+            <div class="idea hecha">
+                <form method="post" asp-page-handler="Vista" asp-route-id="@p.Id"><button class="check on" title="Volver a pendiente">✓</button></form>
+                <div class="crece">
+                    <div class="texto">@p.Titulo</div>
+                    @if (p.Nota != null) { <div class="nota">@p.Nota</div> }
+                    <div class="meta">Vista el @(p.VistaEl?.ToLocalTime().ToString("d MMM yyyy"))</div>
+                </div>
+                <form method="post" asp-page-handler="Borrar" asp-route-id="@p.Id"><button class="quitar" title="Borrar" data-confirm="¿Borrar esta película?">×</button></form>
+            </div>
+        }
+    </div>
+}

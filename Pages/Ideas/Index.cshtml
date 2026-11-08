@@ -1,0 +1,58 @@
+@page
+@model Love.Pages.Ideas.IndexModel
+@{ ViewData["Title"] = "Ideas"; }
+<div class="cab"><h1>Ideas ✨</h1></div>
+<div class="ideas-intro">
+    Cosas que te gustaría que se hicieran solas. Apúntalas aquí y yo me encargo de automatizarlas.
+</div>
+
+<div class="tarjeta">
+    <form method="post" asp-page-handler="Anadir">
+        <input type="text" name="texto" placeholder="¿Qué quieres que se haga solo?" required class="mb" style="width:100%" />
+        <div class="fila">
+            <input type="text" name="nota" placeholder="Algún detalle (opcional)" class="crece" />
+            <button class="btn primario">Apuntar</button>
+        </div>
+    </form>
+</div>
+
+@if (!Model.Pendientes.Any() && !Model.Hechas.Any())
+{
+    <div class="vacio"><span class="ico">✨</span>Todavía no hay ideas. Apunta la primera.</div>
+}
+@if (Model.Pendientes.Any())
+{
+    <div class="tarjeta">
+        <h2 class="mb">Pendientes <span class="suave peq" style="font-weight:600">· @Model.Pendientes.Count</span></h2>
+        @foreach (var i in Model.Pendientes)
+        {
+            <div class="idea">
+                <form method="post" asp-page-handler="Hecha" asp-route-id="@i.Id"><button class="check" title="Marcar como hecha"></button></form>
+                <div class="crece">
+                    <div class="texto">@i.Texto</div>
+                    @if (i.Nota != null) { <div class="nota">@i.Nota</div> }
+                    <div class="meta">@i.Autor · @i.Creada.ToLocalTime().ToString("d MMM yyyy")</div>
+                </div>
+                <form method="post" asp-page-handler="Borrar" asp-route-id="@i.Id"><button class="quitar" title="Borrar" data-confirm="¿Borrar esta idea?">×</button></form>
+            </div>
+        }
+    </div>
+}
+@if (Model.Hechas.Any())
+{
+    <div class="tarjeta">
+        <h2 class="mb">Ya funcionan solas 🎉</h2>
+        @foreach (var i in Model.Hechas)
+        {
+            <div class="idea hecha">
+                <form method="post" asp-page-handler="Hecha" asp-route-id="@i.Id"><button class="check on" title="Volver a pendiente">✓</button></form>
+                <div class="crece">
+                    <div class="texto">@i.Texto</div>
+                    @if (i.Nota != null) { <div class="nota">@i.Nota</div> }
+                    <div class="meta">Hecha el @(i.HechaEl?.ToLocalTime().ToString("d MMM yyyy"))</div>
+                </div>
+                <form method="post" asp-page-handler="Borrar" asp-route-id="@i.Id"><button class="quitar" title="Borrar" data-confirm="¿Borrar esta idea?">×</button></form>
+            </div>
+        }
+    </div>
+}

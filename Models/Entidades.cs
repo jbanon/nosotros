@@ -133,6 +133,30 @@ public class Gasto
     public DateTime Creado { get; set; } = DateTime.UtcNow;
 }
 
+/// <summary>Cosas que Raquel (o el admin) quieren que se hagan solas: ideas para automatizar.</summary>
+public class Idea
+{
+    public int Id { get; set; }
+    public string Texto { get; set; } = "";
+    public string? Nota { get; set; }
+    public string Autor { get; set; } = "";
+    public bool Hecha { get; set; }
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
+    public DateTime? HechaEl { get; set; }
+}
+
+/// <summary>Películas que queremos ver juntos.</summary>
+public class Pelicula
+{
+    public int Id { get; set; }
+    public string Titulo { get; set; } = "";
+    public string? Nota { get; set; }
+    public string Autor { get; set; } = "";
+    public bool Vista { get; set; }
+    public DateTime Anadida { get; set; } = DateTime.UtcNow;
+    public DateTime? VistaEl { get; set; }
+}
+
 /// <summary>Meses en los que ya se crearon los fijos (para no recrearlos si el admin los borra).</summary>
 public class MesInicializado
 {

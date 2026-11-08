@@ -19,6 +19,8 @@ public class AppDb : DbContext
     public DbSet<Gasto> Gastos => Set<Gasto>();
     public DbSet<MesInicializado> MesesInicializados => Set<MesInicializado>();
     public DbSet<Config> Configs => Set<Config>();
+    public DbSet<Idea> Ideas => Set<Idea>();
+    public DbSet<Pelicula> Peliculas => Set<Pelicula>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
