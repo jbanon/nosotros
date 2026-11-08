@@ -24,7 +24,7 @@ public class IndexModel(AppDb db) : PageModel
         titulo = (titulo ?? "").Trim();
         if (titulo != "")
         {
-            db.Peliculas.Add(new Pelicula { Titulo = titulo, Nota = string.IsNullOrWhiteSpace(nota) ? null : nota.Trim(), Autor = User.EsAdmin() ? "Javier" : "Raquel" });
+            db.Peliculas.Add(new Pelicula { Titulo = titulo, Nota = string.IsNullOrWhiteSpace(nota) ? null : nota.Trim(), Autor = User.Identity?.Name ?? (User.EsAdmin() ? "Javi" : "Raquel") });
             await db.SaveChangesAsync();
         }
         return RedirectToPage();

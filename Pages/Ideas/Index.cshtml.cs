@@ -24,7 +24,7 @@ public class IndexModel(AppDb db) : PageModel
         texto = (texto ?? "").Trim();
         if (texto != "")
         {
-            db.Ideas.Add(new Idea { Texto = texto, Nota = string.IsNullOrWhiteSpace(nota) ? null : nota.Trim(), Autor = User.EsAdmin() ? "Javier" : "Raquel" });
+            db.Ideas.Add(new Idea { Texto = texto, Nota = string.IsNullOrWhiteSpace(nota) ? null : nota.Trim(), Autor = User.Identity?.Name ?? (User.EsAdmin() ? "Javi" : "Raquel") });
             await db.SaveChangesAsync();
         }
         return RedirectToPage();

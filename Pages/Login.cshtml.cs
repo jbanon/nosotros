@@ -12,7 +12,7 @@ public class LoginModel(PinAuth auth) : PageModel
     public IActionResult OnGet(bool salir = false)
     {
         if (salir) { HttpContext.SignOutAsync().Wait(); return Page(); }
-        return User.Identity?.IsAuthenticated == true ? Redirect("/") : Page();
+        return Page();
     }
 
     public async Task<IActionResult> OnPost(string pin)

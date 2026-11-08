@@ -20,9 +20,13 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             var pinAdmin = cfg["Pins:Admin"]; var pinRaquel = cfg["Pins:Raquel"];
             if (string.IsNullOrWhiteSpace(pinAdmin) || string.IsNullOrWhiteSpace(pinRaquel))
                 throw new InvalidOperationException("Faltan los PIN iniciales: crea appsettings.Local.json con { \"Pins\": { \"Admin\": \"....\", \"Raquel\": \"....\" } }");
-            db.Usuarios.Add(new Usuario { Nombre = "Admin", Rol = Rol.Admin, PinHash = BCrypt.Net.BCrypt.HashPassword(pinAdmin) });
+            db.Usuarios.Add(new Usuario { Nombre = "Javi", Rol = Rol.Admin, PinHash = BCrypt.Net.BCrypt.HashPassword(pinAdmin) });
             db.Usuarios.Add(new Usuario { Nombre = "Raquel", Rol = Rol.Raquel, PinHash = BCrypt.Net.BCrypt.HashPassword(pinRaquel) });
         }
+
+        // El usuario administrador se llama Javi (antes "Admin"); renombra en bases ya creadas.
+        var adminViejo = await db.Usuarios.FirstOrDefaultAsync(u => u.Rol == Rol.Admin && u.Nombre == "Admin");
+        if (adminViejo != null) adminViejo.Nombre = "Javi";
 
         if (!await db.Configs.AnyAsync())
             db.Configs.AddRange(
