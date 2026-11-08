@@ -33,6 +33,15 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
                 new Config { Clave = ConfigClaves.NombreElla, Valor = "Raquel" },
                 new Config { Clave = ConfigClaves.RacionesLista, Valor = "12" });
 
+        // Gastos iniciales (compras ya hechas antes de estrenar la app). Idempotente: no se duplican.
+        var gastosIniciales = new[]
+        {
+            new Gasto { Fecha = new DateOnly(2026, 11, 8), Tipo = TipoGasto.Compra, Importe = 60, Nota = "Filetes, magro y croquetas" },
+        };
+        foreach (var g in gastosIniciales)
+            if (!await db.Gastos.AnyAsync(x => x.Fecha == g.Fecha && x.Tipo == g.Tipo && x.Importe == g.Importe && x.Nota == g.Nota))
+                db.Gastos.Add(g);
+
         if (!await db.FechasEspeciales.AnyAsync())
             db.FechasEspeciales.AddRange(
                 new FechaEspecial { Mes = 5, Dia = 20, Nombre = "Nuestro aniversario", Emoji = "💍", Tema = "aniversario", AnioOrigen = 2024, TextoContador = "{n} años juntos",
