@@ -1,0 +1,118 @@
+@page "{id:int?}"
+@model Love.Pages.Menu.Recetas.AgenteModel
+@{
+    ViewData["Title"] = "Receta con el agente";
+    var t = Model.Tarea; var p = Model.Propuesta;
+    var enMarcha = t != null && t.Estado is EstadoTarea.Pendiente or EstadoTarea.EnCurso;
+}
+<div class="cab"><a class="volver" href="@(t == null ? "/Menu/Recetas" : "/Menu/Recetas/Agente")">‹</a><h1>@(t == null ? "Pídesela al agente ✨" : t.Entrada)</h1></div>
+
+@if (!Model.Disponible)
+{
+    <div class="aviso mb">El agente no está configurado en este servidor. Mientras tanto puedes <a href="/Menu/Recetas/Editar">crear la receta a mano</a>.</div>
+}
+
+@if (t == null)
+{
+    <div class="ideas-intro">Dile qué receta quieres, o hazle una foto a una receta (de un libro, de una revista, en inglés…) y el agente la escribe en español para nuestras @("12") raciones. Luego la revisas con él y la guardas.</div>
+    @if (Model.Error != null) { <p class="error">@Model.Error</p> }
+    <form method="post" asp-page-handler="Crear" enctype="multipart/form-data" class="tarjeta">
+        <label class="campo"><span>Receta</span><input name="nombre" placeholder="Lentejas con chorizo, pollo al curry…" autocomplete="off" /></label>
+        <label class="campo"><span>Indicaciones (opcional)</span><input name="notas" placeholder="sin gluten, la versión rápida, con lo que hay en casa…" /></label>
+        <label class="campo"><span>…o una foto de la receta</span><input type="file" name="foto" accept="image/*" capture="environment" /></label>
+        <button class="btn primario ancho" @(Model.Disponible ? "" : "disabled")>✨ Que la escriba el agente</button>
+    </form>
+    @if (Model.Recientes.Any())
+    {
+        <h2 class="mb">Pendientes de revisar</h2>
+        <div class="lista">
+            @foreach (var r in Model.Recientes)
+            {
+                <a class="item" href="/Menu/Recetas/Agente/@r.Id">
+                    <span style="font-size:1.4rem">@(r.Tipo == TipoTareaAgente.RecetaFoto ? "📷" : "✨")</span>
+                    <div class="crece"><b>@r.Entrada</b><div class="sub">@AgenteEstado.Texto(r) · @r.Creada.ToLocalTime().ToString("d MMM HH:mm") · @r.Autor</div></div>
+                    <span class="suave">›</span>
+                </a>
+            }
+        </div>
+    }
+}
+else if (enMarcha)
+{
+    <div class="tarjeta agente-espera" id="espera">
+        <div class="cocinando">🍳</div>
+        <p><b>El agente está escribiendo la receta…</b></p>
+        <p class="suave">Suele tardar entre 10 y 60 segundos. Esta página se actualiza sola.</p>
+        @if (t.FotoPath != null) { <img src="/Menu/Recetas/AgenteFoto/@t.Id" alt="" class="miniatura" style="width:100%;height:auto;max-height:200px;object-fit:contain" /> }
+    </div>
+    @section Scripts {
+    <script>
+    (() => { const url = location.pathname + '?handler=Estado'; let n = 0;
+      const tick = async () => { try { const r = await fetch(url); const j = await r.json(); if (j.estado === 'Lista' || j.estado === 'Error') { location.reload(); return; } } catch { }
+        if (++n < 120) setTimeout(tick, 3000); };
+      setTimeout(tick, 3000); })();
+    </script>
+    }
+}
+else if (t.Estado == EstadoTarea.Error)
+{
+    <div class="tarjeta">
+        <p class="error">No ha podido ser.</p>
+        <p class="suave" style="white-space:pre-line">@t.Error</p>
+        <div class="fila">
+            <form method="post" asp-page-handler="Reintentar" asp-route-id="@t.Id" class="crece"><button class="btn primario ancho">Reintentar</button></form>
+            <form method="post" asp-page-handler="Borrar" asp-route-id="@t.Id" data-confirm="¿Descartar esta petición?"><button class="btn peligro">Descartar</button></form>
+        </div>
+        <p class="suave peq mt" style="margin-bottom:0">O <a href="/Menu/Recetas/Editar">crea la receta a mano</a>.</p>
+    </div>
+    @if (Model.Historial.Count > 0) { <partial name="_Conversacion" model="Model.Historial" /> }
+}
+else if (p != null)
+{
+    var ings = p["ingredientes"] as System.Text.Json.Nodes.JsonArray ?? new();
+    var nombre = p["nombre"]?.GetValue<string>();
+    @if (t.Aplicada != null)
+    {
+        <div class="aviso mb">Receta guardada: <a href="/Menu/Recetas/Ver/@t.RecetaId"><b>@nombre</b> ›</a></div>
+    }
+    @if (string.IsNullOrWhiteSpace(nombre))
+    {
+        <div class="tarjeta"><p class="error">El agente no ha encontrado una receta.</p><p class="suave">@(Model.Historial.LastOrDefault()?["texto"])</p>
+            <form method="post" asp-page-handler="Borrar" asp-route-id="@t.Id"><button class="btn peligro ancho">Descartar</button></form></div>
+    }
+    else
+    {
+        <div class="tarjeta propuesta">
+            <div class="prop-cab"><span class="pill ok">Propuesta del agente</span><span class="suave peq">@p["raciones"] raciones@(string.IsNullOrWhiteSpace(p["etiquetas"]?.GetValue<string>()) ? "" : " · " + p["etiquetas"])</span></div>
+            <h2 style="margin:6px 0 4px">@nombre</h2>
+            @if (!string.IsNullOrWhiteSpace(p["descripcion"]?.GetValue<string>())) { <p class="suave" style="margin-top:0">@p["descripcion"]</p> }
+            <h3 class="dia-cab">Ingredientes</h3>
+            <table class="tabla-ing">
+                @foreach (var i in ings)
+                {
+                    var zona = Enum.TryParse<Zona>(i?["zona"]?.GetValue<string>(), true, out var z) ? z : Zona.Otros;
+                    var cant = i?["cantidad"] is System.Text.Json.Nodes.JsonValue cv && cv.TryGetValue<double>(out var d) ? d.ToString("0.##") : "";
+                    var nota = i?["nota"]?.GetValue<string>();
+                    <tr><td><span class="etiq-zona z-@ZonaInfo.Css(zona) t-@ZonaInfo.Css(zona)">@ZonaInfo.Emoji(zona)</span> @i?["nombre"] @if (!string.IsNullOrWhiteSpace(nota)) { <span class="suave peq">· @nota</span> }</td><td>@cant @i?["unidad"]</td></tr>
+                }
+            </table>
+            <h3 class="dia-cab">Preparación</h3>
+            <p style="white-space:pre-line;margin:0">@p["preparacion"]</p>
+        </div>
+        @if (t.FotoPath != null)
+        {
+            <details class="ticket"><summary>Ver la foto original</summary><img src="/Menu/Recetas/AgenteFoto/@t.Id" alt="" style="width:100%;margin-top:10px;border-radius:12px" /></details>
+        }
+        <partial name="_Conversacion" model="Model.Historial" />
+        @if (t.Aplicada == null)
+        {
+            <form method="post" asp-page-handler="Cambiar" asp-route-id="@t.Id" class="tarjeta">
+                <label class="campo"><span>Pídele un cambio</span><input name="texto" placeholder="Quita el chorizo, hazla para 6, más detalle en el paso 3…" required autocomplete="off" /></label>
+                <button class="btn ancho">✨ Cambiar</button>
+            </form>
+            <form method="post" asp-page-handler="Guardar" asp-route-id="@t.Id" class="mb"><button class="btn primario ancho">Guardar receta</button></form>
+            <form method="post" asp-page-handler="Borrar" asp-route-id="@t.Id" data-confirm="¿Descartar esta propuesta?"><button class="btn ancho">Descartar</button></form>
+        }
+        <p class="suave peq centrado mt">@t.Rondas ronda@(t.Rondas == 1 ? "" : "s") · @((t.DuracionMs / 1000.0).ToString("0")) s · @t.CosteUsd.ToString("0.00") $</p>
+    }
+}

@@ -2,17 +2,13 @@
 
 ## Hilos abiertos
 - **Adviento: Javier debe subir las fotos (días 1, 7, 11, 16, 20) y revisar textos desde Admin → Calendario de adviento antes del 1 de diciembre.** Opcional: pregunta/respuesta por foto (si no, la foto se ve directa y la letra se gana al abrir). Pendiente ver capturas en el móvil (diseño validado a ciegas) y confirmar que el teclado se abre bien en criptofrase y crucigrama (input oculto `.teclado-oculto`).
-- **Fichas automáticas de películas y recetas con `claude -p` (opción B, explorada
-  2026-11-09, pendiente de decisión).** Botón "✨ Completar ficha" → cola → BackgroundService
-  lanza `claude -p --no-session-persistence --output-format json --json-schema … --allowedTools
-  WebSearch,WebFetch --max-turns 6 --model haiku` → parsea `structured_output` → guarda y
-  descarga el póster a `wwwroot/uploads`. Probado en local: 26 s, resultado correcto. En el
-  servidor hace falta `claude setup-token` → `CLAUDE_CODE_OAUTH_TOKEN` en el entorno de
-  `www-data` y ruta absoluta del binario. No usar `--bare` (no lee credenciales); limpiar
-  `CLAUDECODE` y `CLAUDE_CODE_ENTRYPOINT` si se lanza desde otra sesión. Alternativa A
-  descartada por ahora: API de Anthropic + OMDb. Falta: migración (sinopsis, año, director,
-  imdb, póster, curiosidad en Película; ingredientes/pasos generados en Receta), servicio,
-  botón, refresco de la tarjeta, token en el servidor.
+- **Agente `claude -p` en producción (pendiente de Javier/agente del servidor).** El código ya está;
+  en Seppala falta: instalar el CLI de Claude Code accesible por `www-data` (poner la ruta en
+  `Agente:Claude`, p. ej. `Agente__Claude=/usr/local/bin/claude` en `/etc/love.env`), obtener un
+  token con `claude setup-token` y ponerlo como `CLAUDE_CODE_OAUTH_TOKEN=…` (o `Agente__Token=…`)
+  en `/etc/love.env`. El servicio tiene `HOME=/opt/love/App_Data`, así que el CLI escribirá su
+  config en `/opt/love/App_Data/.claude` (debe ser escribible por `www-data`). Comprobar con una
+  peli de prueba que la ficha llega (log: "Agente: tarea N lista").
 - **Lista de la compra: "elementos abajo que no se ven"** (captura en modo oscuro,
   2026-11-08). Se aumentó el relleno inferior y se versionó el CSS; Javier debe confirmar tras
   desplegar. Si sigue, pedir captura.
@@ -34,5 +30,6 @@
 | 2026-11-08 | Lecturas para Raquel: lector con A−/A+, gestión en Admin, aviso en la página de amor | b7d31e2 |
 | 2026-11-09 | Prompt para el agente de los presupuestadores sobre el patrón `claude -p` a demanda (sin código) | — |
 | 2026-11-09 | Creado `.arq/` y `CLAUDE.md` | — |
+| 2026-11-09 | Agente con `claude -p` (Sonnet, esfuerzo medio): mini fichas de películas automáticas con póster, recetas por nombre o desde una foto (traduce y pasa a métrico), conversación de cambios y guardado | (este commit) |
 | 2026-11-09 | Tema Navidad adelantado al 25 de noviembre | 49af518 |
 | 2026-11-09 | Calendario de adviento 2026: 24 casillas (fotos, criptofrases, murdokus, crucigramas, vales, carta final), letras → frase final, Admin para fotos/contenidos/seguimiento, aviso en la página de Raquel | e05af01 |

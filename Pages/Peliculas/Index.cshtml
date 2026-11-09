@@ -3,7 +3,7 @@
 @{ ViewData["Title"] = "Películas"; }
 <div class="cab"><h1>Pelis 🎬</h1></div>
 <div class="ideas-intro pelis">
-    Películas que queremos ver juntos. Cuando veamos una, la marcamos y pasa a la lista de recuerdos.
+    Películas que queremos ver juntos. Cuando veamos una, la marcamos y pasa a la lista de recuerdos.@if (Model.Agente) { <text> Al apuntar una, el agente ✨ le prepara una mini ficha.</text> }
 </div>
 
 <div class="tarjeta">
@@ -28,10 +28,12 @@
         {
             <div class="idea">
                 <form method="post" asp-page-handler="Vista" asp-route-id="@p.Id"><button class="check" title="Ya la hemos visto"></button></form>
+                @if (p.PosterPath != null) { <a href="/Peliculas/Ficha/@p.Id"><img class="poster-mini" src="/Peliculas/Poster/@p.Id" alt="" loading="lazy" /></a> }
                 <div class="crece">
-                    <div class="texto">@p.Titulo</div>
+                    <a class="texto" href="/Peliculas/Ficha/@p.Id" style="color:inherit;display:block">@p.Titulo</a>
+                    @if (p.TieneFicha) { <div class="nota">@p.Anio@(p.Director != null ? $" · {p.Director}" : "")@(p.Duracion is int d ? $" · {d} min" : "")</div> }
                     @if (p.Nota != null) { <div class="nota">@p.Nota</div> }
-                    <div class="meta">La apuntó @p.Autor · @p.Anadida.ToLocalTime().ToString("d MMM yyyy")</div>
+                    <div class="meta">La apuntó @p.Autor · @p.Anadida.ToLocalTime().ToString("d MMM yyyy")@if (Model.EnMarcha.Contains(p.Id)) { <text> · <span class="en-marcha">✨ preparando la ficha…</span></text> } else if (p.TieneFicha) { <text> · <a href="/Peliculas/Ficha/@p.Id">Ficha ›</a></text> }</div>
                 </div>
                 <form method="post" asp-page-handler="Borrar" asp-route-id="@p.Id"><button class="quitar" title="Borrar" data-confirm="¿Borrar esta película?">×</button></form>
             </div>
@@ -46,13 +48,21 @@
         {
             <div class="idea hecha">
                 <form method="post" asp-page-handler="Vista" asp-route-id="@p.Id"><button class="check on" title="Volver a pendiente">✓</button></form>
+                @if (p.PosterPath != null) { <a href="/Peliculas/Ficha/@p.Id"><img class="poster-mini" src="/Peliculas/Poster/@p.Id" alt="" loading="lazy" /></a> }
                 <div class="crece">
-                    <div class="texto">@p.Titulo</div>
+                    <a class="texto" href="/Peliculas/Ficha/@p.Id" style="color:inherit;display:block">@p.Titulo</a>
                     @if (p.Nota != null) { <div class="nota">@p.Nota</div> }
-                    <div class="meta">Vista el @(p.VistaEl?.ToLocalTime().ToString("d MMM yyyy"))</div>
+                    <div class="meta">Vista el @(p.VistaEl?.ToLocalTime().ToString("d MMM yyyy"))@if (p.TieneFicha) { <text> · <a href="/Peliculas/Ficha/@p.Id">Ficha ›</a></text> }</div>
                 </div>
                 <form method="post" asp-page-handler="Borrar" asp-route-id="@p.Id"><button class="quitar" title="Borrar" data-confirm="¿Borrar esta película?">×</button></form>
             </div>
         }
     </div>
+}
+
+@if (Model.EnMarcha.Count > 0)
+{
+    @section Scripts {
+    <script>(() => { let n = 0; const tick = () => { if (++n > 40) return; fetch('/Peliculas?handler=Pendientes').then(r => r.json()).then(j => { if (!j.enMarcha) location.reload(); else setTimeout(tick, 4000); }).catch(() => setTimeout(tick, 6000)); }; setTimeout(tick, 4000); })();</script>
+    }
 }

@@ -169,6 +169,18 @@ public class Pelicula
     public bool Vista { get; set; }
     public DateTime Anadida { get; set; } = DateTime.UtcNow;
     public DateTime? VistaEl { get; set; }
+    // Mini ficha creada por el agente
+    public string? TituloOriginal { get; set; }
+    public int? Anio { get; set; }
+    public string? Director { get; set; }
+    public string? Reparto { get; set; }
+    public string? Genero { get; set; }
+    public int? Duracion { get; set; }
+    public string? Sinopsis { get; set; }
+    public string? Curiosidad { get; set; }
+    public string? PosterPath { get; set; }
+    public DateTime? FichaEl { get; set; }
+    public bool TieneFicha => FichaEl != null;
 }
 
 /// <summary>Una lectura que Javi le deja a Raquel: artículo, cuento, poema… con su texto completo.</summary>
@@ -252,4 +264,33 @@ public class AdvientoCasilla
 
     public bool Resuelta => ResueltaEl != null;
     public bool DaLetra => !string.IsNullOrWhiteSpace(Letra);
+}
+
+public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto }
+public enum EstadoTarea { Pendiente, EnCurso, Lista, Error }
+
+/// <summary>Una petición al agente (claude -p): crear una ficha de película o una receta, con rondas de cambios.</summary>
+public class TareaAgente
+{
+    public int Id { get; set; }
+    public TipoTareaAgente Tipo { get; set; }
+    public EstadoTarea Estado { get; set; } = EstadoTarea.Pendiente;
+    /// <summary>Lo que pidió el usuario al principio: título de la peli, nombre de la receta o notas de la foto.</summary>
+    public string Entrada { get; set; } = "";
+    public string? Notas { get; set; }
+    public string? FotoPath { get; set; }
+    /// <summary>Última propuesta del agente (JSON con el esquema del tipo).</summary>
+    public string? Propuesta { get; set; }
+    /// <summary>Conversación: [{"rol":"usuario"|"agente","texto":"…","fecha":"…"}].</summary>
+    public string Historial { get; set; } = "[]";
+    public string? Error { get; set; }
+    public string Autor { get; set; } = "";
+    public int? PeliculaId { get; set; }
+    public int? RecetaId { get; set; }
+    public int Rondas { get; set; }
+    public int DuracionMs { get; set; }
+    public decimal CosteUsd { get; set; }
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
+    public DateTime? Terminada { get; set; }
+    public DateTime? Aplicada { get; set; }
 }

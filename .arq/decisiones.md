@@ -48,3 +48,22 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Vales: Raquel pulsa "Canjear" y queda la fecha; el tercer vale (peli noruega) va dentro del día 24.
 - Datos de la familia para los pasatiempos: Naia (14, guitarra, "en la parra"), Marcos (14, basket, sobradillo), Elsa (12, corre como un gamo), Miranda (11, la graciosa), Aroa (10, achuchable, baile), Briska (labrador negro, futura perra guía). Se conocieron chateando; cada verano una semana los dos en el norte (Irlanda del Norte, Gales, quizá Finlandia); "big project": casita en el campo con despachito y barracón para toda la familia.
 
+## Agente (claude -p)
+- Opción B elegida (2026-11-09): la app lanza el CLI `claude -p` en segundo plano (`AgenteService`,
+  cola en memoria, tareas en la tabla `TareasAgente`, se retoman al arrancar). Modelo **Sonnet 5.5
+  con esfuerzo medio** (`Agente:Modelo=sonnet`, `Agente:Esfuerzo=medium`), salida estructurada con
+  `--json-schema`, `--no-session-persistence`, `--permission-mode dontAsk`, timeout 240 s. Al
+  lanzar el proceso se quitan `CLAUDECODE` y `CLAUDE_CODE_ENTRYPOINT`.
+- Películas: al apuntar una, la ficha se crea sola y se aplica directamente (título en España,
+  original, año, director, reparto, género, duración, sinopsis sin spoilers, curiosidad). El agente
+  puede usar WebSearch/WebFetch. El póster lo busca la app en Wikipedia (`pageimages` con
+  `pilicense=any`, en y luego es) y lo guarda en `adjuntos/posters`. En `/Peliculas/Ficha/{id}`
+  se le piden cambios en conversación.
+- Recetas: el usuario pide por nombre (+ indicaciones) o sube una foto (la foto puede estar en
+  inglés: el agente la lee con `Read`, traduce, pasa a métrico y escala a las raciones de la lista).
+  La propuesta NO se guarda hasta que el usuario pulsa "Guardar receta"; antes puede pedir cambios
+  (cada ronda manda la propuesta completa + conversación y recibe la receta entera actualizada).
+  Al guardar se reutilizan los ingredientes existentes por nombre (el prompt incluye la lista).
+- Coste orientativo medido: ficha 0,05–0,13 $, receta 0,06–0,15 $ por ronda; 10–25 s.
+- Si no se encuentra el binario, la app sigue funcionando sin los botones ✨.
+

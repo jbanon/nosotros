@@ -1,0 +1,52 @@
+@page "{id:int}"
+@model Love.Pages.Peliculas.FichaModel
+@{ var p = Model.Peli; ViewData["Title"] = p.Titulo; var t = Model.Tarea; }
+<div class="cab"><a class="volver" href="/Peliculas">‹</a><h1>@p.Titulo</h1></div>
+
+@if (Model.EnMarcha)
+{
+    <div class="tarjeta agente-espera"><div class="cocinando">🎬</div><p><b>El agente está preparando la ficha…</b></p><p class="suave">Unos segundos. Esta página se actualiza sola.</p></div>
+    @section Scripts {
+    <script>
+    (() => { const url = location.pathname + '?handler=Estado'; let n = 0;
+      const tick = async () => { try { const r = await fetch(url); const j = await r.json(); if (j.estado === 'Lista' || j.estado === 'Error') { location.reload(); return; } } catch { }
+        if (++n < 60) setTimeout(tick, 3000); };
+      setTimeout(tick, 3000); })();
+    </script>
+    }
+}
+else if (p.TieneFicha)
+{
+    <div class="ficha">
+        @if (p.PosterPath != null) { <img class="poster" src="/Peliculas/Poster/@p.Id" alt="" /> }
+        <div class="crece">
+            @if (p.TituloOriginal != null && !string.Equals(p.TituloOriginal, p.Titulo, StringComparison.OrdinalIgnoreCase)) { <p class="suave" style="margin:0 0 4px;font-style:italic">@p.TituloOriginal</p> }
+            <p style="margin:0 0 6px"><b>@p.Anio</b>@(p.Director != null ? $" · {p.Director}" : "")</p>
+            <p class="suave peq" style="margin:0 0 4px">@p.Genero@(p.Duracion is int d ? $" · {d} min" : "")</p>
+            @if (p.Reparto != null) { <p class="suave peq" style="margin:0">Con @p.Reparto</p> }
+        </div>
+    </div>
+    @if (p.Sinopsis != null) { <div class="tarjeta"><p style="margin:0;line-height:1.45">@p.Sinopsis</p></div> }
+    @if (p.Curiosidad != null) { <div class="aviso mb">💡 @p.Curiosidad</div> }
+    @if (p.Nota != null) { <p class="suave">Nota: @p.Nota · la apuntó @p.Autor</p> }
+}
+else if (t?.Estado == EstadoTarea.Error)
+{
+    <div class="tarjeta"><p class="error">La ficha no ha podido hacerse.</p><p class="suave" style="white-space:pre-line">@t.Error</p></div>
+}
+else
+{
+    <div class="tarjeta"><p class="suave" style="margin:0">Esta película no tiene ficha todavía.</p></div>
+}
+
+@if (!Model.EnMarcha)
+{
+    <partial name="_Conversacion" model="Model.Historial" />
+    @if (Model.Disponible)
+    {
+        <form method="post" asp-page-handler="Cambiar" asp-route-id="@p.Id" class="tarjeta">
+            <label class="campo"><span>@(p.TieneFicha ? "Pídele un cambio al agente" : "Pedir la ficha al agente")</span><input name="texto" placeholder="@(p.TieneFicha ? "Es la versión de 2003, no esa; sinopsis más corta…" : "Alguna pista: año, director… (opcional)")" autocomplete="off" @(p.TieneFicha ? "required" : "") /></label>
+            <button class="btn @(p.TieneFicha ? "" : "primario") ancho">✨ @(p.TieneFicha ? "Cambiar la ficha" : "Crear la ficha")</button>
+        </form>
+    }
+}

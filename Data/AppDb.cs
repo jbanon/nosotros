@@ -24,6 +24,7 @@ public class AppDb : DbContext
     public DbSet<TicketLinea> TicketLineas => Set<TicketLinea>();
     public DbSet<Lectura> Lecturas => Set<Lectura>();
     public DbSet<AdvientoCasilla> Adviento => Set<AdvientoCasilla>();
+    public DbSet<TareaAgente> TareasAgente => Set<TareaAgente>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -44,5 +45,7 @@ public class AppDb : DbContext
         b.Entity<TicketLinea>().HasIndex(l => l.Producto);
         b.Entity<RecetaIngrediente>().Property(g => g.Cantidad).HasConversion<double?>();
         b.Entity<ListaItem>().Property(g => g.Cantidad).HasConversion<double?>();
+        b.Entity<TareaAgente>().Property(t => t.CosteUsd).HasConversion<double>();
+        b.Entity<TareaAgente>().HasIndex(t => t.Estado);
     }
 }

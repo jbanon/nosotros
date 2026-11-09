@@ -8,6 +8,10 @@
 <form method="get" class="mb">
     <input type="search" name="q" value="@Model.Q" placeholder="Buscar receta o ingrediente" />
 </form>
+@if (Model.Agente)
+{
+    <a class="btn ancho mb agente-btn" href="/Menu/Recetas/Agente">✨ Pídesela al agente · por nombre o con una foto</a>
+}
 @if (!Model.Lista.Any())
 {
     <div class="vacio"><span class="ico">🍲</span>No hay recetas@(Model.Q != null ? " con eso" : ""). Pulsa + para crear la primera.</div>

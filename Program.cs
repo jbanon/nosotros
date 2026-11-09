@@ -46,6 +46,9 @@ builder.Services.AddScoped<RecurrenteService>();
 builder.Services.AddScoped<PinAuth>();
 builder.Services.AddScoped<SeedService>();
 builder.Services.AddScoped<AdvientoService>();
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<AgenteService>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<AgenteService>());
 builder.Services.AddAntiforgery(o => o.HeaderName = "RequestVerificationToken");
 
 var app = builder.Build();

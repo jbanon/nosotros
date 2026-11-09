@@ -5,7 +5,8 @@ App privada, solo para móvil, para Javier (`jbanon`, javierbanon@gmail.com) y s
 Es un regalo personal: los textos, el tono y el diseño importan tanto como el código.
 Módulos: página "Para ti" con mensaje diario y declaración; menú semanal con lista de la compra
 por zonas; gastos del mes con histórico y tickets; Ideas para automatizar; Películas que ver;
-Lecturas que Javier le deja a Raquel; Calendario de adviento (diciembre); Admin.
+Lecturas que Javier le deja a Raquel; Calendario de adviento (diciembre); agente `claude -p` para
+fichas de películas y recetas; Admin.
 
 Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
 
@@ -27,8 +28,10 @@ Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
   `GastoService` (mes, histórico), `SugerenciaService` (recetas según historial),
   `RecurrenteService` (productos de ticket recurrentes), `LecturaFormato` (texto → HTML),
   `SeedService`, `ConfigService`, `MensajeService`, `PinAuth`, `AdvientoService` (apertura por
-  fecha, cifrado de criptofrases, rejilla de crucigramas, comprobaciones y pistas).
-- `Pages/Amor` (página de Raquel), `Pages/Menu` (Semana, Lista, Recetas), `Pages/Gastos`
+  fecha, cifrado de criptofrases, rejilla de crucigramas, comprobaciones y pistas), `AgenteService`
+  (BackgroundService que lanza `claude -p`; prompts, esquemas JSON, póster de Wikipedia, crear receta).
+- `Pages/Amor` (página de Raquel), `Pages/Menu` (Semana, Lista, Recetas; `Recetas/Agente` pide recetas
+  al agente), `Pages/Peliculas` (Index, Ficha, Poster), `Pages/Gastos`
   (Index, Editar, Historico, Recurrentes), `Pages/Ideas`, `Pages/Peliculas`, `Pages/Lecturas`,
   `Pages/Admin` (Index, Config, Mensajes, Fechas, Lecturas, Adviento), `Pages/Adviento` (Index,
   Dia con handlers JSON, Foto; JS en `wwwroot/js/adviento.js`), `Pages/Login`.
@@ -50,11 +53,15 @@ dotnet ef migrations add Nombre -o Data/Migrations
 - No hay navegador ni Chromium utilizable aquí; el diseño se valida a ciegas y Javier manda
   capturas.
 - PIN locales en `appsettings.Local.json` (ignorado). Preguntar a Javier si hacen falta.
+- Agente: en local usa `~/.local/bin/claude` con la sesión de Javier. Si se arranca la app desde
+  Claude Code, el servicio ya limpia `CLAUDECODE`/`CLAUDE_CODE_ENTRYPOINT`. Log: "Agente: tarea N".
 
 ## Producción
 - Servidor Seppala 88.99.84.194, dominio `https://nosotros.winsoft.es`, código en
   `/srv/nosotros`, app publicada en `/opt/love`, servicio systemd `love.service` como `www-data`,
   PIN y entorno en `/etc/love.env`. HTTPS no es alcanzable desde esta máquina de desarrollo.
+- Agente en producción: `/etc/love.env` necesita `Agente__Claude=/ruta/al/claude` y
+  `CLAUDE_CODE_OAUTH_TOKEN=…` (de `claude setup-token`); ver hilo abierto en `tareas.md`.
 - Despliega otro agente de Claude Code que vive en ese servidor. Tras cada push, el mensaje
   para Javier termina con: `cd /srv/nosotros && git pull && ./deploy/publicar.sh`.
 - Ese agente también hace commits (carpeta `deploy/`): antes de hacer push, `git fetch` y

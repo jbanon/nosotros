@@ -378,15 +378,45 @@ namespace Love.Data.Migrations
                     b.Property<DateTime>("Anadida")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("Anio")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Autor")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Curiosidad")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Director")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("Duracion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("FichaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Genero")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nota")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PosterPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Reparto")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Sinopsis")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TituloOriginal")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Vista")
@@ -508,6 +538,73 @@ namespace Love.Data.Migrations
                     b.HasIndex("SemanaId");
 
                     b.ToTable("SemanaRecetas");
+                });
+
+            modelBuilder.Entity("Love.Models.TareaAgente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("Aplicada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Autor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("CosteUsd")
+                        .HasColumnType("REAL");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DuracionMs")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Entrada")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FotoPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Historial")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notas")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PeliculaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Propuesta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("RecetaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Rondas")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("Terminada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Estado");
+
+                    b.ToTable("TareasAgente");
                 });
 
             modelBuilder.Entity("Love.Models.TicketLinea", b =>
