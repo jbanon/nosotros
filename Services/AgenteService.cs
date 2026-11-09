@@ -228,6 +228,8 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
         if (dirExtra != null) { psi.ArgumentList.Add("--add-dir"); psi.ArgumentList.Add(dirExtra); }
         // Si la app se lanzó desde una sesión de Claude Code, estas variables confunden al CLI hijo.
         psi.Environment.Remove("CLAUDECODE"); psi.Environment.Remove("CLAUDE_CODE_ENTRYPOINT");
+        // Siempre con la suscripción de Javier (sesión / token de `claude setup-token`), nunca con la API de pago.
+        psi.Environment.Remove("ANTHROPIC_API_KEY"); psi.Environment.Remove("ANTHROPIC_AUTH_TOKEN");
         var token = cfg["Agente:Token"];
         if (!string.IsNullOrWhiteSpace(token)) psi.Environment["CLAUDE_CODE_OAUTH_TOKEN"] = token;
 

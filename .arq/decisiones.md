@@ -65,5 +65,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   (cada ronda manda la propuesta completa + conversación y recibe la receta entera actualizada).
   Al guardar se reutilizan los ingredientes existentes por nombre (el prompt incluye la lista).
 - Coste orientativo medido: ficha 0,05–0,13 $, receta 0,06–0,15 $ por ronda; 10–25 s.
+- El agente usa SIEMPRE la suscripción de Javier (sesión del CLI en local; en el servidor el token OAuth de
+  `claude setup-token` en `CLAUDE_CODE_OAUTH_TOKEN`), nunca la API de pago: el proceso hijo arranca sin
+  `ANTHROPIC_API_KEY` ni `ANTHROPIC_AUTH_TOKEN`. El `total_cost_usd` que se guarda es solo la estimación del CLI.
 - Si no se encuentra el binario, la app sigue funcionando sin los botones ✨.
 
