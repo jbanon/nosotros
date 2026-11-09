@@ -60,7 +60,7 @@ dotnet ef migrations add Nombre -o Data/Migrations
 - Servidor Seppala 88.99.84.194, dominio `https://nosotros.winsoft.es`, código en
   `/srv/nosotros`, app publicada en `/opt/love`, servicio systemd `love.service` como `www-data`,
   PIN y entorno en `/etc/love.env`. HTTPS no es alcanzable desde esta máquina de desarrollo.
-- Agente en producción: `/etc/love.env` necesita `Agente__Claude=/ruta/al/claude` y
+- Agente en producción: `/etc/love.env` necesita `Agente__Claude=/home/dev/.local/bin/claude` y
   `CLAUDE_CODE_OAUTH_TOKEN=…` (de `claude setup-token`); ver hilo abierto en `tareas.md`.
 - Despliega otro agente de Claude Code que vive en ese servidor. Tras cada push, el mensaje
   para Javier termina con: `cd /srv/nosotros && git pull && ./deploy/publicar.sh`.
