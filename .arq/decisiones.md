@@ -25,6 +25,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 ## Página de Raquel
 - Declaración permanente bajo la tarjeta del día, editable en Admin → Configuración.
 - Pie: "N días juntos" (sin "Llevamos").
+- Tema Navidad desde el 25 de noviembre (coincide con el aviso "Algo se está preparando…" del adviento) hasta el 6 de enero.
 - Tema otoño: tonos suaves (`--fondo-1:#f9ead4` … `--acento-amor:#a9442a`), hojas 🍂🍁 sin
   la verde. Modo oscuro vía `prefers-color-scheme` en las páginas normales.
 - Lecturas: Javier pega el texto (o sube .txt) en Admin → Lecturas; lector a pantalla completa
