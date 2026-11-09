@@ -95,6 +95,7 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             await CargarRecetas(await File.ReadAllTextAsync(Ruta("recetas.json")));
 
         await EscalarRecetas();
+        await CargarAdviento();
     }
 
     /// <summary>Una sola vez: pasa todas las recetas a las raciones de la lista (12) multiplicando sus cantidades.</summary>
@@ -147,5 +148,35 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         }
         await db.SaveChangesAsync();
         return n;
+    }
+
+    /// <summary>Crea las casillas del calendario de adviento de Seed/adviento.json si aún no existen para ese año.</summary>
+    async Task CargarAdviento()
+    {
+        var ruta = Ruta("adviento.json");
+        if (!File.Exists(ruta)) return;
+        using var doc = System.Text.Json.JsonDocument.Parse(await File.ReadAllTextAsync(ruta));
+        var raiz = doc.RootElement;
+        int anio = raiz.GetProperty("anio").GetInt32();
+        if (await db.Adviento.AnyAsync(c => c.Anio == anio)) return;
+        if (raiz.TryGetProperty("frase", out var frase) && await db.Configs.FindAsync(ConfigClaves.AdvientoFrase) == null)
+            db.Configs.Add(new Config { Clave = ConfigClaves.AdvientoFrase, Valor = frase.GetString() ?? "" });
+        foreach (var c in raiz.GetProperty("casillas").EnumerateArray())
+        {
+            db.Adviento.Add(new AdvientoCasilla
+            {
+                Anio = anio,
+                Dia = c.GetProperty("dia").GetInt32(),
+                Tipo = Enum.Parse<TipoCasilla>(c.GetProperty("tipo").GetString()!),
+                Titulo = c.GetProperty("titulo").GetString() ?? "",
+                Intro = c.TryGetProperty("intro", out var i) ? i.GetString() : null,
+                Letra = c.TryGetProperty("letra", out var l) ? l.GetString() : null,
+                Pregunta = c.TryGetProperty("pregunta", out var p) ? p.GetString() : null,
+                Respuesta = c.TryGetProperty("respuesta", out var r) ? r.GetString() : null,
+                Datos = c.TryGetProperty("datos", out var d) ? d.GetRawText() : "{}",
+            });
+        }
+        await db.SaveChangesAsync();
+        log.LogInformation("Calendario de adviento {Anio} creado", anio);
     }
 }

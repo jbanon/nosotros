@@ -17,6 +17,67 @@ namespace Love.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.14");
 
+            modelBuilder.Entity("Love.Models.AdvientoCasilla", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("AbiertaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Anio")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("CanjeadoEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Datos")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Dia")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Estado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotoPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Intro")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Letra")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Pistas")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Pregunta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Respuesta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ResueltaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Anio", "Dia")
+                        .IsUnique();
+
+                    b.ToTable("Adviento");
+                });
+
             modelBuilder.Entity("Love.Models.Config", b =>
                 {
                     b.Property<string>("Clave")

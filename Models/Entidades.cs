@@ -219,4 +219,37 @@ public static class ConfigClaves
     public const string Declaracion = "Declaracion";
     /// <summary>Marca de que las recetas existentes ya se escalaron a las raciones de la lista.</summary>
     public const string RecetasEscaladas = "RecetasEscaladas";
+    /// <summary>Frase final del calendario de adviento (con espacios; las letras salen de las casillas).</summary>
+    public const string AdvientoFrase = "AdvientoFrase";
+}
+
+public enum TipoCasilla { Foto, Criptofrase, Murdoku, Crucigrama, Vale, Final }
+
+/// <summary>Una casilla del calendario de adviento (1..24 de diciembre de un año).</summary>
+public class AdvientoCasilla
+{
+    public int Id { get; set; }
+    public int Anio { get; set; }
+    public int Dia { get; set; }
+    public TipoCasilla Tipo { get; set; }
+    public string Titulo { get; set; } = "";
+    /// <summary>Texto de Javi para ese día: presentación, pie de foto, dedicatoria del vale…</summary>
+    public string? Intro { get; set; }
+    /// <summary>Contenido del pasatiempo en JSON (frase, pistas, palabras, solución…).</summary>
+    public string Datos { get; set; } = "{}";
+    /// <summary>Letra de la frase final que se gana al resolver la casilla.</summary>
+    public string? Letra { get; set; }
+    public string? FotoPath { get; set; }
+    /// <summary>Pregunta opcional de una palabra para desvelar la foto.</summary>
+    public string? Pregunta { get; set; }
+    public string? Respuesta { get; set; }
+    /// <summary>Progreso guardado del pasatiempo (JSON del navegador).</summary>
+    public string? Estado { get; set; }
+    public int Pistas { get; set; }
+    public DateTime? AbiertaEl { get; set; }
+    public DateTime? ResueltaEl { get; set; }
+    public DateTime? CanjeadoEl { get; set; }
+
+    public bool Resuelta => ResueltaEl != null;
+    public bool DaLetra => !string.IsNullOrWhiteSpace(Letra);
 }

@@ -1,6 +1,6 @@
 (() => {
   // --- Partículas de la página de amor ---
-  const amor = document.querySelector('.amor');
+  const amor = document.querySelector('.amor, .adviento');
   if (amor) {
     const cont = document.getElementById('particulas');
     const r = (a, b) => a + Math.random() * (b - a);

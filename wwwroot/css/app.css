@@ -358,3 +358,143 @@ details.ticket[open] summary::before { rotate: 90deg; }
 @keyframes volar { 0%,100% { translate: 0 0; } 50% { translate: 60px -40px; } }
 @keyframes estela { 0% { transform: translate(0,0) scale(.6); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(1.4); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .particulas, .corazon, .login-logo, .especial-cab .emoji { animation: none !important; } .particulas span { display: none; } }
+
+/* ===== Calendario de adviento ===== */
+.adviento { position: relative; min-height: 100dvh; padding: 16px 18px calc(var(--nav-alto) + env(safe-area-inset-bottom) + 28px); overflow: hidden; color: var(--texto-amor);
+  background: linear-gradient(170deg, var(--fondo-1) 0%, var(--fondo-2) 55%, var(--fondo-3) 100%); }
+.adviento > :not(.cielo):not(.particulas) { position: relative; z-index: 2; width: 100%; max-width: 560px; margin-left: auto; margin-right: auto; }
+.adviento .cielo, .adviento .particulas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.adv-cab { display: flex; align-items: center; gap: 10px; padding: 26px 0 10px; }
+.adv-cab .volver { font-size: 1.7rem; line-height: 1; padding: 4px 10px 4px 0; color: inherit; opacity: .85; }
+.adv-cab h1 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.7rem; line-height: 1.1; margin: 0; }
+.adv-sobre { margin: 0 0 2px; font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+.adv-progreso { text-align: center; background: var(--tarjeta-amor); border: 1px solid rgba(255,255,255,.25); border-radius: 14px; padding: 6px 10px; line-height: 1; min-width: 58px; }
+.adv-progreso b { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--acento-amor); }
+.adv-progreso span { font-size: .85rem; opacity: .8; } .adv-progreso small { display: block; font-size: .6rem; text-transform: uppercase; letter-spacing: .08em; opacity: .7; margin-top: 2px; }
+.adv-nota { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; line-height: 1.35; opacity: .9; margin: 4px 0 16px; }
+.adv-rejilla { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.adv-casilla { aspect-ratio: 1; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: inherit;
+  background: var(--tarjeta-amor); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform .15s; position: relative; overflow: hidden; }
+.adv-casilla:active { transform: scale(.95); }
+.adv-casilla .num { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.7rem; line-height: 1; }
+.adv-casilla .ico { font-size: 1.15rem; line-height: 1; }
+.adv-casilla.cerrada { opacity: .55; background: rgba(0,0,0,.18); }
+.adv-casilla.cerrada .candado { color: var(--acento-amor); font-size: .9rem; opacity: .8; }
+.adv-casilla.abierta { background: rgba(255,255,255,.22); }
+.adv-casilla.hoy { border-color: var(--acento-amor); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acento-amor) 35%, transparent), 0 8px 30px rgba(0,0,0,.25); animation: respirar 2.2s ease-in-out infinite; opacity: 1; }
+.adv-casilla.resuelta .letra { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.5rem; line-height: 1; color: var(--acento-amor); text-shadow: 0 0 12px color-mix(in srgb, var(--acento-amor) 60%, transparent); }
+.adv-casilla.resuelta::after { content: "✓"; position: absolute; top: 5px; right: 8px; font-size: .7rem; opacity: .7; }
+.adv-casilla.canjeado::after { content: "🎟️"; opacity: 1; }
+.adv-casilla.final { background: linear-gradient(135deg, color-mix(in srgb, var(--acento-amor) 55%, transparent), rgba(255,255,255,.18)); border-color: var(--acento-amor); }
+.adv-casilla.final.cerrada { opacity: .75; }
+
+.adviento.dia { justify-content: flex-start; }
+.adv-intro { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; line-height: 1.4; margin: 4px 0 16px; }
+.adv-intro p { margin: 0 0 .5em; }
+.adv-tarjeta { background: var(--tarjeta-amor); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.25); border-radius: 22px; padding: 18px 16px; margin-bottom: 14px; box-shadow: 0 16px 50px rgba(0,0,0,.18); }
+.adv-btn { color: var(--texto-amor); background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); }
+.adv-btn.primario { background: var(--acento-amor); border-color: var(--acento-amor); color: #2a1b10; font-weight: 800; }
+.adv-btn.fantasma { background: transparent; border-color: transparent; color: var(--acento-amor); }
+.adv-acciones { display: flex; gap: 10px; justify-content: center; margin: 2px 0 6px; }
+.adv-acciones .primario { flex: 1; }
+.adv-msg { text-align: center; min-height: 1.4em; font-weight: 700; margin: 4px 0 10px; }
+.adv-msg.mal { color: #ffb4a8; } .adv-msg.bien { color: var(--acento-amor); }
+.oculto { display: none !important; }
+.centrado { text-align: center; }
+.suave2 { opacity: .8; font-size: .92rem; }
+.cerrada-msg { text-align: center; padding: 34px 20px; }
+.cerrada-msg .grande { font-size: 3rem; display: block; margin-bottom: 10px; }
+.cerrada-msg .msg { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; line-height: 1.3; margin: 0 0 8px; }
+.cerrada-msg .btn { margin-top: 16px; }
+.teclado-oculto { position: fixed; opacity: 0; pointer-events: none; left: 0; bottom: 0; width: 1px; height: 1px; }
+.preview-aviso a { color: inherit; text-decoration: underline; }
+
+/* Premio */
+.adv-premio { text-align: center; padding: 22px 16px; margin-top: 10px; background: linear-gradient(160deg, color-mix(in srgb, var(--acento-amor) 35%, transparent), rgba(255,255,255,.12)); border: 1px solid var(--acento-amor); border-radius: 22px; animation: aparecer .8s ease both; }
+.letra-grande { font-family: 'Cormorant Garamond', serif; font-size: 5rem; font-weight: 700; line-height: 1; color: var(--acento-amor); text-shadow: 0 0 30px color-mix(in srgb, var(--acento-amor) 70%, transparent); margin: 6px 0 10px; }
+.adv-premio .btn { margin-top: 12px; }
+.adv-confeti { position: fixed; top: -20px; z-index: 50; border-radius: 2px; pointer-events: none; animation-name: caer, girar; animation-timing-function: linear, linear; animation-iteration-count: 1; animation-fill-mode: forwards; }
+
+/* Criptofrase */
+.cripto-pista { margin: 0 0 12px; font-style: italic; opacity: .85; font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; }
+.cripto { display: flex; flex-wrap: wrap; gap: 14px 18px; justify-content: center; }
+.cripto-palabra { display: inline-flex; gap: 3px; }
+.cripto .celda, .cripto .signo { width: 30px; display: inline-flex; flex-direction: column; align-items: center; }
+.cripto .celda b { width: 28px; height: 34px; border-bottom: 2px solid rgba(255,255,255,.55); display: flex; align-items: flex-end; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; line-height: 1; padding-bottom: 3px; }
+.cripto .celda i { font-style: normal; font-size: .62rem; font-weight: 800; opacity: .7; margin-top: 3px; }
+.cripto .celda.llena b { color: var(--acento-amor); }
+.cripto .celda.activa b { border-bottom-color: var(--acento-amor); background: rgba(255,255,255,.14); border-radius: 6px 6px 0 0; }
+.cripto .signo { width: 14px; justify-content: flex-end; height: 34px; font-weight: 700; }
+.cripto-solucion { text-align: center; margin: 18px 0 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.4rem; color: var(--acento-amor); }
+.juego.resuelto .cripto .celda b { border-bottom-color: transparent; }
+
+/* Crucigrama */
+.cruci { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 3px; max-width: calc(var(--cols) * 44px); margin: 0 auto 16px; }
+.cruci .negra { aspect-ratio: 1; }
+.cruci .celda { aspect-ratio: 1; background: rgba(255,255,255,.9); color: #2a1b10; border-radius: 6px; position: relative; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.35rem; }
+.cruci .celda i { position: absolute; top: 1px; left: 3px; font-style: normal; font-size: .55rem; font-weight: 800; opacity: .7; }
+.cruci .celda.en-palabra { background: #fff3d0; }
+.cruci .celda.activa { background: var(--acento-amor); color: #2a1b10; }
+.cruci .celda.dorada { box-shadow: inset 0 0 0 3px var(--acento-amor); }
+.cruci .celda.dorada::after { content: "★"; position: absolute; right: 2px; bottom: 0; font-size: .5rem; color: var(--acento-amor); }
+.cruci-defs h3 { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; opacity: .75; margin: 10px 0 4px; }
+.cruci-defs .def { margin: 0; padding: 7px 10px; border-radius: 10px; font-size: .98rem; line-height: 1.3; cursor: pointer; }
+.cruci-defs .def b { color: var(--acento-amor); margin-right: 4px; }
+.cruci-defs .def.activa { background: rgba(255,255,255,.14); }
+
+/* Murdoku */
+.murdoku-caso { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; line-height: 1.35; margin: 0 0 10px; }
+.murdoku-pistas { margin: 0 0 10px; padding-left: 22px; line-height: 1.4; }
+.murdoku-pistas li { margin-bottom: 6px; }
+.murdoku-remate { font-weight: 800; color: var(--acento-amor); margin: 0 0 14px; line-height: 1.35; }
+.murdoku-ayuda { font-size: .8rem; opacity: .75; margin: 0 0 8px; }
+.murdoku-grids { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+.mgrid .mtit { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; opacity: .75; margin-bottom: 4px; font-weight: 800; }
+.mgrid table { border-collapse: separate; border-spacing: 3px; width: 100%; table-layout: fixed; }
+.mgrid th { font-size: .68rem; font-weight: 700; opacity: .9; text-align: left; padding: 0 4px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mgrid tr th:first-child { width: 28%; }
+.mgrid tr:first-child th { text-align: center; vertical-align: bottom; padding-bottom: 2px; }
+.mgrid td { height: 38px; background: rgba(255,255,255,.14); border-radius: 8px; text-align: center; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
+.mgrid td.x { color: #ffb4a8; } .mgrid td.v { color: var(--acento-amor); background: rgba(255,255,255,.26); }
+.murdoku-acusacion h3 { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; opacity: .75; margin: 0 0 8px; }
+.murdoku-acusacion .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.adviento .chip { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.3); color: inherit; font-size: .85rem; padding: 7px 12px; }
+.adviento .chip.on { background: var(--acento-amor); border-color: var(--acento-amor); color: #2a1b10; }
+.murdoku-explica { margin: 14px 0 0; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.12); font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; line-height: 1.4; }
+
+/* Foto */
+.foto-caja { padding: 10px; }
+.adv-foto { margin: 0; border-radius: 16px; overflow: hidden; background: rgba(0,0,0,.2); }
+.adv-foto img { display: block; width: 100%; max-height: 70vh; object-fit: contain; transition: filter 1.4s ease; }
+.adv-foto.velada img { filter: blur(22px) saturate(1.2); transform: scale(1.08); }
+.adv-sin-foto { text-align: center; padding: 40px 10px; font-size: 1rem; opacity: .8; line-height: 1.6; }
+.adv-sin-foto::first-line { font-size: 2.4rem; }
+.foto-reto { padding: 12px 6px 4px; text-align: center; }
+.foto-reto .pregunta { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin: 0 0 10px; }
+.foto-reto .fila { display: flex; gap: 8px; }
+.adviento input { background: rgba(255,255,255,.14); color: inherit; border-color: rgba(255,255,255,.3); }
+.adviento input::placeholder { color: inherit; opacity: .5; }
+.adviento input:focus { outline-color: var(--acento-amor); }
+.respuesta-ok { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--acento-amor); margin: 6px 0; }
+
+/* Vale */
+.vale .vale-borde { border: 2px dashed var(--acento-amor); border-radius: 16px; padding: 22px 16px; text-align: center; margin-bottom: 14px; background: rgba(255,255,255,.06); }
+.vale-ico { font-size: 2.4rem; display: block; }
+.vale-titulo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; line-height: 1.2; margin: 8px 0 6px; }
+.vale-firma { margin: 0; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+.canjeado { text-align: center; font-weight: 700; color: var(--acento-amor); margin: 0; }
+
+/* Final */
+.frase-final .frase { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; margin: 10px 0; }
+.frase-final .palabra { display: inline-flex; gap: 4px; }
+.frase-final .hueco { width: 30px; height: 40px; border-bottom: 2px solid rgba(255,255,255,.5); display: flex; align-items: flex-end; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 700; color: var(--acento-amor); text-shadow: 0 0 14px color-mix(in srgb, var(--acento-amor) 60%, transparent); padding-bottom: 2px; }
+.frase-final .hueco:not(.llena) { border-bottom-style: dashed; }
+.collage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
+.collage a { display: block; aspect-ratio: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,.25); }
+.collage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carta { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; line-height: 1.45; padding: 22px 20px; }
+.carta p { margin: 0 0 .8em; } .carta p:last-child { margin: 0; text-align: right; }
+.carta p:first-child::first-letter { font-size: 2.4em; float: left; line-height: .85; padding: .06em .08em 0 0; color: var(--acento-amor); font-weight: 700; }
+
+/* Aviso en la página de amor */
+.adviento-aviso .ico { font-size: 1.8rem; }

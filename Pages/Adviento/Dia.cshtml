@@ -1,0 +1,149 @@
+@page "{dia:int}"
+@model Love.Pages.Adviento.DiaModel
+@{
+    var c = Model.Casilla;
+    ViewData["Title"] = $"Casilla {c.Dia}";
+    var volver = "/Adviento" + (Model.Preview ? $"?fecha={Model.Hoy:yyyy-MM-dd}" : "");
+    string tipoNombre = c.Tipo switch { TipoCasilla.Foto => "Foto", TipoCasilla.Criptofrase => "Criptofrase", TipoCasilla.Murdoku => "Murdoku", TipoCasilla.Crucigrama => "Crucigrama", TipoCasilla.Vale => "Vale", _ => "Nochebuena" };
+}
+<div class="adviento dia" data-particulas="nieve">
+    <div class="cielo"></div>
+    <div class="particulas" id="particulas"></div>
+
+    <header class="adv-cab">
+        <a class="volver" href="@volver" aria-label="Volver">‹</a>
+        <div class="crece">
+            <p class="adv-sobre">@c.Dia de diciembre · @tipoNombre</p>
+            <h1>@(Model.Cerrada ? "Todavía no" : c.Titulo)</h1>
+        </div>
+        @if (!Model.Cerrada && c.DaLetra) { <div class="adv-progreso"><b>@Model.Letras</b><span>/@Model.Total</span><small>letras</small></div> }
+    </header>
+
+    @if (Model.Cerrada)
+    {
+        <section class="adv-tarjeta cerrada-msg">
+            <span class="grande">🔒</span>
+            <p class="msg">@Model.MensajeCerrada</p>
+            <p class="suave2">Esta casilla se abre el @AdvientoService.FechaDe(c).ToString("d 'de' MMMM").</p>
+            <a class="btn adv-btn" href="@volver">Volver al calendario</a>
+        </section>
+    }
+    else
+    {
+        if (!string.IsNullOrWhiteSpace(c.Intro) && c.Tipo != TipoCasilla.Final)
+        {
+            <section class="adv-intro">@foreach (var p in c.Intro.Replace("\r", "").Split('\n', StringSplitOptions.RemoveEmptyEntries)) { <p>@p</p> }</section>
+        }
+
+        if (c.Tipo == TipoCasilla.Foto)
+        {
+            var velada = !string.IsNullOrWhiteSpace(c.Pregunta) && !c.Resuelta;
+            <section class="adv-tarjeta foto-caja">
+                @if (c.FotoPath != null)
+                {
+                    <figure class="adv-foto @(velada ? "velada" : "")" id="foto"><img src="/Adviento/Foto/@c.Id" alt="" /></figure>
+                }
+                else
+                {
+                    <div class="adv-sin-foto">📷<br />@(User.EsAdmin() ? "Aún no has subido la foto de este día." : "La foto está de camino…")</div>
+                }
+                @if (!string.IsNullOrWhiteSpace(c.Pregunta))
+                {
+                    <div id="juego" class="foto-reto">
+                        <p class="pregunta">@c.Pregunta</p>
+                        @if (!c.Resuelta)
+                        {
+                            <div class="fila">
+                                <input id="respuesta" class="crece" autocomplete="off" autocapitalize="characters" placeholder="Una palabra" />
+                                <button class="btn adv-btn primario" id="comprobar" type="button">Ver</button>
+                            </div>
+                            <button class="btn adv-btn pequeno fantasma" id="pista" type="button">Una pista</button>
+                            <p class="adv-msg" id="msg"></p>
+                        }
+                        else { <p class="respuesta-ok">@c.Respuesta</p> }
+                    </div>
+                }
+            </section>
+        }
+        else if (c.Tipo == TipoCasilla.Vale)
+        {
+            <section class="adv-tarjeta vale">
+                <div class="vale-borde">
+                    <span class="vale-ico">🎟️</span>
+                    <p class="vale-titulo">@c.Titulo</p>
+                    <p class="vale-firma">Firmado: @Model.Firma</p>
+                </div>
+                @if (c.CanjeadoEl == null)
+                {
+                    <form method="post" asp-page-handler="Canjear" asp-route-dia="@c.Dia" asp-route-fecha="@(Model.Preview ? Model.Hoy.ToString("yyyy-MM-dd") : null)" data-confirm="¿Canjear el vale ahora? Le llegará el aviso a @Model.Firma.">
+                        <button class="btn adv-btn primario ancho">Canjear este vale</button>
+                    </form>
+                }
+                else { <p class="canjeado">Canjeado el @c.CanjeadoEl.Value.ToLocalTime().ToString("d 'de' MMMM"). ¡A cobrarlo!</p> }
+            </section>
+        }
+        else if (c.Tipo == TipoCasilla.Final)
+        {
+            var completa = Model.FraseFinal.All(p => p.All(l => l.letra != null));
+            <section class="adv-tarjeta frase-final">
+                <p class="adv-sobre centrado">Las letras de estos 24 días</p>
+                <div class="frase">
+                    @foreach (var palabra in Model.FraseFinal)
+                    {
+                        <span class="palabra">@foreach (var l in palabra) { <a class="hueco @(l.letra != null ? "llena" : "")" href="/Adviento/Dia/@l.dia" title="Día @l.dia">@(l.letra ?? "")</a> }</span>
+                    }
+                </div>
+                @if (!completa) { <p class="suave2 centrado">Te faltan letras: toca un hueco para ir a su día.</p> }
+            </section>
+            if (Model.Fotos.Count > 0)
+            {
+                <section class="collage">
+                    @foreach (var f in Model.Fotos) { <a href="/Adviento/Dia/@f.Dia"><img src="/Adviento/Foto/@f.Id" alt="" /></a> }
+                </section>
+            }
+            if (!string.IsNullOrWhiteSpace(c.Intro))
+            {
+                <section class="adv-tarjeta carta">@foreach (var p in c.Intro.Replace("\r", "").Split('\n', StringSplitOptions.RemoveEmptyEntries)) { <p>@p</p> }</section>
+            }
+            var vale = AdvientoService.Json(c)["vale"]?.GetValue<string>();
+            if (!string.IsNullOrWhiteSpace(vale))
+            {
+                <section class="adv-tarjeta vale"><div class="vale-borde"><span class="vale-ico">🎟️</span><p class="vale-titulo">@vale</p><p class="vale-firma">Firmado: @Model.Firma</p></div></section>
+            }
+        }
+        else
+        {
+            <section class="adv-tarjeta juego" id="juego" data-tipo="@c.Tipo"></section>
+            <div class="adv-acciones" id="acciones">
+                <button class="btn adv-btn primario" id="comprobar" type="button">Comprobar</button>
+                <button class="btn adv-btn fantasma" id="pista" type="button">Una pista</button>
+            </div>
+            <p class="adv-msg" id="msg"></p>
+        }
+
+        if (c.DaLetra)
+        {
+            <section class="adv-premio @(c.Resuelta ? "" : "oculto")" id="premio">
+                <p class="adv-sobre centrado">Tu letra de hoy</p>
+                <div class="letra-grande">@c.Letra</div>
+                <p class="suave2 centrado">Letra <b>@Model.Posicion</b> de @Model.Total de la frase final. Llevas <b id="n-letras">@Model.Letras</b>.</p>
+                <a class="btn adv-btn" href="@volver">Volver al calendario</a>
+            </section>
+        }
+        else if (c.Tipo != TipoCasilla.Final)
+        {
+            <p class="centrado"><a class="btn adv-btn" href="@volver">Volver al calendario</a></p>
+        }
+    }
+
+    @if (Model.Preview) { <div class="preview-aviso">Vista previa · nada se guarda · <a href="/Admin/Adviento/Editar/@c.Dia">editar esta casilla</a></div> }
+    else if (User.EsAdmin()) { <div class="preview-aviso">Vista de admin · nada se guarda · <a href="/Admin/Adviento/Editar/@c.Dia">editar</a></div> }
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    @if (!Model.Cerrada)
+    {
+        <script id="datos" type="application/json">@Html.Raw(Model.DatosJson)</script>
+        <script src="/js/adviento.js" asp-append-version="true"></script>
+    }
+}

@@ -1,0 +1,52 @@
+@page "{dia:int}"
+@model Love.Pages.Admin.Adviento.EditarModel
+@{ var c = Model.Casilla; ViewData["Title"] = $"Casilla {c.Dia}"; }
+<div class="cab"><a class="volver" href="/Admin/Adviento">‹</a><h1>Casilla @c.Dia</h1><a class="accion" href="/Adviento/Dia/@c.Dia?fecha=@(new DateOnly(c.Anio, 12, c.Dia).ToString("yyyy-MM-dd"))">Vista previa</a></div>
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Casilla.Id" />
+    <input type="hidden" asp-for="Casilla.FotoPath" />
+    <div asp-validation-summary="All" class="error"></div>
+    <label class="campo"><span>Título</span><input asp-for="Casilla.Titulo" /></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Tipo</span>
+            <select asp-for="Casilla.Tipo">
+                @foreach (var t in Enum.GetValues<TipoCasilla>()) { <option value="@t" selected="@(t == c.Tipo)">@t</option> }
+            </select></label>
+        <label class="campo"><span>Letra que gana</span><input asp-for="Casilla.Letra" maxlength="1" autocapitalize="characters" placeholder="(ninguna)" /></label>
+    </div>
+    <label class="campo"><span>Texto tuyo · intro, pie de foto, dedicatoria del vale o carta final</span><textarea asp-for="Casilla.Intro" rows="5"></textarea></label>
+
+    <div class="tarjeta">
+        <h2 class="mb">Foto</h2>
+        @if (c.FotoPath != null)
+        {
+            <p><img src="/Adviento/Foto/@c.Id" class="miniatura" style="width:120px;height:120px" alt="" /></p>
+            <label class="chip"><input type="checkbox" asp-for="QuitarFoto" style="display:inline" /> Quitar la foto</label>
+        }
+        <label class="campo mt"><span>@(c.FotoPath != null ? "Sustituir foto" : "Subir foto")</span><input type="file" asp-for="Foto" accept="image/*" /></label>
+        <p class="suave peq" style="margin-bottom:0">Las casillas de tipo Foto la muestran a lo grande. En cualquier otra casilla, la foto sale en el collage del día 24.</p>
+    </div>
+
+    <div class="tarjeta">
+        <h2 class="mb">Reto de la foto (opcional)</h2>
+        <label class="campo"><span>Pregunta</span><input asp-for="Casilla.Pregunta" placeholder="¿En qué país estábamos?" /></label>
+        <label class="campo"><span>Respuesta (una palabra; da igual mayúsculas y tildes)</span><input asp-for="Casilla.Respuesta" placeholder="Gales" /></label>
+        <p class="suave peq" style="margin-bottom:0">Con pregunta, la foto sale borrosa hasta que acierta y la letra se gana al acertar. Sin pregunta, la foto se ve directamente y la letra se gana al abrir.</p>
+    </div>
+
+    <details class="ticket">
+        <summary>Datos del pasatiempo (JSON)</summary>
+        <textarea asp-for="Casilla.Datos" rows="14" style="font-family:monospace;font-size:.8rem;margin-top:10px"></textarea>
+        <p class="suave peq">Criptofrase: <code>frase</code>, <code>pista</code>. Murdoku: <code>caso</code>, <code>categorias</code>, <code>pistas</code>, <code>remate</code>, <code>solucion</code>, <code>explicacion</code>. Crucigrama: <code>palabras</code> (palabra, dir H/V, fila, col, pista) y <code>letra</code> (fila, col). Final: <code>vale</code>.</p>
+    </details>
+
+    <button class="btn primario ancho mt">Guardar</button>
+</form>
+
+<div class="tarjeta mt">
+    <h2 class="mb">Seguimiento</h2>
+    <p class="suave">Abierta: <b>@(c.AbiertaEl?.ToLocalTime().ToString("d MMM HH:mm") ?? "no")</b> · Resuelta: <b>@(c.ResueltaEl?.ToLocalTime().ToString("d MMM HH:mm") ?? "no")</b> · Pistas: <b>@c.Pistas</b>@if (c.Tipo == TipoCasilla.Vale) { <text> · Canjeado: <b>@(c.CanjeadoEl?.ToLocalTime().ToString("d MMM HH:mm") ?? "no")</b></text> }</p>
+    <form method="post" asp-page-handler="Reiniciar" asp-route-dia="@c.Dia" data-confirm="¿Borrar el progreso de esta casilla?">
+        <button class="btn peligro pequeno">Reiniciar esta casilla</button>
+    </form>
+</div>

@@ -1,0 +1,52 @@
+@page
+@model Love.Pages.Adviento.IndexModel
+@{ ViewData["Title"] = "Adviento"; }
+<div class="adviento" data-particulas="nieve luces">
+    <div class="cielo"></div>
+    <div class="particulas" id="particulas"></div>
+
+    <header class="adv-cab">
+        <a class="volver" href="/Amor" aria-label="Volver">‹</a>
+        <div class="crece">
+            <p class="adv-sobre">Calendario de adviento</p>
+            <h1>Para @Model.Nombre</h1>
+        </div>
+        @if (Model.Total > 0)
+        {
+            <div class="adv-progreso" title="Letras conseguidas"><b>@Model.Letras</b><span>/@Model.Total</span><small>letras</small></div>
+        }
+    </header>
+
+    @if (Model.DiasParaEmpezar > 0)
+    {
+        <p class="adv-nota">@(Model.DiasParaEmpezar == 1 ? "Mañana" : $"Dentro de {Model.DiasParaEmpezar} días") se abre la primera casilla. Cada día, una sorpresa; en cada enigma, una letra.</p>
+    }
+    else
+    {
+        <p class="adv-nota">Una casilla cada día. Las de los días pasados siguen abiertas; las que vienen, cerradas hasta que toque.</p>
+    }
+
+    <div class="adv-rejilla">
+        @foreach (var n in AdvientoService.OrdenVisual)
+        {
+            var c = Model.Casillas.FirstOrDefault(x => x.Dia == n);
+            if (c == null) { continue; }
+            var abierta = Model.Abierta(c);
+            var clase = "adv-casilla " + (abierta ? "abierta" : "cerrada") + (Model.EsHoy(c) ? " hoy" : "") + (c.Resuelta ? " resuelta" : "") + (c.Dia == 24 ? " final" : "") + (c.Tipo == TipoCasilla.Vale && c.CanjeadoEl != null ? " canjeado" : "");
+            <a class="@clase" href="/Adviento/Dia/@c.Dia@(Model.Preview ? $"?fecha={Model.Hoy:yyyy-MM-dd}" : "")">
+                <span class="num">@c.Dia</span>
+                @if (abierta)
+                {
+                    if (c.Resuelta && c.DaLetra) { <span class="letra">@c.Letra</span> }
+                    else { <span class="ico">@IndexModel.Icono(c)</span> }
+                }
+                else { <span class="ico candado">✦</span> }
+            </a>
+        }
+    </div>
+
+    @if (Model.Preview)
+    {
+        <div class="preview-aviso">Vista previa del @Model.Hoy.ToString("d/M/yyyy") · <a href="/Admin/Adviento">gestionar</a></div>
+    }
+</div>

@@ -1,0 +1,31 @@
+@page
+@model Love.Pages.Admin.Adviento.IndexModel
+@{ ViewData["Title"] = "Adviento"; }
+<div class="cab"><a class="volver" href="/Admin">‹</a><h1>Adviento @Model.Anio</h1><a class="accion" href="/Adviento?fecha=@(Model.Anio)-12-24">Ver</a></div>
+
+<div class="tarjeta">
+    <form method="post" asp-page-handler="Frase">
+        <label class="campo"><span>Frase final (sus letras salen de las casillas, en orden de día)</span><input asp-for="Frase" /></label>
+        <p class="suave peq">Letras de las casillas: <b>@Model.LetrasEnOrden</b> (@Model.Letras) · frase: <b>@Model.FraseSinEspacios</b> (@Model.FraseSinEspacios.Length)
+        @if (Model.LetrasEnOrden != Model.FraseSinEspacios) { <span class="error"> · no coinciden</span> } else { <span style="color:var(--ok)"> · ✓</span> }</p>
+        <button class="btn pequeno">Guardar frase</button>
+    </form>
+</div>
+
+<div class="lista">
+    @foreach (var c in Model.Casillas)
+    {
+        <a class="tarjeta enlace msg-fila" href="/Admin/Adviento/Editar/@c.Dia">
+            <span class="dia">@c.Dia</span>
+            <div class="crece">
+                <b>@c.Titulo</b> <span class="suave">· @c.Tipo@(c.DaLetra ? $" · letra {c.Letra}" : "")</span>
+                <div class="sub suave">@IndexModel.Estado(c, Model.Hoy)@(c.Tipo == TipoCasilla.Foto ? c.FotoPath != null ? " · 📷 foto" : " · ⚠️ sin foto" : "")@(c.FotoPath != null && c.Tipo != TipoCasilla.Foto ? " · 📷" : "")</div>
+            </div>
+            <span class="suave">›</span>
+        </a>
+    }
+</div>
+
+<form method="post" asp-page-handler="ReiniciarTodo" data-confirm="¿Borrar TODO el progreso de Raquel (aperturas, resueltas, vales)? No se puede deshacer." class="mt">
+    <button class="btn peligro ancho">Reiniciar todo el progreso</button>
+</form>

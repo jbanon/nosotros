@@ -23,10 +23,12 @@ public class AppDb : DbContext
     public DbSet<Pelicula> Peliculas => Set<Pelicula>();
     public DbSet<TicketLinea> TicketLineas => Set<TicketLinea>();
     public DbSet<Lectura> Lecturas => Set<Lectura>();
+    public DbSet<AdvientoCasilla> Adviento => Set<AdvientoCasilla>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
         b.Entity<Mensaje>().HasIndex(m => new { m.Mes, m.Dia });
+        b.Entity<AdvientoCasilla>().HasIndex(a => new { a.Anio, a.Dia }).IsUnique();
         b.Entity<Ingrediente>().HasIndex(i => i.Nombre).IsUnique();
         b.Entity<Semana>().HasIndex(s => s.LunesInicio).IsUnique();
         b.Entity<MesInicializado>().HasIndex(m => new { m.Anio, m.Mes }).IsUnique();

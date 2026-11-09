@@ -1,0 +1,205 @@
+{
+  "anio": 2026,
+  "frase": "Gracias por quererme así",
+  "casillas": [
+    { "dia": 1, "tipo": "Foto", "letra": "G", "titulo": "Empezamos",
+      "intro": "Bienvenida a tu calendario de adviento, Amor. Veinticuatro casillas, una cada día: fotos, criptofrases, murdokus y crucigramas. En cada enigma se esconde una letra, y el 24 de diciembre, si las juntas todas, leerás algo que quiero decirte. Hoy, para empezar, una foto." },
+
+    { "dia": 2, "tipo": "Criptofrase", "letra": "R", "titulo": "La primera criptofrase",
+      "intro": "Cada número es una letra. Toca una casilla, escribe la letra y se rellenarán todas las que lleven ese número.",
+      "datos": { "frase": "Bastó una conversación para saber que eras tú", "pista": "Cómo empezó todo" } },
+
+    { "dia": 3, "tipo": "Murdoku", "letra": "A", "titulo": "El caso de la última croqueta",
+      "datos": {
+        "caso": "Había una croqueta en la fuente. Una. Y ha desaparecido. Tres sospechosos, tres lugares y tres pruebas: cada sospechoso estaba en un sitio distinto con una prueba distinta.",
+        "categorias": [
+          { "nombre": "¿Quién?", "items": ["Marcos", "Miranda", "Briska"] },
+          { "nombre": "¿Dónde?", "items": ["En la cocina", "En el sofá", "En el jardín"] },
+          { "nombre": "¿Con qué?", "items": ["Un tenedor", "Las manos", "El hocico"] }
+        ],
+        "pistas": [
+          "El tenedor apareció en la cocina, y el rastro de hocico, en el jardín.",
+          "Marcos no pisó el jardín, y Miranda tampoco: dice que hacía frío.",
+          "Briska no entra en la cocina (ni se lo permiten).",
+          "Miranda estaba con un tenedor en la mano cuando llegaste."
+        ],
+        "remate": "La última croqueta desapareció en el jardín.",
+        "solucion": [2, 2, 2],
+        "explicacion": "Briska no podía estar en la cocina y los otros dos no salieron al jardín, así que la del jardín era ella, con el hocico. Miranda, con su tenedor, estaba en la cocina; Marcos, en el sofá, comiendo con las manos. Y la croqueta desapareció en el jardín: fue Briska. Futura perra guía, presente ladrona de croquetas."
+      } },
+
+    { "dia": 4, "tipo": "Crucigrama", "letra": "C", "titulo": "Los nuestros",
+      "intro": "Un crucigrama pequeñito con la gente de casa. La casilla dorada guarda tu letra de hoy.",
+      "datos": {
+        "palabras": [
+          { "palabra": "MIRANDA", "dir": "H", "fila": 2, "col": 0, "pista": "La graciosa de la casa (y un poco sobradilla)" },
+          { "palabra": "NAIA", "dir": "H", "fila": 5, "col": 0, "pista": "Siempre en la parra, pero con la guitarra a mano" },
+          { "palabra": "BRISKA", "dir": "V", "fila": 0, "col": 1, "pista": "Negra, preciosa y futura perra guía" },
+          { "palabra": "MARCOS", "dir": "V", "fila": 1, "col": 6, "pista": "El crack del basket" },
+          { "palabra": "AROA", "dir": "V", "fila": 2, "col": 3, "pista": "La pequeña, achuchable como nadie" }
+        ],
+        "letra": { "fila": 4, "col": 6 }
+      } },
+
+    { "dia": 5, "tipo": "Vale", "titulo": "Vale por un masaje",
+      "intro": "Canjeable cuando quieras, sin fecha de caducidad y sin excusas por mi parte. Tú te tumbas, yo me encargo. Pulsa el botón cuando quieras cobrarlo y me llegará el aviso." },
+
+    { "dia": 6, "tipo": "Criptofrase", "letra": "I", "titulo": "Criptofrase",
+      "datos": { "frase": "Me encanta cuando me acaricias", "pista": "Algo que me encanta y que haces tú" } },
+
+    { "dia": 7, "tipo": "Foto", "letra": "A", "titulo": "¿Te acuerdas?",
+      "intro": "Mira bien esta foto. ¿Te acuerdas de ese día?" },
+
+    { "dia": 8, "tipo": "Murdoku", "letra": "S", "titulo": "El caso de la luz del baño",
+      "datos": {
+        "caso": "Otra vez la luz del baño encendida. Nadie ha sido, claro. Tres sospechosas, tres lugares donde estaban después y tres cosas que llevaban.",
+        "categorias": [
+          { "nombre": "¿Quién?", "items": ["Naia", "Elsa", "Aroa"] },
+          { "nombre": "¿Dónde estaba?", "items": ["En su cuarto", "En el salón", "En la cocina"] },
+          { "nombre": "¿Qué llevaba?", "items": ["La guitarra", "Los auriculares", "El peluche"] }
+        ],
+        "pistas": [
+          "La que llevaba la guitarra se encerró en su cuarto.",
+          "Aroa no se separa de su peluche.",
+          "En la cocina no había nadie con auriculares.",
+          "Naia no estaba en el salón."
+        ],
+        "remate": "La culpable pasó por el baño a toda velocidad, con la música a tope, y no oyó el «¡apaga!».",
+        "solucion": [1, 1, 1],
+        "explicacion": "La guitarra estaba en el cuarto y Aroa llevaba el peluche. Como los auriculares no estaban en la cocina, estaban en el salón, y el peluche, en la cocina. Naia no estaba en el salón, así que estaba en su cuarto con la guitarra, y Elsa en el salón con los auriculares. A toda velocidad y sin oír nada: Elsa."
+      } },
+
+    { "dia": 9, "tipo": "Crucigrama", "letra": "P", "titulo": "Nuestro norte",
+      "datos": {
+        "palabras": [
+          { "palabra": "GALES", "dir": "H", "fila": 2, "col": 0, "pista": "Nuestro destino del verano pasado" },
+          { "palabra": "NORTE", "dir": "H", "fila": 4, "col": 2, "pista": "Hacia donde tiramos siempre en vacaciones" },
+          { "palabra": "IRLANDA", "dir": "V", "fila": 0, "col": 2, "pista": "Hace dos veranos: la del Norte, con sus acantilados" },
+          { "palabra": "PASEO", "dir": "V", "fila": 1, "col": 6, "pista": "Nuestro plan de cada tarde que podemos" }
+        ],
+        "letra": { "fila": 1, "col": 6 }
+      } },
+
+    { "dia": 10, "tipo": "Criptofrase", "letra": "O", "titulo": "Criptofrase",
+      "datos": { "frase": "Una casita en el campo y un despachito para los dos", "pista": "Nuestro proyecto, el no tan big" } },
+
+    { "dia": 11, "tipo": "Foto", "letra": "R", "titulo": "Nuestro norte",
+      "intro": "Una semana al año solo para los dos, en el norte, lejos de todo." },
+
+    { "dia": 12, "tipo": "Murdoku", "letra": "Q", "titulo": "El caso del mando perdido",
+      "datos": {
+        "caso": "El mando de la tele ha desaparecido justo antes de la peli. Tres sospechosos, tres sitios y tres cosas que tenían entre manos.",
+        "categorias": [
+          { "nombre": "¿Quién?", "items": ["Marcos", "Miranda", "Elsa"] },
+          { "nombre": "¿Dónde?", "items": ["En el sofá", "En la cocina", "En el pasillo"] },
+          { "nombre": "¿Qué tenía?", "items": ["La pelota de basket", "El móvil", "Las galletas"] }
+        ],
+        "pistas": [
+          "Marcos no suelta la pelota de basket ni para cenar.",
+          "En el sofá, alguien grababa un baile con el móvil.",
+          "Elsa estaba merendando galletas.",
+          "Nadie botó la pelota en la cocina (lo tienen prohibido)."
+        ],
+        "remate": "El mando apareció justo donde alguien grababa un baile.",
+        "solucion": [1, 0, 1],
+        "explicacion": "Marcos tenía la pelota y no estaba en la cocina; como en el sofá estaba quien tenía el móvil, Marcos estaba en el pasillo. Elsa, con sus galletas, no podía estar en el sofá, así que estaba en la cocina. Queda Miranda en el sofá, grabando un baile con el móvil… sentada encima del mando. Dice que fue sin querer, pero se le escapa la risa."
+      } },
+
+    { "dia": 13, "tipo": "Crucigrama", "letra": "U", "titulo": "Junto al fuego",
+      "datos": {
+        "palabras": [
+          { "palabra": "CARICIA", "dir": "H", "fila": 1, "col": 1, "pista": "Lo que más me gusta recibir de ti" },
+          { "palabra": "FUEGO", "dir": "H", "fila": 4, "col": 0, "pista": "Junto a él te gusta leer" },
+          { "palabra": "LIBRO", "dir": "V", "fila": 0, "col": 4, "pista": "Lo que tienes entre las manos junto al fuego" },
+          { "palabra": "NIEVE", "dir": "V", "fila": 0, "col": 6, "pista": "Cae en el norte, y ojalá en Finlandia" },
+          { "palabra": "SOFA", "dir": "V", "fila": 2, "col": 0, "pista": "Donde acabamos los siete (y Briska) en invierno" }
+        ],
+        "letra": { "fila": 4, "col": 1 }
+      } },
+
+    { "dia": 14, "tipo": "Criptofrase", "letra": "E", "titulo": "Criptofrase",
+      "datos": { "frase": "Siete en casa, una perra y un montón de amor", "pista": "Nuestra familia" } },
+
+    { "dia": 15, "tipo": "Vale", "titulo": "Vale por una cena donde tú elijas",
+      "intro": "Restaurante, terraza o la cocina de casa con las velas puestas. Tú eliges sitio y plato; yo elijo tu compañía. Canjéalo cuando quieras." },
+
+    { "dia": 16, "tipo": "Foto", "letra": "R", "titulo": "Los siete",
+      "intro": "Esta foto me gusta mucho. Míralos. Míranos." },
+
+    { "dia": 17, "tipo": "Murdoku", "letra": "E", "titulo": "El caso de la puerta abierta",
+      "datos": {
+        "caso": "La puerta de la calle, abierta de par en par, y Briska a punto de irse de excursión por su cuenta. Tres sospechosos, tres lugares y tres cosas que llevaban.",
+        "categorias": [
+          { "nombre": "¿Quién?", "items": ["Javi", "Raquel", "Naia"] },
+          { "nombre": "¿Dónde estaba?", "items": ["En el garaje", "En el buzón", "En su habitación"] },
+          { "nombre": "¿Qué llevaba?", "items": ["Las llaves", "Una carta", "Los auriculares"] }
+        ],
+        "pistas": [
+          "Quien estaba en su habitación llevaba los auriculares puestos y no se enteró de nada.",
+          "Raquel había ido a por el correo.",
+          "Las llaves no estaban en el buzón, ni la carta en el garaje.",
+          "Javi no sube a la habitación de Naia (Naia tampoco le deja)."
+        ],
+        "remate": "La puerta la dejó abierta quien salió con las llaves en la mano y la cabeza en otra parte.",
+        "solucion": [0, 0, 0],
+        "explicacion": "Los auriculares estaban en la habitación. Raquel llevaba la carta, que no estaba en el garaje, así que estaba en el buzón; las llaves, entonces, en el garaje. Javi no estaba en la habitación, luego estaba en el garaje con las llaves, y Naia en su cuarto con los auriculares. Culpable: Javi. Lo siento. Iba pensando en ti."
+      } },
+
+    { "dia": 18, "tipo": "Crucigrama", "letra": "R", "titulo": "Cómo empezó",
+      "datos": {
+        "palabras": [
+          { "palabra": "AMOR", "dir": "H", "fila": 1, "col": 4, "pista": "Cómo nos llamamos el uno al otro" },
+          { "palabra": "INTERNET", "dir": "H", "fila": 3, "col": 0, "pista": "Donde nos encontramos antes de encontrarnos" },
+          { "palabra": "RAPIDO", "dir": "V", "fila": 0, "col": 0, "pista": "Así de deprisa conectamos" },
+          { "palabra": "CHAT", "dir": "V", "fila": 0, "col": 2, "pista": "Así fueron nuestras primeras conversaciones" },
+          { "palabra": "MENSAJE", "dir": "V", "fila": 1, "col": 5, "pista": "Lo que esperabas que llegara (y llegaba)" }
+        ],
+        "letra": { "fila": 1, "col": 7 }
+      } },
+
+    { "dia": 19, "tipo": "Criptofrase", "letra": "M", "titulo": "Criptofrase",
+      "datos": { "frase": "Cada verano, una semana solo para los dos", "pista": "Nuestra tradición" } },
+
+    { "dia": 20, "tipo": "Foto", "letra": "E", "titulo": "Tú",
+      "intro": "Mi foto favorita de ti. Hoy no hay pregunta: solo mírala y sonríe como sonrío yo cuando la veo." },
+
+    { "dia": 21, "tipo": "Murdoku", "letra": "A", "titulo": "El caso de los polvorones",
+      "datos": {
+        "caso": "Los polvorones eran para Nochebuena. Faltan tres. Tres sospechosas, tres lugares y tres pruebas.",
+        "categorias": [
+          { "nombre": "¿Quién?", "items": ["Aroa", "Miranda", "Briska"] },
+          { "nombre": "¿Dónde?", "items": ["Junto al árbol", "En la cocina", "En el sofá"] },
+          { "nombre": "¿Qué prueba?", "items": ["Una servilleta", "Migas en el morro", "Un envoltorio en el bolsillo"] }
+        ],
+        "pistas": [
+          "Las migas estaban en la cocina.",
+          "Aroa estaba achuchando a alguien en el sofá.",
+          "Briska no se acerca al árbol desde que tiró una bola.",
+          "La servilleta no estaba junto al árbol."
+        ],
+        "remate": "La culpable se limpió los labios con una servilleta y puso cara de no haber roto un plato en su vida.",
+        "solucion": [0, 2, 0],
+        "explicacion": "Aroa estaba en el sofá y Briska, que no se acerca al árbol, en la cocina con las migas; Miranda, junto al árbol. La servilleta no estaba en el árbol, así que estaba en el sofá, con Aroa, y el envoltorio en el bolsillo de Miranda. ¿Servilleta y carita de ángel? Aroa. Achuchable y golosa."
+      } },
+
+    { "dia": 22, "tipo": "Crucigrama", "letra": "S", "titulo": "Navidad en casa",
+      "datos": {
+        "palabras": [
+          { "palabra": "NAVIDAD", "dir": "H", "fila": 1, "col": 0, "pista": "Lo que celebramos los siete (y Briska)" },
+          { "palabra": "ELSA", "dir": "H", "fila": 4, "col": 3, "pista": "Corre como un gamo" },
+          { "palabra": "RAQUEL", "dir": "H", "fila": 7, "col": 2, "pista": "La mujer genial, buena y generosa que está resolviendo esto" },
+          { "palabra": "JAVI", "dir": "V", "fila": 0, "col": 1, "pista": "El que te escribe estas tonterías" },
+          { "palabra": "SIETE", "dir": "V", "fila": 0, "col": 3, "pista": "Los que somos en casa" },
+          { "palabra": "BAILE", "dir": "V", "fila": 3, "col": 6, "pista": "La especialidad de Elsa, Miranda y Aroa" }
+        ],
+        "letra": { "fila": 0, "col": 3 }
+      } },
+
+    { "dia": 23, "tipo": "Criptofrase", "letra": "I", "titulo": "La última criptofrase",
+      "datos": { "frase": "Buena, generosa y amorosa: no hay otra como tú", "pista": "Tú, en tres palabras" } },
+
+    { "dia": 24, "tipo": "Final", "titulo": "Para ti",
+      "intro": "Amor:\n\nVeinticuatro días de enigmas para decirte algo que ya sabes, pero que me gusta repetir. Nos conocimos en una pantalla y conectamos en un segundo; desde entonces no he dejado de dar las gracias.\n\nGracias por ser buena, generosa y amorosa. Por tus caricias. Por los paseos, por el fuego y el libro, por el norte cada verano. Por esta casa de siete y una perra, que es ruido y es hogar.\n\nY gracias por soñar conmigo: la casita en el campo con su despachito para leer y estudiar, y el barracón para toda la familia (habitación, baño, habitación, habitación, baño…) para cuando los niños traigan a sus niños. Big project o no tan big: contigo, cualquiera.\n\nTe quiero.\nJavi",
+      "datos": { "vale": "Vale por una película sin discutir. Sí, la navideña noruega esa de la que nunca recordamos el nombre." } }
+  ]
+}

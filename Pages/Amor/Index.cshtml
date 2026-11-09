@@ -44,6 +44,22 @@
         </section>
     }
 
+    @if (Model.Adviento != null)
+    {
+        if (Model.AdvientoEnlace)
+        {
+            <a class="lectura-aviso adviento-aviso" href="/Adviento@(Model.Preview ? $"?fecha={Model.Fecha:yyyy-MM-dd}" : "")">
+                <span class="ico">🎄</span>
+                <span class="crece"><b>@Model.Adviento</b><br /><span>@Model.AdvientoSub</span></span>
+                <span class="flecha">›</span>
+            </a>
+        }
+        else
+        {
+            <div class="lectura-aviso adviento-aviso"><span class="ico">🎄</span><span class="crece"><b>@Model.Adviento</b><br /><span>@Model.AdvientoSub</span></span></div>
+        }
+    }
+
     @if (Model.LecturaNueva != null)
     {
         <a class="lectura-aviso" href="/Lecturas/Leer/@Model.LecturaNueva.Id">
