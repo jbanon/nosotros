@@ -113,6 +113,6 @@ else if (p != null)
             <form method="post" asp-page-handler="Guardar" asp-route-id="@t.Id" class="mb"><button class="btn primario ancho">Guardar receta</button></form>
             <form method="post" asp-page-handler="Borrar" asp-route-id="@t.Id" data-confirm="¿Descartar esta propuesta?"><button class="btn ancho">Descartar</button></form>
         }
-        <p class="suave peq centrado mt">@t.Rondas ronda@(t.Rondas == 1 ? "" : "s") · @((t.DuracionMs / 1000.0).ToString("0")) s · @t.CosteUsd.ToString("0.00") $</p>
+        <p class="suave peq centrado mt">@t.Rondas ronda@(t.Rondas == 1 ? "" : "s") · @((t.DuracionMs / 1000.0).ToString("0")) s</p>
     }
 }

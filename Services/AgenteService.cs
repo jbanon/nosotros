@@ -139,7 +139,7 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
 
         if (t.Tipo == TipoTareaAgente.FichaPelicula && t.PeliculaId != null)
             await AplicarFicha(db, t, res.Salida, ct);
-        log.LogInformation("Agente: tarea {Id} ({Tipo}) lista en {Ms} ms, {Coste:0.000} USD", t.Id, t.Tipo, sw.ElapsedMilliseconds, res.Coste);
+        log.LogInformation("Agente: tarea {Id} ({Tipo}) lista en {Ms} ms", t.Id, t.Tipo, sw.ElapsedMilliseconds);
     }
 
     /// <summary>La ficha de película se aplica directamente (el usuario puede pedir cambios después).</summary>

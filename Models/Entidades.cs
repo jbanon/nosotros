@@ -289,6 +289,7 @@ public class TareaAgente
     public int? RecetaId { get; set; }
     public int Rondas { get; set; }
     public int DuracionMs { get; set; }
+    /// <summary>Estimación que imprime el CLI (total_cost_usd). Con suscripción no es un cargo; solo informativo, no se muestra.</summary>
     public decimal CosteUsd { get; set; }
     public DateTime Creada { get; set; } = DateTime.UtcNow;
     public DateTime? Terminada { get; set; }
