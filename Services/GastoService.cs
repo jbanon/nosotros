@@ -6,11 +6,15 @@ namespace Love.Services;
 
 public class GastoService(AppDb db, ConfigService config)
 {
-    /// <summary>Crea los fijos del mes la primera vez que se visita (solo meses hasta el actual).</summary>
+    /// <summary>Primer mes de la app: antes, todo en blanco (sin fijos automáticos).</summary>
+    public static readonly DateOnly InicioApp = new(2026, 11, 1);
+
+    /// <summary>Crea los fijos del mes la primera vez que se visita (solo meses entre el inicio de la app y el actual).</summary>
     public async Task AsegurarFijos(int anio, int mes)
     {
         var hoy = Reloj.Hoy;
         if (anio * 100 + mes > hoy.Year * 100 + hoy.Month) return;
+        if (anio * 100 + mes < InicioApp.Year * 100 + InicioApp.Month) return;
         if (await db.MesesInicializados.AnyAsync(m => m.Anio == anio && m.Mes == mes)) return;
 
         var veva = await config.GetDecimal(ConfigClaves.ImporteVeva, 300);

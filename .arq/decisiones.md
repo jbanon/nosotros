@@ -12,6 +12,9 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   `/etc/love.env` en el servidor.
 
 ## Gastos
+- La app empieza en noviembre de 2026 (`GastoService.InicioApp`): los meses anteriores quedan en blanco,
+  sin fijos automáticos; al arrancar se borran los fijos que se hubieran creado antes. No hay recolocación
+  automática de gastos: lo que haya mal de fecha lo corrige Javier a mano.
 - Cada compra es un gasto independiente; el total del mes es la suma. Tocar un movimiento lo EDITA (la
   pantalla lo avisa y ofrece "+ Otra compra"); para añadir, botón "Apuntar una compra" o el cierre de
   la lista de la compra (importe + foto del ticket + detalle con lo marcado como comprado; opcional

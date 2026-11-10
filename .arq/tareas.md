@@ -24,7 +24,8 @@
 | 2026-11-08 | Lecturas para Raquel: lector con A−/A+, gestión en Admin, aviso en la página de amor | b7d31e2 |
 | 2026-11-09 | Prompt para el agente de los presupuestadores sobre el patrón `claude -p` a demanda (sin código) | — |
 | 2026-11-09 | Creado `.arq/` y `CLAUDE.md` | — |
-| 2026-11-10 | CAUSA de las compras "borradas": el enlace de gasto nuevo pasaba la fecha como 10/11/2026 y se leía como 11 de octubre. Arreglado (ISO en URL), fecha plegada en letras con atajos, validación de fechas y recolocación única de los gastos cruzados a noviembre | 2726482 |
+| 2026-11-10 | Sin recolocación automática (Javier lo corrigió a mano); la app empieza en noviembre 2026 y los meses anteriores quedan en blanco (sin fijos) | 7fdac7f |
+| 2026-11-10 | CAUSA de las compras "borradas": el enlace de gasto nuevo pasaba la fecha como 10/11/2026 y se leía como 11 de octubre. Arreglado (ISO en URL), fecha plegada en letras con atajos y validación de fechas | 2726482 |
 | 2026-11-10 | El seed deja de sembrar la compra de 60 € (se apunta a mano) y la edición de un gasto ofrece "Guardar como compra nueva" | 62bd10c |
 | 2026-11-10 | Cronómetro de la compra: arranca solo al marcar el primer producto comprado, se ve en la lista y se guarda en el gasto (minutos) al apuntar el ticket; total y media del mes en Gastos | d53f778 |
 | 2026-11-10 | Gastos: aviso claro al editar un gasto existente + botón "Apuntar una compra"; la lista de la compra se cierra con importe y foto del ticket y crea el gasto con el detalle de lo comprado | cef162b |

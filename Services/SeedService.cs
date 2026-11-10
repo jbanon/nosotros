@@ -89,7 +89,7 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
 
         await EscalarRecetas();
         await CargarAdviento();
-        await ArreglarFechasGastos();
+        await LimpiarMesesAnteriores();
     }
 
     /// <summary>Una sola vez: pasa todas las recetas a las raciones de la lista (12) multiplicando sus cantidades.</summary>
@@ -174,26 +174,15 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         log.LogInformation("Calendario de adviento {Anio} creado", anio);
     }
 
-    /// <summary>
-    /// Una vez: gastos apuntados desde el estreno (8/11/2026) cuyo día y mes se cruzaron en el selector del móvil
-    /// (quedaron como día 11 de otro mes de 2026) vuelven a noviembre con el día que tocaba.
-    /// </summary>
-    async Task ArreglarFechasGastos()
+    /// <summary>La app empieza en noviembre de 2026: los meses anteriores quedan en blanco (sin fijos automáticos).</summary>
+    async Task LimpiarMesesAnteriores()
     {
-        const string clave = "ArregloFechasGastosNov2026";
-        if (await db.Configs.AnyAsync(c => c.Clave == clave)) return;
-        var desde = new DateTime(2026, 11, 8, 0, 0, 0, DateTimeKind.Utc);
-        var ini = new DateOnly(2026, 1, 1); var fin = new DateOnly(2027, 1, 1);
-        var sospechosos = await db.Gastos.Where(g => !g.EsFijo && g.Creado >= desde && g.Fecha >= ini && g.Fecha < fin).ToListAsync();
-        int n = 0;
-        foreach (var g in sospechosos.Where(g => g.Fecha.Day == 11 && g.Fecha.Month != 11))
-        {
-            var nueva = new DateOnly(2026, 11, g.Fecha.Month);
-            if (nueva > Reloj.Hoy) continue;
-            log.LogWarning("Gasto {Id} ({Importe} €) movido de {Antes} a {Despues}", g.Id, g.Importe, g.Fecha, nueva);
-            g.Fecha = nueva; n++;
-        }
-        db.Configs.Add(new Config { Clave = clave, Valor = n.ToString() });
+        var inicio = GastoService.InicioApp;
+        var fijos = await db.Gastos.Where(g => g.EsFijo && g.Fecha < inicio).ToListAsync();
+        var meses = await db.MesesInicializados.Where(m => m.Anio * 100 + m.Mes < inicio.Year * 100 + inicio.Month).ToListAsync();
+        if (fijos.Count == 0 && meses.Count == 0) return;
+        db.Gastos.RemoveRange(fijos); db.MesesInicializados.RemoveRange(meses);
         await db.SaveChangesAsync();
+        log.LogInformation("Meses anteriores a {Inicio} limpiados: {Fijos} fijos", inicio, fijos.Count);
     }
 }
