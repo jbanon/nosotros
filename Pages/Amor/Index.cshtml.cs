@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Love.Pages.Amor;
 
-public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db, AdvientoService adv) : PageModel
+public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db, AdvientoService adv, VinetaService vinetas) : PageModel
 {
     public DateOnly Fecha { get; set; }
     public MensajeDelDia Msg { get; set; } = null!;
@@ -24,6 +24,8 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
     public string? Adviento { get; set; }
     public string? AdvientoSub { get; set; }
     public bool AdvientoEnlace { get; set; }
+    public VinetaDia? Vineta { get; set; }
+    public int VinetasDescubiertas { get; set; }
 
     public async Task OnGet(DateOnly? fecha)
     {
@@ -42,6 +44,8 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
             DiasJuntos = Fecha.DayNumber - new DateOnly(aniversario.AnioOrigen!.Value, aniversario.Mes, aniversario.Dia).DayNumber;
 
         await CargarAdviento();
+        Vineta = await vinetas.DelDia(Fecha, persistir: !Preview);
+        VinetasDescubiertas = (await vinetas.Desveladas(Fecha)).Count;
 
         var h = Reloj.Ahora.Hour;
         Saludo = h < 6 ? "Buenas noches" : h < 13 ? "Buenos días" : h < 21 ? "Buenas tardes" : "Buenas noches";
@@ -65,4 +69,10 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
         else if (pendientes.Count > 0) { Adviento = $"Tienes {pendientes.Count} casilla{(pendientes.Count == 1 ? "" : "s")} sin abrir"; AdvientoSub = $"Calendario de adviento · {letras} de {total} letras"; }
         else { Adviento = "Calendario de adviento"; AdvientoSub = letras == total ? "¡Todas las letras conseguidas!" : $"{letras} de {total} letras · las abiertas siguen ahí"; }
     }
+
+    public static string NombreJuego(JuegoVineta j) => j switch
+    {
+        JuegoVineta.Rompecabezas => "Un rompecabezas", JuegoVineta.Parejas => "Encuentra las parejas", JuegoVineta.Revelar => "Algo que revelar",
+        JuegoVineta.Criptofrase => "Una criptofrase", JuegoVineta.OrdenaFrase => "Ordena la frase", _ => "Un juego"
+    };
 }

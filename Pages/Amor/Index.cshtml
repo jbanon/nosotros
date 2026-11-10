@@ -44,6 +44,24 @@
         </section>
     }
 
+    @if (Model.Vineta != null && Model.Vineta.Desvelada)
+    {
+        var vd = Model.Vineta;
+        <a class="vineta-dia" href="/Vinetas/Ver/@vd.VinetaId">
+            <img src="/Vinetas/Imagen/@vd.VinetaId" alt="" />
+            @if (!string.IsNullOrWhiteSpace(vd.Vineta.FraseMia)) { <p class="vineta-frase">@vd.Vineta.FraseMia</p> }
+            <span class="vineta-pie">@vd.Vineta.Autor · álbum ›</span>
+        </a>
+    }
+    else if (Model.Vineta != null)
+    {
+        <a class="lectura-aviso" href="/Vinetas/Hoy">
+            <span class="ico">🧩</span>
+            <span class="crece"><b>Hoy la viñeta se gana</b><br /><span>@IndexModel.NombreJuego(Model.Vineta.Juego) · toca para jugar</span></span>
+            <span class="flecha">›</span>
+        </a>
+    }
+
     @if (Model.Adviento != null)
     {
         if (Model.AdvientoEnlace)
@@ -68,9 +86,9 @@
             <span class="flecha">›</span>
         </a>
     }
-    else if (Model.NumLecturas > 0)
+    else if (Model.NumLecturas > 0 || Model.VinetasDescubiertas > 0)
     {
-        <a class="lectura-enlace" href="/Lecturas">📖 Lecturas</a>
+        <p class="lectura-enlace">@if (Model.NumLecturas > 0) { <a href="/Lecturas">📖 Lecturas</a> } @if (Model.NumLecturas > 0 && Model.VinetasDescubiertas > 0) { <text> · </text> } @if (Model.VinetasDescubiertas > 0) { <a href="/Vinetas">🖼️ Álbum</a> }</p>
     }
 
     <footer class="amor-pie">

@@ -6,7 +6,7 @@ Es un regalo personal: los textos, el tono y el diseño importan tanto como el c
 Módulos: página "Para ti" con mensaje diario y declaración; menú semanal con lista de la compra
 por zonas; gastos del mes con histórico y tickets; Ideas para automatizar; Películas que ver;
 Lecturas que Javier le deja a Raquel; Calendario de adviento (diciembre); agente `claude -p` para
-fichas de películas y recetas; Admin.
+fichas de películas y recetas; Viñetas (ilustraciones con frase de Javi, reparto semanal, juegos y álbum); Admin.
 
 Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
 
@@ -29,9 +29,10 @@ Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
   `RecurrenteService` (productos de ticket recurrentes), `LecturaFormato` (texto → HTML),
   `SeedService`, `ConfigService`, `MensajeService`, `PinAuth`, `AdvientoService` (apertura por
   fecha, cifrado de criptofrases, rejilla de crucigramas, comprobaciones y pistas), `AgenteService`
-  (BackgroundService que lanza `claude -p`; prompts, esquemas JSON, póster de Wikipedia, crear receta).
+  (BackgroundService que lanza `claude -p`; prompts, esquemas JSON, póster de Wikipedia, crear receta),
+  `VinetaService` (reparto semanal con semilla, juegos viables, importación de catálogos).
 - `Pages/Amor` (página de Raquel), `Pages/Menu` (Semana, Lista, Recetas; `Recetas/Agente` pide recetas
-  al agente), `Pages/Peliculas` (Index, Ficha, Poster), `Pages/Gastos`
+  al agente), `Pages/Peliculas` (Index, Ficha, Poster), `Pages/Vinetas` (álbum, Ver, Imagen, Hoy=juego), `Pages/Admin/Vinetas`, `Pages/Gastos`
   (Index, Editar, Historico, Recurrentes), `Pages/Ideas`, `Pages/Peliculas`, `Pages/Lecturas`,
   `Pages/Admin` (Index, Config, Mensajes, Fechas, Lecturas, Adviento), `Pages/Adviento` (Index,
   Dia con handlers JSON, Foto; JS en `wwwroot/js/adviento.js`), `Pages/Login`.

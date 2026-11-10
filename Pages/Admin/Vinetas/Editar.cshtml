@@ -1,0 +1,59 @@
+@page "{id:int?}"
+@model Love.Pages.Admin.Vinetas.EditarModel
+@{ var v = Model.V; ViewData["Title"] = Model.Nueva ? "Nueva viñeta" : "Viñeta"; var enMarcha = Model.Tarea != null && Model.Tarea.Estado is EstadoTarea.Pendiente or EstadoTarea.EnCurso; }
+<div class="cab"><a class="volver" href="/Admin/Vinetas">‹</a><h1>@ViewData["Title"]</h1>@if (!Model.Nueva) { <a class="accion" href="/Vinetas/Ver/@v.Id">Ver</a> }</div>
+@if (enMarcha)
+{
+    <div class="aviso mb">✨ El agente está leyendo la viñeta (frase, intención, tono, juego)… esta página se actualiza sola.</div>
+    @section Scripts {
+    <script>(() => { let n = 0; const t = async () => { try { const j = await (await fetch(location.pathname + '?handler=Estado')).json(); if (j.estado === 'Lista' || j.estado === 'Error') { location.reload(); return; } } catch { } if (++n < 40) setTimeout(t, 3000); }; setTimeout(t, 3000); })();</script>
+    }
+}
+else if (Model.Tarea?.Estado == EstadoTarea.Error) { <div class="aviso mb" style="color:var(--mal)">El agente no pudo analizarla: @Model.Tarea.Error</div> }
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="V.Id" /><input type="hidden" asp-for="V.Path" /><input type="hidden" asp-for="V.Origen" />
+    @if (Model.Error != null) { <p class="error">@Model.Error</p> }
+    @if (!Model.Nueva) { <img src="/Vinetas/Imagen/@v.Id" alt="" style="width:100%;max-height:320px;object-fit:contain;border-radius:var(--radio);background:var(--tarjeta)" class="mb" /> }
+    <label class="campo"><span>@(Model.Nueva ? "Imagen" : "Sustituir imagen")</span><input type="file" asp-for="Imagen" accept="image/*" /></label>
+    <label class="campo"><span>Tu frase para Raquel</span><textarea asp-for="V.FraseMia" rows="2" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem" placeholder="Lo que quieres decirle con esta viñeta"></textarea></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Libro</span><input asp-for="V.Libro" placeholder="Las vidas que dibujamos" /></label>
+        <label class="campo"><span>Autor</span><input asp-for="V.Autor" /></label>
+    </div>
+    <label class="campo"><span>Frase del autor (la que lleva el dibujo)</span><input asp-for="V.FraseAutor" /></label>
+    <label class="campo"><span>Intenciones (comas) · @string.Join(", ", EditarModel.Taxonomia)</span><input asp-for="V.Intenciones" /></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Tono</span><input asp-for="V.Tono" /></label>
+        <label class="campo"><span>Juego sugerido</span>
+            <select asp-for="V.JuegoSugerido">@foreach (var j in Enum.GetValues<JuegoVineta>()) { <option value="@j" selected="@(j == v.JuegoSugerido)">@j@(Model.Viables.Count > 0 && j != JuegoVineta.Ninguno && !Model.Viables.Contains(j) ? " (no viable aún)" : "")</option> }</select></label>
+    </div>
+    <label class="campo"><span>Momentos de uso (comas)</span><input asp-for="V.Momentos" /></label>
+    <label class="campo"><span>Descripción</span><input asp-for="V.Descripcion" /></label>
+    <div class="chips mb">
+        <label class="chip"><input type="checkbox" asp-for="V.Activa" style="display:inline" /> Activa</label>
+        <label class="chip"><input type="checkbox" asp-for="V.UsoPortada" style="display:inline" /> Sale en la portada</label>
+        <label class="chip"><input type="checkbox" asp-for="V.UsoJuego" style="display:inline" /> Puede llegar como juego</label>
+        <label class="chip"><input type="checkbox" asp-for="V.Conocida" style="display:inline" /> Raquel conoce el libro</label>
+        <label class="chip"><input type="checkbox" asp-for="V.EspacioFrase" style="display:inline" /> Deja hueco para frase</label>
+    </div>
+    <label class="campo"><span>Fijar para un día (opcional)</span><input asp-for="V.FechaFija" type="date" /></label>
+    <details class="ticket">
+        <summary>Pregunta para el juego "Revelar" (opcional)</summary>
+        <label class="campo mt"><span>Pregunta</span><input asp-for="V.Pregunta" placeholder="¿Dónde nos dimos el primer beso?" /></label>
+        <label class="campo"><span>Respuesta (una palabra)</span><input asp-for="V.Respuesta" /></label>
+    </details>
+    @if (Model.Agente) { <label class="chip mb"><input type="checkbox" asp-for="Analizar" style="display:inline" /> ✨ Que el agente la lea y rellene frase, intención, tono y juego</label> }
+    <button class="btn primario ancho mt">Guardar</button>
+</form>
+@if (!Model.Nueva)
+{
+    @if (Model.Agente && !enMarcha) { <form method="post" asp-page-handler="Analizar" asp-route-id="@v.Id" class="mt"><button class="btn ancho">✨ Analizar de nuevo con el agente</button></form> }
+    @if (Model.Dias.Any())
+    {
+        <div class="tarjeta mt"><h2 class="mb">Historial</h2>
+            @foreach (var d in Model.Dias) { <p class="suave" style="margin:0 0 4px">@d.Fecha.ToString("d MMM yyyy") · @(d.Juego == JuegoVineta.Ninguno ? "directa" : d.Juego.ToString())@(d.ResueltaEl != null ? " · resuelto" : d.Juego != JuegoVineta.Ninguno ? " · pendiente" : "")@(d.Pistas > 0 ? $" · {d.Pistas} pistas" : "")</p> }
+        </div>
+    }
+    @if (v.RespuestaRaquel != null) { <div class="aviso mb">💬 Raquel: @v.RespuestaRaquel <span class="suave peq">· @v.RespondidaEl?.ToLocalTime().ToString("d MMM HH:mm")</span></div> }
+    <form method="post" asp-page-handler="Borrar" asp-route-id="@v.Id" data-confirm="¿Borrar esta viñeta de la colección?" class="mt"><button class="btn peligro ancho">Borrar</button></form>
+}

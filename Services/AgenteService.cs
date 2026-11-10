@@ -114,6 +114,7 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             TipoTareaAgente.FichaPelicula => (PromptPelicula(t), EsquemaPelicula, "WebSearch,WebFetch", (string?)null),
             TipoTareaAgente.Receta => (PromptReceta(t, raciones, maestro, null), EsquemaReceta, "", null),
             TipoTareaAgente.RecetaFoto => (PromptReceta(t, raciones, maestro, files.RutaAbsoluta(t.FotoPath!)), EsquemaReceta, "Read", Path.GetDirectoryName(files.RutaAbsoluta(t.FotoPath!))),
+            TipoTareaAgente.Vineta => await PreparaVineta(db, t, ct),
             _ => throw new InvalidOperationException()
         };
 
@@ -139,6 +140,8 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
 
         if (t.Tipo == TipoTareaAgente.FichaPelicula && t.PeliculaId != null)
             await AplicarFicha(db, t, res.Salida, ct);
+        if (t.Tipo == TipoTareaAgente.Vineta && t.VinetaId != null)
+            await AplicarVineta(db, t, res.Salida, ct);
         log.LogInformation("Agente: tarea {Id} ({Tipo}) lista en {Ms} ms", t.Id, t.Tipo, sw.ElapsedMilliseconds);
     }
 
@@ -208,6 +211,44 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
         }
         catch (Exception e) { log.LogInformation("Imagen no descargada ({Url}): {Msg}", uri, e.Message); return null; }
     }
+
+    // ---------- Viñetas: leer la ilustración y catalogarla ----------
+    async Task<(string, string, string, string?)> PreparaVineta(AppDb db, TareaAgente t, CancellationToken ct)
+    {
+        var v = await db.Vinetas.FindAsync([t.VinetaId!.Value], ct) ?? throw new InvalidOperationException("Viñeta no encontrada");
+        var ruta = files.RutaAbsoluta(v.Path);
+        var prompt = $"{Contexto}\n\nLee la imagen {ruta} con la herramienta Read. Es una viñeta ilustrada (autor: {v.Autor}{(string.IsNullOrWhiteSpace(v.Libro) ? "" : $", libro «{v.Libro}»")}) que Javi usará en la app para decirle algo a Raquel. " +
+            "Devuelve: fraseAutor (el texto que lleva la propia ilustración, transcrito tal cual, con bocadillos unidos por punto; vacío si no hay texto); " +
+            $"intenciones (de 1 a 3 valores de esta lista, la primera la principal: {string.Join(", ", VinetaService.Taxonomia)}); tono (dos o tres palabras); " +
+            "momentos (de 1 a 4 momentos concretos de pareja en que encajaría enviarla: «después de una discusión», «día gris», «aniversario», «antes de un viaje»…); " +
+            "juegoSugerido (Rompecabezas si el dibujo tiene detalle y colores; Parejas si es sencillo y reconocible en miniatura; Revelar si tiene un elemento sorpresa; Criptofrase si la frase del autor es buena para cifrar; OrdenaFrase si la frase tiene al menos 6 palabras; Ninguno si no encaja); " +
+            "espacioFrase (true si la imagen deja una zona limpia y amplia donde superponer una frase corta); descripcion (una frase objetiva de lo que se ve); mensaje (una frase para Javi).";
+        return (prompt, EsquemaVineta, "Read", Path.GetDirectoryName(ruta));
+    }
+
+    async Task AplicarVineta(AppDb db, TareaAgente t, JsonObject f, CancellationToken ct)
+    {
+        var v = await db.Vinetas.FindAsync([t.VinetaId!.Value], ct);
+        if (v == null) return;
+        string? S(string k) => f[k]?.GetValue<string>() is { } x && !string.IsNullOrWhiteSpace(x) ? x.Trim() : null;
+        string? L(string k) => f[k] is JsonArray a && a.Count > 0 ? string.Join(", ", a.Select(x => x?.GetValue<string>()).Where(x => !string.IsNullOrWhiteSpace(x))) : null;
+        if (string.IsNullOrWhiteSpace(v.FraseAutor)) v.FraseAutor = S("fraseAutor");
+        v.Intenciones = L("intenciones") ?? v.Intenciones; v.Tono = S("tono") ?? v.Tono; v.Momentos = L("momentos") ?? v.Momentos;
+        v.Descripcion = S("descripcion") ?? v.Descripcion;
+        if (Enum.TryParse<JuegoVineta>(S("juegoSugerido"), true, out var j)) v.JuegoSugerido = j;
+        if (f["espacioFrase"] is JsonValue ef && ef.TryGetValue<bool>(out var b)) v.EspacioFrase = b;
+        t.Aplicada = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+    }
+
+    public const string EsquemaVineta = """
+        {"type":"object","additionalProperties":false,
+         "properties":{"fraseAutor":{"type":"string"},"intenciones":{"type":"array","items":{"type":"string"}},"tono":{"type":"string"},
+                       "momentos":{"type":"array","items":{"type":"string"}},
+                       "juegoSugerido":{"type":"string","enum":["Ninguno","Rompecabezas","Parejas","Revelar","Criptofrase","OrdenaFrase"]},
+                       "espacioFrase":{"type":"boolean"},"descripcion":{"type":"string"},"mensaje":{"type":"string"}},
+         "required":["fraseAutor","intenciones","tono","momentos","juegoSugerido","espacioFrase","descripcion","mensaje"]}
+        """;
 
     // ---------- Ejecución de claude -p ----------
     public record Resultado(JsonObject? Salida, decimal Coste, string? Error);

@@ -1,0 +1,67 @@
+@page
+@model Love.Pages.Admin.Vinetas.IndexModel
+@{ ViewData["Title"] = "Viñetas"; var nuevas = Model.Lista.Count(v => v.RespuestaRaquel != null && !v.RespuestaVista); }
+<div class="cab"><a class="volver" href="/Admin">‹</a><h1>Viñetas</h1><a class="accion" href="/Admin/Vinetas/Editar">+ Nueva</a></div>
+
+@if (Model.Importadas is int imp) { <div class="aviso mb">Importadas @imp viñeta@(imp == 1 ? "" : "s").</div> }
+@if (Model.Hoy != null)
+{
+    <a class="tarjeta enlace fila" href="/Admin/Vinetas/Editar/@Model.Hoy.VinetaId" style="align-items:center">
+        <img src="/Vinetas/Imagen/@Model.Hoy.VinetaId" class="miniatura" alt="" />
+        <div class="crece"><b>Hoy: @(Model.Hoy.Vineta.FraseAutor ?? "(sin texto)")</b><div class="sub suave">@(Model.Hoy.Juego == JuegoVineta.Ninguno ? "directa en la portada" : $"como juego: {Model.Hoy.Juego}")@(Model.Hoy.Id == 0 ? " · aún no abierta por Raquel" : "")@(string.IsNullOrWhiteSpace(Model.Hoy.Vineta.FraseMia) ? " · ⚠️ sin tu frase" : "")</div></div><span class="suave">›</span>
+    </a>
+}
+@if (Model.Carpetas.Any(c => c.Pendientes > 0))
+{
+    <div class="tarjeta">
+        <h2 class="mb">Carpetas catalogadas en App_Data/entrada</h2>
+        @foreach (var c in Model.Carpetas)
+        {
+            <form method="post" asp-page-handler="Importar" asp-route-carpeta="@c.Nombre" class="fila mb" style="align-items:center">
+                <span class="crece"><b>@c.Nombre</b> <span class="suave peq">· @c.Total en el catálogo · @c.Pendientes sin importar</span></span>
+                @if (c.Pendientes > 0) { <button class="btn pequeno primario">Importar</button> }
+            </form>
+        }
+    </div>
+}
+<details class="ticket">
+    <summary>Reparto</summary>
+    <form method="post" asp-page-handler="Config" class="mt">
+        <div class="cuadricula">
+            <label class="campo"><span>Viñetas por semana</span><input name="porSemana" value="@Model.PorSemana" inputmode="numeric" /></label>
+            <label class="campo"><span>De cada 10, como juego</span><input name="juegoDe10" value="@Model.JuegoDe10" inputmode="numeric" /></label>
+        </div>
+        <label class="campo"><span>Las conocidas, a partir de (aaaa-mm-dd)</span><input name="conocidasDesde" value="@Model.ConocidasDesde" /></label>
+        <button class="btn pequeno">Guardar</button>
+    </form>
+</details>
+
+<div class="pestanas">
+    <a href="/Admin/Vinetas" class="@(Model.Libro == null && Model.Filtro == null ? "on" : "")">Todas (@Model.Lista.Count)</a>
+    <a href="/Admin/Vinetas?filtro=sinfrase" class="@(Model.Filtro == "sinfrase" ? "on" : "")">Sin mi frase</a>
+    <a href="/Admin/Vinetas?filtro=pendientes" class="@(Model.Filtro == "pendientes" ? "on" : "")">Por salir</a>
+    <a href="/Admin/Vinetas?filtro=mostradas" class="@(Model.Filtro == "mostradas" ? "on" : "")">Mostradas</a>
+    <a href="/Admin/Vinetas?filtro=respuestas" class="@(Model.Filtro == "respuestas" ? "on" : "")">Respuestas@(nuevas > 0 ? $" ({nuevas} nuevas)" : "")</a>
+    @foreach (var l in Model.Libros) { <a href="/Admin/Vinetas?libro=@Uri.EscapeDataString(l)" class="@(Model.Libro == l ? "on" : "")">@l</a> }
+</div>
+@if (Model.Filtro == "respuestas" && nuevas > 0) { <form method="post" asp-page-handler="Vistas" class="mb"><button class="btn pequeno">Marcar respuestas como vistas</button></form> }
+
+<div class="lista">
+    @foreach (var v in Model.Lista)
+    {
+        var d = Model.UltimoDia.GetValueOrDefault(v.Id);
+        <a class="tarjeta enlace fila" href="/Admin/Vinetas/Editar/@v.Id" style="align-items:flex-start;padding:10px">
+            <img src="/Vinetas/Imagen/@v.Id" class="miniatura" alt="" loading="lazy" style="width:64px;height:64px" />
+            <div class="crece" style="min-width:0">
+                <div style="font-weight:700;line-height:1.25">@(string.IsNullOrWhiteSpace(v.FraseAutor) ? (v.Descripcion ?? "(sin texto)") : v.FraseAutor)</div>
+                @if (!string.IsNullOrWhiteSpace(v.FraseMia)) { <div class="sub" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem">@v.FraseMia</div> } else { <div class="sub" style="color:var(--aviso)">⚠️ sin tu frase</div> }
+                <div class="sub suave">@v.Intenciones@(v.Conocida ? " · conocida" : "")@(!v.Activa ? " · inactiva" : "")@(v.FechaFija is DateOnly ff ? $" · 📌 {ff:d MMM}" : "")@(d != null ? $" · salió {d.Fecha:d MMM}{(d.Juego != JuegoVineta.Ninguno ? $" ({d.Juego}{(d.ResueltaEl != null ? " ✓" : " pendiente")})" : "")}" : "")@(v.Favorita ? " · ♥ favorita" : "")@(Model.Analizando.Contains(v.Id) ? " · ✨ analizando…" : "")</div>
+                @if (v.RespuestaRaquel != null) { <div class="sub" style="margin-top:4px;padding:6px 8px;border-radius:8px;background:var(--acento-claro)">💬 @v.RespuestaRaquel @if (!v.RespuestaVista) { <span class="badge">nueva</span> }</div> }
+            </div>
+        </a>
+    }
+</div>
+@if (Model.Analizando.Count > 0)
+{
+    @section Scripts { <script>setTimeout(() => location.reload(), 6000);</script> }
+}

@@ -1,0 +1,18 @@
+@page "{id:int}"
+@model Love.Pages.Vinetas.VerModel
+@{ var v = Model.V; ViewData["Title"] = "Viñeta"; }
+<div class="cab"><a class="volver" href="/Vinetas">‹</a><h1>@(Model.Dia != null ? Model.Dia.Fecha.ToString("d 'de' MMMM") : "Viñeta")</h1>
+    <form method="post" asp-page-handler="Favorita" asp-route-id="@v.Id"><button class="fav-btn @(v.Favorita ? "on" : "")" title="Favorita">♥</button></form>
+</div>
+<figure class="vineta-grande">
+    <img src="/Vinetas/Imagen/@v.Id" alt="" />
+    @if (!string.IsNullOrWhiteSpace(v.FraseMia)) { <figcaption><span class="orn">❧</span>@foreach (var l in v.FraseMia.Replace("\r", "").Split('\n', StringSplitOptions.RemoveEmptyEntries)) { <p>@l</p> }<span class="firma">— @Model.Firma</span></figcaption> }
+</figure>
+<p class="suave peq centrado">@v.Autor@(string.IsNullOrWhiteSpace(v.Libro) ? "" : $" · {v.Libro}") · <a href="/Vinetas/Imagen/@v.Id?descargar=true">Guardar imagen</a></p>
+
+<form method="post" asp-page-handler="Responder" asp-route-id="@v.Id" class="tarjeta">
+    <label class="campo"><span>@(v.RespuestaRaquel == null ? "¿Quieres decirme algo de esta?" : "Tu respuesta")</span><textarea name="texto" rows="2" placeholder="Una línea basta…">@v.RespuestaRaquel</textarea></label>
+    <button class="btn @(v.RespuestaRaquel == null ? "primario" : "") ancho">@(v.RespuestaRaquel == null ? "Enviar" : "Cambiar")</button>
+    @if (Model.Guardada) { <p class="suave peq centrado" style="margin:8px 0 0">Guardado. Le llegará ♥</p> }
+</form>
+@if (User.EsAdmin()) { <p class="centrado"><a href="/Admin/Vinetas/Editar/@v.Id">Editar esta viñeta</a></p> }

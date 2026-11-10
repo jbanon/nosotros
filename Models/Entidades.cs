@@ -237,6 +237,12 @@ public static class ConfigClaves
     public const string RecetasEscaladas = "RecetasEscaladas";
     /// <summary>Frase final del calendario de adviento (con espacios; las letras salen de las casillas).</summary>
     public const string AdvientoFrase = "AdvientoFrase";
+    /// <summary>Viñetas: cuántos días por semana sale una (por defecto 3).</summary>
+    public const string VinetasPorSemana = "VinetasPorSemana";
+    /// <summary>Viñetas: desde qué fecha pueden salir las de libros que Raquel ya conoce (yyyy-MM-dd).</summary>
+    public const string VinetasConocidasDesde = "VinetasConocidasDesde";
+    /// <summary>Viñetas: de cada 10 viñetas, cuántas llegan como juego (por defecto 5).</summary>
+    public const string VinetasJuegoDe10 = "VinetasJuegoDe10";
 }
 
 public enum TipoCasilla { Foto, Criptofrase, Murdoku, Crucigrama, Vale, Final }
@@ -270,7 +276,7 @@ public class AdvientoCasilla
     public bool DaLetra => !string.IsNullOrWhiteSpace(Letra);
 }
 
-public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto }
+public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta }
 public enum EstadoTarea { Pendiente, EnCurso, Lista, Error }
 
 /// <summary>Una petición al agente (claude -p): crear una ficha de película o una receta, con rondas de cambios.</summary>
@@ -291,6 +297,7 @@ public class TareaAgente
     public string Autor { get; set; } = "";
     public int? PeliculaId { get; set; }
     public int? RecetaId { get; set; }
+    public int? VinetaId { get; set; }
     public int Rondas { get; set; }
     public int DuracionMs { get; set; }
     /// <summary>Estimación que imprime el CLI (total_cost_usd). Con suscripción no es un cargo; solo informativo, no se muestra.</summary>
@@ -298,4 +305,65 @@ public class TareaAgente
     public DateTime Creada { get; set; } = DateTime.UtcNow;
     public DateTime? Terminada { get; set; }
     public DateTime? Aplicada { get; set; }
+}
+
+public enum JuegoVineta { Ninguno, Rompecabezas, Parejas, Revelar, Criptofrase, OrdenaFrase }
+
+/// <summary>Una ilustración de la colección (72 Kilos y otros), con la frase de Javi y su catalogación.</summary>
+public class Vineta
+{
+    public int Id { get; set; }
+    public string Path { get; set; } = "";
+    public string Autor { get; set; } = "72 Kilos";
+    public string? Libro { get; set; }
+    /// <summary>Texto que lleva la propia ilustración.</summary>
+    public string? FraseAutor { get; set; }
+    /// <summary>La frase de Javi para Raquel que acompaña a la viñeta.</summary>
+    public string? FraseMia { get; set; }
+    /// <summary>Intenciones separadas por comas: amor, apoyo, reconciliación, gratitud…</summary>
+    public string? Intenciones { get; set; }
+    public string? Tono { get; set; }
+    /// <summary>Momentos de uso sugeridos, separados por comas.</summary>
+    public string? Momentos { get; set; }
+    public string? Descripcion { get; set; }
+    public JuegoVineta JuegoSugerido { get; set; }
+    /// <summary>La imagen deja hueco limpio para superponer una frase.</summary>
+    public bool EspacioFrase { get; set; }
+    /// <summary>Raquel ya conoce el libro: se reparte más tarde y con menos frecuencia.</summary>
+    public bool Conocida { get; set; }
+    public bool Activa { get; set; } = true;
+    public bool UsoPortada { get; set; } = true;
+    public bool UsoJuego { get; set; } = true;
+    /// <summary>Día concreto en que debe salir (vacío = reparto automático).</summary>
+    public DateOnly? FechaFija { get; set; }
+    /// <summary>Pregunta y respuesta opcionales para el juego "Revelar".</summary>
+    public string? Pregunta { get; set; }
+    public string? Respuesta { get; set; }
+    public DateOnly? MostradaEl { get; set; }
+    public bool Favorita { get; set; }
+    public string? RespuestaRaquel { get; set; }
+    public DateTime? RespondidaEl { get; set; }
+    public bool RespuestaVista { get; set; }
+    /// <summary>Nombre del fichero original (para no importar dos veces).</summary>
+    public string? Origen { get; set; }
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
+    public List<VinetaDia> Dias { get; set; } = new();
+}
+
+/// <summary>La viñeta asignada a un día de la portada, con su juego y progreso.</summary>
+public class VinetaDia
+{
+    public int Id { get; set; }
+    public DateOnly Fecha { get; set; }
+    public int VinetaId { get; set; }
+    public Vineta Vineta { get; set; } = null!;
+    public JuegoVineta Juego { get; set; }
+    /// <summary>Progreso del juego guardado por el navegador (JSON).</summary>
+    public string? Estado { get; set; }
+    public DateTime? AbiertaEl { get; set; }
+    public DateTime? ResueltaEl { get; set; }
+    public int Pistas { get; set; }
+    /// <summary>Corazones ganados (1 por juego resuelto).</summary>
+    public int Corazones { get; set; }
+    public bool Desvelada => Juego == JuegoVineta.Ninguno || ResueltaEl != null;
 }

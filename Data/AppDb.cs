@@ -25,6 +25,8 @@ public class AppDb : DbContext
     public DbSet<Lectura> Lecturas => Set<Lectura>();
     public DbSet<AdvientoCasilla> Adviento => Set<AdvientoCasilla>();
     public DbSet<TareaAgente> TareasAgente => Set<TareaAgente>();
+    public DbSet<Vineta> Vinetas => Set<Vineta>();
+    public DbSet<VinetaDia> VinetaDias => Set<VinetaDia>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -47,5 +49,8 @@ public class AppDb : DbContext
         b.Entity<ListaItem>().Property(g => g.Cantidad).HasConversion<double?>();
         b.Entity<TareaAgente>().Property(t => t.CosteUsd).HasConversion<double>();
         b.Entity<TareaAgente>().HasIndex(t => t.Estado);
+        b.Entity<VinetaDia>().HasIndex(v => v.Fecha).IsUnique();
+        b.Entity<VinetaDia>().HasOne(v => v.Vineta).WithMany(x => x.Dias).OnDelete(DeleteBehavior.Cascade);
+        b.Entity<Vineta>().HasIndex(v => v.Origen);
     }
 }

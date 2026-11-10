@@ -88,3 +88,18 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   `ANTHROPIC_API_KEY` ni `ANTHROPIC_AUTH_TOKEN`. El `total_cost_usd` que se guarda es solo la estimación del CLI.
 - Si no se encuentra el binario, la app sigue funcionando sin los botones ✨.
 
+## Viñetas (ilustraciones de 72 Kilos y otros)
+- Colección en `Vinetas` (imagen en `adjuntos/vinetas`, fuera del repo) con frase del autor, FRASE DE JAVI,
+  intenciones (taxonomía en `VinetaService.Taxonomia`), tono, momentos, juego sugerido, conocida, fecha fija.
+  Se importan de `App_Data/entrada/<carpeta>/catalogo.json` (Admin → Viñetas → Importar; idempotente por
+  `Origen`) o se suben una a una y el agente las cataloga leyendo la imagen (`TipoTareaAgente.Vineta`).
+- Reparto: `VinetasPorSemana` (3) días fijos por semana elegidos con semilla; nunca repite hasta agotar; las
+  "conocidas" (libro del amor) no salen antes de `VinetasConocidasDesde` (2027-02-01); `FechaFija` manda.
+  La asignación (`VinetaDia`) se guarda la primera vez que se carga la portada ESE día (la vista previa del
+  admin no persiste, así que puede variar).
+- De cada 10, `VinetasJuegoDe10` (5) llegan como juego: Rompecabezas, Parejas, Revelar, Criptofrase, Ordena la
+  frase (se respeta el sugerido si es viable). La viñeta pasa al álbum al resolver; cada juego da 1 corazón.
+- Álbum `/Vinetas`: solo las desveladas; favoritas y respuesta de Raquel (Admin las ve y marca como vistas).
+- Catálogos de las dos primeras tandas (48 viñetas) en `App_Data/entrada/*/catalogo.json` de la máquina de
+  desarrollo; para producción hay que copiar esas carpetas a `/opt/love/App_Data/entrada/` e importar.
+

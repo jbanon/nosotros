@@ -1,0 +1,25 @@
+@page
+@model Love.Pages.Vinetas.IndexModel
+@{ ViewData["Title"] = "Álbum"; var favoritas = Model.Dias.Count(d => d.Vineta.Favorita); }
+<div class="cab"><a class="volver" href="/Amor">‹</a><h1>Álbum 🖼️</h1>@if (Model.Corazones > 0) { <span class="pill ok">♥ @Model.Corazones</span> }</div>
+<div class="ideas-intro">Las viñetas que te voy dejando, con lo que quería decirte con cada una. Algunas llegan como juego: resuélvelo y pasan al álbum.</div>
+@if (Model.Hoy != null && !Model.Hoy.Desvelada)
+{
+    <a class="tarjeta enlace fila" href="/Vinetas/Hoy" style="align-items:center"><span style="font-size:1.8rem">🧩</span><div class="crece"><b>La viñeta de hoy se gana</b><div class="sub suave">@Model.Hoy.Juego · toca para jugar</div></div><span class="suave">›</span></a>
+}
+<p class="suave peq">@Model.Dias.Count descubierta@(Model.Dias.Count == 1 ? "" : "s")@(Model.Total > Model.Dias.Count ? $" · quedan {Model.Total - Model.Dias.Count} por descubrir" : "")@(favoritas > 0 ? $" · {favoritas} favorita{(favoritas == 1 ? "" : "s")}" : "")</p>
+@if (!Model.Dias.Any())
+{
+    <div class="vacio"><span class="ico">🖼️</span>Todavía no hay viñetas. La primera llegará un día de estos a tu página.</div>
+}
+<div class="album">
+    @foreach (var d in Model.Dias)
+    {
+        <a class="album-item" href="/Vinetas/Ver/@d.VinetaId">
+            <img src="/Vinetas/Imagen/@d.VinetaId" alt="" loading="lazy" />
+            @if (d.Vineta.Favorita) { <span class="fav">♥</span> }
+            @if (d.Juego != JuegoVineta.Ninguno) { <span class="juego">🧩</span> }
+            <div class="pie"><span class="fecha">@d.Fecha.ToString("d MMM")</span>@if (!string.IsNullOrWhiteSpace(d.Vineta.FraseMia)) { <span class="frase">@d.Vineta.FraseMia</span> }</div>
+        </a>
+    }
+</div>
