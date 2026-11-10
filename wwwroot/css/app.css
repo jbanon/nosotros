@@ -515,3 +515,7 @@ details.ticket[open] summary::before { rotate: 90deg; }
 .ficha { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
 .ficha .poster { width: 110px; border-radius: 12px; box-shadow: var(--sombra); flex: none; }
 .poster-mini { width: 44px; height: 62px; object-fit: cover; border-radius: 8px; flex: none; box-shadow: var(--sombra); }
+
+/* Cierre de la compra */
+.cierre-compra { border: 2px solid var(--linea); }
+.cierre-compra.completa { border-color: var(--ok); }

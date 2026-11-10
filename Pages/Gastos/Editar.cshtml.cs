@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace Love.Pages.Gastos;
 
-public class EditarModel(AppDb db, FileStorage files, ConfigService config, RecurrenteService recurrentes) : PageModel
+public class EditarModel(AppDb db, FileStorage files, ConfigService config, RecurrenteService recurrentes, ListaCompraService listaCompra) : PageModel
 {
     [BindProperty] public Gasto Gasto { get; set; } = new();
     [BindProperty] public string ImporteTexto { get; set; } = "";
@@ -29,7 +29,10 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config, Recu
         ProductosConocidos = await recurrentes.Productos();
     }
 
-    public async Task<IActionResult> OnGet(int? id, DateOnly? fecha)
+    /// <summary>Semana de la lista de la compra desde la que se viene (para rellenar el ticket).</summary>
+    public DateOnly? Lunes { get; set; }
+
+    public async Task<IActionResult> OnGet(int? id, DateOnly? fecha, DateOnly? lunes)
     {
         await Cargar();
         if (id is int i)
@@ -44,7 +47,19 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config, Recu
                 LinImporte.Add(l.Importe?.ToString("0.##", CultureInfo.InvariantCulture) ?? "");
             }
         }
-        else Gasto = new Gasto { Fecha = fecha ?? Reloj.Hoy, Tipo = TipoGasto.Compra };
+        else
+        {
+            Gasto = new Gasto { Fecha = fecha ?? Reloj.Hoy, Tipo = TipoGasto.Compra };
+            if (lunes is DateOnly l)
+            {
+                // Viene de "terminar la compra": nota y líneas del ticket con lo marcado como comprado
+                Lunes = l;
+                var semana = await listaCompra.SemanaDe(Reloj.Lunes(l));
+                Gasto.Nota = $"Compra · semana del {semana.LunesInicio:d 'de' MMMM}";
+                foreach (var it in semana.Lista.Where(i => i.Incluido && i.Comprado).OrderBy(i => i.Zona).ThenBy(i => i.Nombre))
+                { LinProducto.Add(it.Nombre); LinImporte.Add(""); }
+            }
+        }
         return Page();
     }
 

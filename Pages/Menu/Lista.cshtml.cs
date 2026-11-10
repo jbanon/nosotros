@@ -8,13 +8,16 @@ using System.Globalization;
 
 namespace Love.Pages.Menu;
 
-public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService recurrentes) : PageModel
+public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService recurrentes, FileStorage files) : PageModel
 {
     public Semana Semana { get; set; } = null!;
     public DateOnly Lunes { get; set; }
     public string TextoCompartir { get; set; } = "";
     public int Raciones { get; set; }
     public List<ProductoRecurrente> Reponer { get; set; } = new();
+    public string? ErrorGasto { get; set; }
+    /// <summary>Compras ya apuntadas hoy, para avisar y no duplicar.</summary>
+    public List<Gasto> ComprasHoy { get; set; } = new();
 
     public async Task OnGet(DateOnly? lunes)
     {
@@ -26,6 +29,35 @@ public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService re
         TextoCompartir = ListaCompraService.TextoCompartir(Semana, Raciones);
         var enLista = Semana.Lista.Select(i => RecurrenteService.Clave(i.Nombre)).ToHashSet();
         Reponer = (await recurrentes.Reponer(Reloj.Hoy)).Where(p => !enLista.Contains(RecurrenteService.Clave(p.Nombre))).Take(8).ToList();
+        var hoy = Reloj.Hoy;
+        ComprasHoy = await db.Gastos.Where(g => g.Fecha == hoy && g.Tipo == TipoGasto.Compra).OrderByDescending(g => g.Creado).ToListAsync();
+    }
+
+    /// <summary>Terminar la compra: crea el gasto del mes con el importe del ticket, su foto y el detalle de lo comprado.</summary>
+    public async Task<IActionResult> OnPostApuntarGasto(DateOnly lunes, string? importe, IFormFile? ticket, bool desmarcar)
+    {
+        var txt = (importe ?? "").Replace("€", "").Replace(',', '.').Trim();
+        if (!decimal.TryParse(txt, NumberStyles.Any, CultureInfo.InvariantCulture, out var imp) || imp <= 0)
+        {
+            ErrorGasto = "Pon el importe del ticket.";
+            await OnGet(lunes);
+            return Page();
+        }
+        var s = await lista.SemanaDe(lunes);
+        var g = new Gasto { Fecha = Reloj.Hoy, Tipo = TipoGasto.Compra, Importe = imp, Nota = $"Compra · semana del {s.LunesInicio:d 'de' MMMM}" };
+        int orden = 0;
+        foreach (var it in s.Lista.Where(i => i.Incluido && i.Comprado).OrderBy(i => i.Zona).ThenBy(i => i.Nombre))
+            g.Lineas.Add(new TicketLinea { Producto = it.Nombre, Orden = orden++ });
+        if (ticket != null && ticket.Length > 0)
+        {
+            (g.AdjuntoPath, g.AdjuntoMime) = await files.Guardar(ticket, $"gastos/{g.Fecha.Year}/{g.Fecha.Month:00}");
+            g.AdjuntoNombre = Path.GetFileName(ticket.FileName);
+        }
+        db.Gastos.Add(g);
+        if (desmarcar)
+            foreach (var it in s.Lista.Where(i => i.Comprado)) { if (it.Manual) db.ListaItems.Remove(it); else it.Comprado = false; }
+        await db.SaveChangesAsync();
+        return Redirect($"/Gastos?anio={g.Fecha.Year}&mes={g.Fecha.Month}");
     }
 
     public async Task<IActionResult> OnPostComprado(DateOnly lunes, int id)

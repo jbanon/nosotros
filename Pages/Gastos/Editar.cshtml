@@ -1,10 +1,24 @@
 @page "{id:int?}"
 @model Love.Pages.Gastos.EditarModel
-@{ ViewData["Title"] = Model.Nuevo ? "Nuevo gasto" : "Gasto"; var g = Model.Gasto; }
+@{
+    var g = Model.Gasto;
+    ViewData["Title"] = Model.Nuevo ? (Model.Lunes != null ? "Apuntar la compra" : "Nuevo gasto") : $"{g.Tipo} del {g.Fecha:d 'de' MMMM}";
+}
 <div class="cab">
-    <a class="volver" href="/Gastos?anio=@g.Fecha.Year&mes=@g.Fecha.Month">‹</a>
+    <a class="volver" href="@(Model.Lunes != null ? $"/Menu/Lista?lunes={Model.Lunes:yyyy-MM-dd}" : $"/Gastos?anio={g.Fecha.Year}&mes={g.Fecha.Month}")">‹</a>
     <h1>@ViewData["Title"]</h1>
 </div>
+@if (!Model.Nuevo)
+{
+    <div class="aviso mb fila" style="align-items:center">
+        <span class="crece">Estás <b>editando</b> un gasto ya apuntado (@g.Importe.ToString("N2") €). Si cambias el importe, sustituye al anterior.</span>
+        <a class="btn pequeno" href="/Gastos/Editar?fecha=@Reloj.Hoy.ToString("yyyy-MM-dd")">+ Otra compra</a>
+    </div>
+}
+else if (Model.Lunes != null)
+{
+    <p class="suave peq" style="margin-top:0">Pon el importe del ticket y, si quieres, hazle una foto. El detalle lleva ya lo que has marcado como comprado.</p>
+}
 <form method="post" enctype="multipart/form-data" id="fg">
     <input type="hidden" asp-for="Gasto.Id" />
     <span class="etiqueta">Tipo</span>
@@ -32,7 +46,7 @@
         <button type="button" class="btn pequeno mt" id="mas-linea">+ línea</button>
         <datalist id="productos">@foreach (var pr in Model.ProductosConocidos) { <option value="@pr"></option> }</datalist>
     </details>
-    <label class="campo"><span>Foto o fichero</span><input type="file" asp-for="Adjunto" accept="image/*,application/pdf" /></label>
+    <label class="campo"><span>Foto del ticket o fichero</span><input type="file" asp-for="Adjunto" accept="image/*,application/pdf" capture="environment" /></label>
     @if (g.AdjuntoPath != null)
     {
         <div class="tarjeta fila">

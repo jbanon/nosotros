@@ -94,6 +94,22 @@
 }
 @if (incluidos.Any(i => i.Comprado))
 {
+    var comprados = incluidos.Count(i => i.Comprado);
+    <div class="tarjeta cierre-compra @(pendientes == 0 ? "completa" : "")">
+        <h2 class="mb">🧾 @(pendientes == 0 ? "¡Compra terminada!" : "¿Has terminado la compra?")</h2>
+        <p class="suave peq" style="margin-top:0">Apunta el ticket en Gastos: se suma a la compra del mes y guarda el detalle de lo comprado (@comprados producto@(comprados == 1 ? "" : "s")).</p>
+        @if (Model.ComprasHoy.Any()) { <p class="aviso mb">Hoy ya hay apuntada@(Model.ComprasHoy.Count == 1 ? "" : "s") @Model.ComprasHoy.Count compra@(Model.ComprasHoy.Count == 1 ? "" : "s") (@Model.ComprasHoy.Sum(g => g.Importe).ToString("N2") €). Si es la misma, no la repitas.</p> }
+        @if (Model.ErrorGasto != null) { <p class="error">@Model.ErrorGasto</p> }
+        <form method="post" asp-page-handler="ApuntarGasto" asp-route-lunes="@l" enctype="multipart/form-data">
+            <div class="fila mb">
+                <input type="text" name="importe" inputmode="decimal" placeholder="Importe del ticket (€)" class="crece" autocomplete="off" style="font-size:1.3rem;font-weight:800" required />
+            </div>
+            <label class="campo"><span>Foto del ticket (opcional)</span><input type="file" name="ticket" accept="image/*" capture="environment" /></label>
+            <label class="chip mb"><input type="checkbox" name="desmarcar" value="true" style="display:inline" /> Desmarcar lo comprado al apuntar</label>
+            <button class="btn primario ancho">Apuntar la compra en Gastos</button>
+        </form>
+        <p class="suave peq centrado" style="margin:10px 0 0"><a href="/Gastos/Editar?lunes=@l">Con más detalle (precio por producto) →</a></p>
+    </div>
     <form method="post" asp-page-handler="Limpiar" asp-route-lunes="@l" data-confirm="¿Desmarcar lo comprado?"><button class="btn ancho">Desmarcar lo comprado</button></form>
 }
 <pre id="texto-lista" hidden>@Model.TextoCompartir</pre>

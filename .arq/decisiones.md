@@ -11,6 +11,13 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Los PIN nunca van al repo ni a la documentación: `appsettings.Local.json` en local,
   `/etc/love.env` en el servidor.
 
+## Gastos
+- Cada compra es un gasto independiente; el total del mes es la suma. Tocar un movimiento lo EDITA (la
+  pantalla lo avisa y ofrece "+ Otra compra"); para añadir, botón "Apuntar una compra" o el cierre de
+  la lista de la compra (importe + foto del ticket + detalle con lo marcado como comprado; opcional
+  desmarcar al apuntar). Desde la lista también se puede ir al formulario completo con el ticket
+  prerrellenado (`/Gastos/Editar?lunes=`).
+
 ## Comida
 - La lista de la compra es SIEMPRE para 12 raciones ("somos una gran familia"), configurable en
   Admin → Configuración (`RacionesLista`). Todas las recetas se escalaron una vez a 12 al

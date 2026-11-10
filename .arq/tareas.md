@@ -1,6 +1,10 @@
 # Tareas
 
 ## Hilos abiertos
+- **Compra de 60 € del 8/11 que desapareció en producción (2026-11-10).** Lo más probable es que se editara
+  ese gasto en vez de crear otro. El seed la vuelve a insertar al arrancar si no existe un gasto idéntico
+  (fecha, tipo, 60 €, nota); tras desplegar, Javier comprueba Gastos → noviembre y, si falta o está
+  duplicada, la ajusta a mano.
 - **Adviento: Javier debe subir las fotos (días 1, 7, 11, 16, 20) y revisar textos desde Admin → Calendario de adviento antes del 1 de diciembre.** Opcional: pregunta/respuesta por foto (si no, la foto se ve directa y la letra se gana al abrir). Pendiente ver capturas en el móvil (diseño validado a ciegas) y confirmar que el teclado se abre bien en criptofrase y crucigrama (input oculto `.teclado-oculto`).
 - **Lista de la compra: "elementos abajo que no se ven"** (captura en modo oscuro,
   2026-11-08). Se aumentó el relleno inferior y se versionó el CSS; Javier debe confirmar tras
@@ -23,6 +27,7 @@
 | 2026-11-08 | Lecturas para Raquel: lector con A−/A+, gestión en Admin, aviso en la página de amor | b7d31e2 |
 | 2026-11-09 | Prompt para el agente de los presupuestadores sobre el patrón `claude -p` a demanda (sin código) | — |
 | 2026-11-09 | Creado `.arq/` y `CLAUDE.md` | — |
+| 2026-11-10 | Gastos: aviso claro al editar un gasto existente + botón "Apuntar una compra"; la lista de la compra se cierra con importe y foto del ticket y crea el gasto con el detalle de lo comprado | cef162b |
 | 2026-11-09 | Agente con `claude -p` (Sonnet, esfuerzo medio): mini fichas de películas automáticas con póster, recetas por nombre o desde una foto (traduce y pasa a métrico), conversación de cambios y guardado | cf399aa |
 | 2026-11-09 | Tema Navidad adelantado al 25 de noviembre | 49af518 |
 | 2026-11-09 | Calendario de adviento 2026: 24 casillas (fotos, criptofrases, murdokus, crucigramas, vales, carta final), letras → frase final, Admin para fotos/contenidos/seguimiento, aviso en la página de Raquel | e05af01 |
