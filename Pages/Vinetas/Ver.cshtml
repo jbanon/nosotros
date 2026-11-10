@@ -8,7 +8,7 @@
     <img src="/Vinetas/Imagen/@v.Id" alt="" />
     @if (!string.IsNullOrWhiteSpace(v.FraseMia)) { <figcaption><span class="orn">❧</span>@foreach (var l in v.FraseMia.Replace("\r", "").Split('\n', StringSplitOptions.RemoveEmptyEntries)) { <p>@l</p> }<span class="firma">— @Model.Firma</span></figcaption> }
 </figure>
-<p class="suave peq centrado">@v.Autor@(string.IsNullOrWhiteSpace(v.Libro) ? "" : $" · {v.Libro}") · <a href="/Vinetas/Imagen/@v.Id?descargar=true">Guardar imagen</a></p>
+<p class="suave peq centrado"><a href="/Vinetas/Imagen/@v.Id?descargar=true">Guardar imagen</a></p>
 
 @if (Model.GrandeDesbloqueado) { <a class="btn ancho mb" href="/Vinetas/Grande/@v.Id">🧩 Rompecabezas grande con esta viñeta</a> }
 <form method="post" asp-page-handler="Responder" asp-route-id="@v.Id" class="tarjeta">
