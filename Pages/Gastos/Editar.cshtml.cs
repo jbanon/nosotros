@@ -66,6 +66,9 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config, Recu
     static decimal? Num(string? s) =>
         decimal.TryParse((s ?? "").Replace("€", "").Replace(',', '.').Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v) ? v : null;
 
+    /// <summary>"Guardar como compra nueva": crea otro gasto con lo escrito, sin tocar el que se estaba editando.</summary>
+    public Task<IActionResult> OnPostNuevo() { Gasto.Id = 0; return OnPost(); }
+
     public async Task<IActionResult> OnPost()
     {
         await Cargar();

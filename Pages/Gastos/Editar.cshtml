@@ -56,7 +56,15 @@ else if (Model.Lunes != null)
             <label class="chip" style="margin-left:auto"><input type="checkbox" asp-for="QuitarAdjunto" style="display:inline" /> Quitar</label>
         </div>
     }
-    <button class="btn primario ancho">Guardar</button>
+    @if (Model.Nuevo)
+    {
+        <button class="btn primario ancho">Guardar</button>
+    }
+    else
+    {
+        <button class="btn primario ancho" asp-page-handler="Nuevo" asp-route-id="">Guardar como @(g.Tipo == TipoGasto.Compra ? "compra" : "gasto") nueva</button>
+        <button class="btn ancho mt" data-confirm="Esto SUSTITUYE el gasto del @g.Fecha.ToString("d 'de' MMMM") (@g.Importe.ToString("N2") €). ¿Seguro?">Sustituir el gasto existente</button>
+    }
 </form>
 @if (!Model.Nuevo && (!g.EsFijo || User.EsAdmin()))
 {
