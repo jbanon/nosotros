@@ -2,6 +2,7 @@
 # Publica la app en /opt/love y reinicia el servicio. Ejecutar desde la carpeta del proyecto.
 set -euo pipefail
 export PATH=$PATH:$HOME/.dotnet DOTNET_ROOT=${DOTNET_ROOT:-$([ -x /usr/lib/dotnet/dotnet ] && echo /usr/lib/dotnet || echo $HOME/.dotnet)}
+rm -rf publish   # la salida anterior dentro del proyecto se colaría como contenido en la siguiente publicación
 dotnet publish -c Release -o publish --self-contained false
 sudo mkdir -p /opt/love/App_Data
 sudo rsync -a --delete --exclude App_Data --exclude appsettings.Development.json publish/ /opt/love/
