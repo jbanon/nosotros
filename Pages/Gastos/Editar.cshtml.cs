@@ -49,7 +49,10 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config, Recu
         }
         else
         {
-            Gasto = new Gasto { Fecha = fecha ?? Reloj.Hoy, Tipo = TipoGasto.Compra };
+            // La fecha de la URL solo se acepta si es razonable (ni futura ni de hace meses); si no, hoy.
+            var hoy = Reloj.Hoy;
+            var f = fecha is DateOnly fx && fx <= hoy && fx >= hoy.AddDays(-120) ? fx : hoy;
+            Gasto = new Gasto { Fecha = f, Tipo = TipoGasto.Compra };
             if (lunes is DateOnly l)
             {
                 // Viene de "terminar la compra": nota y líneas del ticket con lo marcado como comprado
@@ -74,6 +77,9 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config, Recu
         await Cargar();
         if (!decimal.TryParse(ImporteTexto.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out var importe) || importe <= 0)
         { Error = "Pon un importe válido"; return Page(); }
+        var hoy = Reloj.Hoy;
+        if (Gasto.Fecha > hoy) { Error = $"La fecha ({Gasto.Fecha:d 'de' MMMM 'de' yyyy}) es futura. Revisa día y mes."; return Page(); }
+        if (Gasto.Fecha < hoy.AddDays(-120)) { Error = $"La fecha ({Gasto.Fecha:d 'de' MMMM 'de' yyyy}) está muy atrás. Revisa día y mes."; return Page(); }
 
         Gasto g;
         if (Gasto.Id == 0) { g = new Gasto(); db.Gastos.Add(g); }

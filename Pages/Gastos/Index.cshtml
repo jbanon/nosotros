@@ -24,7 +24,7 @@
     </div>
     @{ var conTiempo = Model.Lista.Where(g => g.Tipo == TipoGasto.Compra && g.DuracionMin != null).ToList(); }
     @if (conTiempo.Any()) { <div class="peq suave" style="margin-top:4px">🕒 @conTiempo.Sum(g => g.DuracionMin!.Value) min en el súper este mes · media @((int)Math.Round(conTiempo.Average(g => g.DuracionMin!.Value))) min por compra</div> }
-    <a class="btn primario ancho mt" href="/Gastos/Editar?fecha=@(Model.Inicio.Month == Reloj.Hoy.Month && Model.Inicio.Year == Reloj.Hoy.Year ? Reloj.Hoy : Model.Inicio)">+ Apuntar una compra</a>
+    <a class="btn primario ancho mt" href="/Gastos/Editar?fecha=@((Model.Inicio.Month == Reloj.Hoy.Month && Model.Inicio.Year == Reloj.Hoy.Year ? Reloj.Hoy : Model.Inicio).ToString("yyyy-MM-dd"))">+ Apuntar una compra</a>
 </div>
 
 <div class="tarjeta">
@@ -56,4 +56,4 @@
         }
     </div>
 }
-<a class="fab" href="/Gastos/Editar?fecha=@(Model.Inicio.Month == Reloj.Hoy.Month && Model.Inicio.Year == Reloj.Hoy.Year ? Reloj.Hoy : Model.Inicio)" aria-label="Nuevo gasto">+</a>
+<a class="fab" href="/Gastos/Editar?fecha=@((Model.Inicio.Month == Reloj.Hoy.Month && Model.Inicio.Year == Reloj.Hoy.Year ? Reloj.Hoy : Model.Inicio).ToString("yyyy-MM-dd"))" aria-label="Nuevo gasto">+</a>

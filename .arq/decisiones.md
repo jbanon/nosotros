@@ -44,6 +44,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   NO incluir en el repo textos con derechos (artículos de prensa, libros): los pega Javier.
 
 ## Interfaz
+- Fechas en URL (query/route) SIEMPRE con `ToString("yyyy-MM-dd")`: el enlace a un gasto nuevo llevaba
+  `10/11/2026` y el servidor (cultura invariante en query) lo leía como 11 de octubre; así se perdieron
+  compras en otros meses (2026-11-10). El formulario de gasto además rechaza fechas futuras o de hace
+  más de 120 días, y la fecha va plegada, en letras y con atajos Hoy/Ayer/Anteayer.
 - Todo mobile-first, sin liar la interfaz: lo opcional va plegado (`<details>`) o en páginas
   secundarias enlazadas desde la cabecera. Barra inferior: ♥, Recetas, Compra, € Gastos; Raquel
   además ✨ Ideas y 🎬 Pelis; el admin en su lugar ⚙ Admin.

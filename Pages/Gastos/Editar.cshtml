@@ -30,7 +30,16 @@ else if (Model.Lunes != null)
     </div>
     <label class="campo"><span>Importe (€)</span><input asp-for="ImporteTexto" inputmode="decimal" placeholder="0,00" autocomplete="off" style="font-size:1.6rem;font-weight:800" /></label>
     @if (Model.Error != null) { <p class="error">@Model.Error</p> }
-    <label class="campo"><span>Fecha</span><input asp-for="Gasto.Fecha" type="date" /></label>
+    <details class="ticket fecha-caja" id="fecha-caja">
+        <summary>Fecha: <b id="fecha-texto"></b> <span class="suave peq" style="font-weight:600">· cambiar</span></summary>
+        <div class="chips mb mt">
+            <button type="button" class="chip" data-dias="0">Hoy</button>
+            <button type="button" class="chip" data-dias="1">Ayer</button>
+            <button type="button" class="chip" data-dias="2">Anteayer</button>
+        </div>
+        <label class="campo"><span>Otro día (día / mes / año)</span><input asp-for="Gasto.Fecha" type="date" max="@Reloj.Hoy.ToString("yyyy-MM-dd")" /></label>
+        <p class="suave peq" style="margin:0">Lo normal es apuntar la compra el mismo día. Comprueba que el texto de arriba dice el día que quieres.</p>
+    </details>
     <label class="campo"><span>Nota (opcional)</span><input asp-for="Gasto.Nota" placeholder="Mercadona, frutería…" /></label>
     <details class="ticket" id="ticket" @(Model.LinProducto.Any(x => !string.IsNullOrWhiteSpace(x)) ? "open" : "")>
         <summary>Detalle del ticket <span class="suave peq" style="font-weight:600">· opcional, para detectar compras recurrentes</span></summary>
@@ -77,6 +86,18 @@ document.querySelectorAll('input[name="Gasto.Tipo"]').forEach(r => r.addEventLis
   if (r.dataset.importe) imp.value = r.dataset.importe; else { imp.value = ''; imp.focus(); }
 }));
 @if (Model.Nuevo) { <text>document.getElementById('ImporteTexto').focus();</text> }
+// Fecha: siempre en letras, aviso si no es hoy, atajos
+const fIn = document.getElementById('Gasto_Fecha'), fTxt = document.getElementById('fecha-texto'), hoyIso = '@Reloj.Hoy.ToString("yyyy-MM-dd")';
+const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+function pintaFecha() {
+  const v = fIn.value; if (!v) { fTxt.textContent = 'sin fecha'; return; }
+  const d = new Date(v + 'T12:00:00');
+  const txt = d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+  fTxt.textContent = (v === hoyIso ? 'hoy, ' : '') + txt + (v === hoyIso ? '' : ' ⚠️');
+  fTxt.style.color = v === hoyIso ? '' : 'var(--aviso)';
+}
+fIn.addEventListener('change', pintaFecha); pintaFecha();
+document.querySelectorAll('.fecha-caja .chip').forEach(b => b.addEventListener('click', () => { const d = new Date(hoyIso + 'T12:00:00'); d.setDate(d.getDate() - +b.dataset.dias); fIn.value = iso(d); pintaFecha(); }));
 // Líneas del ticket
 const lineas = document.getElementById('lineas'), ticket = document.getElementById('ticket');
 function nuevaLinea(foco) {
