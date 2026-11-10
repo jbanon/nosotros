@@ -70,7 +70,8 @@ public class VinetaService(AppDb db, ConfigService config, FileStorage files, IW
     {
         var desde = await ConocidasDesde();
         var rnd = new Random(fecha.DayNumber * 104729 + 3);
-        var nuevas = await db.Vinetas.Where(x => x.Activa && x.UsoPortada && x.FechaFija == null && x.MostradaEl == null && (!x.Conocida || fecha >= desde)).ToListAsync();
+        var enAdviento = db.Adviento.Where(c => c.VinetaId != null).Select(c => c.VinetaId!.Value);
+        var nuevas = await db.Vinetas.Where(x => x.Activa && x.UsoPortada && x.FechaFija == null && x.MostradaEl == null && (!x.Conocida || fecha >= desde) && !enAdviento.Contains(x.Id)).ToListAsync();
         if (nuevas.Count > 0) return nuevas[rnd.Next(nuevas.Count)];
         // Todas vistas: repetir la que haga más tiempo que no sale (nunca en los últimos 60 días)
         var limite = fecha.AddDays(-60);
@@ -102,14 +103,36 @@ public class VinetaService(AppDb db, ConfigService config, FileStorage files, IW
 
     public Task<int> Corazones() => db.VinetaDias.SumAsync(d => d.Corazones);
 
-    /// <summary>Viñetas que Raquel ya ha visto (sin juego o con el juego resuelto), de la más reciente a la más antigua.</summary>
-    public Task<List<VinetaDia>> Desveladas(DateOnly hoy) =>
-        db.VinetaDias.Include(d => d.Vineta).Where(d => d.Fecha <= hoy && (d.Juego == JuegoVineta.Ninguno || d.ResueltaEl != null))
-          .OrderByDescending(d => d.Fecha).ToListAsync();
+    /// <summary>Viñetas que Raquel ya ha visto (sin juego, con el juego resuelto, o regaladas desde el adviento), de la más reciente a la más antigua.</summary>
+    public async Task<List<VinetaDia>> Desveladas(DateOnly hoy)
+    {
+        var dias = await db.VinetaDias.Include(d => d.Vineta).Where(d => d.Fecha <= hoy && (d.Juego == JuegoVineta.Ninguno || d.ResueltaEl != null)).ToListAsync();
+        var conDia = dias.Select(d => d.VinetaId).ToHashSet();
+        // Regaladas fuera del reparto (p. ej. al resolver una casilla del adviento): tienen MostradaEl pero no VinetaDia
+        var sueltas = await db.Vinetas.Where(v => v.MostradaEl != null && v.MostradaEl <= hoy && !v.Dias.Any()).ToListAsync();
+        dias.AddRange(sueltas.Where(v => !conDia.Contains(v.Id)).Select(v => new VinetaDia { Fecha = v.MostradaEl!.Value, VinetaId = v.Id, Vineta = v, ResueltaEl = DateTime.UtcNow }));
+        return dias.OrderByDescending(d => d.Fecha).ThenByDescending(d => d.Id).ToList();
+    }
 
     /// <summary>Raquel puede cargar la imagen si la viñeta ya ha salido (aunque el juego esté a medias: hace falta para jugar).</summary>
     public async Task<bool> PuedeVer(int vinetaId, DateOnly hoy, bool admin) =>
-        admin || await db.VinetaDias.AnyAsync(d => d.VinetaId == vinetaId && d.Fecha <= hoy);
+        admin || await db.VinetaDias.AnyAsync(d => d.VinetaId == vinetaId && d.Fecha <= hoy) || await db.Vinetas.AnyAsync(v => v.Id == vinetaId && v.MostradaEl != null && v.MostradaEl <= hoy);
+
+    // ---------- Desbloqueos por corazones ----------
+    public record Logro(string Clave, string Nombre, string Emoji, int Corazones, bool Conseguido, string? Texto);
+
+    public async Task<List<Logro>> Logros()
+    {
+        var c = await Corazones();
+        async Task<int> N(string k, int d) => int.TryParse(await config.Get(k, d.ToString()), out var n) ? n : d;
+        int g = await N(ConfigClaves.LogroGrande, 3), v = await N(ConfigClaves.LogroVale, 6), ca = await N(ConfigClaves.LogroCarta, 10);
+        return
+        [
+            new("grande", "El rompecabezas grande", "🧩", g, c >= g, "Un 4×4 con la viñeta que tú elijas del álbum."),
+            new("vale", "Un vale sorpresa", "🎟️", v, c >= v, await config.Get(ConfigClaves.LogroValeTexto, "Vale por un desayuno en la cama, con el periódico y sin prisa.")),
+            new("carta", "Una carta", "💌", ca, c >= ca, await config.Get(ConfigClaves.LogroCartaTexto, "")),
+        ];
+    }
 
     // ---------- Importación de carpetas catalogadas (App_Data/entrada/*/catalogo.json) ----------
     public record Carpeta(string Nombre, string Ruta, int Total, int Pendientes);

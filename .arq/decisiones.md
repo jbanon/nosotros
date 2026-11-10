@@ -100,6 +100,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - De cada 10, `VinetasJuegoDe10` (5) llegan como juego: Rompecabezas, Parejas, Revelar, Criptofrase, Ordena la
   frase (se respeta el sugerido si es viable). La viñeta pasa al álbum al resolver; cada juego da 1 corazón.
 - Álbum `/Vinetas`: solo las desveladas; favoritas y respuesta de Raquel (Admin las ve y marca como vistas).
+- Desbloqueos por corazones (Admin → Viñetas → Desbloqueos): rompecabezas grande 4×4 con cualquier viñeta del
+  álbum (3 ♥), vale sorpresa canjeable (6 ♥, texto configurable) y carta (10 ♥, texto configurable).
+- Una casilla del adviento puede regalar una viñeta además de la letra (`AdvientoCasilla.VinetaId`); esa
+  viñeta queda fuera del reparto semanal y entra en el álbum al resolver la casilla (`MostradaEl`).
 - Catálogos de las dos primeras tandas (48 viñetas) en `App_Data/entrada/*/catalogo.json` de la máquina de
   desarrollo; para producción hay que copiar esas carpetas a `/opt/love/App_Data/entrada/` e importar.
 

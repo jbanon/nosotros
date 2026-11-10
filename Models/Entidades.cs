@@ -243,6 +243,13 @@ public static class ConfigClaves
     public const string VinetasConocidasDesde = "VinetasConocidasDesde";
     /// <summary>Viñetas: de cada 10 viñetas, cuántas llegan como juego (por defecto 5).</summary>
     public const string VinetasJuegoDe10 = "VinetasJuegoDe10";
+    /// <summary>Desbloqueos por corazones: umbrales y textos.</summary>
+    public const string LogroGrande = "LogroGrande";           // corazones para el rompecabezas grande (3)
+    public const string LogroVale = "LogroVale";               // corazones para el vale (6)
+    public const string LogroValeTexto = "LogroValeTexto";
+    public const string LogroCarta = "LogroCarta";             // corazones para la carta (10)
+    public const string LogroCartaTexto = "LogroCartaTexto";
+    public const string LogroValeCanjeado = "LogroValeCanjeado";
 }
 
 public enum TipoCasilla { Foto, Criptofrase, Murdoku, Crucigrama, Vale, Final }
@@ -262,6 +269,8 @@ public class AdvientoCasilla
     /// <summary>Letra de la frase final que se gana al resolver la casilla.</summary>
     public string? Letra { get; set; }
     public string? FotoPath { get; set; }
+    /// <summary>Viñeta que se regala además de la letra al resolver la casilla.</summary>
+    public int? VinetaId { get; set; }
     /// <summary>Pregunta opcional de una palabra para desvelar la foto.</summary>
     public string? Pregunta { get; set; }
     public string? Respuesta { get; set; }

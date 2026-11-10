@@ -7,6 +7,25 @@
 {
     <a class="tarjeta enlace fila" href="/Vinetas/Hoy" style="align-items:center"><span style="font-size:1.8rem">🧩</span><div class="crece"><b>La viñeta de hoy se gana</b><div class="sub suave">@Model.Hoy.Juego · toca para jugar</div></div><span class="suave">›</span></a>
 }
+@{ var siguiente = Model.Logros.FirstOrDefault(l => !l.Conseguido); }
+<details class="ticket logros">
+    <summary>♥ @Model.Corazones corazón@(Model.Corazones == 1 ? "" : "es") @if (siguiente != null) { <span class="suave peq" style="font-weight:600">· a @(siguiente.Corazones - Model.Corazones) de @siguiente.Emoji @siguiente.Nombre.ToLowerInvariant()</span> } else { <span class="suave peq" style="font-weight:600">· todo desbloqueado</span> }</summary>
+    <p class="suave peq" style="margin:8px 0 10px">Cada juego resuelto suma un corazón. Con ellos se abren cosas:</p>
+    @foreach (var l in Model.Logros)
+    {
+        <div class="logro @(l.Conseguido ? "si" : "")">
+            <span class="emoji">@l.Emoji</span>
+            <div class="crece"><b>@l.Nombre</b> <span class="suave peq">· @l.Corazones ♥</span>
+                @if (l.Conseguido && l.Clave == "grande") { <div class="sub">@l.Texto Entra en cualquier viñeta del álbum y pulsa "Rompecabezas grande".</div> }
+                else if (l.Conseguido && l.Clave == "vale") { <div class="sub vale-texto">@l.Texto</div>
+                    @if (!Model.ValeCanjeado) { <form method="post" asp-page-handler="Canjear" data-confirm="¿Canjear el vale ahora? Le llegará el aviso a @Model.Firma."><button class="btn pequeno primario mt">Canjear</button></form> } else { <div class="sub" style="color:var(--ok);font-weight:700">Canjeado ✓</div> } }
+                else if (l.Conseguido && l.Clave == "carta") { <div class="sub carta-texto" style="white-space:pre-line">@(string.IsNullOrWhiteSpace(l.Texto) ? "(Javi aún no la ha escrito…)" : l.Texto)</div> }
+                else { <div class="sub suave">Se abre con @l.Corazones corazones.</div> }
+            </div>
+            <span class="estado">@(l.Conseguido ? "✓" : "🔒")</span>
+        </div>
+    }
+</details>
 <p class="suave peq">@Model.Dias.Count descubierta@(Model.Dias.Count == 1 ? "" : "s")@(Model.Total > Model.Dias.Count ? $" · quedan {Model.Total - Model.Dias.Count} por descubrir" : "")@(favoritas > 0 ? $" · {favoritas} favorita{(favoritas == 1 ? "" : "s")}" : "")</p>
 @if (!Model.Dias.Any())
 {

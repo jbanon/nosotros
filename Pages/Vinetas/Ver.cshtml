@@ -10,6 +10,7 @@
 </figure>
 <p class="suave peq centrado">@v.Autor@(string.IsNullOrWhiteSpace(v.Libro) ? "" : $" · {v.Libro}") · <a href="/Vinetas/Imagen/@v.Id?descargar=true">Guardar imagen</a></p>
 
+@if (Model.GrandeDesbloqueado) { <a class="btn ancho mb" href="/Vinetas/Grande/@v.Id">🧩 Rompecabezas grande con esta viñeta</a> }
 <form method="post" asp-page-handler="Responder" asp-route-id="@v.Id" class="tarjeta">
     <label class="campo"><span>@(v.RespuestaRaquel == null ? "¿Quieres decirme algo de esta?" : "Tu respuesta")</span><textarea name="texto" rows="2" placeholder="Una línea basta…">@v.RespuestaRaquel</textarea></label>
     <button class="btn @(v.RespuestaRaquel == null ? "primario" : "") ancho">@(v.RespuestaRaquel == null ? "Enviar" : "Cambiar")</button>

@@ -4,6 +4,7 @@ using Love.Models;
 using Love.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Love.Pages.Admin.Adviento;
 
@@ -13,6 +14,7 @@ public class EditarModel(AdvientoService adv, AppDb db, FileStorage files) : Pag
     [BindProperty] public IFormFile? Foto { get; set; }
     [BindProperty] public bool QuitarFoto { get; set; }
     public DateOnly Hoy => Reloj.Hoy;
+    public List<Vineta> Vinetas { get; set; } = new();
 
     async Task<AdvientoCasilla?> Buscar(int dia)
     {
@@ -25,6 +27,7 @@ public class EditarModel(AdvientoService adv, AppDb db, FileStorage files) : Pag
         var c = await Buscar(dia);
         if (c == null) return NotFound();
         Casilla = c;
+        Vinetas = await db.Vinetas.Where(v => v.Activa).OrderBy(v => v.Libro).ThenBy(v => v.FraseAutor).ToListAsync();
         return Page();
     }
 
@@ -44,6 +47,7 @@ public class EditarModel(AdvientoService adv, AppDb db, FileStorage files) : Pag
         c.Pregunta = string.IsNullOrWhiteSpace(Casilla.Pregunta) ? null : Casilla.Pregunta.Trim();
         c.Respuesta = string.IsNullOrWhiteSpace(Casilla.Respuesta) ? null : Casilla.Respuesta.Trim();
         c.Datos = string.IsNullOrWhiteSpace(Casilla.Datos) ? "{}" : Casilla.Datos.Trim();
+        c.VinetaId = Casilla.VinetaId;
         if (QuitarFoto) { files.Borrar(c.FotoPath); c.FotoPath = null; }
         if (Foto != null && Foto.Length > 0)
         {

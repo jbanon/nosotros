@@ -577,3 +577,14 @@ details.ticket[open] summary::before { rotate: 90deg; }
 .ordena-banco .chip.mal { background: var(--mal); color: #fff; border-color: var(--mal); animation: sacudir .4s; }
 .ordena-banco .chip.sugerida { border-color: var(--acento); box-shadow: 0 0 0 3px var(--acento-claro); }
 @keyframes sacudir { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.logro { display: flex; gap: 10px; align-items: flex-start; padding: 10px 4px; border-top: 1px solid rgba(0,0,0,.05); }
+.logro .emoji { font-size: 1.5rem; width: 36px; text-align: center; filter: grayscale(1); opacity: .5; }
+.logro.si .emoji { filter: none; opacity: 1; }
+.logro .sub { font-size: .88rem; line-height: 1.35; margin-top: 2px; }
+.logro .vale-texto { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; padding: 8px 10px; border: 2px dashed var(--acento); border-radius: 10px; margin-top: 4px; }
+.logro .carta-texto { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; line-height: 1.4; padding: 10px 12px; background: var(--acento-claro); border-radius: 10px; margin-top: 4px; }
+.logro .estado { font-size: 1rem; opacity: .7; }
+:root:not([data-tema]) .logro { border-top-color: rgba(255,255,255,.07); }
+.vineta-regalo { display: block; color: inherit; margin: 14px auto 0; max-width: 320px; background: rgba(255,255,255,.1); border-radius: 16px; padding: 8px 8px 10px; border: 1px solid rgba(255,255,255,.25); }
+.vineta-regalo img { display: block; width: 100%; border-radius: 10px; }
+.vineta-regalo .vineta-frase { font-size: 1.2rem; margin-top: 8px; }

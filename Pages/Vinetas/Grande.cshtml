@@ -1,0 +1,21 @@
+@page "{id:int}"
+@model Love.Pages.Vinetas.GrandeModel
+@{ ViewData["Title"] = "Rompecabezas grande"; var v = Model.V; }
+<div class="cab"><a class="volver" href="/Vinetas/Ver/@v.Id">‹</a><h1>Rompecabezas grande</h1></div>
+<div class="vj">
+    <p class="suave" style="margin-top:0">Dieciséis piezas. Toca dos para intercambiarlas. Sin prisa: aquí no hay corazones, solo el gusto de hacerlo.</p>
+    <section class="tarjeta juego" id="juego" data-tipo="Rompecabezas"></section>
+    <div class="adv-acciones" id="acciones"><button class="btn fantasma" id="pista" type="button">Una pista</button></div>
+    <p class="adv-msg" id="msg"></p>
+    <section class="adv-premio vineta-premio oculto" id="premio">
+        <p class="adv-sobre centrado">¡Hecho!</p>
+        <img src="/Vinetas/Imagen/@v.Id" alt="" />
+        @if (!string.IsNullOrWhiteSpace(v.FraseMia)) { <p class="vineta-frase">@v.FraseMia</p> }
+        <div class="fila" style="justify-content:center"><a class="btn" href="/Vinetas/Grande/@v.Id">Otra vez</a><a class="btn primario" href="/Vinetas">Al álbum</a></div>
+    </section>
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script id="datos" type="application/json">@Html.Raw(Model.DatosJson)</script>
+    <script src="/js/vinetas.js" asp-append-version="true"></script>
+}

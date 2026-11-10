@@ -34,6 +34,11 @@
         <p class="suave peq" style="margin-bottom:0">Con pregunta, la foto sale borrosa hasta que acierta y la letra se gana al acertar. Sin pregunta, la foto se ve directamente y la letra se gana al abrir.</p>
     </div>
 
+    <label class="campo"><span>Viñeta de regalo al resolver (opcional)</span>
+        <select asp-for="Casilla.VinetaId">
+            <option value="">(ninguna)</option>
+            @foreach (var v in Model.Vinetas) { <option value="@v.Id" selected="@(v.Id == c.VinetaId)">@(v.FraseAutor ?? v.Descripcion ?? $"#{v.Id}")@(string.IsNullOrWhiteSpace(v.FraseMia) ? "" : " ★")@(v.MostradaEl != null ? " (ya vista)" : "")</option> }
+        </select></label>
     <details class="ticket">
         <summary>Datos del pasatiempo (JSON)</summary>
         <textarea asp-for="Casilla.Datos" rows="14" style="font-family:monospace;font-size:.8rem;margin-top:10px"></textarea>

@@ -13,6 +13,7 @@ public class VerModel(AppDb db, VinetaService vinetas, ConfigService config) : P
     public VinetaDia? Dia { get; set; }
     public string Firma { get; set; } = "";
     public bool Guardada { get; set; }
+    public bool GrandeDesbloqueado { get; set; }
 
     async Task<bool> Cargar(int id)
     {
@@ -21,6 +22,7 @@ public class VerModel(AppDb db, VinetaService vinetas, ConfigService config) : P
         if (v == null) return false;
         V = v; Dia = v.Dias.OrderByDescending(d => d.Fecha).FirstOrDefault();
         Firma = await config.Get(ConfigClaves.Firma, "Javier");
+        GrandeDesbloqueado = (await vinetas.Logros()).First(l => l.Clave == "grande").Conseguido;
         return true;
     }
 

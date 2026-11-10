@@ -19,6 +19,9 @@ public class IndexModel(AppDb db, VinetaService vinetas, ConfigService config) :
     public string PorSemana { get; set; } = "3";
     public string JuegoDe10 { get; set; } = "5";
     public string ConocidasDesde { get; set; } = "2027-02-01";
+    public string LogroGrande { get; set; } = "3"; public string LogroVale { get; set; } = "6"; public string LogroCarta { get; set; } = "10";
+    public string LogroValeTexto { get; set; } = ""; public string LogroCartaTexto { get; set; } = ""; public string ValeCanjeado { get; set; } = "";
+    public int Corazones { get; set; }
     public int? Importadas { get; set; }
     public VinetaDia? Hoy { get; set; }
 
@@ -40,6 +43,17 @@ public class IndexModel(AppDb db, VinetaService vinetas, ConfigService config) :
         JuegoDe10 = await config.Get(ConfigClaves.VinetasJuegoDe10, "5");
         ConocidasDesde = await config.Get(ConfigClaves.VinetasConocidasDesde, "2027-02-01");
         Hoy = await vinetas.DelDia(Reloj.Hoy, persistir: false);
+        LogroGrande = await config.Get(ConfigClaves.LogroGrande, "3"); LogroVale = await config.Get(ConfigClaves.LogroVale, "6"); LogroCarta = await config.Get(ConfigClaves.LogroCarta, "10");
+        LogroValeTexto = await config.Get(ConfigClaves.LogroValeTexto, "Vale por un desayuno en la cama, con el periódico y sin prisa."); LogroCartaTexto = await config.Get(ConfigClaves.LogroCartaTexto, "");
+        ValeCanjeado = await config.Get(ConfigClaves.LogroValeCanjeado, ""); Corazones = await vinetas.Corazones();
+    }
+
+    public async Task<IActionResult> OnPostLogros(string grande, string vale, string carta, string valeTexto, string cartaTexto, bool reiniciarVale)
+    {
+        await config.Set(ConfigClaves.LogroGrande, grande.Trim()); await config.Set(ConfigClaves.LogroVale, vale.Trim()); await config.Set(ConfigClaves.LogroCarta, carta.Trim());
+        await config.Set(ConfigClaves.LogroValeTexto, valeTexto.Trim()); await config.Set(ConfigClaves.LogroCartaTexto, cartaTexto.Trim());
+        if (reiniciarVale) await config.Set(ConfigClaves.LogroValeCanjeado, "");
+        return RedirectToPage();
     }
 
     public async Task<IActionResult> OnPostImportar(string carpeta)

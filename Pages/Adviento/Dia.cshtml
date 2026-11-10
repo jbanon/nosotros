@@ -127,6 +127,14 @@
                 <p class="adv-sobre centrado">Tu letra de hoy</p>
                 <div class="letra-grande">@c.Letra</div>
                 <p class="suave2 centrado">Letra <b>@Model.Posicion</b> de @Model.Total de la frase final. Llevas <b id="n-letras">@Model.Letras</b>.</p>
+                @if (Model.VinetaRegalo != null)
+                {
+                    <a class="vineta-regalo" href="/Vinetas/Ver/@Model.VinetaRegalo.Id">
+                        <img src="/Vinetas/Imagen/@Model.VinetaRegalo.Id" alt="" />
+                        @if (!string.IsNullOrWhiteSpace(Model.VinetaRegalo.FraseMia)) { <p class="vineta-frase">@Model.VinetaRegalo.FraseMia</p> }
+                        <span class="vineta-pie">y una viñeta para tu álbum ›</span>
+                    </a>
+                }
                 <a class="btn adv-btn" href="@volver">Volver al calendario</a>
             </section>
         }

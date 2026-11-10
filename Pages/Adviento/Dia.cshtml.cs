@@ -35,6 +35,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
     public List<List<(string? letra, int dia)>> FraseFinal { get; set; } = new();
     public List<AdvientoCasilla> Fotos { get; set; } = new();
     public string Firma { get; set; } = "";
+    public Vineta? VinetaRegalo { get; set; }
     bool EsAdmin => User.EsAdmin();
 
     async Task<bool> Cargar(int dia, DateOnly? fecha)
@@ -71,6 +72,11 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             bool sinReto = c.Tipo == TipoCasilla.Foto && string.IsNullOrWhiteSpace(c.Pregunta) || c.Tipo == TipoCasilla.Vale || c.Tipo == TipoCasilla.Final;
             if (sinReto && c.ResueltaEl == null) { c.ResueltaEl = DateTime.UtcNow; cambios = true; Letras = Todas.Count(x => x.DaLetra && x.Resuelta); }
             if (cambios) await db.SaveChangesAsync();
+        }
+        if (c.VinetaId != null)
+        {
+            VinetaRegalo = await db.Vinetas.FindAsync(c.VinetaId.Value);
+            if (VinetaRegalo != null && c.Resuelta && !EsAdmin && VinetaRegalo.MostradaEl == null) { VinetaRegalo.MostradaEl = Hoy; await db.SaveChangesAsync(); }
         }
         Firma = await config.Get(ConfigClaves.Firma, "Javier");
         if (c.Tipo == TipoCasilla.Final)
@@ -120,6 +126,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
         {
             c.ResueltaEl = DateTime.UtcNow;
             if (p.Estado != null) c.Estado = p.Estado;
+            if (c.VinetaId != null && await db.Vinetas.FindAsync(c.VinetaId.Value) is { } vr && vr.MostradaEl == null) vr.MostradaEl = Hoy;
             await db.SaveChangesAsync();
             Letras = Todas.Count(x => x.DaLetra && x.Resuelta);
         }

@@ -8,7 +8,7 @@
 {
     <a class="tarjeta enlace fila" href="/Admin/Vinetas/Editar/@Model.Hoy.VinetaId" style="align-items:center">
         <img src="/Vinetas/Imagen/@Model.Hoy.VinetaId" class="miniatura" alt="" />
-        <div class="crece"><b>Hoy: @(Model.Hoy.Vineta.FraseAutor ?? "(sin texto)")</b><div class="sub suave">@(Model.Hoy.Juego == JuegoVineta.Ninguno ? "directa en la portada" : $"como juego: {Model.Hoy.Juego}")@(Model.Hoy.Id == 0 ? " · aún no abierta por Raquel" : "")@(string.IsNullOrWhiteSpace(Model.Hoy.Vineta.FraseMia) ? " · ⚠️ sin tu frase" : "")</div></div><span class="suave">›</span>
+        <div class="crece"><b>Hoy: @(Model.Hoy.Vineta.FraseAutor ?? "(sin texto)")</b> <a href="/Amor?fecha=@Reloj.Hoy.ToString("yyyy-MM-dd")" class="peq">· ver portada</a><div class="sub suave">@(Model.Hoy.Juego == JuegoVineta.Ninguno ? "directa en la portada" : $"como juego: {Model.Hoy.Juego}")@(Model.Hoy.Id == 0 ? " · aún no abierta por Raquel" : "")@(string.IsNullOrWhiteSpace(Model.Hoy.Vineta.FraseMia) ? " · ⚠️ sin tu frase" : "")</div></div><span class="suave">›</span>
     </a>
 }
 @if (Model.Carpetas.Any(c => c.Pendientes > 0))
@@ -32,6 +32,21 @@
             <label class="campo"><span>De cada 10, como juego</span><input name="juegoDe10" value="@Model.JuegoDe10" inputmode="numeric" /></label>
         </div>
         <label class="campo"><span>Las conocidas, a partir de (aaaa-mm-dd)</span><input name="conocidasDesde" value="@Model.ConocidasDesde" /></label>
+        <button class="btn pequeno">Guardar</button>
+    </form>
+</details>
+
+<details class="ticket">
+    <summary>Desbloqueos por corazones <span class="suave peq" style="font-weight:600">· Raquel lleva ♥ @Model.Corazones@(Model.ValeCanjeado != "" ? " · vale canjeado 🎟️" : "")</span></summary>
+    <form method="post" asp-page-handler="Logros" class="mt">
+        <div class="cuadricula">
+            <label class="campo"><span>🧩 Rompecabezas grande (♥)</span><input name="grande" value="@Model.LogroGrande" inputmode="numeric" /></label>
+            <label class="campo"><span>🎟️ Vale (♥)</span><input name="vale" value="@Model.LogroVale" inputmode="numeric" /></label>
+        </div>
+        <label class="campo"><span>Texto del vale</span><input name="valeTexto" value="@Model.LogroValeTexto" /></label>
+        <label class="campo"><span>💌 Carta (♥)</span><input name="carta" value="@Model.LogroCarta" inputmode="numeric" /></label>
+        <label class="campo"><span>Texto de la carta (se abre al llegar a esos corazones)</span><textarea name="cartaTexto" rows="5" style="font-family:'Cormorant Garamond',serif;font-size:1.15rem">@Model.LogroCartaTexto</textarea></label>
+        @if (Model.ValeCanjeado != "") { <label class="chip mb"><input type="checkbox" name="reiniciarVale" value="true" style="display:inline" /> Volver a dejar el vale sin canjear</label> }
         <button class="btn pequeno">Guardar</button>
     </form>
 </details>
