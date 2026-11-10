@@ -545,3 +545,35 @@ details.ticket[open] summary::before { rotate: 90deg; }
 .vineta-grande .firma { display: block; margin-top: 8px; font-size: 1.1rem; font-weight: 600; opacity: .8; }
 .fav-btn { border: 0; background: transparent; font-size: 1.8rem; color: var(--linea); cursor: pointer; line-height: 1; padding: 4px 6px; transition: transform .15s; }
 .fav-btn.on { color: #e34a6f; } .fav-btn:active { transform: scale(1.2); }
+
+/* Juegos de viñetas (página clara) */
+.vj .adv-msg.mal { color: var(--mal); } .vj .adv-msg.bien { color: var(--ok); }
+.vj .adv-acciones .primario { flex: 1; }
+.vj .cripto .celda b { border-bottom-color: rgba(0,0,0,.35); } .vj .cripto .celda.llena b { color: var(--acento-oscuro); }
+.vj .cripto .celda.activa b { border-bottom-color: var(--acento); background: var(--acento-claro); }
+.vj .cripto-solucion { color: var(--acento-oscuro); }
+.vj .adv-premio { background: linear-gradient(160deg, var(--acento-claro), var(--tarjeta)); border: 1px solid var(--acento); }
+.vineta-premio img { display: block; width: 100%; border-radius: 14px; margin: 6px 0 4px; }
+.vineta-premio .vineta-frase { font-size: 1.4rem; }
+.rompe { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 4px; width: 100%; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: var(--linea); transition: gap .4s; }
+.rompe .pieza { background-size: calc(var(--n) * 100%) calc(var(--n) * 100%); background-repeat: no-repeat; cursor: pointer; transition: transform .12s, outline .12s; outline: 0 solid var(--acento); }
+.rompe .pieza.activa { outline: 4px solid var(--acento); outline-offset: -4px; transform: scale(.94); z-index: 1; }
+.rompe.resuelto { gap: 0; } .rompe.resuelto .pieza { outline: 0; }
+.parejas { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 8px; }
+.carta { position: relative; aspect-ratio: 1; border: 0; padding: 0; border-radius: 12px; background: transparent; cursor: pointer; perspective: 600px; }
+.carta .dorso, .carta .cara { position: absolute; inset: 0; border-radius: 12px; backface-visibility: hidden; transition: transform .45s; }
+.carta .dorso { background: linear-gradient(135deg, var(--acento), var(--acento-oscuro)); color: rgba(255,255,255,.85); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
+.carta .cara { background-size: cover; background-position: center; transform: rotateY(180deg); box-shadow: var(--sombra); }
+.carta.vista .dorso { transform: rotateY(180deg); } .carta.vista .cara { transform: rotateY(0); }
+.carta.hecha { opacity: .85; } .carta.hecha .cara { outline: 3px solid var(--ok); outline-offset: -3px; }
+.revelar { position: relative; border-radius: 14px; overflow: hidden; background: var(--linea); }
+.revelar img { display: block; width: 100%; transition: filter 1.4s ease; }
+.revelar img.velada { filter: blur(22px) saturate(1.2); transform: scale(1.08); }
+.revelar canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.ordena-frase { min-height: 56px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 10px; border-radius: 12px; background: var(--acento-claro); margin-bottom: 12px; font-family: 'Cormorant Garamond', serif; }
+.ordena-frase .chip { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; padding: 6px 12px; }
+.ordena-frase.completa { background: color-mix(in srgb, var(--ok) 18%, transparent); }
+.ordena-banco .chip { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; }
+.ordena-banco .chip.mal { background: var(--mal); color: #fff; border-color: var(--mal); animation: sacudir .4s; }
+.ordena-banco .chip.sugerida { border-color: var(--acento); box-shadow: 0 0 0 3px var(--acento-claro); }
+@keyframes sacudir { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }

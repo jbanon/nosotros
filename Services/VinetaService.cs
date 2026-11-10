@@ -107,8 +107,9 @@ public class VinetaService(AppDb db, ConfigService config, FileStorage files, IW
         db.VinetaDias.Include(d => d.Vineta).Where(d => d.Fecha <= hoy && (d.Juego == JuegoVineta.Ninguno || d.ResueltaEl != null))
           .OrderByDescending(d => d.Fecha).ToListAsync();
 
+    /// <summary>Raquel puede cargar la imagen si la viñeta ya ha salido (aunque el juego esté a medias: hace falta para jugar).</summary>
     public async Task<bool> PuedeVer(int vinetaId, DateOnly hoy, bool admin) =>
-        admin || await db.VinetaDias.AnyAsync(d => d.VinetaId == vinetaId && d.Fecha <= hoy && (d.Juego == JuegoVineta.Ninguno || d.ResueltaEl != null));
+        admin || await db.VinetaDias.AnyAsync(d => d.VinetaId == vinetaId && d.Fecha <= hoy);
 
     // ---------- Importación de carpetas catalogadas (App_Data/entrada/*/catalogo.json) ----------
     public record Carpeta(string Nombre, string Ruta, int Total, int Pendientes);

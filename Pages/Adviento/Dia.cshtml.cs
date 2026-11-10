@@ -14,6 +14,10 @@ public class PeticionJuego
     public int[]? Eleccion { get; set; }
     public string? Respuesta { get; set; }
     public string? Estado { get; set; }
+    /// <summary>Juegos de viñetas: permutación del rompecabezas o índices de "ordena la frase".</summary>
+    public int[]? Orden { get; set; }
+    public bool Parejas { get; set; }
+    public int Porcentaje { get; set; }
 }
 
 public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : PageModel

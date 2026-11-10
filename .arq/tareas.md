@@ -3,7 +3,8 @@
 ## Hilos abiertos
 - **Viñetas: Javier debe escribir su frase en cada viñeta (Admin → Viñetas → filtro "Sin mi frase") y subir
   las carpetas `App_Data/entrada/libro-amor` y `las-vidas-que-dibujamos` al servidor (`/opt/love/App_Data/entrada/`)
-  para importarlas allí.** Juegos de viñetas en construcción (fase 2).
+  para importarlas allí.** Pendiente ver los juegos en el móvil (capturas): rompecabezas, parejas, rascar,
+  criptofrase y ordena la frase se han probado solo contra el servidor.
 
 - **Adviento: Javier debe subir las fotos (días 1, 7, 11, 16, 20) y revisar textos desde Admin → Calendario de adviento antes del 1 de diciembre.** Opcional: pregunta/respuesta por foto (si no, la foto se ve directa y la letra se gana al abrir). Pendiente ver capturas en el móvil (diseño validado a ciegas) y confirmar que el teclado se abre bien en criptofrase y crucigrama (input oculto `.teclado-oculto`).
 - **Lista de la compra: "elementos abajo que no se ven"** (captura en modo oscuro,
@@ -27,6 +28,7 @@
 | 2026-11-08 | Lecturas para Raquel: lector con A−/A+, gestión en Admin, aviso en la página de amor | b7d31e2 |
 | 2026-11-09 | Prompt para el agente de los presupuestadores sobre el patrón `claude -p` a demanda (sin código) | — |
 | 2026-11-09 | Creado `.arq/` y `CLAUDE.md` | — |
+| 2026-11-10 | Viñetas fase 2: los cinco juegos (rompecabezas, parejas, revelar con pregunta o rascando, criptofrase, ordena la frase) en /Vinetas/Hoy, con pistas, progreso y corazón al resolver | 43200b7 |
 | 2026-11-10 | Viñetas fase 1: colección en Admin (importación de catálogos, análisis por el agente), viñeta del día en la portada con frase de Javi, álbum con favoritas y respuestas | ca7f47a |
 | 2026-11-10 | Sin recolocación automática (Javier lo corrigió a mano); la app empieza en noviembre 2026 y los meses anteriores quedan en blanco (sin fijos) | 7fdac7f |
 | 2026-11-10 | CAUSA de las compras "borradas": el enlace de gasto nuevo pasaba la fecha como 10/11/2026 y se leía como 11 de octubre. Arreglado (ISO en URL), fecha plegada en letras con atajos y validación de fechas | 2726482 |

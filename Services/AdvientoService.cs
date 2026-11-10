@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Love.Data;
@@ -40,72 +38,15 @@ public class AdvientoService(AppDb db)
         "Casi, casi… pero no. Vuelve ese día ♥",
     ];
 
-    // ---------- Normalización ----------
-    /// <summary>Mayúsculas sin acentos (la Ñ se conserva).</summary>
-    public static string Normalizar(string s)
-    {
-        var sb = new StringBuilder();
-        foreach (var ch in s.ToUpperInvariant().Normalize(NormalizationForm.FormD))
-        {
-            var cat = CharUnicodeInfo.GetUnicodeCategory(ch);
-            if (cat == UnicodeCategory.NonSpacingMark)
-            {
-                // tilde de la Ñ (U+0303 tras N): se conserva como Ñ
-                if (ch == '̃' && sb.Length > 0 && sb[^1] == 'N') sb[^1] = 'Ñ';
-                continue;
-            }
-            sb.Append(ch);
-        }
-        return sb.ToString();
-    }
-
-    static string SoloLetras(string s) => new(Normalizar(s).Where(char.IsLetter).ToArray());
-    public static bool Coincide(string? a, string? b) => SoloLetras(a ?? "") == SoloLetras(b ?? "") && SoloLetras(a ?? "").Length > 0;
-
-    const string Alfabeto = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
-
-    // ---------- Criptofrase ----------
-    /// <summary>Clave letra→número, fija para cada casilla.</summary>
-    static Dictionary<char, int> ClaveCripto(AdvientoCasilla c)
-    {
-        var nums = Enumerable.Range(1, Alfabeto.Length).ToArray();
-        var rnd = new Random(c.Anio * 1000 + c.Dia * 7 + 13);
-        for (int i = nums.Length - 1; i > 0; i--) { int j = rnd.Next(i + 1); (nums[i], nums[j]) = (nums[j], nums[i]); }
-        return Alfabeto.Select((l, i) => (l, n: nums[i])).ToDictionary(x => x.l, x => x.n);
-    }
-
+    // ---------- Normalización y criptofrase (lógica compartida en Criptofrase) ----------
+    public static string Normalizar(string s) => Criptofrase.Normalizar(s);
+    public static bool Coincide(string? a, string? b) => Criptofrase.Coincide(a, b);
+    static int Semilla(AdvientoCasilla c) => c.Anio * 1000 + c.Dia * 7 + 13;
     static string Frase(AdvientoCasilla c) => Json(c)["frase"]?.GetValue<string>() ?? "";
 
-    /// <summary>Lo que ve el navegador: palabras como listas de celdas {n} (letra) o {s} (signo).</summary>
-    public object VistaCripto(AdvientoCasilla c)
-    {
-        var clave = ClaveCripto(c);
-        var frase = Normalizar(Frase(c));
-        var palabras = frase.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(p => p.Select(ch =>
-            clave.TryGetValue(ch, out var n) ? (object)new { n } : new { s = ch.ToString() }).ToArray()).ToArray();
-        var pista = Json(c)["pista"]?.GetValue<string>();
-        return new { palabras, pista, letras = frase.Where(char.IsLetter).Distinct().Count() };
-    }
-
-    public bool ComprobarCripto(AdvientoCasilla c, Dictionary<string, string> asignacion)
-    {
-        var clave = ClaveCripto(c);
-        var frase = Normalizar(Frase(c));
-        foreach (var ch in frase.Where(char.IsLetter).Distinct())
-            if (!asignacion.TryGetValue(clave[ch].ToString(), out var l) || Normalizar(l) != ch.ToString()) return false;
-        return true;
-    }
-
-    /// <summary>Una pista: la clave de la letra más frecuente que aún no está bien.</summary>
-    public object? PistaCripto(AdvientoCasilla c, Dictionary<string, string> asignacion)
-    {
-        var clave = ClaveCripto(c);
-        var frase = Normalizar(Frase(c));
-        var pendiente = frase.Where(char.IsLetter).GroupBy(ch => ch).OrderByDescending(g => g.Count())
-            .Select(g => g.Key).FirstOrDefault(ch => !asignacion.TryGetValue(clave[ch].ToString(), out var l) || Normalizar(l) != ch.ToString());
-        return pendiente == default ? null : new { n = clave[pendiente], letra = pendiente.ToString() };
-    }
-
+    public object VistaCripto(AdvientoCasilla c) => Criptofrase.Vista(Frase(c), Semilla(c), Json(c)["pista"]?.GetValue<string>());
+    public bool ComprobarCripto(AdvientoCasilla c, Dictionary<string, string> asignacion) => Criptofrase.Comprobar(Frase(c), Semilla(c), asignacion);
+    public object? PistaCripto(AdvientoCasilla c, Dictionary<string, string> asignacion) => Criptofrase.Pista(Frase(c), Semilla(c), asignacion);
     public string SolucionCripto(AdvientoCasilla c) => Frase(c);
 
     // ---------- Crucigrama ----------
@@ -199,7 +140,7 @@ public class AdvientoService(AppDb db)
     public bool ComprobarFoto(AdvientoCasilla c, string respuesta) => Coincide(c.Respuesta, respuesta);
     public object? PistaFoto(AdvientoCasilla c)
     {
-        var r = SoloLetras(c.Respuesta ?? "");
+        var r = Criptofrase.SoloLetras(c.Respuesta);
         return r.Length == 0 ? null : new { texto = $"Empieza por {r[0]} y tiene {r.Length} letras" };
     }
 

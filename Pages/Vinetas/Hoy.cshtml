@@ -1,0 +1,49 @@
+@page
+@model Love.Pages.Vinetas.HoyModel
+@{ ViewData["Title"] = Model.Titulo; var v = Model.Dia.Vineta; var j = Model.Dia.Juego; }
+<div class="cab"><a class="volver" href="/Amor">‹</a><h1>@Model.Titulo</h1>@if (Model.Corazones > 0) { <span class="pill ok">♥ @Model.Corazones</span> }</div>
+<div class="vj">
+    <p class="suave" style="margin-top:0">@Model.Intro</p>
+    @if (j == JuegoVineta.Revelar)
+    {
+        <section class="tarjeta foto-caja">
+            <div class="revelar" id="revelar">
+                <img src="/Vinetas/Imagen/@v.Id" alt="" id="revelar-img" class="@(v.Pregunta != null ? "velada" : "")" />
+                @if (v.Pregunta == null) { <canvas id="rasca"></canvas> }
+            </div>
+            @if (v.Pregunta != null)
+            {
+                <div class="foto-reto" id="juego">
+                    <p class="pregunta">@v.Pregunta</p>
+                    <div class="fila"><input id="respuesta" class="crece" autocomplete="off" autocapitalize="characters" placeholder="Una palabra" /><button class="btn primario" id="comprobar" type="button">Ver</button></div>
+                    <button class="btn pequeno fantasma" id="pista" type="button">Una pista</button>
+                </div>
+            }
+            else { <div id="juego"></div> }
+        </section>
+    }
+    else
+    {
+        <section class="tarjeta juego" id="juego" data-tipo="@j"></section>
+        <div class="adv-acciones" id="acciones">
+            @if (j == JuegoVineta.Criptofrase) { <button class="btn primario" id="comprobar" type="button">Comprobar</button> }
+            @if (j != JuegoVineta.Parejas) { <button class="btn fantasma" id="pista" type="button">Una pista</button> }
+        </div>
+    }
+    <p class="adv-msg" id="msg"></p>
+
+    <section class="adv-premio vineta-premio oculto" id="premio">
+        <p class="adv-sobre centrado">La viñeta de hoy</p>
+        <img src="/Vinetas/Imagen/@v.Id" alt="" />
+        @if (!string.IsNullOrWhiteSpace(v.FraseMia)) { <p class="vineta-frase">@v.FraseMia</p><p class="suave peq centrado">— @Model.Firma</p> }
+        <p class="suave peq centrado">+1 ♥ · ya está en tu álbum</p>
+        <div class="fila" style="justify-content:center"><a class="btn primario" href="/Vinetas/Ver/@v.Id">Verla en el álbum</a><a class="btn" href="/Amor">Volver</a></div>
+    </section>
+    @if (Model.Preview) { <div class="aviso mt">Vista previa de admin · nada se guarda · <a href="/Admin/Vinetas/Editar/@v.Id">editar viñeta</a></div> }
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script id="datos" type="application/json">@Html.Raw(Model.DatosJson)</script>
+    @if (j == JuegoVineta.Criptofrase) { <script src="/js/adviento.js" asp-append-version="true"></script> }
+    else { <script src="/js/vinetas.js" asp-append-version="true"></script> }
+}
