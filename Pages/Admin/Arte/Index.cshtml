@@ -1,0 +1,39 @@
+@page
+@model Love.Pages.Admin.Arte.IndexModel
+@{ ViewData["Title"] = "Arte"; var hoy = Reloj.Hoy; var pendientesSeed = Model.Seed.Count(s => s.Existe && !s.Importada); var faltan = Model.Seed.Where(s => !s.Existe && !s.Importada).ToList(); var nuevas = Model.Obras.Count(o => o.RespuestaRaquel != null && !o.RespuestaVista); }
+<div class="cab"><a class="volver" href="/Admin">‹</a><h1>Disfruta la vista</h1><a class="accion" href="/Admin/Arte/Editar">+ Obra</a></div>
+@if (Model.Importadas is int imp) { <div class="aviso mb">Importada@(imp == 1 ? "" : "s") @imp obra@(imp == 1 ? "" : "s").</div> }
+@if (pendientesSeed > 0 || faltan.Any())
+{
+    <div class="tarjeta">
+        <h2 class="mb">Contenido inicial (Seed/arte.json)</h2>
+        @if (pendientesSeed > 0) { <form method="post" asp-page-handler="Importar"><button class="btn primario ancho">Importar @pendientesSeed obra@(pendientesSeed == 1 ? "" : "s")</button></form> }
+        @if (faltan.Any()) { <p class="suave peq" style="margin:8px 0 0">Faltan imágenes en App_Data/entrada/arte: @string.Join(", ", faltan.Select(f => f.Fichero))</p> }
+    </div>
+}
+@if (nuevas > 0) { <form method="post" asp-page-handler="Vistas" class="mb"><button class="btn pequeno">💬 @nuevas respuesta@(nuevas == 1 ? "" : "s") nueva@(nuevas == 1 ? "" : "s") · marcar vistas</button></form> }
+<p class="suave peq">Una obra cada domingo. Las que no tienen fecha fija van en el orden de la cola (flechas).</p>
+<div class="lista">
+    @foreach (var o in Model.Obras)
+    {
+        var f = Model.Calendario.TryGetValue(o.Id, out var ff) ? ff : (DateOnly?)null;
+        var publicada = f != null && f <= hoy;
+        <div class="tarjeta fila" style="align-items:center;padding:10px">
+            <a href="/Admin/Arte/Editar/@o.Id" class="fila crece" style="color:inherit;align-items:center;min-width:0">
+                @if (o.ReducidaPath != null) { <img src="/Arte/Imagen/@o.Id?t=r" class="miniatura" alt="" loading="lazy" style="width:64px;height:64px" /> }
+                <div class="crece" style="min-width:0">
+                    <b>@o.Titulo</b> <span class="suave peq">· @o.Autor</span>
+                    <div class="sub suave">@(f == null ? "inactiva" : (publicada ? "publicada el " : "domingo ") + f.Value.ToString("d MMM"))@(o.Publicacion != null ? " 📌" : "") · @o.Paradas.Count paradas@(string.IsNullOrWhiteSpace(o.FraseMia) ? " · ⚠️ sin tu frase" : "")@(o.VistaEl != null ? " · vista ✓" : "")@(o.Favorita ? " · ♥" : "")</div>
+                    @if (o.RespuestaRaquel != null) { <div class="sub" style="margin-top:4px;padding:6px 8px;border-radius:8px;background:var(--acento-claro)">💬 @o.RespuestaRaquel</div> }
+                </div>
+            </a>
+            @if (o.Publicacion == null && o.Activa && !publicada)
+            {
+                <div style="display:flex;flex-direction:column;gap:2px">
+                    <form method="post" asp-page-handler="Mover" asp-route-id="@o.Id" asp-route-dir="-1"><button class="btn pequeno fantasma" title="Antes">▲</button></form>
+                    <form method="post" asp-page-handler="Mover" asp-route-id="@o.Id" asp-route-dir="1"><button class="btn pequeno fantasma" title="Después">▼</button></form>
+                </div>
+            }
+        </div>
+    }
+</div>

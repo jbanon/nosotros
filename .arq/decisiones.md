@@ -109,3 +109,21 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Catálogos de las dos primeras tandas (48 viñetas) en `App_Data/entrada/*/catalogo.json` de la máquina de
   desarrollo; para producción hay que copiar esas carpetas a `/opt/love/App_Data/entrada/` e importar.
 
+## Disfruta la vista (arte)
+- Sección propia `/Arte`, una obra cada domingo desde el 15/11/2026 (`ArteService.Estreno`). La fecha es la
+  fijada en la obra o el siguiente domingo libre según el orden de la cola (Admin → flechas). Las obras
+  pasadas no caducan. Aviso en la portada la semana de la obra mientras no la haya visto; enlace "🎨 Arte" en
+  el pie. No ocupa botón en la barra inferior.
+- Visor: una sola `<img>` con `translate3d + scale` (transform-origin 0 0) y transición de 1,3 s; `will-change`
+  solo durante la animación para que el navegador repinte nítido al terminar. Se carga la reducida (1600 px)
+  y se cambia por la grande (4096 px máx., límite elegido por Safari en iPhone) cuando está decodificada.
+  Paso 0 = obra entera con intro; paradas; último = obra entera con la frase de Javi y respuesta de Raquel.
+  Deslizar o botones; doble toque o botón para explorar con arrastre y pellizco (zoom máx. ×12).
+- Imágenes con ImageSharp **3.1.12** (la 4.x exige clave de licencia para compilar en Release). Se guardan en
+  `adjuntos/arte` (-g y -r). El reductor de fotos de `app.js` se salta inputs con `data-sin-reducir`.
+- Solo dominio público, con URL de origen y licencia en cada obra; nada del Prado directamente (Commons). No
+  usar capturas de baja resolución. Descartadas: Matisse (DP en España en 2035) y fotos de esculturas con
+  derechos del fotógrafo.
+- Contenido inicial: `Seed/arte.json` (12 obras, 78 paradas, textos en el tono de la app con guiños a la
+  familia) + imágenes en `App_Data/entrada/arte/` (fuera del repo); se importan desde Admin → Disfruta la vista.
+

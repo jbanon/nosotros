@@ -27,6 +27,8 @@ public class AppDb : DbContext
     public DbSet<TareaAgente> TareasAgente => Set<TareaAgente>();
     public DbSet<Vineta> Vinetas => Set<Vineta>();
     public DbSet<VinetaDia> VinetaDias => Set<VinetaDia>();
+    public DbSet<Obra> Obras => Set<Obra>();
+    public DbSet<ParadaObra> ParadasObra => Set<ParadaObra>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -52,5 +54,7 @@ public class AppDb : DbContext
         b.Entity<VinetaDia>().HasIndex(v => v.Fecha).IsUnique();
         b.Entity<VinetaDia>().HasOne(v => v.Vineta).WithMany(x => x.Dias).OnDelete(DeleteBehavior.Cascade);
         b.Entity<Vineta>().HasIndex(v => v.Origen);
+        b.Entity<ParadaObra>().HasOne(p => p.Obra).WithMany(o => o.Paradas).OnDelete(DeleteBehavior.Cascade);
+        b.Entity<Obra>().HasIndex(o => o.Origen);
     }
 }

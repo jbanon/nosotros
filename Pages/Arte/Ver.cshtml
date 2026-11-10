@@ -1,0 +1,30 @@
+@page "{id:int}"
+@model Love.Pages.Arte.VerModel
+@{ ViewData["Title"] = Model.O.Titulo; }
+<div class="visor-arte" id="visor">
+    <header class="visor-cab">
+        <a class="volver" href="/Arte" aria-label="Volver">‹</a>
+        <div class="crece"><b>@Model.O.Titulo</b><span>@Model.O.Autor@(Model.O.Anio != null ? $" · {Model.O.Anio}" : "")</span></div>
+        <button type="button" class="fav-btn @(Model.O.Favorita ? "on" : "")" id="fav" aria-label="Favorita">♥</button>
+    </header>
+    <div class="visor-escena" id="escena">
+        <img id="obra" alt="@Model.O.Titulo" draggable="false" />
+        <span class="visor-marca" id="marca"></span>
+        <div class="visor-cargando" id="cargando">Cargando la obra…</div>
+    </div>
+    <section class="visor-tarjeta" id="tarjeta" aria-live="polite">
+        <div class="visor-puntos" id="puntos"></div>
+        <div id="contenido"></div>
+        <div class="visor-botones">
+            <button type="button" class="btn" id="atras" aria-label="Anterior">‹</button>
+            <button type="button" class="btn primario crece" id="sig">Empezar</button>
+        </div>
+        <button type="button" class="visor-explorar" id="explorar">🔍 Explorar a mi aire</button>
+    </section>
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script id="datos" type="application/json">@Html.Raw(Model.DatosJson)</script>
+    <script src="/js/arte.js" asp-append-version="true"></script>
+    <script src="/js/arte-visor.js" asp-append-version="true"></script>
+}

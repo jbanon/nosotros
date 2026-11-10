@@ -66,7 +66,7 @@
 })();
 
 // --- Reducir fotos en el móvil antes de subirlas (máx. 1600 px, JPEG) ---
-document.querySelectorAll('input[type=file][accept*="image"]').forEach(inp => inp.addEventListener('change', async () => {
+document.querySelectorAll('input[type=file][accept*="image"]:not([data-sin-reducir])').forEach(inp => inp.addEventListener('change', async () => {
   const f = inp.files?.[0];
   if (!f || !f.type.startsWith('image/') || f.type === 'image/gif') return;
   try {

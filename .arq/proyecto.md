@@ -6,7 +6,8 @@ Es un regalo personal: los textos, el tono y el diseño importan tanto como el c
 Módulos: página "Para ti" con mensaje diario y declaración; menú semanal con lista de la compra
 por zonas; gastos del mes con histórico y tickets; Ideas para automatizar; Películas que ver;
 Lecturas que Javier le deja a Raquel; Calendario de adviento (diciembre); agente `claude -p` para
-fichas de películas y recetas; Viñetas (ilustraciones con frase de Javi, reparto semanal, juegos y álbum); Admin.
+fichas de películas y recetas; Viñetas (ilustraciones con frase de Javi, reparto semanal, juegos y álbum);
+"Disfruta la vista" (una obra de arte por semana con recorrido de detalles); Admin.
 
 Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
 
@@ -30,9 +31,11 @@ Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
   `SeedService`, `ConfigService`, `MensajeService`, `PinAuth`, `AdvientoService` (apertura por
   fecha, cifrado de criptofrases, rejilla de crucigramas, comprobaciones y pistas), `AgenteService`
   (BackgroundService que lanza `claude -p`; prompts, esquemas JSON, póster de Wikipedia, crear receta),
-  `VinetaService` (reparto semanal con semilla, juegos viables, importación de catálogos).
+  `VinetaService` (reparto semanal con semilla, juegos viables, importación de catálogos), `ArteService`
+  (calendario de domingos, imágenes en dos tamaños con ImageSharp, importación de `Seed/arte.json`).
 - `Pages/Amor` (página de Raquel), `Pages/Menu` (Semana, Lista, Recetas; `Recetas/Agente` pide recetas
-  al agente), `Pages/Peliculas` (Index, Ficha, Poster), `Pages/Vinetas` (álbum, Ver, Imagen, Hoy=juego), `Pages/Admin/Vinetas`, `Pages/Gastos`
+  al agente), `Pages/Peliculas` (Index, Ficha, Poster), `Pages/Vinetas` (álbum, Ver, Imagen, Hoy=juego), `Pages/Admin/Vinetas`, `Pages/Arte` (Index, Ver=visor,
+  Imagen) y `Pages/Admin/Arte` (calendario, editor de paradas; JS en `wwwroot/js/arte.js` y `arte-visor.js`), `Pages/Gastos`
   (Index, Editar, Historico, Recurrentes), `Pages/Ideas`, `Pages/Peliculas`, `Pages/Lecturas`,
   `Pages/Admin` (Index, Config, Mensajes, Fechas, Lecturas, Adviento), `Pages/Adviento` (Index,
   Dia con handlers JSON, Foto; JS en `wwwroot/js/adviento.js`), `Pages/Login`.

@@ -47,6 +47,7 @@ builder.Services.AddScoped<PinAuth>();
 builder.Services.AddScoped<SeedService>();
 builder.Services.AddScoped<AdvientoService>();
 builder.Services.AddScoped<VinetaService>();
+builder.Services.AddScoped<ArteService>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<AgenteService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<AgenteService>());

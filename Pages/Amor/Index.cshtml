@@ -70,6 +70,15 @@
         </a>
     }
 
+    @if (Model.ObraSemana != null)
+    {
+        <a class="lectura-aviso" href="/Arte/Ver/@Model.ObraSemana.Id">
+            <span class="ico">🎨</span>
+            <span class="crece"><b>Esta semana: @Model.ObraSemana.Titulo</b><br /><span>@Model.ObraSemana.Autor · @Model.ObraSemana.Paradas.Count detalles para mirar despacio</span></span>
+            <span class="flecha">›</span>
+        </a>
+    }
+
     @if (Model.Adviento != null)
     {
         if (Model.AdvientoEnlace)
@@ -94,9 +103,13 @@
             <span class="flecha">›</span>
         </a>
     }
-    else if (Model.NumLecturas > 0 || Model.VinetasDescubiertas > 0)
+    else if (Model.NumLecturas > 0 || Model.VinetasDescubiertas > 0 || Model.ObrasPublicadas > 0)
     {
-        <p class="lectura-enlace">@if (Model.NumLecturas > 0) { <a href="/Lecturas">📖 Lecturas</a> } @if (Model.NumLecturas > 0 && Model.VinetasDescubiertas > 0) { <text> · </text> } @if (Model.VinetasDescubiertas > 0) { <a href="/Vinetas">🖼️ Álbum</a> }</p>
+        var enlaces = new List<(string url, string txt)>();
+        if (Model.NumLecturas > 0) enlaces.Add(("/Lecturas", "📖 Lecturas"));
+        if (Model.VinetasDescubiertas > 0) enlaces.Add(("/Vinetas", "🖼️ Álbum"));
+        if (Model.ObrasPublicadas > 0) enlaces.Add(("/Arte", "🎨 Arte"));
+        <p class="lectura-enlace">@for (int i = 0; i < enlaces.Count; i++) { if (i > 0) { <text> · </text> } <a href="@enlaces[i].url">@enlaces[i].txt</a> }</p>
     }
 
     <footer class="amor-pie">

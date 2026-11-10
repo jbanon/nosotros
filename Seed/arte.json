@@ -1,0 +1,718 @@
+{
+ "nota": "Imágenes en App_Data/entrada/arte/<fichero> (fuera del repo). Se importan desde Admin → Disfruta la vista. Coordenadas x,y en fracción 0–1; zoom respecto a la obra entera.",
+ "obras": [
+  {
+   "clave": "paseo",
+   "titulo": "Paseo a orillas del mar",
+   "autor": "Joaquín Sorolla",
+   "anio": "1909",
+   "museo": "Museo Sorolla, Madrid",
+   "intro": "Una tarde de verano en la playa de Valencia. Sorolla pinta a las dos personas que más quiere: su mujer, Clotilde, y su hija María. Y pinta, sobre todo, el viento.",
+   "frase": "Algún día nos pintarán así: paseando por la orilla, despeinados, sin prisa.",
+   "paradas": [
+    {
+     "x": 0.31,
+     "y": 0.1,
+     "zoom": 4,
+     "titulo": "Clotilde",
+     "texto": "La de la izquierda es Clotilde, su mujer. Casi no se le ve la cara: el velo se la tapa porque se la está sujetando contra el viento. Sorolla decía que sin ella no habría pintado nada."
+    },
+    {
+     "x": 0.12,
+     "y": 0.14,
+     "zoom": 2.6,
+     "titulo": "El velo",
+     "texto": "Mira cómo vuela la gasa. Son cuatro pinceladas rápidas, casi transparentes, y sin embargo se oye el viento."
+    },
+    {
+     "x": 0.37,
+     "y": 0.33,
+     "zoom": 3.5,
+     "titulo": "La sombrilla",
+     "texto": "Lleva la sombrilla cerrada, ni la intenta abrir. Con ese viento, quien la abriera acabaría volando con ella."
+    },
+    {
+     "x": 0.76,
+     "y": 0.085,
+     "zoom": 4,
+     "titulo": "María",
+     "texto": "La de la derecha es María, la hija mayor, que entonces tenía diecinueve años. Mira hacia abajo, seria, como si estuviera pensando en sus cosas."
+    },
+    {
+     "x": 0.7,
+     "y": 0.58,
+     "zoom": 3,
+     "titulo": "El sombrero en la mano",
+     "texto": "María se ha quitado el sombrero para que no se lo lleve el viento. Fíjate en las cintas azules: también se mueven."
+    },
+    {
+     "x": 0.55,
+     "y": 0.8,
+     "zoom": 2.4,
+     "titulo": "Las sombras moradas",
+     "texto": "Las sombras sobre la arena no son grises: son violetas y azules. Así es la luz del Mediterráneo a última hora, y Sorolla la conocía como nadie."
+    },
+    {
+     "x": 0.06,
+     "y": 0.97,
+     "zoom": 5,
+     "titulo": "La firma",
+     "texto": "Abajo, a la izquierda, casi escondido: «J. Sorolla 1909». Firma pequeño, como quien no quiere molestar."
+    }
+   ],
+   "fichero": "paseo.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:Joaqu%C3%ADn_Sorolla_y_Bastida_-_Strolling_along_the_Seashore_-_Google_Art_Project.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "arnolfini",
+   "titulo": "El matrimonio Arnolfini",
+   "autor": "Jan van Eyck",
+   "anio": "1434",
+   "museo": "National Gallery, Londres",
+   "intro": "Una pareja en su casa de Brujas, hace casi seiscientos años. Parece un retrato quieto, pero está lleno de pequeñas cosas que nadie mira. Vamos a mirarlas.",
+   "frase": "Yo también querría dejar escrito en la pared: «estuve aquí, contigo».",
+   "paradas": [
+    {
+     "x": 0.55,
+     "y": 0.42,
+     "zoom": 3.5,
+     "titulo": "Las manos",
+     "texto": "Él le tiende la mano y ella le da la suya, abierta, con calma. Es el centro de todo el cuadro: dos manos que se encuentran."
+    },
+    {
+     "x": 0.51,
+     "y": 0.297,
+     "zoom": 6,
+     "titulo": "El espejo",
+     "texto": "En el espejo se ve la habitación entera desde el otro lado, la pareja de espaldas y dos personas en la puerta. Una de ellas podría ser el propio pintor. Alrededor, diez escenas diminutas de la Pasión."
+    },
+    {
+     "x": 0.48,
+     "y": 0.215,
+     "zoom": 5,
+     "titulo": "«Jan van Eyck estuvo aquí»",
+     "texto": "Encima del espejo, en latín y con letra de adorno: «Johannes de eyck fuit hic 1434». No firmó como pintor, sino como testigo: «yo estuve aquí»."
+    },
+    {
+     "x": 0.42,
+     "y": 0.068,
+     "zoom": 6,
+     "titulo": "Una sola vela",
+     "texto": "Es de día y la lámpara tiene una única vela encendida. Mucha gente cree que es un símbolo: una luz que acompaña a la pareja."
+    },
+    {
+     "x": 0.1,
+     "y": 0.535,
+     "zoom": 5,
+     "titulo": "Las naranjas",
+     "texto": "En la ventana hay naranjas. En la Brujas de 1434 eran carísimas, traídas del sur. Es una forma discreta de decir: aquí se vive bien."
+    },
+    {
+     "x": 0.06,
+     "y": 0.91,
+     "zoom": 4,
+     "titulo": "Los zuecos",
+     "texto": "Él se ha quitado los zuecos y los ha dejado ahí tirados. Andar descalzo en casa: nada más doméstico."
+    },
+    {
+     "x": 0.47,
+     "y": 0.885,
+     "zoom": 4,
+     "titulo": "El perrito",
+     "texto": "Y a sus pies, un perrito de pelo revuelto mirando al pintor. Los perros en los cuadros significan fidelidad. Este, además, parece que espera un trocito de algo. Briska lo entendería."
+    }
+   ],
+   "fichero": "arnolfini.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:Van_Eyck_-_Arnolfini_Portrait.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "larsson",
+   "titulo": "Desayuno bajo el gran abedul",
+   "autor": "Carl Larsson",
+   "anio": "1896",
+   "museo": "Nationalmuseum, Estocolmo",
+   "intro": "Carl Larsson pintó una y otra vez su casa de Sundborn, en Suecia, con su mujer Karin y sus hijos (acabaron siendo ocho). Esta es una mañana cualquiera: la familia desayunando en el jardín.",
+   "frase": "Una mesa larga en el campo, todos alrededor y el perro esperando. Ese es mi big project.",
+   "paradas": [
+    {
+     "x": 0.65,
+     "y": 0.42,
+     "zoom": 2.2,
+     "titulo": "La mesa larga",
+     "texto": "Una mesa sencilla bajo los árboles, niños de todas las edades, cada uno a lo suyo. No posan: es un desayuno de verdad, con su ruido y su desorden."
+    },
+    {
+     "x": 0.846,
+     "y": 0.285,
+     "zoom": 3.5,
+     "titulo": "Karin",
+     "texto": "A la derecha, con sombrero, Karin, su mujer. Ella también era pintora, y diseñaba los muebles y los tejidos de la casa. Media Suecia acabó decorando como ella."
+    },
+    {
+     "x": 0.778,
+     "y": 0.394,
+     "zoom": 4,
+     "titulo": "La que nos mira",
+     "texto": "Entre todos, una niña con gorro rojo es la única que mira al pintor. Seguramente porque le ha dicho: «quieta un momento»."
+    },
+    {
+     "x": 0.706,
+     "y": 0.3,
+     "zoom": 4,
+     "titulo": "El perro en la mesa",
+     "texto": "Y sentado a la mesa como uno más, el perro de la familia. Atento, educado, esperando su parte. Igual que alguien que conocemos."
+    },
+    {
+     "x": 0.385,
+     "y": 0.374,
+     "zoom": 5,
+     "titulo": "La gallina",
+     "texto": "Junto a la silla vacía se ha colado una gallina blanca. Nadie le hace caso, porque en el campo esto es lo normal."
+    },
+    {
+     "x": 0.285,
+     "y": 0.825,
+     "zoom": 4,
+     "titulo": "Las botellas en la hierba",
+     "texto": "En la hierba hay unas botellas puestas a refrescar a la sombra. Un detalle de quien vive en el campo y sabe cómo se hacen las cosas."
+    }
+   ],
+   "fichero": "larsson.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:Frukost_under_stora_bj%C3%B6rken_av_Carl_Larsson_1896.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "ola",
+   "titulo": "La gran ola de Kanagawa",
+   "autor": "Katsushika Hokusai",
+   "anio": "hacia 1831",
+   "museo": "Metropolitan Museum, Nueva York",
+   "intro": "Es probablemente la imagen japonesa más famosa del mundo. Hokusai tenía unos setenta años cuando la hizo, para una serie titulada «Treinta y seis vistas del monte Fuji». Y sí: el monte Fuji está ahí.",
+   "frase": "Cuando todo parece una ola enorme, fíjate en lo que sigue quieto al fondo. Para mí, eres tú.",
+   "paradas": [
+    {
+     "x": 0.55,
+     "y": 0.32,
+     "zoom": 3.5,
+     "titulo": "Las garras",
+     "texto": "La cresta de la ola se rompe en dedos de espuma, como garras a punto de cerrarse sobre las barcas. Da miedo y es preciosa a la vez."
+    },
+    {
+     "x": 0.64,
+     "y": 0.67,
+     "zoom": 4,
+     "titulo": "El Fuji, diminuto",
+     "texto": "Al fondo, pequeñito y con nieve en la cumbre, el monte Fuji. La ola lo hace parecer insignificante, pero es lo único que no se mueve."
+    },
+    {
+     "x": 0.44,
+     "y": 0.48,
+     "zoom": 3,
+     "titulo": "¿Espuma o nieve?",
+     "texto": "La espuma cae en gotas blancas sobre el Fuji y parece que nieva. Hokusai juega a que no sepamos dónde acaba el mar y empieza la montaña."
+    },
+    {
+     "x": 0.51,
+     "y": 0.87,
+     "zoom": 3,
+     "titulo": "Los remeros",
+     "texto": "En las barcas, los remeros se agachan todos a la vez, pegados a los remos. Eran barcas rápidas que llevaban pescado fresco a Edo."
+    },
+    {
+     "x": 0.16,
+     "y": 0.64,
+     "zoom": 3,
+     "titulo": "Otra barca",
+     "texto": "Hay tres barcas. Esta de la izquierda está a punto de quedar bajo la ola, y aun así los hombres siguen en su sitio, juntos."
+    },
+    {
+     "x": 0.09,
+     "y": 0.16,
+     "zoom": 4,
+     "titulo": "El título y la firma",
+     "texto": "Arriba a la izquierda, el cartucho con el título de la serie, y al lado la firma: «pintado por Hokusai, que ha cambiado su nombre por Iitsu». Cambió de nombre más de treinta veces."
+    }
+   ],
+   "fichero": "ola.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:Great_Wave_off_Kanagawa2.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "skagen",
+   "titulo": "Tarde de verano en la playa de Skagen",
+   "autor": "Peder Severin Krøyer",
+   "anio": "1899",
+   "museo": "Colección Hirschsprung, Copenhague",
+   "intro": "Skagen, la punta más al norte de Dinamarca. En verano la luz no termina de irse y el mar y el cielo se vuelven del mismo azul: lo llamaban «la hora azul». Krøyer se pintó paseando con su mujer, Marie.",
+   "frase": "El norte, la orilla, la hora azul y tú del brazo. Este verano, a Finlandia.",
+   "paradas": [
+    {
+     "x": 0.63,
+     "y": 0.22,
+     "zoom": 4,
+     "titulo": "Marie",
+     "texto": "Marie mira al mar, con el pelo recogido y el vestido blanco. Era pintora y la llamaban la mujer más guapa de Dinamarca."
+    },
+    {
+     "x": 0.765,
+     "y": 0.19,
+     "zoom": 4,
+     "titulo": "Peder",
+     "texto": "Él, con sombrero de paja y barba rojiza, la mira de reojo. Es el autor: se pintó a sí mismo un poco por detrás de ella."
+    },
+    {
+     "x": 0.69,
+     "y": 0.41,
+     "zoom": 3.5,
+     "titulo": "Del brazo",
+     "texto": "Van del brazo, sin hablar, al mismo paso. Fíjate en lo poco que hace falta para contar que dos personas están juntas."
+    },
+    {
+     "x": 0.895,
+     "y": 0.64,
+     "zoom": 3.5,
+     "titulo": "Rap",
+     "texto": "El perro es Rap, el perro de caza de la casa. Va a lo suyo, olfateando la arena, como hacen siempre los perros en los paseos."
+    },
+    {
+     "x": 0.224,
+     "y": 0.044,
+     "zoom": 5,
+     "titulo": "La luna",
+     "texto": "Arriba, la luna ya ha salido aunque todavía es de día. En Skagen, en verano, pasan las dos cosas a la vez."
+    },
+    {
+     "x": 0.24,
+     "y": 0.48,
+     "zoom": 3,
+     "titulo": "El reflejo",
+     "texto": "La luna deja un camino de luz que se rompe en el agua. Son toques de pintura clara, casi dorada, sobre todo ese azul."
+    },
+    {
+     "x": 0.052,
+     "y": 0.146,
+     "zoom": 5,
+     "titulo": "Las velas",
+     "texto": "En el horizonte, un barco de vela, apenas una mancha. Ese es el norte que tanto nos gusta: tranquilo, enorme y casi vacío."
+    }
+   ],
+   "fichero": "skagen.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:P_S_Kr%C3%B8yer_1899_-_Sommeraften_ved_Skagens_strand._Kunstneren_og_hans_hustru.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "beso",
+   "titulo": "El beso",
+   "autor": "Gustav Klimt",
+   "anio": "1907–1908",
+   "museo": "Belvedere, Viena",
+   "intro": "Klimt lo pintó con pan de oro de verdad, como un icono. Dos amantes envueltos en una sola túnica, en un prado de flores al borde de un precipicio. Visto de lejos es un solo cuerpo; de cerca, son dos.",
+   "frase": "De cerca, cuadrados y círculos. De lejos, uno solo. Así me gusta que nos vean.",
+   "paradas": [
+    {
+     "x": 0.57,
+     "y": 0.145,
+     "zoom": 3.5,
+     "titulo": "Los ojos cerrados",
+     "texto": "Él la besa en la mejilla y ella cierra los ojos. No es un beso de película: es un beso tranquilo, de los que no tienen prisa."
+    },
+    {
+     "x": 0.375,
+     "y": 0.19,
+     "zoom": 3,
+     "titulo": "Los cuadrados de él",
+     "texto": "En el manto de él todo son rectángulos, negros, blancos y dorados. Formas rectas, firmes, casi arquitectura."
+    },
+    {
+     "x": 0.54,
+     "y": 0.35,
+     "zoom": 3.5,
+     "titulo": "Los círculos de ella",
+     "texto": "En el vestido de ella, en cambio, círculos y flores de colores. Klimt los diferencia así, pero los envuelve en el mismo oro."
+    },
+    {
+     "x": 0.63,
+     "y": 0.12,
+     "zoom": 4,
+     "titulo": "Flores en el pelo",
+     "texto": "Ella lleva flores en el pelo, como si el prado le hubiera subido hasta la cabeza."
+    },
+    {
+     "x": 0.79,
+     "y": 0.73,
+     "zoom": 3.5,
+     "titulo": "Los pies",
+     "texto": "Y fíjate en sus pies, descalzos, con los dedos encogidos en el borde del prado. Están justo al filo del precipicio. Él la sujeta."
+    },
+    {
+     "x": 0.31,
+     "y": 0.88,
+     "zoom": 3,
+     "titulo": "El prado",
+     "texto": "Abajo, un prado entero de flores, una a una. Klimt pasaba horas pintando cada pétalo."
+    },
+    {
+     "x": 0.94,
+     "y": 0.9,
+     "zoom": 4,
+     "titulo": "La firma",
+     "texto": "Abajo a la derecha, casi fundida con el oro: «GUSTAV KLIMT». Hay que buscarla."
+    }
+   ],
+   "fichero": "beso.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "delicias",
+   "titulo": "El jardín de las delicias",
+   "autor": "El Bosco",
+   "anio": "hacia 1490–1500",
+   "museo": "Museo del Prado, Madrid (imagen: Wikimedia Commons)",
+   "intro": "Tres tablas: a la izquierda el paraíso, en el centro un jardín lleno de gente y a la derecha el infierno. Hay cientos de figuras. Te llevo a las parejas escondidas.",
+   "frase": "De todo este jardín, me quedo con lo mismo que tú: estar dentro de la misma burbuja.",
+   "paradas": [
+    {
+     "x": 0.146,
+     "y": 0.75,
+     "zoom": 4,
+     "titulo": "El paraíso",
+     "texto": "En la tabla izquierda, Dios presenta a Eva a Adán, que se acaba de despertar. Ella baja la mirada. Es la primera pareja, y empieza el cuadro."
+    },
+    {
+     "x": 0.45,
+     "y": 0.4,
+     "zoom": 3,
+     "titulo": "La gran cabalgata",
+     "texto": "En el centro, hombres montados en caballos, ciervos, osos y unicornios dan vueltas alrededor de un estanque lleno de mujeres. Es un baile que no se acaba nunca."
+    },
+    {
+     "x": 0.412,
+     "y": 0.27,
+     "zoom": 6,
+     "titulo": "La fresa gigante",
+     "texto": "Fresas, cerezas y moras del tamaño de una persona por todas partes. Las fresas, tan ricas como breves, son el símbolo de los placeres que duran poco."
+    },
+    {
+     "x": 0.313,
+     "y": 0.683,
+     "zoom": 8,
+     "titulo": "La pareja en la burbuja",
+     "texto": "Mira bien: dentro de una burbuja de cristal, una pareja abrazada. Un refrán flamenco decía: «la felicidad y el cristal, qué pronto se rompen». Por eso hay que cuidarlas."
+    },
+    {
+     "x": 0.428,
+     "y": 0.628,
+     "zoom": 7,
+     "titulo": "Asomados a una fruta",
+     "texto": "Dos cabezas asoman juntas de una fruta rosa enorme, como si se hubieran escondido ahí a hablar de sus cosas."
+    },
+    {
+     "x": 0.407,
+     "y": 0.71,
+     "zoom": 7,
+     "titulo": "La concha",
+     "texto": "Un hombre carga con una concha gigante y, dentro, asoma una pareja. Cada uno guarda su secreto como puede."
+    },
+    {
+     "x": 0.258,
+     "y": 0.637,
+     "zoom": 7,
+     "titulo": "El búho",
+     "texto": "A la izquierda nos mira un búho, muy serio, con los ojos redondos. En el Bosco aparecen búhos por todas partes, y nadie sabe con seguridad por qué."
+    },
+    {
+     "x": 0.885,
+     "y": 0.385,
+     "zoom": 5,
+     "titulo": "El hombre-árbol",
+     "texto": "En el infierno, un hombre con el cuerpo como un huevo roto y piernas de tronco nos mira por encima del hombro. Muchos creen que es el propio Bosco."
+    }
+   ],
+   "fichero": "delicias.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "perla",
+   "titulo": "La joven de la perla",
+   "autor": "Johannes Vermeer",
+   "anio": "hacia 1665",
+   "museo": "Mauritshuis, La Haya",
+   "intro": "No es un retrato: nadie sabe quién es. Es un «tronie», un estudio de una cara con un vestido exótico. Y aun así, se gira y nos mira como si la hubiéramos llamado.",
+   "frase": "A veces te miro así, de reojo, y pienso que no sé cómo he tenido tanta suerte.",
+   "paradas": [
+    {
+     "x": 0.4,
+     "y": 0.39,
+     "zoom": 4,
+     "titulo": "La mirada",
+     "texto": "Se está girando hacia nosotros, como si alguien acabara de decir su nombre. Los ojos húmedos, un poco abiertos de sorpresa."
+    },
+    {
+     "x": 0.385,
+     "y": 0.535,
+     "zoom": 5,
+     "titulo": "Los labios",
+     "texto": "Tiene los labios entreabiertos, con un punto de luz en el inferior. Es una sola pincelada blanca, y basta para que parezca que va a hablar."
+    },
+    {
+     "x": 0.625,
+     "y": 0.552,
+     "zoom": 5,
+     "titulo": "La perla",
+     "texto": "La perla más famosa de la pintura son apenas dos pinceladas: un brillo arriba y, abajo, el reflejo del cuello blanco. Ni siquiera tiene contorno. El resto lo pone tu ojo."
+    },
+    {
+     "x": 0.58,
+     "y": 0.63,
+     "zoom": 4,
+     "titulo": "El cuello blanco",
+     "texto": "El cuello de la camisa es el que se refleja en la perla. Vermeer pinta la luz rebotando de una cosa a otra."
+    },
+    {
+     "x": 0.54,
+     "y": 0.25,
+     "zoom": 3,
+     "titulo": "El turbante azul",
+     "texto": "El azul del turbante es ultramar, hecho con lapislázuli molido, más caro que el oro. Vermeer lo usaba aunque estuviera lleno de deudas."
+    },
+    {
+     "x": 0.83,
+     "y": 0.58,
+     "zoom": 3,
+     "titulo": "La tela que cae",
+     "texto": "La tela amarilla cae por la espalda en pliegues gruesos. Pintada rápida, casi a manchas, en contraste con la cara, tan suave."
+    }
+   ],
+   "fichero": "perla.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:Meisje_met_de_parel.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "tandem",
+   "titulo": "Ramon Casas y Pere Romeu en un tándem",
+   "autor": "Ramon Casas",
+   "anio": "1897",
+   "museo": "Museu Nacional d'Art de Catalunya, Barcelona",
+   "intro": "Barcelona, modernismo puro. Casas pintó este cuadro enorme para colgarlo en Els Quatre Gats, la taberna donde se reunían los artistas de la ciudad (un jovencísimo Picasso hizo allí su primera exposición). Los dos de la bici son el pintor y el dueño del local.",
+   "frase": "Lo nuestro es un tándem: si uno se cansa, el otro pedalea. Y siempre vamos a la vez.",
+   "paradas": [
+    {
+     "x": 0.51,
+     "y": 0.1,
+     "zoom": 4,
+     "titulo": "El que nos mira",
+     "texto": "El de atrás se gira y nos mira, con la barba al viento. Es una cara de broma, de amigos que se están riendo mientras posan."
+    },
+    {
+     "x": 0.28,
+     "y": 0.32,
+     "zoom": 4,
+     "titulo": "El de delante",
+     "texto": "El de delante va encorvado, concentrado, con algo entre los dientes. Él marca el rumbo; el otro pone las piernas."
+    },
+    {
+     "x": 0.23,
+     "y": 0.52,
+     "zoom": 5,
+     "titulo": "El farol",
+     "texto": "En el manillar llevan un farolillo. Ir en bici en 1897 era lo más moderno del mundo, casi una provocación."
+    },
+    {
+     "x": 0.53,
+     "y": 0.69,
+     "zoom": 4,
+     "titulo": "Los calcetines",
+     "texto": "Calcetines de rayas de colores. Casas era un poco dandi y le encantaba vestir así."
+    },
+    {
+     "x": 0.845,
+     "y": 0.49,
+     "zoom": 4,
+     "titulo": "La bolsa",
+     "texto": "Detrás llevan una bolsa de cuero, como quien sale de excursión para todo el día."
+    },
+    {
+     "x": 0.46,
+     "y": 0.83,
+     "zoom": 4,
+     "titulo": "Los pedales",
+     "texto": "Los dos pedales giran con la misma cadena: en un tándem no puedes pedalear a tu ritmo, vas al del otro."
+    }
+   ],
+   "fichero": "tandem.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:Ramon_Casas_-_Ramon_Casas_and_Pere_Romeu_on_a_Tandem_-_Google_Art_Project.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "hammershoi",
+   "titulo": "Interior con Ida en una silla blanca",
+   "autor": "Vilhelm Hammershøi",
+   "anio": "1900",
+   "intro": "Hammershøi pintó casi siempre lo mismo: su casa de Copenhague, vacía y silenciosa, y a su mujer, Ida, casi siempre de espaldas. Es un cuadro para mirar en silencio.",
+   "frase": "Me gusta mirarte cuando estás concentrada y no sabes que te miro.",
+   "paradas": [
+    {
+     "x": 0.615,
+     "y": 0.51,
+     "zoom": 4,
+     "titulo": "La nuca",
+     "texto": "Ida está de espaldas, con el pelo recogido. Solo vemos su nuca, y aun así se nota que está completamente absorta en algo."
+    },
+    {
+     "x": 0.645,
+     "y": 0.67,
+     "zoom": 3,
+     "titulo": "La silla blanca",
+     "texto": "El respaldo blanco, en forma de escudo, es lo más luminoso de la habitación. Todo el cuadro gira en torno a esa silla."
+    },
+    {
+     "x": 0.375,
+     "y": 0.4,
+     "zoom": 3,
+     "titulo": "La puerta abierta",
+     "texto": "Al fondo, una puerta abierta y detrás otra habitación con una ventana llena de luz. La casa sigue y sigue."
+    },
+    {
+     "x": 0.286,
+     "y": 0.507,
+     "zoom": 6,
+     "titulo": "El pomo",
+     "texto": "Un pomo pequeño y blanco en la puerta. Hammershøi quitaba casi todo de sus cuadros, pero estos detalles los dejaba."
+    },
+    {
+     "x": 0.69,
+     "y": 0.36,
+     "zoom": 5,
+     "titulo": "El cuadro en la pared",
+     "texto": "En la pared, un cuadro pequeño, tan gris que no sabemos qué tiene. Un cuadro dentro de un cuadro, y los dos callados."
+    },
+    {
+     "x": 0.29,
+     "y": 0.635,
+     "zoom": 3,
+     "titulo": "La mesa",
+     "texto": "Una mesa oscura y vacía. Nada encima. En esta casa, el silencio también es un mueble."
+    }
+   ],
+   "fichero": "hammershoi.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:Interior_with_Ida_in_a_White_Chair_by_Vilhelm_Hammersh%C3%B8i.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "flaming",
+   "titulo": "Flaming June",
+   "autor": "Frederic Leighton",
+   "anio": "1895",
+   "museo": "Museo de Arte de Ponce, Puerto Rico",
+   "intro": "Una mujer dormida en un banco de mármol frente al mar, un mediodía de junio. Tiene una historia curiosa: durante años nadie la quiso, y en 1963 un coleccionista de Puerto Rico la compró por muy poco dinero. Hoy es la joya de su museo.",
+   "frase": "Duerme todo lo que quieras. Yo vigilo.",
+   "paradas": [
+    {
+     "x": 0.46,
+     "y": 0.33,
+     "zoom": 4,
+     "titulo": "Dormida",
+     "texto": "Duerme de verdad, con la mejilla apoyada en el brazo y la boca relajada. No posa: se ha quedado frita."
+    },
+    {
+     "x": 0.625,
+     "y": 0.62,
+     "zoom": 3,
+     "titulo": "La tela transparente",
+     "texto": "La tela naranja es tan fina que se transparentan las piernas. Leighton era famoso por pintar telas así, como si fueran luz."
+    },
+    {
+     "x": 0.51,
+     "y": 0.96,
+     "zoom": 4,
+     "titulo": "El pie descalzo",
+     "texto": "Abajo asoma un pie descalzo, recogido. Es el detalle más tierno del cuadro."
+    },
+    {
+     "x": 0.83,
+     "y": 0.145,
+     "zoom": 3.5,
+     "titulo": "La adelfa",
+     "texto": "Arriba a la derecha, una rama de adelfa. Es bonita pero venenosa: los victorianos la ponían para hablar del sueño, que se parece un poco a la muerte."
+    },
+    {
+     "x": 0.42,
+     "y": 0.185,
+     "zoom": 4,
+     "titulo": "El mar",
+     "texto": "Detrás del banco brilla el mar, casi blanco de sol. Hace calor; por eso ella se ha rendido."
+    }
+   ],
+   "fichero": "flaming.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:Frederic_Leighton_-_Flaming_June_(1895)_-_Museo_de_Arte_de_Ponce.jpg",
+   "licencia": "Dominio público"
+  },
+  {
+   "clave": "ajedrez",
+   "titulo": "Los jugadores de ajedrez",
+   "autor": "Thomas Eakins",
+   "anio": "1876",
+   "museo": "Metropolitan Museum, Nueva York",
+   "intro": "Una partida de ajedrez en un salón de Filadelfia. El pintor era hijo del hombre de pie, y le regaló el cuadro a su padre. Es pequeño, oscuro y está lleno de cariño.",
+   "frase": "Contigo cualquier tarde de sofá es una buena partida. Aunque me ganes.",
+   "paradas": [
+    {
+     "x": 0.515,
+     "y": 0.27,
+     "zoom": 4,
+     "titulo": "El padre",
+     "texto": "El hombre de pie, con barba blanca, es Benjamin Eakins, el padre del pintor. No juega: mira la partida como solo miran los que saben."
+    },
+    {
+     "x": 0.49,
+     "y": 0.57,
+     "zoom": 4,
+     "titulo": "El tablero",
+     "texto": "Las piezas están a mitad de partida. Eakins era muy exacto: los aficionados al ajedrez han intentado adivinar qué jugada viene."
+    },
+    {
+     "x": 0.375,
+     "y": 0.42,
+     "zoom": 4,
+     "titulo": "El que piensa",
+     "texto": "A la izquierda, un amigo de la familia piensa con la mano en la barbilla. Lleva un buen rato así."
+    },
+    {
+     "x": 0.625,
+     "y": 0.41,
+     "zoom": 4,
+     "titulo": "El que va a mover",
+     "texto": "El de la derecha se inclina con la mano lista. Parece que ya lo tiene claro."
+    },
+    {
+     "x": 0.47,
+     "y": 0.625,
+     "zoom": 5,
+     "titulo": "La dedicatoria",
+     "texto": "En el cajón de la mesa hay una inscripción en latín: «A Benjamin Eakins, su hijo Thomas lo pintó, 1876». Un regalo firmado en un cajón."
+    },
+    {
+     "x": 0.22,
+     "y": 0.54,
+     "zoom": 4,
+     "titulo": "El vino",
+     "texto": "En la mesita, una licorera y unas copas. Las partidas largas necesitan avituallamiento."
+    },
+    {
+     "x": 0.865,
+     "y": 0.89,
+     "zoom": 4,
+     "titulo": "El gato",
+     "texto": "Abajo a la derecha, un gato gris sentado de espaldas. Es el único al que la partida le da completamente igual."
+    }
+   ],
+   "fichero": "ajedrez.jpg",
+   "fuente": "https://commons.wikimedia.org/wiki/File:The_Chess_Players_MET_DT1506.jpg",
+   "licencia": "CC0"
+  }
+ ]
+}

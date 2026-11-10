@@ -1,0 +1,38 @@
+@page
+@model Love.Pages.Arte.IndexModel
+@{ ViewData["Title"] = "Disfruta la vista"; var otras = Model.Publicadas.Where(p => Model.Semana == null || p.obra.Id != Model.Semana.Value.obra.Id).ToList(); }
+<div class="cab"><a class="volver" href="/Amor">‹</a><h1>Disfruta la vista 🎨</h1></div>
+<div class="ideas-intro arte">Cada domingo, una obra. Entra despacio: te iré llevando a los detalles que casi nadie mira.</div>
+
+@if (Model.Semana is var (so, sf) && so != null)
+{
+    <a class="arte-portada" href="/Arte/Ver/@so.Id">
+        <img src="/Arte/Imagen/@so.Id?t=r" alt="" />
+        <div class="arte-portada-texto">
+            <span class="adv-sobre">Esta semana@(so.VistaEl == null ? " · nueva" : "")</span>
+            <b>@so.Titulo</b>
+            <span>@so.Autor@(so.Anio != null ? $", {so.Anio}" : "") · @so.Paradas.Count detalles</span>
+        </div>
+    </a>
+}
+else if (!Model.Publicadas.Any())
+{
+    <div class="vacio"><span class="ico">🎨</span>La primera obra llega el domingo @(Model.Proxima?.ToString("d 'de' MMMM") ?? "").</div>
+}
+
+@if (otras.Any())
+{
+    <h2 class="mb mt">Las anteriores <span class="suave peq" style="font-weight:600">· siguen aquí@(Model.Favoritas > 0 ? $" · {Model.Favoritas} favorita{(Model.Favoritas == 1 ? "" : "s")}" : "")</span></h2>
+    <div class="album">
+        @foreach (var (o, f) in otras)
+        {
+            <a class="album-item" href="/Arte/Ver/@o.Id">
+                <img src="/Arte/Imagen/@o.Id?t=r" alt="" loading="lazy" />
+                @if (o.Favorita) { <span class="fav">♥</span> }
+                @if (o.VistaEl == null) { <span class="juego">✨</span> }
+                <div class="pie"><span class="fecha">@f.ToString("d MMM")</span><span class="frase">@o.Titulo</span></div>
+            </a>
+        }
+    </div>
+}
+@if (Model.Proxima != null && Model.Publicadas.Any()) { <p class="suave peq centrado mt">La próxima obra llega el domingo @Model.Proxima.Value.ToString("d 'de' MMMM").</p> }

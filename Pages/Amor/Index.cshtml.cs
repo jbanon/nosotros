@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Love.Pages.Amor;
 
-public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db, AdvientoService adv, VinetaService vinetas) : PageModel
+public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db, AdvientoService adv, VinetaService vinetas, ArteService arte) : PageModel
 {
     public DateOnly Fecha { get; set; }
     public MensajeDelDia Msg { get; set; } = null!;
@@ -27,6 +27,8 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
     public VinetaDia? Vineta { get; set; }
     public int VinetasDescubiertas { get; set; }
     public int JuegosPendientes { get; set; }
+    public Obra? ObraSemana { get; set; }
+    public int ObrasPublicadas { get; set; }
 
     public async Task OnGet(DateOnly? fecha)
     {
@@ -49,6 +51,9 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
         Vineta = await vinetas.DelDia(Fecha, persistir: !Preview);
         VinetasDescubiertas = (await vinetas.Desveladas(Fecha)).Count;
         JuegosPendientes = (await vinetas.Pendientes(Fecha)).Count(d => d.Fecha != Fecha);
+        var publicadas = await arte.Publicadas(Fecha);
+        ObrasPublicadas = publicadas.Count;
+        ObraSemana = publicadas.Where(p => p.fecha == ArteService.DomingoDe(Fecha) && p.obra.VistaEl == null).Select(p => p.obra).FirstOrDefault();
 
         var h = Reloj.Ahora.Hour;
         Saludo = h < 6 ? "Buenas noches" : h < 13 ? "Buenos días" : h < 21 ? "Buenas tardes" : "Buenas noches";

@@ -1,0 +1,104 @@
+@page "{id:int?}"
+@model Love.Pages.Admin.Arte.EditarModel
+@{ var o = Model.O; ViewData["Title"] = Model.Nueva ? "Nueva obra" : o.Titulo; }
+<div class="cab"><a class="volver" href="/Admin/Arte">‹</a><h1>@(Model.Nueva ? "Nueva obra" : "Obra")</h1>@if (!Model.Nueva) { <a class="accion" href="/Arte/Ver/@o.Id">Ver recorrido</a> }</div>
+@if (Model.Fecha != null) { <p class="suave peq" style="margin-top:-6px">Sale el domingo @Model.Fecha.Value.ToString("d 'de' MMMM yyyy")@(Model.Fecha <= Reloj.Hoy ? " (ya publicada)" : "")</p> }
+<form method="post" enctype="multipart/form-data" id="form-obra">
+    <input type="hidden" asp-for="O.Id" /><input type="hidden" asp-for="ParadasJson" id="paradas-json" />
+    @if (Model.Error != null) { <p class="error">@Model.Error</p> }
+    <label class="campo"><span>@(Model.Nueva ? "Imagen (cuanto más grande mejor; se guarda a 4096 px y 1600 px)" : "Sustituir imagen")</span><input type="file" asp-for="Imagen" accept="image/jpeg,image/png,image/webp" data-sin-reducir="1" /></label>
+    <label class="campo"><span>Título</span><input asp-for="O.Titulo" /></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Autor</span><input asp-for="O.Autor" /></label>
+        <label class="campo"><span>Año</span><input asp-for="O.Anio" /></label>
+    </div>
+    <label class="campo"><span>Museo</span><input asp-for="O.Museo" /></label>
+    <div class="cuadricula">
+        <label class="campo"><span>URL de origen</span><input asp-for="O.FuenteUrl" /></label>
+        <label class="campo"><span>Licencia</span><input asp-for="O.Licencia" placeholder="Dominio público" /></label>
+    </div>
+    <label class="campo"><span>Entrada (antes del recorrido)</span><textarea asp-for="O.Intro" rows="3"></textarea></label>
+    <label class="campo"><span>Tu frase para Raquel (al volver a la obra entera)</span><textarea asp-for="O.FraseMia" rows="2" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem"></textarea></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Fijar domingo (opcional)</span><input asp-for="O.Publicacion" type="date" /></label>
+        <label class="chip" style="align-self:end;margin-bottom:14px"><input type="checkbox" asp-for="O.Activa" style="display:inline" /> Activa</label>
+    </div>
+
+    @if (!Model.Nueva && o.ReducidaPath != null)
+    {
+        <div class="tarjeta">
+            <h2 class="mb">Paradas</h2>
+            <p class="suave peq" style="margin-top:0">Elige una parada y toca la obra para fijar su punto. Ajusta el zoom y mira a la derecha cómo lo verá Raquel en el móvil.</p>
+            <div class="editor-arte">
+                <div class="editor-obra" id="editor-obra"><img src="/Arte/Imagen/@o.Id?t=r" alt="" id="editor-img" draggable="false" /><div id="editor-marcas"></div></div>
+                <div class="editor-movil"><div class="visor-escena mini" id="prev-escena"><img id="prev-img" src="/Arte/Imagen/@o.Id?t=r" alt="" draggable="false" /><span class="visor-marca" id="prev-marca"></span></div></div>
+            </div>
+            <div id="lista-paradas"></div>
+            <div class="fila mt"><button type="button" class="btn pequeno" id="nueva-parada">+ Parada</button><button type="button" class="btn pequeno" id="probar">▶ Probar recorrido</button></div>
+        </div>
+    }
+    else if (Model.Nueva) { <p class="suave peq">Guarda la obra con su imagen y después podrás añadir las paradas.</p> }
+    <button class="btn primario ancho mt">Guardar</button>
+</form>
+@if (!Model.Nueva) { <form method="post" asp-page-handler="Borrar" asp-route-id="@o.Id" data-confirm="¿Borrar esta obra y su recorrido?" class="mt"><button class="btn peligro ancho">Borrar</button></form> }
+@if (!Model.Nueva && o.ReducidaPath != null)
+{
+    @section Scripts {
+    <script src="/js/arte.js" asp-append-version="true"></script>
+    <script>
+    (() => {
+      const W = @o.Ancho, H = @o.Alto;
+      const campo = document.getElementById('paradas-json');
+      let paradas = JSON.parse(campo.value || '[]'), sel = paradas.length ? 0 : -1;
+      const lista = document.getElementById('lista-paradas'), marcas = document.getElementById('editor-marcas'), imgEd = document.getElementById('editor-img');
+      const visor = VisorArte(document.getElementById('prev-escena'), document.getElementById('prev-img'), { ancho: W, alto: H, marcador: document.getElementById('prev-marca'), margenInferior: () => 0, duracion: 700, margen: 0 });
+      const esc = s => (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+      const guardar = () => campo.value = JSON.stringify(paradas);
+      function pintar() {
+        marcas.innerHTML = paradas.map((p, i) => `<span class="editor-marca ${i === sel ? 'sel' : ''}" style="left:${p.x * 100}%;top:${p.y * 100}%">${i + 1}</span>`).join('');
+        lista.innerHTML = paradas.map((p, i) => `
+          <div class="editor-parada ${i === sel ? 'sel' : ''}" data-i="${i}">
+            <div class="fila" style="align-items:center">
+              <b class="num">${i + 1}</b>
+              <input class="crece" data-k="titulo" value="${esc(p.titulo)}" placeholder="Título corto" />
+              <button type="button" class="btn pequeno fantasma" data-acc="subir" title="Antes">▲</button>
+              <button type="button" class="btn pequeno fantasma" data-acc="bajar" title="Después">▼</button>
+              <button type="button" class="btn pequeno fantasma" data-acc="borrar" title="Quitar">✕</button>
+            </div>
+            <textarea data-k="texto" rows="3" placeholder="Dos o tres frases">${esc(p.texto)}</textarea>
+            <label class="fila" style="align-items:center;gap:8px;font-size:.85rem"><span class="suave">Zoom</span><input type="range" min="1" max="12" step="0.1" data-k="zoom" value="${p.zoom}" class="crece" /><b>×${(+p.zoom).toFixed(1)}</b></label>
+          </div>`).join('');
+        guardar();
+        if (sel >= 0) visor.irA(paradas[sel]); else visor.irA({ zoom: 1 });
+      }
+      lista.addEventListener('focusin', e => { const c = e.target.closest('.editor-parada'); if (c && +c.dataset.i !== sel) { sel = +c.dataset.i; marcas.querySelectorAll('.editor-marca').forEach((m, i) => m.classList.toggle('sel', i === sel)); lista.querySelectorAll('.editor-parada').forEach((m, i) => m.classList.toggle('sel', i === sel)); visor.irA(paradas[sel]); } });
+      lista.addEventListener('input', e => {
+        const c = e.target.closest('.editor-parada'), k = e.target.dataset.k; if (!c || !k) return;
+        const p = paradas[+c.dataset.i]; p[k] = k === 'zoom' ? +e.target.value : e.target.value;
+        if (k === 'zoom') { e.target.nextElementSibling.textContent = '×' + (+e.target.value).toFixed(1); visor.irA(p, false); }
+        guardar();
+      });
+      lista.addEventListener('click', e => {
+        const b = e.target.closest('[data-acc]'); if (!b) return; const i = +b.closest('.editor-parada').dataset.i;
+        if (b.dataset.acc === 'borrar') { paradas.splice(i, 1); sel = Math.min(sel, paradas.length - 1); }
+        if (b.dataset.acc === 'subir' && i > 0) { [paradas[i - 1], paradas[i]] = [paradas[i], paradas[i - 1]]; sel = i - 1; }
+        if (b.dataset.acc === 'bajar' && i < paradas.length - 1) { [paradas[i + 1], paradas[i]] = [paradas[i], paradas[i + 1]]; sel = i + 1; }
+        pintar();
+      });
+      document.getElementById('editor-obra').addEventListener('click', e => {
+        if (sel < 0) { paradas.push({ x: .5, y: .5, zoom: 3, titulo: '', texto: '' }); sel = paradas.length - 1; }
+        const r = imgEd.getBoundingClientRect();
+        paradas[sel].x = Math.round(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * 1000) / 1000;
+        paradas[sel].y = Math.round(Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) * 1000) / 1000;
+        pintar();
+      });
+      document.getElementById('nueva-parada').addEventListener('click', () => { paradas.push({ x: .5, y: .5, zoom: 3, titulo: '', texto: '' }); sel = paradas.length - 1; pintar(); lista.lastElementChild?.querySelector('input')?.focus(); });
+      document.getElementById('probar').addEventListener('click', async () => {
+        for (let i = 0; i < paradas.length; i++) { sel = i; pintar(); await new Promise(r => setTimeout(r, 1800)); }
+        sel = -1; pintar();
+      });
+      pintar();
+    })();
+    </script>
+    }
+}

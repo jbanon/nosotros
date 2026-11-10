@@ -1,6 +1,9 @@
 # Tareas
 
 ## Hilos abiertos
+- **Arte en producción:** copiar `App_Data/entrada/arte/` (12 jpg, ~52 MB) al servidor en
+  `/opt/love/App_Data/entrada/arte/` y pulsar Importar en Admin → Disfruta la vista antes del domingo 15/11.
+  Javier revisa los textos y escribe/ajusta su frase final en cada obra. Visor sin probar en navegador real.
 - **Viñetas: Javier debe escribir su frase en cada viñeta (Admin → Viñetas → filtro "Sin mi frase") y subir
   las carpetas `App_Data/entrada/libro-amor` y `las-vidas-que-dibujamos` al servidor (`/opt/love/App_Data/entrada/`)
   para importarlas allí.** Pendiente ver los juegos en el móvil (capturas): rompecabezas, parejas, rascar,
@@ -29,6 +32,7 @@
 | 2026-11-08 | Lecturas para Raquel: lector con A−/A+, gestión en Admin, aviso en la página de amor | b7d31e2 |
 | 2026-11-09 | Prompt para el agente de los presupuestadores sobre el patrón `claude -p` a demanda (sin código) | — |
 | 2026-11-09 | Creado `.arq/` y `CLAUDE.md` | — |
+| 2026-11-10 | "Disfruta la vista": obra semanal con recorrido de zoom por detalles, álbum, favoritas, respuesta, editor de paradas en Admin y 12 obras iniciales | 0b6e087 |
 | 2026-11-10 | Repaso de bugs en los juegos de viñetas: Parejas con pocas conocidas, tablero que cambiaba entre sesiones, rascado que se borraba al hacer scroll, estados guardados incoherentes, medianoche, asignación simultánea | 5868d80 |
 | 2026-11-10 | Viñetas: los días sin abrir se completan solos y los juegos no caducan (lista "Por jugar" en el álbum, aviso en la portada) | 4b83c83 |
 | 2026-11-10 | Viñetas fase 3: desbloqueos por corazones (rompecabezas grande, vale, carta), viñeta de regalo en casillas del adviento, avisos en Admin | 3e5d828 |

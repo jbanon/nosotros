@@ -376,3 +376,53 @@ public class VinetaDia
     public int Corazones { get; set; }
     public bool Desvelada => Juego == JuegoVineta.Ninguno || ResueltaEl != null;
 }
+
+/// <summary>"Disfruta la vista": una obra de arte con un recorrido de paradas sobre sus detalles.</summary>
+public class Obra
+{
+    public int Id { get; set; }
+    public string Titulo { get; set; } = "";
+    public string? Autor { get; set; }
+    public string? Anio { get; set; }
+    public string? Museo { get; set; }
+    /// <summary>Página de origen de la imagen (Commons, museo…).</summary>
+    public string? FuenteUrl { get; set; }
+    public string? Licencia { get; set; }
+    /// <summary>Unas líneas de entrada antes del recorrido.</summary>
+    public string? Intro { get; set; }
+    /// <summary>La frase de Javi para Raquel en la última parada (vuelta a la vista completa).</summary>
+    public string? FraseMia { get; set; }
+    /// <summary>Imagen grande (máx. 4096 px) y reducida (1600 px), en adjuntos/arte.</summary>
+    public string? ImagenPath { get; set; }
+    public string? ReducidaPath { get; set; }
+    public int Ancho { get; set; }
+    public int Alto { get; set; }
+    /// <summary>Domingo en que se publica (vacío = siguiente hueco de la cola).</summary>
+    public DateOnly? Publicacion { get; set; }
+    public int Orden { get; set; }
+    public bool Activa { get; set; } = true;
+    public DateTime? VistaEl { get; set; }
+    public bool Favorita { get; set; }
+    public string? RespuestaRaquel { get; set; }
+    public DateTime? RespondidaEl { get; set; }
+    public bool RespuestaVista { get; set; }
+    /// <summary>Clave del seed o nombre de fichero original, para no importar dos veces.</summary>
+    public string? Origen { get; set; }
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
+    public List<ParadaObra> Paradas { get; set; } = new();
+}
+
+/// <summary>Una parada del recorrido: punto de la obra (fracción 0–1), zoom y bocadillo.</summary>
+public class ParadaObra
+{
+    public int Id { get; set; }
+    public int ObraId { get; set; }
+    public Obra Obra { get; set; } = null!;
+    public int Orden { get; set; }
+    public double X { get; set; }
+    public double Y { get; set; }
+    /// <summary>Aumento respecto a la obra entera encajada en pantalla (1 = entera).</summary>
+    public double Zoom { get; set; } = 3;
+    public string Titulo { get; set; } = "";
+    public string Texto { get; set; } = "";
+}
