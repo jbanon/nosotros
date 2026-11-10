@@ -60,7 +60,14 @@ public class VinetaService(AppDb db, ConfigService config, FileStorage files, IW
         {
             v.MostradaEl = fecha;
             db.VinetaDias.Add(vd);
-            await db.SaveChangesAsync();
+            try { await db.SaveChangesAsync(); }
+            catch (DbUpdateException)
+            {
+                // Otra petición asignó este día a la vez: nos quedamos con la suya.
+                db.Entry(vd).State = EntityState.Detached;
+                db.Entry(v).Reload();
+                return await db.VinetaDias.Include(x => x.Vineta).FirstOrDefaultAsync(x => x.Fecha == fecha);
+            }
             log.LogInformation("Viñeta {Id} asignada al {Fecha} con juego {Juego}", v.Id, fecha, juego);
         }
         return vd;

@@ -43,7 +43,10 @@
 
   // ------------------------------------------------------------ Rompecabezas (tocar dos piezas para intercambiarlas)
   if (datos.tipo === 'Rompecabezas') {
-    const n = datos.vista.n; estado.orden = estado.orden || datos.vista.permutacion.slice();
+    const n = datos.vista.n;
+    const valido = o => Array.isArray(o) && o.length === n * n && new Set(o).size === n * n && o.every(x => Number.isInteger(x) && x >= 0 && x < n * n);
+    if (!valido(estado.orden)) estado.orden = datos.vista.permutacion.slice();
+    const comprobar = async () => { if (estado.orden.every((x, i) => x === i) && await resolver({ orden: estado.orden })) render(); };
     let activa = null;
     const img = new Image(); img.src = datos.imagen;
     const render = () => {
@@ -58,8 +61,7 @@
           if (datos.resuelta) return;
           if (activa === null) { activa = pos; render(); return; }
           if (activa !== pos) { [estado.orden[activa], estado.orden[pos]] = [estado.orden[pos], estado.orden[activa]]; }
-          activa = null; guardar(); render();
-          if (estado.orden.every((x, i) => x === i)) resolver({ orden: estado.orden });
+          activa = null; guardar(); render(); comprobar();
         });
         g.appendChild(d);
       });
@@ -70,14 +72,21 @@
     img.onload = render; render();
     btnPista?.addEventListener('click', async () => {
       const p = await pedirPista({ orden: estado.orden });
-      if (p) { [estado.orden[p.pos], estado.orden[p.con]] = [estado.orden[p.con], estado.orden[p.pos]]; activa = null; guardar(); render(); if (estado.orden.every((x, i) => x === i)) resolver({ orden: estado.orden }); }
+      if (p) { [estado.orden[p.pos], estado.orden[p.con]] = [estado.orden[p.con], estado.orden[p.pos]]; activa = null; guardar(); render(); comprobar(); }
     });
+    comprobar(); // si quedó resuelto y no se llegó a enviar (sin conexión), se envía al volver
   }
 
   // ------------------------------------------------------------ Parejas (memoria con viñetas ya vistas)
   if (datos.tipo === 'Parejas') {
-    const ids = datos.vista.ids; const cartas = datos.vista.orden.map(k => ids[k % ids.length]);
-    estado.encontradas = estado.encontradas || []; estado.intentos = estado.intentos || 0;
+    // El tablero se fija la primera vez: si Raquel descubre más viñetas después, no cambia bajo sus pies.
+    if (!Array.isArray(estado.cartas) || !estado.cartas.length) {
+      const ids = datos.vista.ids;
+      estado.cartas = datos.vista.orden.map(k => ids[k % ids.length]);
+      estado.encontradas = []; estado.intentos = 0;
+    }
+    const cartas = estado.cartas;
+    estado.encontradas = (estado.encontradas || []).filter(i => Number.isInteger(i) && i >= 0 && i < cartas.length); estado.intentos = estado.intentos || 0;
     let abiertas = [], bloqueado = false;
     const render = () => {
       juego.innerHTML = '';
@@ -107,6 +116,7 @@
       p.textContent = `${estado.encontradas.length / 2} de ${cartas.length / 2} parejas · ${estado.intentos} intentos`; juego.appendChild(p);
     };
     render();
+    if (cartas.length && estado.encontradas.length === cartas.length) resolver({ parejas: true });
   }
 
   // ------------------------------------------------------------ Revelar: pregunta o rascar
@@ -121,9 +131,10 @@
     } else {
       const canvas = document.getElementById('rasca'), cont = document.getElementById('revelar');
       const ctx = canvas.getContext('2d');
-      let listo = false, trazos = 0;
+      let listo = false, trazos = 0, anchoPreparado = 0;
       const preparar = () => {
-        const r = img.getBoundingClientRect(); if (!r.width) return;
+        const r = img.getBoundingClientRect(); if (!r.width || !r.height) return;
+        anchoPreparado = Math.round(r.width);
         canvas.width = Math.round(r.width); canvas.height = Math.round(r.height);
         ctx.globalCompositeOperation = 'source-over';
         const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height); grad.addColorStop(0, '#c9b8a8'); grad.addColorStop(1, '#9e8878');
@@ -132,7 +143,7 @@
         ctx.fillText('rasca aquí ✦', canvas.width / 2, canvas.height / 2);
         ctx.globalCompositeOperation = 'destination-out'; listo = true;
       };
-      if (img.complete) preparar(); else img.addEventListener('load', preparar);
+      img.addEventListener('load', preparar); if (img.complete) preparar();
       window.addEventListener('load', () => { if (!listo) preparar(); });
       setTimeout(() => { if (!listo) preparar(); }, 400); setTimeout(() => { if (!listo) preparar(); }, 1500);
       const punto = e => { const r = canvas.getBoundingClientRect(); const t = e.touches ? e.touches[0] : e; return { x: (t.clientX - r.left) * canvas.width / r.width, y: (t.clientY - r.top) * canvas.height / r.height }; };
@@ -143,28 +154,37 @@
         if (++trazos % 12 === 0) medir();
       };
       const medir = async () => {
+        if (!listo || !canvas.width || !canvas.height) return;
         const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data; let vacios = 0, total = 0;
         for (let i = 3; i < d.length; i += 4 * 7) { total++; if (d[i] < 40) vacios++; }
+        if (!total) return;
         const pct = Math.round(vacios * 100 / total);
-        if (pct >= 60 && !datos.resuelta) { datos.resuelta = true; canvas.style.transition = 'opacity .8s'; canvas.style.opacity = '0'; if (navigator.vibrate) navigator.vibrate(30); await resolver({ porcentaje: pct }); }
+        if (pct >= 60 && !datos.resuelta) { datos.resuelta = true; canvas.style.transition = 'opacity .8s'; canvas.style.opacity = '0'; if (navigator.vibrate) navigator.vibrate(30);
+          if (!await resolver({ porcentaje: pct })) { datos.resuelta = false; canvas.style.opacity = '1'; } }
       };
       ['touchstart', 'mousedown'].forEach(ev => canvas.addEventListener(ev, e => { pintando = true; rascar(e); }, { passive: false }));
       ['touchmove', 'mousemove'].forEach(ev => canvas.addEventListener(ev, rascar, { passive: false }));
       ['touchend', 'mouseup', 'mouseleave'].forEach(ev => canvas.addEventListener(ev, () => { pintando = false; medir(); }));
-      window.addEventListener('resize', () => { if (!datos.resuelta) preparar(); });
+      // Solo se rehace si cambia el ancho (giro del móvil); los cambios de alto los provoca la barra del navegador.
+      window.addEventListener('resize', () => { const w = Math.round(img.getBoundingClientRect().width); if (!datos.resuelta && w && Math.abs(w - anchoPreparado) > 4) preparar(); });
     }
   }
 
   // ------------------------------------------------------------ Ordena la frase
   if (datos.tipo === 'OrdenaFrase') {
-    const palabras = datos.vista.palabras; estado.orden = estado.orden || [];
+    const palabras = datos.vista.palabras;
     const ordenCorrecto = palabras.map(p => p.i).sort((a, b) => a - b);
+    const limpia = t => t.toLowerCase().replace(/[^\p{L}]/gu, '');
+    const textoDe = i => palabras.find(p => p.i === i)?.t;
+    const coherente = o => Array.isArray(o) && o.length <= palabras.length && new Set(o).size === o.length
+      && o.every((i, k) => textoDe(i) !== undefined && limpia(textoDe(i)) === limpia(textoDe(ordenCorrecto[k])));
+    if (!coherente(estado.orden)) estado.orden = [];
     const render = () => {
       juego.innerHTML = '';
       const frase = document.createElement('div'); frase.className = 'ordena-frase';
       if (!estado.orden.length) { const s = document.createElement('span'); s.className = 'suave'; s.textContent = 'Toca la primera palabra…'; frase.appendChild(s); }
       estado.orden.forEach((i, k) => {
-        const w = document.createElement('button'); w.type = 'button'; w.className = 'chip on'; w.textContent = palabras.find(p => p.i === i).t;
+        const w = document.createElement('button'); w.type = 'button'; w.className = 'chip on'; w.textContent = textoDe(i);
         w.addEventListener('click', () => { if (datos.resuelta || k !== estado.orden.length - 1) return; estado.orden.pop(); guardar(); render(); });
         frase.appendChild(w);
       });
@@ -175,9 +195,8 @@
         const w = document.createElement('button'); w.type = 'button'; w.className = 'chip'; w.textContent = p.t;
         w.addEventListener('click', async () => {
           if (datos.resuelta) return;
-          const esperado = ordenCorrecto[estado.orden.length];
-          const textoEsperado = palabras.find(x => x.i === esperado).t.toLowerCase().replace(/[^\p{L}]/gu, '');
-          if (p.t.toLowerCase().replace(/[^\p{L}]/gu, '') !== textoEsperado) { w.classList.add('mal'); if (navigator.vibrate) navigator.vibrate(60); setTimeout(() => w.classList.remove('mal'), 500); return; }
+          const textoEsperado = limpia(textoDe(ordenCorrecto[estado.orden.length]));
+          if (limpia(p.t) !== textoEsperado) { w.classList.add('mal'); if (navigator.vibrate) navigator.vibrate(60); setTimeout(() => w.classList.remove('mal'), 500); return; }
           estado.orden.push(p.i); guardar(); render();
           if (estado.orden.length === palabras.length) { frase.classList.add('completa'); await resolver({ orden: estado.orden }); }
         });
@@ -186,6 +205,7 @@
       juego.appendChild(banco);
     };
     render();
+    if (palabras.length && estado.orden.length === palabras.length) resolver({ orden: estado.orden });
     btnPista?.addEventListener('click', async () => {
       const p = await pedirPista({ orden: estado.orden });
       if (p) { aviso('La siguiente es «' + p.texto + '»'); document.querySelectorAll('.ordena-banco .chip').forEach(c => { if (c.textContent === p.texto) c.classList.add('sugerida'); }); }

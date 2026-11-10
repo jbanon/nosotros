@@ -33,7 +33,7 @@
     <p class="adv-msg" id="msg"></p>
 
     <section class="adv-premio vineta-premio oculto" id="premio">
-        <p class="adv-sobre centrado">La viñeta de hoy</p>
+        <p class="adv-sobre centrado">@(Model.EsHoy ? "La viñeta de hoy" : $"La viñeta del {Model.Fecha:d 'de' MMMM}")</p>
         <img src="/Vinetas/Imagen/@v.Id" alt="" />
         @if (!string.IsNullOrWhiteSpace(v.FraseMia)) { <p class="vineta-frase">@v.FraseMia</p><p class="suave peq centrado">— @Model.Firma</p> }
         <p class="suave peq centrado">+1 ♥ · ya está en tu álbum</p>

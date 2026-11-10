@@ -19,6 +19,7 @@ public class HoyModel(VinetaService vinetas, AppDb db, ConfigService config) : P
     public string Titulo { get; set; } = "";
     public string Intro { get; set; } = "";
     public int Corazones { get; set; }
+    public bool EsHoy => Fecha == Reloj.Hoy;
     bool EsAdmin => User.EsAdmin();
     bool Persistir => !EsAdmin;
     int Semilla => Dia.Fecha.DayNumber * 31 + Dia.VinetaId * 7 + 5;
@@ -32,8 +33,20 @@ public class HoyModel(VinetaService vinetas, AppDb db, ConfigService config) : P
         var d = await vinetas.DelDia(Fecha, persistir: Persistir);
         if (d == null) return false;
         Dia = d;
+        // Parejas necesita al menos 3 viñetas ya conocidas; si no las hay, el juego pasa a rompecabezas
+        // (aquí, para que la página y la comprobación de la solución vean el mismo juego).
+        if (Dia.Juego == JuegoVineta.Parejas)
+        {
+            Conocidas = (await vinetas.Desveladas(Fecha)).Select(x => x.VinetaId).Where(id => id != Dia.VinetaId).Distinct().ToList();
+            if (Conocidas.Count < 3)
+            {
+                Dia.Juego = JuegoVineta.Rompecabezas; Dia.Estado = null;
+                if (Persistir && Dia.Id != 0) await db.SaveChangesAsync();
+            }
+        }
         return true;
     }
+    List<int> Conocidas { get; set; } = new();
 
     string FraseCripto => VinetaService.TieneFraseLarga(Dia.Vineta.FraseAutor, 12) ? Dia.Vineta.FraseAutor! : Dia.Vineta.FraseMia ?? Dia.Vineta.FraseAutor ?? "";
     string FraseOrdena => VinetaService.Palabras(Dia.Vineta.FraseMia) >= 4 ? Dia.Vineta.FraseMia! : Dia.Vineta.FraseAutor ?? Dia.Vineta.FraseMia ?? "";
@@ -56,6 +69,7 @@ public class HoyModel(VinetaService vinetas, AppDb db, ConfigService config) : P
         if (Persistir && Dia.AbiertaEl == null) { Dia.AbiertaEl = DateTime.UtcNow; await db.SaveChangesAsync(); }
         Firma = await config.Get(ConfigClaves.Firma, "Javier");
         Corazones = await vinetas.Corazones();
+        var otras = Conocidas;
         object vista;
         switch (Dia.Juego)
         {
@@ -65,7 +79,6 @@ public class HoyModel(VinetaService vinetas, AppDb db, ConfigService config) : P
                 break;
             case JuegoVineta.Parejas:
                 Titulo = "Encuentra las parejas"; Intro = "Son viñetas que ya conoces. Cuando las emparejes todas, aparece la de hoy.";
-                var otras = (await vinetas.Desveladas(Fecha)).Select(d => d.VinetaId).Where(id => id != v.Id).Distinct().ToList();
                 var rnd = new Random(Semilla);
                 otras = otras.OrderBy(_ => rnd.Next()).Take(6).ToList();
                 vista = new { ids = otras, orden = Barajar(otras.Count * 2, Semilla + 1) };
@@ -89,7 +102,7 @@ public class HoyModel(VinetaService vinetas, AppDb db, ConfigService config) : P
         DatosJson = AdvientoService.Serializar(new
         {
             tipo = Dia.Juego.ToString(), vinetaId = v.Id, imagen = $"/Vinetas/Imagen/{v.Id}", resuelta = Dia.Desvelada && !Preview, estado = Dia.Estado,
-            pistas = Dia.Pistas, vista, admin = EsAdmin, fecha = Fecha != Reloj.Hoy || Preview ? Fecha.ToString("yyyy-MM-dd") : null, letra = (string?)null
+            pistas = Dia.Pistas, vista, admin = EsAdmin, fecha = Fecha.ToString("yyyy-MM-dd"), letra = (string?)null
         });
         return Page();
     }
@@ -142,12 +155,9 @@ public class HoyModel(VinetaService vinetas, AppDb db, ConfigService config) : P
 
     static object? PistaRompe(int[] orden)
     {
-        if (orden.Length != 9) return null;
-        int pos = Array.FindIndex(orden, (x) => false);
-        for (int i = 0; i < 9; i++) if (orden[i] != i) { pos = i; break; }
-        if (pos < 0) return null;
-        int con = Array.IndexOf(orden, pos);
-        return new { pos, con };
+        if (orden.Length != 9 || orden.Distinct().Count() != 9) return null;
+        for (int i = 0; i < 9; i++) if (orden[i] != i) return new { pos = i, con = Array.IndexOf(orden, i) };
+        return null;
     }
 
     public async Task<IActionResult> OnPostEstado([FromBody] PeticionJuego p, DateOnly? fecha)
