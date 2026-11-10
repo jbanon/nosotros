@@ -44,14 +44,7 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         if (!await db.Peliculas.AnyAsync())
             db.Peliculas.Add(new Pelicula { Titulo = "Full Monty", Nota = "Comedia británica de 1997. Para reírnos juntos en el sofá.", Autor = "Javier" });
 
-        // Gastos iniciales (compras ya hechas antes de estrenar la app). Idempotente: no se duplican.
-        var gastosIniciales = new[]
-        {
-            new Gasto { Fecha = new DateOnly(2026, 11, 8), Tipo = TipoGasto.Compra, Importe = 60, Nota = "Filetes, magro y croquetas" },
-        };
-        foreach (var g in gastosIniciales)
-            if (!await db.Gastos.AnyAsync(x => x.Fecha == g.Fecha && x.Tipo == g.Tipo && x.Importe == g.Importe && x.Nota == g.Nota))
-                db.Gastos.Add(g);
+        // Los gastos iniciales (compra de 60 € del 8/11/2026) ya no se siembran: Javier los gestiona a mano en la app.
 
         if (!await db.FechasEspeciales.AnyAsync())
             db.FechasEspeciales.AddRange(
