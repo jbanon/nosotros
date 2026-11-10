@@ -16,6 +16,16 @@
   desplegar. Si sigue, pedir captura.
 - Javier aún no ha pegado el texto de "¡Oigan!" (Javier Marías) en Lecturas: lo hace él.
 
+## Ideas apuntadas (sin empezar, 2026-11-10)
+Javier las dejó apuntadas para hacer más adelante; también pueden entrar como casillas del adviento.
+- **Cifras (de "Cifras y letras")**: le encanta. Seis números y un objetivo, llegar con + − × ÷.
+- **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
+- **Recordatorio de francés**: Raquel habla bien francés; algo gracioso para repasar (frase o expresión del
+  día, falsos amigos, mini quiz).
+- **Apartado de Listas**: listas reutilizables para marcar.
+  - Viaje: especias, infusiones, adaptador de corriente.
+  - Camping: (pendiente de que Javier la complete).
+
 ## Resueltas
 | Fecha | Tarea | Commit |
 |---|---|---|
