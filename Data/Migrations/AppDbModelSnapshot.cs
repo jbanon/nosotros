@@ -153,6 +153,9 @@ namespace Love.Data.Migrations
                     b.Property<DateTime>("Creado")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("DuracionMin")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("EsFijo")
                         .HasColumnType("INTEGER");
 
@@ -501,6 +504,9 @@ namespace Love.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("CompraInicio")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateOnly>("LunesInicio")
                         .HasColumnType("TEXT");

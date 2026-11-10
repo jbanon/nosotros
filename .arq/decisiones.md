@@ -17,6 +17,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   la lista de la compra (importe + foto del ticket + detalle con lo marcado como comprado; opcional
   desmarcar al apuntar). Desde la lista también se puede ir al formulario completo con el ticket
   prerrellenado (`/Gastos/Editar?lunes=`).
+- Tiempo en el súper: `Semana.CompraInicio` se fija solo al marcar el primer producto como comprado (sin
+  botón de empezar; hay "Cancelar" por si se marca algo en casa). Al apuntar el ticket (desde la lista o
+  desde el formulario con `lunes`) se guarda `Gasto.DuracionMin` y se vacía el inicio. Si pasaron más de
+  5 h se considera un olvido y no se guarda. Gastos muestra 🕒 por compra y total/media del mes.
 
 ## Comida
 - La lista de la compra es SIEMPRE para 12 raciones ("somos una gran familia"), configurable en

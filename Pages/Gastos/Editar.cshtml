@@ -21,6 +21,7 @@ else if (Model.Lunes != null)
 }
 <form method="post" enctype="multipart/form-data" id="fg">
     <input type="hidden" asp-for="Gasto.Id" />
+    <input type="hidden" asp-for="Lunes" />
     <span class="etiqueta">Tipo</span>
     <div class="chips mb">
         <label class="chip veva"><input type="radio" asp-for="Gasto.Tipo" value="Veva" data-importe="@Model.ImporteVeva.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" /> Veva</label>

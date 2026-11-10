@@ -29,8 +29,8 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config, Recu
         ProductosConocidos = await recurrentes.Productos();
     }
 
-    /// <summary>Semana de la lista de la compra desde la que se viene (para rellenar el ticket).</summary>
-    public DateOnly? Lunes { get; set; }
+    /// <summary>Semana de la lista de la compra desde la que se viene (para rellenar el ticket y el tiempo).</summary>
+    [BindProperty] public DateOnly? Lunes { get; set; }
 
     public async Task<IActionResult> OnGet(int? id, DateOnly? fecha, DateOnly? lunes)
     {
@@ -76,6 +76,12 @@ public class EditarModel(AppDb db, FileStorage files, ConfigService config, Recu
         if (Gasto.Id == 0) { g = new Gasto(); db.Gastos.Add(g); }
         else g = await db.Gastos.Include(x => x.Lineas).FirstOrDefaultAsync(x => x.Id == Gasto.Id) ?? throw new InvalidOperationException();
         g.Fecha = Gasto.Fecha; g.Tipo = Gasto.Tipo; g.Importe = importe; g.Nota = Gasto.Nota?.Trim();
+        if (Lunes is DateOnly lu && g.Tipo == TipoGasto.Compra)
+        {
+            var semana = await listaCompra.SemanaDe(Reloj.Lunes(lu));
+            g.DuracionMin = Love.Pages.Menu.ListaModel.Duracion(semana);
+            semana.CompraInicio = null;
+        }
 
         // Líneas del ticket: se sustituyen por las del formulario (solo en compras)
         db.TicketLineas.RemoveRange(g.Lineas);

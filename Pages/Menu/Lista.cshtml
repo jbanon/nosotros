@@ -20,7 +20,14 @@
     <span class="crece">@Model.Semana.Recetas.Count recetas · @pendientes por comprar · para @Model.Raciones raciones</span>
     <a href="/Menu/Semana?lunes=@l">Cambiar recetas →</a>
 </p>
-
+@if (Model.Comprando)
+{
+    <div class="crono fila">
+        <span class="punto-rojo"></span>
+        <span class="crece">Comprando · <b id="crono" data-inicio="@Model.Semana.CompraInicio!.Value.ToString("o")Z">@Model.MinutosComprando min</b> <span class="suave peq" style="font-weight:600">· desde el primer producto marcado</span></span>
+        <form method="post" asp-page-handler="Empezar" asp-route-lunes="@l" asp-route-parar="true" data-confirm="¿Parar el cronómetro? Volverá a arrancar al marcar otro producto."><button class="btn pequeno fantasma">Cancelar</button></form>
+    </div>
+}
 @if (!incluidos.Any())
 {
     <div class="vacio"><span class="ico">🛒</span>La lista está vacía.<br /><a href="/Menu/Semana?lunes=@l">Marca recetas para la semana</a> o añade algo abajo.</div>
@@ -97,7 +104,7 @@
     var comprados = incluidos.Count(i => i.Comprado);
     <div class="tarjeta cierre-compra @(pendientes == 0 ? "completa" : "")">
         <h2 class="mb">🧾 @(pendientes == 0 ? "¡Compra terminada!" : "¿Has terminado la compra?")</h2>
-        <p class="suave peq" style="margin-top:0">Apunta el ticket en Gastos: se suma a la compra del mes y guarda el detalle de lo comprado (@comprados producto@(comprados == 1 ? "" : "s")).</p>
+        <p class="suave peq" style="margin-top:0">Apunta el ticket en Gastos: se suma a la compra del mes y guarda el detalle de lo comprado (@comprados producto@(comprados == 1 ? "" : "s"))@if (Model.Comprando) { <text> y el tiempo que has tardado (<b>@Model.MinutosComprando min</b>)</text> }.</p>
         @if (Model.ComprasHoy.Any()) { <p class="aviso mb">Hoy ya hay apuntada@(Model.ComprasHoy.Count == 1 ? "" : "s") @Model.ComprasHoy.Count compra@(Model.ComprasHoy.Count == 1 ? "" : "s") (@Model.ComprasHoy.Sum(g => g.Importe).ToString("N2") €). Si es la misma, no la repitas.</p> }
         @if (Model.ErrorGasto != null) { <p class="error">@Model.ErrorGasto</p> }
         <form method="post" asp-page-handler="ApuntarGasto" asp-route-lunes="@l" enctype="multipart/form-data">
@@ -113,3 +120,11 @@
     <form method="post" asp-page-handler="Limpiar" asp-route-lunes="@l" data-confirm="¿Desmarcar lo comprado?"><button class="btn ancho">Desmarcar lo comprado</button></form>
 }
 <pre id="texto-lista" hidden>@Model.TextoCompartir</pre>
+@if (Model.Comprando)
+{
+    @section Scripts {
+    <script>(() => { const c = document.getElementById('crono'); if (!c) return; const ini = new Date(c.dataset.inicio.replace(/Z+$/, 'Z'));
+      const pinta = () => { const m = Math.max(0, Math.round((Date.now() - ini) / 60000)); c.textContent = m < 60 ? m + ' min' : Math.floor(m / 60) + ' h ' + (m % 60) + ' min'; };
+      pinta(); setInterval(pinta, 15000); })();</script>
+    }
+}

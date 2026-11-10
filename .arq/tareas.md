@@ -27,6 +27,7 @@
 | 2026-11-08 | Lecturas para Raquel: lector con A−/A+, gestión en Admin, aviso en la página de amor | b7d31e2 |
 | 2026-11-09 | Prompt para el agente de los presupuestadores sobre el patrón `claude -p` a demanda (sin código) | — |
 | 2026-11-09 | Creado `.arq/` y `CLAUDE.md` | — |
+| 2026-11-10 | Cronómetro de la compra: arranca solo al marcar el primer producto comprado, se ve en la lista y se guarda en el gasto (minutos) al apuntar el ticket; total y media del mes en Gastos | d53f778 |
 | 2026-11-10 | Gastos: aviso claro al editar un gasto existente + botón "Apuntar una compra"; la lista de la compra se cierra con importe y foto del ticket y crea el gasto con el detalle de lo comprado | cef162b |
 | 2026-11-09 | Agente con `claude -p` (Sonnet, esfuerzo medio): mini fichas de películas automáticas con póster, recetas por nombre o desde una foto (traduce y pasa a métrico), conversación de cambios y guardado | cf399aa |
 | 2026-11-09 | Tema Navidad adelantado al 25 de noviembre | 49af518 |

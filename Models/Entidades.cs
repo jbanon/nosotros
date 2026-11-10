@@ -87,6 +87,8 @@ public class Semana
     public int Id { get; set; }
     public DateOnly LunesInicio { get; set; }
     public string? Notas { get; set; }
+    /// <summary>Momento (UTC) en que se marcó el primer producto como comprado (arranca el cronómetro); se vacía al apuntar el ticket.</summary>
+    public DateTime? CompraInicio { get; set; }
     public List<SemanaReceta> Recetas { get; set; } = new();
     public List<ListaItem> Lista { get; set; } = new();
 }
@@ -130,6 +132,8 @@ public class Gasto
     public string? AdjuntoNombre { get; set; }
     public string? AdjuntoMime { get; set; }
     public bool EsFijo { get; set; }
+    /// <summary>Minutos en el súper: desde el primer producto marcado hasta apuntar el ticket.</summary>
+    public int? DuracionMin { get; set; }
     public DateTime Creado { get; set; } = DateTime.UtcNow;
     public List<TicketLinea> Lineas { get; set; } = new();
 }
