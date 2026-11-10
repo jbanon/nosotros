@@ -95,8 +95,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   `Origen`) o se suben una a una y el agente las cataloga leyendo la imagen (`TipoTareaAgente.Vineta`).
 - Reparto: `VinetasPorSemana` (3) días fijos por semana elegidos con semilla; nunca repite hasta agotar; las
   "conocidas" (libro del amor) no salen antes de `VinetasConocidasDesde` (2027-02-01); `FechaFija` manda.
-  La asignación (`VinetaDia`) se guarda la primera vez que se carga la portada ESE día (la vista previa del
-  admin no persiste, así que puede variar).
+  La asignación (`VinetaDia`) se guarda la primera vez que se carga la portada o el álbum; al entrar se
+  completan los días pasados que quedaron sin abrir (`Completar`, desde la primera asignación), así nada se
+  pierde si Raquel no entra unos días. Los juegos NO caducan: quedan en "Por jugar" en el álbum y se abren
+  con `/Vinetas/Hoy?fecha=`. La vista previa del admin no persiste, así que puede variar.
 - De cada 10, `VinetasJuegoDe10` (5) llegan como juego: Rompecabezas, Parejas, Revelar, Criptofrase, Ordena la
   frase (se respeta el sugerido si es viable). La viñeta pasa al álbum al resolver; cada juego da 1 corazón.
 - Álbum `/Vinetas`: solo las desveladas; favoritas y respuesta de Raquel (Admin las ve y marca como vistas).

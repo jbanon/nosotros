@@ -26,6 +26,7 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
     public bool AdvientoEnlace { get; set; }
     public VinetaDia? Vineta { get; set; }
     public int VinetasDescubiertas { get; set; }
+    public int JuegosPendientes { get; set; }
 
     public async Task OnGet(DateOnly? fecha)
     {
@@ -44,8 +45,10 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
             DiasJuntos = Fecha.DayNumber - new DateOnly(aniversario.AnioOrigen!.Value, aniversario.Mes, aniversario.Dia).DayNumber;
 
         await CargarAdviento();
+        if (!Preview) await vinetas.Completar(Fecha);
         Vineta = await vinetas.DelDia(Fecha, persistir: !Preview);
         VinetasDescubiertas = (await vinetas.Desveladas(Fecha)).Count;
+        JuegosPendientes = (await vinetas.Pendientes(Fecha)).Count(d => d.Fecha != Fecha);
 
         var h = Reloj.Ahora.Hour;
         Saludo = h < 6 ? "Buenas noches" : h < 13 ? "Buenos días" : h < 21 ? "Buenas tardes" : "Buenas noches";

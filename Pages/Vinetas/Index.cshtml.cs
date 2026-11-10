@@ -12,6 +12,7 @@ public class IndexModel(VinetaService vinetas, Love.Data.AppDb db, ConfigService
     public int Total { get; set; }
     public int Corazones { get; set; }
     public VinetaDia? Hoy { get; set; }
+    public List<VinetaDia> Pendientes { get; set; } = new();
     public List<VinetaService.Logro> Logros { get; set; } = new();
     public bool ValeCanjeado { get; set; }
     public string Firma { get; set; } = "";
@@ -19,10 +20,12 @@ public class IndexModel(VinetaService vinetas, Love.Data.AppDb db, ConfigService
     public async Task OnGet()
     {
         var hoy = Reloj.Hoy;
+        await vinetas.Completar(hoy);
         Dias = await vinetas.Desveladas(hoy);
+        Pendientes = await vinetas.Pendientes(hoy);
         Total = await db.Vinetas.CountAsync(v => v.Activa && v.UsoPortada);
         Corazones = await vinetas.Corazones();
-        Hoy = await vinetas.DelDia(hoy, persistir: false);
+        Hoy = await vinetas.DelDia(hoy, persistir: !User.EsAdmin());
         Logros = await vinetas.Logros();
         ValeCanjeado = await config.Get(ConfigClaves.LogroValeCanjeado, "") != "";
         Firma = await config.Get(ConfigClaves.Firma, "Javier");

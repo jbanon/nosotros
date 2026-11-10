@@ -57,7 +57,15 @@
     {
         <a class="lectura-aviso" href="/Vinetas/Hoy">
             <span class="ico">🧩</span>
-            <span class="crece"><b>Hoy la viñeta se gana</b><br /><span>@IndexModel.NombreJuego(Model.Vineta.Juego) · toca para jugar</span></span>
+            <span class="crece"><b>Hoy la viñeta se gana</b><br /><span>@IndexModel.NombreJuego(Model.Vineta.Juego) · toca para jugar@(Model.JuegosPendientes > 0 ? $" · y {Model.JuegosPendientes} más por jugar" : "")</span></span>
+            <span class="flecha">›</span>
+        </a>
+    }
+    @if ((Model.Vineta == null || Model.Vineta.Desvelada) && Model.JuegosPendientes > 0)
+    {
+        <a class="lectura-aviso" href="/Vinetas">
+            <span class="ico">🧩</span>
+            <span class="crece"><b>@(Model.JuegosPendientes == 1 ? "Tienes un juego por jugar" : $"Tienes {Model.JuegosPendientes} juegos por jugar")</b><br /><span>de días en que no entraste · siguen ahí</span></span>
             <span class="flecha">›</span>
         </a>
     }

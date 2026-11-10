@@ -25,8 +25,10 @@ public class HoyModel(VinetaService vinetas, AppDb db, ConfigService config) : P
 
     async Task<bool> Cargar(DateOnly? fecha)
     {
+        var hoy = Reloj.Hoy;
         Preview = fecha != null && EsAdmin;
-        Fecha = Preview ? fecha!.Value : Reloj.Hoy;
+        // Raquel puede volver a cualquier día pasado (los juegos no caducan); el admin previsualiza sin guardar.
+        Fecha = Preview ? fecha!.Value : (fecha is DateOnly f && f <= hoy ? f : hoy);
         var d = await vinetas.DelDia(Fecha, persistir: Persistir);
         if (d == null) return false;
         Dia = d;
@@ -83,10 +85,11 @@ public class HoyModel(VinetaService vinetas, AppDb db, ConfigService config) : P
                 vista = new { palabras = orden.Select(i => new { i, t = palabras[i] }).ToArray(), total = palabras.Length };
                 break;
         }
+        if (Fecha != Reloj.Hoy && !Preview) Intro = $"Viñeta del {Fecha:d 'de' MMMM}. " + Intro;
         DatosJson = AdvientoService.Serializar(new
         {
             tipo = Dia.Juego.ToString(), vinetaId = v.Id, imagen = $"/Vinetas/Imagen/{v.Id}", resuelta = Dia.Desvelada && !Preview, estado = Dia.Estado,
-            pistas = Dia.Pistas, vista, admin = EsAdmin, fecha = Preview ? Fecha.ToString("yyyy-MM-dd") : null, letra = (string?)null
+            pistas = Dia.Pistas, vista, admin = EsAdmin, fecha = Fecha != Reloj.Hoy || Preview ? Fecha.ToString("yyyy-MM-dd") : null, letra = (string?)null
         });
         return Page();
     }

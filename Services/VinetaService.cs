@@ -103,6 +103,25 @@ public class VinetaService(AppDb db, ConfigService config, FileStorage files, IW
 
     public Task<int> Corazones() => db.VinetaDias.SumAsync(d => d.Corazones);
 
+    /// <summary>
+    /// Asigna las viñetas de los días pasados que quedaron sin abrir (desde la primera asignación hasta hoy),
+    /// para que nada se pierda si Raquel no entra unos días: lo directo va al álbum y los juegos quedan por jugar.
+    /// </summary>
+    public async Task Completar(DateOnly hoy)
+    {
+        var primera = await db.VinetaDias.MinAsync(d => (DateOnly?)d.Fecha);
+        if (primera == null) return;
+        var existentes = (await db.VinetaDias.Where(d => d.Fecha <= hoy).Select(d => d.Fecha).ToListAsync()).ToHashSet();
+        int n = 0;
+        for (var d = primera.Value; d <= hoy && n < 120; d = d.AddDays(1), n++)
+            if (!existentes.Contains(d)) await DelDia(d, persistir: true);
+    }
+
+    /// <summary>Juegos de días pasados (o de hoy) aún sin resolver, del más reciente al más antiguo.</summary>
+    public Task<List<VinetaDia>> Pendientes(DateOnly hoy) =>
+        db.VinetaDias.Include(d => d.Vineta).Where(d => d.Fecha <= hoy && d.Juego != JuegoVineta.Ninguno && d.ResueltaEl == null)
+          .OrderByDescending(d => d.Fecha).ToListAsync();
+
     /// <summary>Viñetas que Raquel ya ha visto (sin juego, con el juego resuelto, o regaladas desde el adviento), de la más reciente a la más antigua.</summary>
     public async Task<List<VinetaDia>> Desveladas(DateOnly hoy)
     {

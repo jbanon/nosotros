@@ -3,9 +3,20 @@
 @{ ViewData["Title"] = "Álbum"; var favoritas = Model.Dias.Count(d => d.Vineta.Favorita); }
 <div class="cab"><a class="volver" href="/Amor">‹</a><h1>Álbum 🖼️</h1>@if (Model.Corazones > 0) { <span class="pill ok">♥ @Model.Corazones</span> }</div>
 <div class="ideas-intro">Las viñetas que te voy dejando, con lo que quería decirte con cada una. Algunas llegan como juego: resuélvelo y pasan al álbum.</div>
-@if (Model.Hoy != null && !Model.Hoy.Desvelada)
+@if (Model.Pendientes.Any())
 {
-    <a class="tarjeta enlace fila" href="/Vinetas/Hoy" style="align-items:center"><span style="font-size:1.8rem">🧩</span><div class="crece"><b>La viñeta de hoy se gana</b><div class="sub suave">@Model.Hoy.Juego · toca para jugar</div></div><span class="suave">›</span></a>
+    <h2 class="mb">Por jugar <span class="suave peq" style="font-weight:600">· los juegos no caducan</span></h2>
+    <div class="lista mb">
+        @foreach (var p in Model.Pendientes)
+        {
+            var esHoy = p.Fecha == Reloj.Hoy;
+            <a class="item" href="/Vinetas/Hoy?fecha=@p.Fecha.ToString("yyyy-MM-dd")">
+                <span style="font-size:1.6rem">🧩</span>
+                <div class="crece"><b>@(esHoy ? "Hoy" : p.Fecha.ToString("dddd d 'de' MMMM"))</b><div class="sub">@Love.Pages.Amor.IndexModel.NombreJuego(p.Juego)@(p.AbiertaEl != null && p.Estado != null ? " · empezado" : "")</div></div>
+                <span class="suave">›</span>
+            </a>
+        }
+    </div>
 }
 @{ var siguiente = Model.Logros.FirstOrDefault(l => !l.Conseguido); }
 <details class="ticket logros">
