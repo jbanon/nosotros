@@ -261,7 +261,8 @@ details.ticket[open] summary::before { rotate: 90deg; }
 
 /* ===== Página de amor ===== */
 [data-tema] body, body:has(.amor) { background: var(--fondo-2); }
-[data-tema] .contenido { padding: 0; max-width: none; }
+/* html[data-tema] body: debe ganar a "body:not(.sin-nav) .contenido", que si no deja 16px de franja a los lados */
+html[data-tema] body .contenido { padding: 0; max-width: none; }
 .amor { position: relative; min-height: 100dvh; padding: 28px 20px calc(var(--nav-alto) + env(safe-area-inset-bottom) + 28px); overflow: hidden;
   display: flex; flex-direction: column; justify-content: center; gap: 24px; color: var(--texto-amor);
   background: linear-gradient(170deg, var(--fondo-1) 0%, var(--fondo-2) 55%, var(--fondo-3) 100%); }
@@ -309,7 +310,7 @@ details.ticket[open] summary::before { rotate: 90deg; }
 [data-tema=aniversario] { --fondo-1: #fbe3d4; --fondo-2: #f9d4c8; --fondo-3: #f3c1a6; --texto-amor: #4d2c22; --acento-amor: #c8873f; --tarjeta-amor: rgba(255,255,255,.62); }
 [data-tema=verano]      { --fondo-1: #ffd59e; --fondo-2: #ff9a76; --fondo-3: #2ab3b1; --texto-amor: #3a2420; --acento-amor: #e4572e; --tarjeta-amor: rgba(255,255,255,.6); }
 [data-tema=cumple]      { --fondo-1: #ffe9a8; --fondo-2: #ffc2d1; --fondo-3: #b5e0ff; --texto-amor: #3f2a3a; --acento-amor: #e04c8c; --tarjeta-amor: rgba(255,255,255,.66); }
-[data-tema=otono]       { --fondo-1: #f9ead4; --fondo-2: #ecc097; --fondo-3: #c4785a; --texto-amor: #47261a; --acento-amor: #a9442a; --tarjeta-amor: rgba(255,248,238,.7); }
+[data-tema=otono]       { --fondo-1: #fcf6ee; --fondo-2: #f7e8d8; --fondo-3: #f0d6bf; --texto-amor: #47261a; --acento-amor: #a9442a; --tarjeta-amor: rgba(255,252,247,.78); }
 [data-tema=halloween]   { --fondo-1: #1b1033; --fondo-2: #2d1b4e; --fondo-3: #4a1e3a; --texto-amor: #fbe9d2; --acento-amor: #ff8c2b; --tarjeta-amor: rgba(255,255,255,.12); }
 [data-tema=navidad] .tarjeta-amor, [data-tema=halloween] .tarjeta-amor { border-color: rgba(255,255,255,.25); }
 [data-tema=navidad] .barra, [data-tema=halloween] .barra { background: rgba(20,10,30,.55); border-top-color: rgba(255,255,255,.12); }
@@ -327,8 +328,8 @@ details.ticket[open] summary::before { rotate: 90deg; }
 [data-tema=otono] .cielo::before { content: ""; position: absolute; top: -140px; left: -100px; width: 380px; height: 380px; border-radius: 50%;
   background: radial-gradient(circle, rgba(255,246,220,.95) 0, rgba(255,214,150,.45) 40%, transparent 70%); animation: respirar 8s ease-in-out infinite; }
 [data-tema=otono] .cielo::after { content: ""; position: absolute; left: -10%; right: -10%; bottom: 0; height: 34%;
-  background: radial-gradient(ellipse at 50% 100%, rgba(120,52,32,.45), rgba(150,80,50,.18) 55%, transparent 75%); }
-[data-tema=otono] .tarjeta-amor { border-color: rgba(169,68,42,.22); box-shadow: 0 20px 60px rgba(110,50,30,.18); }
+  background: radial-gradient(ellipse at 50% 100%, rgba(200,120,80,.16), transparent 70%); }
+[data-tema=otono] .tarjeta-amor { border-color: rgba(169,68,42,.16); box-shadow: 0 16px 48px rgba(110,50,30,.10); }
 [data-tema=otono] .barra { background: rgba(255,244,230,.7); border-top-color: rgba(169,68,42,.15); }
 [data-tema=otono] .p-hoja { opacity: .85; filter: saturate(.9) drop-shadow(0 4px 6px rgba(80,30,20,.2)); }
 [data-tema=invierno] .cielo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
