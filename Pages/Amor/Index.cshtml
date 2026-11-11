@@ -107,7 +107,7 @@
     {
         var enlaces = new List<(string url, string txt)>();
         if (Model.NumLecturas > 0) enlaces.Add(("/Lecturas", "📖 Lecturas"));
-        if (Model.VinetasDescubiertas > 0) enlaces.Add(("/Vinetas", "🖼️ Álbum"));
+        if (Model.VinetasDescubiertas > 0) enlaces.Add(("/Vinetas", "💌 Álbum"));
         if (Model.ObrasPublicadas > 0) enlaces.Add(("/Arte", "🎨 Arte"));
         <p class="lectura-enlace">@for (int i = 0; i < enlaces.Count; i++) { if (i > 0) { <text> · </text> } <a href="@enlaces[i].url">@enlaces[i].txt</a> }</p>
     }
