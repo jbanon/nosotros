@@ -1,5 +1,16 @@
 # Tareas
 
+## Para la próxima sesión (Javier, 2026-11-11: "déjalo anotado para la próxima")
+- **Migrar la base de datos a PostgreSQL.** Javier: "quitamos SQL Server así que tenemos que migrar".
+  Ojo: la app usa **SQLite** (`UseSqlite`, `App_Data/love.db`), no SQL Server; confirmar con Javier antes de
+  empezar (¿se quiere Postgres igualmente? ¿hay ya un Postgres en el servidor, versión, usuario?). Trabajo:
+  Npgsql + migraciones nuevas para Postgres, cadena de conexión fuera del repo (`/etc/love.env`), copiar los
+  datos de producción (SQLite → Postgres), revisar `ExecuteUpdate`, fechas `DateOnly`/UTC, comparaciones
+  sin distinción de mayúsculas (`ToLower`) y la copia de seguridad del despliegue.
+- **Botón 🎤 en la lista de la compra** (Web Speech en el navegador): dictar "fideos, manzanas y leche" y que
+  se añadan separados y clasificados con `ZonaAuto`. Alexa y Google ya no dejan leer sus listas (ver
+  decisiones → Comida); una skill propia de Alexa queda como opción si la piden.
+
 ## Hilos abiertos
 - **Arte en producción:** copiar `App_Data/entrada/arte/` (12 jpg, ~52 MB) al servidor en
   `/opt/love/App_Data/entrada/arte/` y pulsar Importar en Admin → Disfruta la vista antes del domingo 15/11.
@@ -24,8 +35,6 @@
 Javier las dejó apuntadas para hacer más adelante; también pueden entrar como casillas del adviento.
 - **Cifras (de "Cifras y letras")**: le encanta. Seis números y un objetivo, llegar con + − × ÷.
 - **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
-- **Voz para la compra** (2026-11-11, pendiente de que Javier decida): botón 🎤 que dicta "fideos, manzanas y
-  leche" y lo añade clasificado; o una skill propia de Alexa. Alexa y Google ya no dejan leer sus listas.
 - **Recordatorio de francés**: Raquel habla bien francés; algo gracioso para repasar (frase o expresión del
   día, falsos amigos, mini quiz).
 
