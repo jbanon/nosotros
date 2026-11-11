@@ -67,7 +67,7 @@
             celda.className = 'celda' + (activo === c.n ? ' activa' : '') + (estado.letras[c.n] ? ' llena' : '');
             celda.dataset.n = c.n;
             celda.innerHTML = `<b>${estado.letras[c.n] || ''}</b><i>${c.n}</i>`;
-            celda.addEventListener('click', () => { activo = c.n; render(); teclado.focus(); });
+            celda.addEventListener('click', () => { activo = c.n; render(); teclado.focus({ preventScroll: true }); });
           }
           w.appendChild(celda);
         });
@@ -138,7 +138,7 @@
         cel.addEventListener('click', () => {
           if (activa && activa[0] === f && activa[1] === c) dir = dir === 'H' ? 'V' : 'H';
           else { activa = [f, c]; if (!defEn(f, c, dir)) dir = dir === 'H' ? 'V' : 'H'; }
-          render(); teclado.focus();
+          render(); teclado.focus({ preventScroll: true });
         });
         rej.appendChild(cel);
       }
@@ -149,7 +149,7 @@
         const h = document.createElement('h3'); h.textContent = d === 'H' ? 'Horizontales' : 'Verticales'; defs.appendChild(h);
         grupo.forEach(x => {
           const p = document.createElement('p'); p.className = 'def' + (actDef === x ? ' activa' : ''); p.innerHTML = `<b>${x.num}.</b> ${x.pista}`;
-          p.addEventListener('click', () => { activa = [x.fila, x.col]; dir = x.dir; render(); teclado.focus(); });
+          p.addEventListener('click', () => { activa = [x.fila, x.col]; dir = x.dir; render(); teclado.focus({ preventScroll: true }); });
           defs.appendChild(p);
         });
       });

@@ -62,3 +62,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Repaso de contraste de toda la web (claro y oscuro, todos los temas): botones negros en modo oscuro (Ordena la frase), login, gris suave, acento de texto separado, paletas de verano/San Valentín/cumple/aniversario/invierno/primavera | 6a19fb9 |
 | 2026-11-11 | Criptofrases: las celdas se encogen para que la palabra más larga quepa en móviles pequeños (320 px); adviento día 3: la sospechosa es Aroa, no Miranda (también en producción vía `CorregirAdviento`) | 057b914 |
 | 2026-11-11 | Vale del adviento: sello "Canjeado" con día y hora al canjearlo, aviso para Javier arriba en Admin (también el vale de los corazones), y el admin ve cómo queda al pulsar sin guardar nada | 003d726 |
+| 2026-11-11 | Crucigrama y criptofrase: tocar una casilla ya no desplaza la página (campo oculto del teclado arriba y `focus({ preventScroll })`) | (este) |

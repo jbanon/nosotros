@@ -413,7 +413,8 @@ html[data-tema] body .contenido { padding: 0; max-width: none; }
 .cerrada-msg .grande { font-size: 3rem; display: block; margin-bottom: 10px; }
 .cerrada-msg .msg { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; line-height: 1.3; margin: 0 0 8px; }
 .cerrada-msg .btn { margin-top: 16px; }
-.teclado-oculto { position: fixed; opacity: 0; pointer-events: none; left: 0; bottom: 0; width: 1px; height: 1px; }
+/* Arriba y no abajo: si queda detrás del teclado del móvil, al enfocarla el navegador desplaza la página */
+.teclado-oculto { position: fixed; opacity: 0; pointer-events: none; left: 0; top: 0; width: 1px; height: 1px; font-size: 16px; border: 0; padding: 0; }
 .preview-aviso a { color: inherit; text-decoration: underline; }
 
 /* Premio */
