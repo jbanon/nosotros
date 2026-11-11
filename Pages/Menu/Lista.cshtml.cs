@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace Love.Pages.Menu;
 
-public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService recurrentes, FileStorage files) : PageModel
+public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService recurrentes, FileStorage files, ZonaAuto zonas) : PageModel
 {
     public Semana Semana { get; set; } = null!;
     public DateOnly Lunes { get; set; }
@@ -18,6 +18,8 @@ public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService re
     public string? ErrorGasto { get; set; }
     /// <summary>Compras ya apuntadas hoy, para avisar y no duplicar.</summary>
     public List<Gasto> ComprasHoy { get; set; } = new();
+    /// <summary>Lo ya comprado alguna vez, para sugerir al escribir y clasificar solo.</summary>
+    public List<ProductoConocido> Conocidos { get; set; } = new();
     public bool Comprando => Semana.CompraInicio != null;
     public int MinutosComprando => Semana.CompraInicio is DateTime i ? (int)Math.Round((DateTime.UtcNow - i).TotalMinutes) : 0;
 
@@ -41,6 +43,7 @@ public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService re
         Reponer = (await recurrentes.Reponer(Reloj.Hoy)).Where(p => !enLista.Contains(RecurrenteService.Clave(p.Nombre))).Take(8).ToList();
         var hoy = Reloj.Hoy;
         ComprasHoy = await db.Gastos.Where(g => g.Fecha == hoy && g.Tipo == TipoGasto.Compra).OrderByDescending(g => g.Creado).ToListAsync();
+        Conocidos = await zonas.Catalogo();
     }
 
     /// <summary>Terminar la compra: crea el gasto del mes con el importe del ticket, su foto y el detalle de lo comprado.</summary>
@@ -109,12 +112,13 @@ public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService re
         return RedirectToPage(new { lunes });
     }
 
-    public async Task<IActionResult> OnPostAnadir(DateOnly lunes, string nombre, string? cantidad, Zona zona)
+    public async Task<IActionResult> OnPostAnadir(DateOnly lunes, string nombre, string? cantidad, Zona? zona)
     {
         nombre = (nombre ?? "").Trim();
         if (nombre != "")
         {
             var s = await lista.SemanaDe(lunes);
+            var z = zona ?? await zonas.ZonaDe(nombre);
             var ing = await db.Ingredientes.FirstOrDefaultAsync(i => i.Nombre.ToLower() == nombre.ToLower());
             decimal? cant = null; string? unidad = null;
             if (!string.IsNullOrWhiteSpace(cantidad))
@@ -123,7 +127,7 @@ public class ListaModel(AppDb db, ListaCompraService lista, RecurrenteService re
                 if (decimal.TryParse(partes[0].Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out var c)) { cant = c; unidad = partes.Length > 1 ? partes[1] : null; }
                 else unidad = cantidad.Trim();
             }
-            s.Lista.Add(new ListaItem { Nombre = ing?.Nombre ?? nombre, IngredienteId = ing?.Id, Zona = ing?.Zona ?? zona, Cantidad = cant, Unidad = unidad, Manual = true, Incluido = true });
+            s.Lista.Add(new ListaItem { Nombre = ing?.Nombre ?? nombre, IngredienteId = ing?.Id, Zona = ing?.Zona ?? z, Cantidad = cant, Unidad = unidad, Manual = true, Incluido = true });
             await db.SaveChangesAsync();
         }
         return RedirectToPage(new { lunes });

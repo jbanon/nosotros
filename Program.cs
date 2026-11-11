@@ -40,6 +40,7 @@ builder.Services.AddDbContext<AppDb>(o => o.UseSqlite($"Data Source={fs.RutaDb}"
 builder.Services.AddScoped<ConfigService>();
 builder.Services.AddScoped<MensajeService>();
 builder.Services.AddScoped<ListaCompraService>();
+builder.Services.AddScoped<ZonaAuto>();
 builder.Services.AddScoped<GastoService>();
 builder.Services.AddScoped<SugerenciaService>();
 builder.Services.AddScoped<RecurrenteService>();

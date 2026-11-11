@@ -24,6 +24,8 @@
 Javier las dejó apuntadas para hacer más adelante; también pueden entrar como casillas del adviento.
 - **Cifras (de "Cifras y letras")**: le encanta. Seis números y un objetivo, llegar con + − × ÷.
 - **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
+- **Voz para la compra** (2026-11-11, pendiente de que Javier decida): botón 🎤 que dicta "fideos, manzanas y
+  leche" y lo añade clasificado; o una skill propia de Alexa. Alexa y Google ya no dejan leer sus listas.
 - **Recordatorio de francés**: Raquel habla bien francés; algo gracioso para repasar (frase o expresión del
   día, falsos amigos, mini quiz).
 
@@ -66,3 +68,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Crucigrama y criptofrase: tocar una casilla ya no desplaza la página (campo oculto del teclado arriba y `focus({ preventScroll })`) | 71e6713 |
 | 2026-11-11 | Adviento: vídeo en una casilla (día 1, villancico) a pantalla completa con guirnalda, nieve y acebo; subida por trozos desde Admin y servido con rangos | cbc74c1 |
 | 2026-11-11 | Listas reutilizables (pestaña junto a La compra): Viaje y Camping de inicio, marcar sin recargar, añadir varias líneas, desmarcar todo, compartir, renombrar y borrar | 2c492f8 |
+| 2026-11-11 | Compra: al añadir, sugerencias de lo ya comprado ("fi" → Fideos) y zona automática ("manzanas" → Frutería), también en "Quizá toca reponer" | (este) |

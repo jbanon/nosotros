@@ -35,6 +35,14 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Tickets: líneas producto+importe opcionales en los gastos de tipo Compra. De ahí salen los
   productos recurrentes (mediana de intervalos) y los chips "Quizá toca reponer" en la lista.
   No hay OCR de la foto del ticket (requeriría API de visión).
+- Añadir a la compra es predictivo y se clasifica solo (`ZonaAuto`): sugiere lo ya conocido (tickets,
+  ingredientes, lo añadido a mano otras semanas, ordenado por veces) y pone la zona: primero la conocida
+  (la última vez que se añadió a mano manda, así aprende si se corrige), si no por palabras clave
+  ("manzanas" → frutería) salvo envasados ("tomate frito", "atún en lata" → otros). La misma tabla de
+  palabras va al navegador (`predictivo.js`). Si se elige la zona a mano, se respeta.
+- Voz (2026-11-11): no se integra con Alexa ni con Google. Amazon cerró la API de listas a terceros el
+  1/7/2024 y Google no tiene API para Keep ni acciones de Assistant (cerradas en 2023). Lo viable, si se
+  quiere: botón 🎤 en el navegador (Web Speech) o una skill propia de Alexa ("Alexa, dile a Nosotros…").
 
 ## Página de Raquel
 - Declaración permanente bajo la tarjeta del día, editable en Admin → Configuración.

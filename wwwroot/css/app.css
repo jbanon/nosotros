@@ -733,3 +733,9 @@ html.con-cine, html.con-cine body { overflow: hidden; }
 .editor-parada.sel { border-color: var(--acento); box-shadow: 0 0 0 2px var(--acento-claro); }
 .editor-parada .num { width: 26px; height: 26px; border-radius: 50%; background: var(--acento-claro); display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; flex: none; }
 .editor-parada input, .editor-parada textarea { min-height: 38px; padding: 8px 10px; margin: 6px 0 0; }
+
+/* Compra: sugerencias al escribir */
+.predice { gap: 6px; }
+.chip.predice-op { padding: 6px 12px; font-weight: 600; }
+.chip.predice-op b { font-weight: 800; text-decoration: underline 2px var(--acento); text-underline-offset: 3px; }
+.chip.predice-op .predice-ico { font-size: 1rem; }

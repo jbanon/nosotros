@@ -64,7 +64,7 @@
             @foreach (var p in Model.Reponer)
             {
                 <form method="post" asp-page-handler="Anadir" asp-route-lunes="@l">
-                    <input type="hidden" name="nombre" value="@p.Nombre" /><input type="hidden" name="zona" value="Otros" />
+                    <input type="hidden" name="nombre" value="@p.Nombre" />
                     <button class="chip">+ @p.Nombre <span class="suave peq">· cada ~@p.CadaDias días</span></button>
                 </form>
             }
@@ -72,19 +72,32 @@
     </div>
 }
 
-<div class="tarjeta">
+<div class="tarjeta" id="anadir">
     <h2 class="mb">Añadir algo más</h2>
-    <form method="post" asp-page-handler="Anadir" asp-route-lunes="@l">
+    <form method="post" asp-page-handler="Anadir" asp-route-lunes="@l" id="f-anadir">
+        <div class="chips predice mb" id="a-sug" aria-label="Sugerencias" hidden></div>
         <div class="fila mb">
-            <input type="text" name="nombre" placeholder="Papel de cocina" required class="crece" />
-            <input type="text" name="cantidad" placeholder="2 ud" style="width:90px" />
+            <input type="text" name="nombre" id="a-nombre" placeholder="Escribe: fi… → Fideos" required class="crece" autocomplete="off" autocapitalize="sentences" enterkeyhint="done" />
+            <input type="text" name="cantidad" placeholder="2 ud" style="width:90px" autocomplete="off" />
         </div>
         <div class="fila">
-            <select name="zona" class="crece">@foreach (var z in ZonaInfo.Todas) { <option value="@z" selected="@(z == Zona.Otros)">@ZonaInfo.Emoji(z) @ZonaInfo.Nombre(z)</option> }</select>
+            <select name="zona" id="a-zona" class="crece" aria-label="Zona">@foreach (var z in ZonaInfo.Todas) { <option value="@z" selected="@(z == Zona.Otros)">@ZonaInfo.Emoji(z) @ZonaInfo.Nombre(z)</option> }</select>
             <button class="btn primario">Añadir</button>
         </div>
+        <p class="suave peq" id="a-pista" style="margin:8px 0 0">La zona se pone sola al escribir; puedes cambiarla.</p>
     </form>
 </div>
+@{
+    var enLista = incluidos.Where(i => !i.Comprado).Select(i => Love.Services.RecurrenteService.Clave(i.Nombre)).Distinct();
+    var datos = new
+    {
+        conocidos = Model.Conocidos.Select(p => new object[] { p.Nombre, p.Zona.ToString(), p.Veces }),
+        enLista,
+        palabras = Love.Services.ZonaAuto.Palabras.ToDictionary(kv => kv.Key.ToString(), kv => kv.Value),
+        envasado = Love.Services.ZonaAuto.Envasado,
+    };
+}
+<script type="application/json" id="datos-compra">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(datos).Replace("</", "<\\/"))</script>
 
 @if (excluidos.Any())
 {
@@ -121,11 +134,12 @@
     <form method="post" asp-page-handler="Limpiar" asp-route-lunes="@l" data-confirm="¿Desmarcar lo comprado?"><button class="btn ancho">Desmarcar lo comprado</button></form>
 }
 <pre id="texto-lista" hidden>@Model.TextoCompartir</pre>
+@section Scripts {
+<script src="/js/predictivo.js" asp-append-version="true"></script>
 @if (Model.Comprando)
 {
-    @section Scripts {
     <script>(() => { const c = document.getElementById('crono'); if (!c) return; const ini = new Date(c.dataset.inicio.replace(/Z+$/, 'Z'));
       const pinta = () => { const m = Math.max(0, Math.round((Date.now() - ini) / 60000)); c.textContent = m < 60 ? m + ' min' : Math.floor(m / 60) + ' h ' + (m % 60) + ' min'; };
       pinta(); setInterval(pinta, 15000); })();</script>
-    }
+}
 }
