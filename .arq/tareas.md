@@ -57,4 +57,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-09 | Tema Navidad adelantado al 25 de noviembre | 49af518 |
 | 2026-11-09 | Calendario de adviento 2026: 24 casillas (fotos, criptofrases, murdokus, crucigramas, vales, carta final), letras → frase final, Admin para fotos/contenidos/seguimiento, aviso en la página de Raquel | e05af01 |
 | 2026-11-09 | Agente `claude -p` en producción: CLI de dev (`/home/dev/.local/bin/claude`) usado por www-data, token de suscripción en `/etc/love.env`; probado con Paddington 2 (ficha y póster en 13 s) | — |
-| 2026-11-11 | Página de amor: fondo de otoño mucho más claro (sin el marrón de abajo) y sin las franjas de 16px a los lados en los temas | (este) |
+| 2026-11-11 | Página de amor: fondo de otoño mucho más claro (sin el marrón de abajo) y sin las franjas de 16px a los lados en los temas | 4af0c51 |
