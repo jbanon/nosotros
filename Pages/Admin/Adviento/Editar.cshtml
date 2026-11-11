@@ -28,6 +28,16 @@
     </div>
 
     <div class="tarjeta">
+        <h2 class="mb">Vídeo</h2>
+        <video id="video-actual" class="video-admin" controls playsinline preload="metadata" src="@(c.VideoPath != null ? $"/Adviento/Video/{c.Id}" : null)" hidden="@(c.VideoPath == null)"></video>
+        <p class="error peq" id="video-error" hidden>Este navegador no sabe reproducir el vídeo; probablemente esté grabado en HEVC («vídeo de alta eficiencia»). Desactiva esa opción en la cámara y vuelve a grabarlo, o conviértelo a MP4.</p>
+        @if (c.VideoPath != null) { <label class="chip"><input type="checkbox" asp-for="QuitarVideo" style="display:inline" /> Quitar el vídeo</label> }
+        <label class="campo mt"><span id="video-etiqueta">@(c.VideoPath != null ? "Sustituir vídeo" : "Subir vídeo")</span><input type="file" id="video-fichero" accept="video/mp4,video/quicktime,video/webm,video/*" /></label>
+        <div id="subida" hidden><div class="progreso"><i id="subida-barra" style="width:0"></i></div><p class="peq" id="subida-texto" style="margin:0 0 10px"></p></div>
+        <p class="suave peq" style="margin-bottom:0">En una casilla de tipo Foto, el vídeo se ve a pantalla completa con adornos de Navidad, y la foto, si la hay, le sirve de portada. Se sube al elegirlo, por trozos: puede tardar unos minutos y no hay que cerrar la página. Máximo 1 GB; mejor grabado en 1080p que en 4K.</p>
+    </div>
+
+    <div class="tarjeta">
         <h2 class="mb">Reto de la foto (opcional)</h2>
         <label class="campo"><span>Pregunta</span><input asp-for="Casilla.Pregunta" placeholder="¿En qué país estábamos?" /></label>
         <label class="campo"><span>Respuesta (una palabra; da igual mayúsculas y tildes)</span><input asp-for="Casilla.Respuesta" placeholder="Gales" /></label>
@@ -55,3 +65,52 @@
         <button class="btn peligro pequeno">Reiniciar esta casilla</button>
     </form>
 </div>
+
+@section Scripts {
+<script>
+// Subida del vídeo por trozos de 8 MB (el límite de nginx es 30 MB por petición); reintenta el trozo si se corta.
+(() => {
+  const inp = document.getElementById('video-fichero'), caja = document.getElementById('subida');
+  const barra = document.getElementById('subida-barra'), txt = document.getElementById('subida-texto');
+  const video = document.getElementById('video-actual'), errVideo = document.getElementById('video-error');
+  const token = document.querySelector('input[name=__RequestVerificationToken]').value;
+  const TROZO = 8 * 1024 * 1024, MAX = @Love.Pages.Admin.Adviento.EditarModel.MaxVideo;
+  const mb = n => Math.round(n / 1048576).toLocaleString('es-ES') + ' MB';
+  const espera = ms => new Promise(r => setTimeout(r, ms));
+  let subiendo = false;
+  video.addEventListener('error', () => { if (video.error?.code === 4) errVideo.hidden = false; });
+  window.addEventListener('beforeunload', e => { if (subiendo) { e.preventDefault(); e.returnValue = ''; } });
+  const pinta = (t, mal) => { txt.textContent = t; txt.className = 'peq' + (mal ? ' error' : ''); };
+  inp.addEventListener('change', async () => {
+    const f = inp.files[0]; if (!f) return;
+    caja.hidden = false; barra.style.width = '0';
+    if (f.size > MAX) { pinta('Pasa de 1 GB (' + mb(f.size) + '): grábalo en 1080p o recórtalo.', true); return; }
+    const id = Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('');
+    subiendo = true; inp.disabled = true;
+    let desde = 0, fallos = 0, listo = null;
+    const t0 = Date.now();
+    pinta('Subiendo ' + f.name + '…');
+    while (!listo) {
+      const fd = new FormData();
+      fd.append('subida', id); fd.append('desde', desde); fd.append('total', f.size); fd.append('nombre', f.name);
+      fd.append('trozo', f.slice(desde, desde + TROZO), 'trozo');
+      let r = null, j = {};
+      try { r = await fetch(location.pathname + '?handler=Trozo', { method: 'POST', headers: { RequestVerificationToken: token }, body: fd }); j = await r.json().catch(() => ({})); } catch { }
+      if (r && (r.ok || r.status === 409) && j.recibido != null) { desde = j.recibido; fallos = 0; if (j.listo) listo = j; }
+      else if (r && r.status === 400) { pinta(j.error || 'No se ha podido subir el vídeo.', true); break; }
+      else if (++fallos > 6) { pinta('Se ha cortado la conexión. Vuelve a elegir el vídeo para reintentarlo.', true); break; }
+      else { pinta('Se ha cortado la conexión, reintentando…'); await espera(1500 * fallos); continue; }
+      const pct = desde / f.size * 100, seg = (Date.now() - t0) / 1000, quedan = desde ? seg * (f.size - desde) / desde : 0;
+      barra.style.width = pct + '%';
+      if (!listo) pinta(`Subiendo: ${mb(desde)} de ${mb(f.size)} (${Math.floor(pct)} %)` + (seg > 5 ? ` · faltan ~${Math.max(1, Math.round(quedan / 60))} min` : ''));
+    }
+    subiendo = false; inp.disabled = false; inp.value = '';
+    if (listo) {
+      pinta('✓ Vídeo subido y guardado en la casilla.');
+      errVideo.hidden = true; video.hidden = false; video.src = listo.url;
+      document.getElementById('video-etiqueta').textContent = 'Sustituir vídeo';
+    }
+  });
+})();
+</script>
+}

@@ -37,7 +37,7 @@ public class IndexModel(AdvientoService adv, ConfigService config) : PageModel
     public bool EsHoy(AdvientoCasilla c) => AdvientoService.FechaDe(c) == Hoy;
     public static string Icono(AdvientoCasilla c) => c.Tipo switch
     {
-        TipoCasilla.Foto => "📷", TipoCasilla.Criptofrase => "🔡", TipoCasilla.Murdoku => "🔍",
+        TipoCasilla.Foto => c.VideoPath != null ? "🎬" : "📷", TipoCasilla.Criptofrase => "🔡", TipoCasilla.Murdoku => "🔍",
         TipoCasilla.Crucigrama => "✏️", TipoCasilla.Vale => "🎟️", _ => "💌"
     };
 }

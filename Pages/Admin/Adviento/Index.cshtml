@@ -19,7 +19,7 @@
             <span class="dia">@c.Dia</span>
             <div class="crece">
                 <b>@c.Titulo</b> <span class="suave">· @c.Tipo@(c.DaLetra ? $" · letra {c.Letra}" : "")</span>
-                <div class="sub suave">@IndexModel.Estado(c, Model.Hoy)@(c.Tipo == TipoCasilla.Foto ? c.FotoPath != null ? " · 📷 foto" : " · ⚠️ sin foto" : "")@(c.FotoPath != null && c.Tipo != TipoCasilla.Foto ? " · 📷" : "")</div>
+                <div class="sub suave">@IndexModel.Estado(c, Model.Hoy)@(c.Tipo == TipoCasilla.Foto ? c.VideoPath != null ? " · 🎬 vídeo" : c.FotoPath != null ? " · 📷 foto" : " · ⚠️ sin foto" : "")@(c.FotoPath != null && c.Tipo != TipoCasilla.Foto ? " · 📷" : "")</div>
             </div>
             <span class="suave">›</span>
         </a>

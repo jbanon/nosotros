@@ -82,6 +82,12 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   (hora de Madrid), no `ToLocalTime`, que depende de la zona del servidor (esta máquina está en UTC).
 - Las criptofrases ajustan el tamaño de celda (`--celda`, de 30 a 16 px) para que la palabra más larga quepa
   en el ancho del móvil; si ni así cabe, la palabra se parte.
+- Vídeo en una casilla (`AdvientoCasilla.VideoPath`, primero el villancico de Javier el día 1): en una casilla
+  Foto sustituye a la foto, que pasa a ser su portada; la letra se gana igual que con la foto (al abrir, o al
+  acertar si hay pregunta). Se abre a pantalla completa con guirnalda de luces, nieve y acebo (`js/cine.js`);
+  Atrás cierra el vídeo. Se sube desde Admin por trozos de 8 MB (nginx limita a 30 MB por petición; así no hay
+  que tocarlo), máx. 1 GB, y se sirve con rangos en `/Adviento/Video/{id}`. Sin transcodificar (no hay ffmpeg):
+  mejor MP4 grabado en 1080p y sin HEVC; los .mov se sirven como video/mp4.
 
 ## Agente (claude -p)
 - Opción B elegida (2026-11-09): la app lanza el CLI `claude -p` en segundo plano (`AgenteService`,

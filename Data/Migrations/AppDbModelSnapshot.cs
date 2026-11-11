@@ -70,6 +70,9 @@ namespace Love.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("VideoPath")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("VinetaId")
                         .HasColumnType("INTEGER");
 

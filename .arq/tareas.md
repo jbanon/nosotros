@@ -10,6 +10,9 @@
   criptofrase y ordena la frase se han probado solo contra el servidor. Javier también puede escribir la carta
   de los 10 ♥ y el texto del vale en Admin → Viñetas → Desbloqueos.
 
+- **Adviento día 1: Javier sube el vídeo del villancico (Admin → Calendario de adviento → casilla 1 → Vídeo) y
+  cambia en el texto "Hoy, para empezar, una foto."** Probar en su móvil con Vista previa (pantalla completa,
+  sonido, botón Atrás); el reproductor solo se ha visto en Chromium sin interfaz con un WebM de prueba.
 - **Adviento: Javier debe subir las fotos (días 1, 7, 11, 16, 20) y revisar textos desde Admin → Calendario de adviento antes del 1 de diciembre.** Opcional: pregunta/respuesta por foto (si no, la foto se ve directa y la letra se gana al abrir). Pendiente ver capturas en el móvil (diseño validado a ciegas) y confirmar que el teclado se abre bien en criptofrase y crucigrama (input oculto `.teclado-oculto`).
 - **Lista de la compra: "elementos abajo que no se ven"** (captura en modo oscuro,
   2026-11-08). Se aumentó el relleno inferior y se versionó el CSS; Javier debe confirmar tras
@@ -63,3 +66,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Criptofrases: las celdas se encogen para que la palabra más larga quepa en móviles pequeños (320 px); adviento día 3: la sospechosa es Aroa, no Miranda (también en producción vía `CorregirAdviento`) | 057b914 |
 | 2026-11-11 | Vale del adviento: sello "Canjeado" con día y hora al canjearlo, aviso para Javier arriba en Admin (también el vale de los corazones), y el admin ve cómo queda al pulsar sin guardar nada | 003d726 |
 | 2026-11-11 | Crucigrama y criptofrase: tocar una casilla ya no desplaza la página (campo oculto del teclado arriba y `focus({ preventScroll })`) | 71e6713 |
+| 2026-11-11 | Adviento: vídeo en una casilla (día 1, villancico) a pantalla completa con guirnalda, nieve y acebo; subida por trozos desde Admin y servido con rangos | (este) |

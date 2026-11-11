@@ -269,6 +269,8 @@ public class AdvientoCasilla
     /// <summary>Letra de la frase final que se gana al resolver la casilla.</summary>
     public string? Letra { get; set; }
     public string? FotoPath { get; set; }
+    /// <summary>Vídeo de la casilla (mp4/mov/webm). En una casilla Foto sustituye a la foto, que pasa a ser su portada.</summary>
+    public string? VideoPath { get; set; }
     /// <summary>Viñeta que se regala además de la letra al resolver la casilla.</summary>
     public int? VinetaId { get; set; }
     /// <summary>Pregunta opcional de una palabra para desvelar la foto.</summary>
