@@ -67,11 +67,12 @@
         }
         else if (c.Tipo == TipoCasilla.Vale)
         {
-            <section class="adv-tarjeta vale">
+            <section class="adv-tarjeta vale @(c.CanjeadoEl != null ? "ya-canjeado" : "")">
                 <div class="vale-borde">
                     <span class="vale-ico">🎟️</span>
                     <p class="vale-titulo">@c.Titulo</p>
                     <p class="vale-firma">Firmado: @Model.Firma</p>
+                    @if (c.CanjeadoEl != null) { <span class="vale-sello">Canjeado</span> }
                 </div>
                 @if (c.CanjeadoEl == null)
                 {
@@ -79,7 +80,13 @@
                         <button class="btn adv-btn primario ancho">Canjear este vale</button>
                     </form>
                 }
-                else { <p class="canjeado">Canjeado el @c.CanjeadoEl.Value.ToLocalTime().ToString("d 'de' MMMM"). ¡A cobrarlo!</p> }
+                else
+                {
+                    var cuando = Reloj.Local(c.CanjeadoEl.Value);
+                    <p class="canjeado">✓ Canjeado el @cuando.ToString("d 'de' MMMM 'a las' H:mm")</p>
+                    <p class="canjeado-sub">@Model.Firma ya tiene el aviso. ¡A cobrarlo!</p>
+                    @if (Model.CanjeSimulado) { <p class="canjeado-sub" style="opacity:.85"><i>Vista previa: así lo verá ella al canjearlo. No se ha guardado nada.</i></p> }
+                }
             </section>
         }
         else if (c.Tipo == TipoCasilla.Final)

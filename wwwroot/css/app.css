@@ -490,7 +490,14 @@ html[data-tema] body .contenido { padding: 0; max-width: none; }
 .vale-ico { font-size: 2.4rem; display: block; }
 .vale-titulo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; line-height: 1.2; margin: 8px 0 6px; }
 .vale-firma { margin: 0; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; opacity: .9; }
-.canjeado { text-align: center; font-weight: 700; color: var(--acento-amor); margin: 0; }
+.canjeado { text-align: center; font-weight: 800; font-size: 1.1rem; color: var(--acento-amor); margin: 0; }
+.canjeado-sub { text-align: center; margin: 4px 0 0; font-size: .95rem; }
+.vale .vale-borde { position: relative; overflow: hidden; }
+.vale.ya-canjeado .vale-borde > :not(.vale-sello) { opacity: .55; }
+.vale-sello { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg); padding: 6px 18px; border: 3px solid var(--acento-amor);
+  border-radius: 12px; color: var(--acento-amor); background: color-mix(in srgb, var(--fondo-1) 80%, transparent); font-weight: 800; font-size: 1.5rem;
+  letter-spacing: .18em; text-transform: uppercase; animation: sellar .45s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes sellar { from { transform: translate(-50%, -50%) rotate(-12deg) scale(2.2); opacity: 0; } to { transform: translate(-50%, -50%) rotate(-12deg) scale(1); opacity: 1; } }
 
 /* Final */
 .frase-final .frase { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; margin: 10px 0; }

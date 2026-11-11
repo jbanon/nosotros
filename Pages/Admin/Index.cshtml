@@ -2,6 +2,10 @@
 @model Love.Pages.Admin.IndexModel
 @{ ViewData["Title"] = "Admin"; }
 <div class="cab"><h1>Admin</h1><a class="accion" href="/Login?salir=true">Salir</a></div>
+@foreach (var v in Model.Canjes)
+{
+    <div class="aviso mb fila"><span style="font-size:1.4rem">🎟️</span><span class="crece"><b>Raquel ha canjeado un vale:</b> «@v.Titulo» · @Reloj.Local(v.Cuando).ToString("d MMM, H:mm")</span></div>
+}
 <div class="lista menu-admin">
     <a class="tarjeta enlace" href="/Admin/Mensajes"><span class="ico">💌</span><div class="crece"><b>Frases y poemas</b><div class="sub suave">@Model.NumMensajes mensajes, uno por día</div></div><span class="suave">›</span></a>
     <a class="tarjeta enlace" href="/Admin/Fechas"><span class="ico">📅</span><div class="crece"><b>Fechas especiales</b><div class="sub suave">@Model.NumFechas fechas con mensaje propio</div></div><span class="suave">›</span></a>

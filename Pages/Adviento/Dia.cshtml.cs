@@ -36,6 +36,8 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
     public List<AdvientoCasilla> Fotos { get; set; } = new();
     public string Firma { get; set; } = "";
     public Vineta? VinetaRegalo { get; set; }
+    /// <summary>El admin pulsó "Canjear": se le enseña el vale canjeado sin guardar nada.</summary>
+    public bool CanjeSimulado { get; set; }
     bool EsAdmin => User.EsAdmin();
 
     async Task<bool> Cargar(int dia, DateOnly? fecha)
@@ -54,9 +56,11 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
         return true;
     }
 
-    public async Task<IActionResult> OnGet(int dia, DateOnly? fecha)
+    public async Task<IActionResult> OnGet(int dia, DateOnly? fecha, bool simularCanje = false)
     {
         if (!await Cargar(dia, fecha)) return NotFound();
+        if (simularCanje && EsAdmin && Casilla.Tipo == TipoCasilla.Vale && Casilla.CanjeadoEl == null)
+        { Casilla.CanjeadoEl = DateTime.UtcNow; CanjeSimulado = true; }   // solo en memoria: el admin nunca guarda aquí
         ViewData["Tema"] = "navidad";
         var c = Casilla;
         if (Cerrada)
@@ -176,6 +180,9 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
     {
         if (!await Cargar(dia, fecha) || Cerrada) return NotFound();
         if (!EsAdmin && Casilla.Tipo == TipoCasilla.Vale && Casilla.CanjeadoEl == null) { Casilla.CanjeadoEl = DateTime.UtcNow; await db.SaveChangesAsync(); }
-        return Redirect($"/Adviento/Dia/{dia}" + (Preview ? $"?fecha={Hoy:yyyy-MM-dd}" : ""));
+        var q = new List<string>();
+        if (Preview) q.Add($"fecha={Hoy:yyyy-MM-dd}");
+        if (EsAdmin) q.Add("simularCanje=true");
+        return Redirect($"/Adviento/Dia/{dia}" + (q.Count > 0 ? "?" + string.Join("&", q) : ""));
     }
 }

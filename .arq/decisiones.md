@@ -76,6 +76,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - `Seed/adviento.json` solo se carga una vez (si no hay casillas del año). Para cambiar una casilla ya
   creada en producción: cambiar el JSON y añadir el arreglo en `SeedService.CorregirAdviento`, que solo
   actúa si la casilla conserva el texto original (no pisa lo editado en Admin).
+- Vales (adviento y desbloqueo de viñetas): al canjear, Raquel ve el sello "Canjeado" con día y hora, y Javier
+  tiene el aviso arriba en Admin durante 30 días (no hay notificaciones push). Si el admin pulsa "Canjear",
+  ve el vale canjeado sin que se guarde nada (`?simularCanje=true`). Horas mostradas con `Reloj.Local`
+  (hora de Madrid), no `ToLocalTime`, que depende de la zona del servidor (esta máquina está en UTC).
 - Las criptofrases ajustan el tamaño de celda (`--celda`, de 30 a 16 px) para que la palabra más larga quepa
   en el ancho del móvil; si ni así cabe, la palabra se parte.
 
