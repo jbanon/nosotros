@@ -57,6 +57,14 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Ideas: editables, con casilla "ya está automatizada" y resumen de lo hecho, visible en
   `/Ideas/Hechas`. Películas: mismo patrón (por ver / vistas).
 - CSS y JS con versión por hash para que los móviles no se queden con estilos viejos.
+- Contraste (repaso 2026-11-11, modo claro y oscuro): texto normal ≥ 4.5:1, texto grande e iconos ≥ 3:1.
+  El acento va en tres variables: `--acento` (rellenos con texto blanco y adornos), `--acento-texto`
+  (enlaces y texto; más claro en modo oscuro) y `--acento-claro` (fondos suaves); igual `--ok/--mal/--aviso`
+  con su `-texto`. Nunca `color: var(--acento)` ni `var(--ok)` para texto. En las páginas con tema,
+  `--acento-texto` es el `--acento-amor` del tema, y cada tema debe leerse sobre su `--fondo-3`.
+  `button { color: inherit }` en la base: sin eso los botones salían negros en modo oscuro.
+  Las páginas sin tema siguen el modo oscuro del móvil; si un color va fijo (`#fff`, `#fde7df`…),
+  hay que mirarlo también en oscuro.
 
 ## Calendario de adviento
 - 24 casillas del 1 al 24 de diciembre (año en `AdvientoCasilla.Anio`; en enero sigue valiendo el de diciembre). Una casilla se abre cuando llega su día (hora de Madrid); las pasadas siguen abiertas; las futuras muestran un mensaje gracioso. Reparto: 6 criptofrases, 5 murdokus, 5 crucigramas, 5 fotos, 2 vales y la carta final del 24.

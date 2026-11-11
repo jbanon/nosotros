@@ -29,7 +29,7 @@
             <div class="crece"><b>@l.Nombre</b> <span class="suave peq">· @l.Corazones ♥</span>
                 @if (l.Conseguido && l.Clave == "grande") { <div class="sub">@l.Texto Entra en cualquier viñeta del álbum y pulsa "Rompecabezas grande".</div> }
                 else if (l.Conseguido && l.Clave == "vale") { <div class="sub vale-texto">@l.Texto</div>
-                    @if (!Model.ValeCanjeado) { <form method="post" asp-page-handler="Canjear" data-confirm="¿Canjear el vale ahora? Le llegará el aviso a @Model.Firma."><button class="btn pequeno primario mt">Canjear</button></form> } else { <div class="sub" style="color:var(--ok);font-weight:700">Canjeado ✓</div> } }
+                    @if (!Model.ValeCanjeado) { <form method="post" asp-page-handler="Canjear" data-confirm="¿Canjear el vale ahora? Le llegará el aviso a @Model.Firma."><button class="btn pequeno primario mt">Canjear</button></form> } else { <div class="sub" style="color:var(--ok-texto);font-weight:700">Canjeado ✓</div> } }
                 else if (l.Conseguido && l.Clave == "carta") { <div class="sub carta-texto" style="white-space:pre-line">@(string.IsNullOrWhiteSpace(l.Texto) ? "(Javi aún no la ha escrito…)" : l.Texto)</div> }
                 else { <div class="sub suave">Se abre con @l.Corazones corazones.</div> }
             </div>

@@ -69,7 +69,7 @@
             <img src="/Vinetas/Imagen/@v.Id" class="miniatura" alt="" loading="lazy" style="width:64px;height:64px" />
             <div class="crece" style="min-width:0">
                 <div style="font-weight:700;line-height:1.25">@(string.IsNullOrWhiteSpace(v.FraseAutor) ? (v.Descripcion ?? "(sin texto)") : v.FraseAutor)</div>
-                @if (!string.IsNullOrWhiteSpace(v.FraseMia)) { <div class="sub" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem">@v.FraseMia</div> } else { <div class="sub" style="color:var(--aviso)">⚠️ sin tu frase</div> }
+                @if (!string.IsNullOrWhiteSpace(v.FraseMia)) { <div class="sub" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem">@v.FraseMia</div> } else { <div class="sub" style="color:var(--aviso-texto)">⚠️ sin tu frase</div> }
                 <div class="sub suave">@v.Intenciones@(v.Conocida ? " · conocida" : "")@(!v.Activa ? " · inactiva" : "")@(v.FechaFija is DateOnly ff ? $" · 📌 {ff:d MMM}" : "")@(d != null ? $" · salió {d.Fecha:d MMM}{(d.Juego != JuegoVineta.Ninguno ? $" ({d.Juego}{(d.ResueltaEl != null ? " ✓" : " pendiente")})" : "")}" : "")@(v.Favorita ? " · ♥ favorita" : "")@(Model.Analizando.Contains(v.Id) ? " · ✨ analizando…" : "")</div>
                 @if (v.RespuestaRaquel != null) { <div class="sub" style="margin-top:4px;padding:6px 8px;border-radius:8px;background:var(--acento-claro)">💬 @v.RespuestaRaquel @if (!v.RespuestaVista) { <span class="badge">nueva</span> }</div> }
             </div>

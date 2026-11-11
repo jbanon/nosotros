@@ -94,7 +94,7 @@ function pintaFecha() {
   const d = new Date(v + 'T12:00:00');
   const txt = d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
   fTxt.textContent = (v === hoyIso ? 'hoy, ' : '') + txt + (v === hoyIso ? '' : ' ⚠️');
-  fTxt.style.color = v === hoyIso ? '' : 'var(--aviso)';
+  fTxt.style.color = v === hoyIso ? '' : 'var(--aviso-texto)';
 }
 fIn.addEventListener('change', pintaFecha); pintaFecha();
 document.querySelectorAll('.fecha-caja .chip').forEach(b => b.addEventListener('click', () => { const d = new Date(hoyIso + 'T12:00:00'); d.setDate(d.getDate() - +b.dataset.dias); fIn.value = iso(d); pintaFecha(); }));

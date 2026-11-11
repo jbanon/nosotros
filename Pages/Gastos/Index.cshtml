@@ -19,7 +19,7 @@
     <div class="fila"><span class="etiqueta crece" style="margin:0">Compra del mes</span><span class="suave peq">objetivo @Model.Objetivo.ToString("N0") €</span></div>
     <div class="grande">@Model.Compra.ToString("N2") €</div>
     <div class="progreso @clase"><i style="width:@(Math.Min(100, pct).ToString(System.Globalization.CultureInfo.InvariantCulture))%"></i></div>
-    <div class="peq" style="font-weight:700;color:@(resto < 0 ? "var(--mal)" : "var(--ok)")">
+    <div class="peq" style="font-weight:700;color:@(resto < 0 ? "var(--mal-texto)" : "var(--ok-texto)")">
         @(resto >= 0 ? $"Te quedan {resto:N2} €" : $"Te has pasado {(-resto):N2} €")
     </div>
     @{ var conTiempo = Model.Lista.Where(g => g.Tipo == TipoGasto.Compra && g.DuracionMin != null).ToList(); }

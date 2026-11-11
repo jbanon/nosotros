@@ -9,7 +9,7 @@
     <script>(() => { let n = 0; const t = async () => { try { const j = await (await fetch(location.pathname + '?handler=Estado')).json(); if (j.estado === 'Lista' || j.estado === 'Error') { location.reload(); return; } } catch { } if (++n < 40) setTimeout(t, 3000); }; setTimeout(t, 3000); })();</script>
     }
 }
-else if (Model.Tarea?.Estado == EstadoTarea.Error) { <div class="aviso mb" style="color:var(--mal)">El agente no pudo analizarla: @Model.Tarea.Error</div> }
+else if (Model.Tarea?.Estado == EstadoTarea.Error) { <div class="aviso mb" style="color:var(--mal-texto)">El agente no pudo analizarla: @Model.Tarea.Error</div> }
 <form method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="V.Id" /><input type="hidden" asp-for="V.Path" /><input type="hidden" asp-for="V.Origen" />
     @if (Model.Error != null) { <p class="error">@Model.Error</p> }

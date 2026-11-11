@@ -7,7 +7,7 @@
     <form method="post" asp-page-handler="Frase">
         <label class="campo"><span>Frase final (sus letras salen de las casillas, en orden de día)</span><input asp-for="Frase" /></label>
         <p class="suave peq">Letras de las casillas: <b>@Model.LetrasEnOrden</b> (@Model.Letras) · frase: <b>@Model.FraseSinEspacios</b> (@Model.FraseSinEspacios.Length)
-        @if (Model.LetrasEnOrden != Model.FraseSinEspacios) { <span class="error"> · no coinciden</span> } else { <span style="color:var(--ok)"> · ✓</span> }</p>
+        @if (Model.LetrasEnOrden != Model.FraseSinEspacios) { <span class="error"> · no coinciden</span> } else { <span style="color:var(--ok-texto)"> · ✓</span> }</p>
         <button class="btn pequeno">Guardar frase</button>
     </form>
 </div>
