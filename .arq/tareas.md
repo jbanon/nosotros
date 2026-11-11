@@ -68,4 +68,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Crucigrama y criptofrase: tocar una casilla ya no desplaza la página (campo oculto del teclado arriba y `focus({ preventScroll })`) | 71e6713 |
 | 2026-11-11 | Adviento: vídeo en una casilla (día 1, villancico) a pantalla completa con guirnalda, nieve y acebo; subida por trozos desde Admin y servido con rangos | cbc74c1 |
 | 2026-11-11 | Listas reutilizables (pestaña junto a La compra): Viaje y Camping de inicio, marcar sin recargar, añadir varias líneas, desmarcar todo, compartir, renombrar y borrar | 2c492f8 |
-| 2026-11-11 | Compra: al añadir, sugerencias de lo ya comprado ("fi" → Fideos) y zona automática ("manzanas" → Frutería), también en "Quizá toca reponer" | (este) |
+| 2026-11-11 | Compra: al añadir, sugerencias de lo ya comprado ("fi" → Fideos) y zona automática ("manzanas" → Frutería), también en "Quizá toca reponer" | 131d78f |
