@@ -60,3 +60,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Página de amor: fondo de otoño mucho más claro (sin el marrón de abajo) y sin las franjas de 16px a los lados en los temas | 4af0c51 |
 | 2026-11-11 | Icono del álbum de viñetas: 🖼️ → 💌 (página de amor y álbum; en Admin, 📔) | 172127f |
 | 2026-11-11 | Repaso de contraste de toda la web (claro y oscuro, todos los temas): botones negros en modo oscuro (Ordena la frase), login, gris suave, acento de texto separado, paletas de verano/San Valentín/cumple/aniversario/invierno/primavera | 6a19fb9 |
+| 2026-11-11 | Criptofrases: las celdas se encogen para que la palabra más larga quepa en móviles pequeños (320 px); adviento día 3: la sospechosa es Aroa, no Miranda (también en producción vía `CorregirAdviento`) | (este) |

@@ -89,6 +89,7 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
 
         await EscalarRecetas();
         await CargarAdviento();
+        await CorregirAdviento();
         await LimpiarMesesAnteriores();
     }
 
@@ -172,6 +173,20 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         }
         await db.SaveChangesAsync();
         log.LogInformation("Calendario de adviento {Anio} creado", anio);
+    }
+
+    /// <summary>Cambios en casillas del adviento ya creadas (la carga solo ocurre una vez). Cada cambio se aplica
+    /// únicamente si la casilla conserva el texto original, para no pisar lo que Javier haya editado en Admin.</summary>
+    async Task CorregirAdviento()
+    {
+        // 2026-11-11: en el murdoku del día 3 la sospechosa es Aroa, no Miranda.
+        var c = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 3 && x.Tipo == TipoCasilla.Murdoku);
+        if (c != null && c.Datos.Contains("\"Marcos\", \"Miranda\", \"Briska\""))
+        {
+            c.Datos = c.Datos.Replace("Miranda", "Aroa");
+            await db.SaveChangesAsync();
+            log.LogInformation("Adviento: día 3 con Aroa en lugar de Miranda");
+        }
     }
 
     /// <summary>La app empieza en noviembre de 2026: los meses anteriores quedan en blanco (sin fijos automáticos).</summary>

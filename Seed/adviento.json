@@ -13,19 +13,19 @@
       "datos": {
         "caso": "Había una croqueta en la fuente. Una. Y ha desaparecido. Tres sospechosos, tres lugares y tres pruebas: cada sospechoso estaba en un sitio distinto con una prueba distinta.",
         "categorias": [
-          { "nombre": "¿Quién?", "items": ["Marcos", "Miranda", "Briska"] },
+          { "nombre": "¿Quién?", "items": ["Marcos", "Aroa", "Briska"] },
           { "nombre": "¿Dónde?", "items": ["En la cocina", "En el sofá", "En el jardín"] },
           { "nombre": "¿Con qué?", "items": ["Un tenedor", "Las manos", "El hocico"] }
         ],
         "pistas": [
           "El tenedor apareció en la cocina, y el rastro de hocico, en el jardín.",
-          "Marcos no pisó el jardín, y Miranda tampoco: dice que hacía frío.",
+          "Marcos no pisó el jardín, y Aroa tampoco: dice que hacía frío.",
           "Briska no entra en la cocina (ni se lo permiten).",
-          "Miranda estaba con un tenedor en la mano cuando llegaste."
+          "Aroa estaba con un tenedor en la mano cuando llegaste."
         ],
         "remate": "La última croqueta desapareció en el jardín.",
         "solucion": [2, 2, 2],
-        "explicacion": "Briska no podía estar en la cocina y los otros dos no salieron al jardín, así que la del jardín era ella, con el hocico. Miranda, con su tenedor, estaba en la cocina; Marcos, en el sofá, comiendo con las manos. Y la croqueta desapareció en el jardín: fue Briska. Futura perra guía, presente ladrona de croquetas."
+        "explicacion": "Briska no podía estar en la cocina y los otros dos no salieron al jardín, así que la del jardín era ella, con el hocico. Aroa, con su tenedor, estaba en la cocina; Marcos, en el sofá, comiendo con las manos. Y la croqueta desapareció en el jardín: fue Briska. Futura perra guía, presente ladrona de croquetas."
       } },
 
     { "dia": 4, "tipo": "Crucigrama", "letra": "C", "titulo": "Los nuestros",

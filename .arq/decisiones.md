@@ -73,6 +73,11 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - El contenido inicial vive en `Seed/adviento.json` (se carga una vez por año si no hay casillas); después se edita en Admin → Calendario de adviento (JSON del pasatiempo plegado). Las comprobaciones se hacen en el servidor (handlers JSON `Resolver`, `Pista`, `Estado`, `Canjear`); el admin puede jugar en vista previa sin que se guarde nada.
 - Vales: Raquel pulsa "Canjear" y queda la fecha; el tercer vale (peli noruega) va dentro del día 24.
 - Datos de la familia para los pasatiempos: Naia (14, guitarra, "en la parra"), Marcos (14, basket, sobradillo), Elsa (12, corre como un gamo), Miranda (11, la graciosa), Aroa (10, achuchable, baile), Briska (labrador negro, futura perra guía). Se conocieron chateando; cada verano una semana los dos en el norte (Irlanda del Norte, Gales, quizá Finlandia); "big project": casita en el campo con despachito y barracón para toda la familia.
+- `Seed/adviento.json` solo se carga una vez (si no hay casillas del año). Para cambiar una casilla ya
+  creada en producción: cambiar el JSON y añadir el arreglo en `SeedService.CorregirAdviento`, que solo
+  actúa si la casilla conserva el texto original (no pisa lo editado en Admin).
+- Las criptofrases ajustan el tamaño de celda (`--celda`, de 30 a 16 px) para que la palabra más larga quepa
+  en el ancho del móvil; si ni así cabe, la palabra se parte.
 
 ## Agente (claude -p)
 - Opción B elegida (2026-11-09): la app lanza el CLI `claude -p` en segundo plano (`AgenteService`,

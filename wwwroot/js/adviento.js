@@ -74,8 +74,18 @@
         cont.appendChild(w);
       });
       juego.appendChild(cont);
+      ajustar(cont);
       if (datos.resuelta && datos.solucion) { const s = document.createElement('p'); s.className = 'cripto-solucion'; s.textContent = '«' + datos.solucion + '»'; juego.appendChild(s); }
     };
+    // Tamaño de celda para que la palabra más larga quepa en una línea (en móviles pequeños no cabía).
+    // A 30px una letra ocupa 30 + 3 de hueco y un signo 14 + 3; se reduce en proporción, hasta 16px.
+    const largoMax = Math.max(...v.palabras.map(p => p.reduce((t, c) => t + (c.n == null ? 17 : 33), -3)));
+    function ajustar(cont) {
+      const ancho = cont.clientWidth; if (!ancho) return;
+      const celda = Math.max(16, Math.min(30, Math.floor(30 * ancho / largoMax)));
+      cont.style.setProperty('--celda', celda + 'px');
+    }
+    window.addEventListener('resize', () => { const c = juego.querySelector('.cripto'); if (c) ajustar(c); });
     const teclado = document.createElement('input'); teclado.className = 'teclado-oculto'; teclado.autocapitalize = 'characters'; teclado.autocomplete = 'off'; teclado.setAttribute('aria-label', 'Letra');
     document.body.appendChild(teclado);
     const siguiente = () => {
