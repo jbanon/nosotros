@@ -66,6 +66,12 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   Las páginas sin tema siguen el modo oscuro del móvil; si un color va fijo (`#fff`, `#fde7df`…),
   hay que mirarlo también en oscuro.
 
+## Listas
+- Listas reutilizables para marcar (viaje, camping…), compartidas entre los dos (también lo que marca el admin).
+  Están en una pestaña junto a "La compra" (el icono Compra de la barra) para no añadir otro icono a la barra
+  en móviles pequeños. Lo marcado se queda en su sitio (tachado) y "Desmarcar todo" la deja lista para la
+  próxima vez. Viaje y Camping se crean una sola vez (`Config.ListasSembradas`); si se borran no vuelven.
+
 ## Calendario de adviento
 - 24 casillas del 1 al 24 de diciembre (año en `AdvientoCasilla.Anio`; en enero sigue valiendo el de diciembre). Una casilla se abre cuando llega su día (hora de Madrid); las pasadas siguen abiertas; las futuras muestran un mensaje gracioso. Reparto: 6 criptofrases, 5 murdokus, 5 crucigramas, 5 fotos, 2 vales y la carta final del 24.
 - Cada enigma (y cada foto) da una letra; las 21 letras en orden de día forman la frase final (`Config.AdvientoFrase`, "Gracias por quererme así"). Admin avisa si letras y frase no coinciden.

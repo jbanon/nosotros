@@ -1,0 +1,81 @@
+@page "{id:int}"
+@model Love.Pages.Listas.VerModel
+@{
+    var l = Model.Lista;
+    ViewData["Title"] = l.Nombre;
+    var total = l.Elementos.Count; var hechos = l.Elementos.Count(e => e.Hecho);
+    var compartir = $"{l.Icono} {l.Nombre}\n" + string.Join("\n", l.Elementos.Select(e => (e.Hecho ? "✓ " : "◻️ ") + e.Texto));
+}
+<partial name="_PestanasCompra" model="@("listas")" />
+<div class="cab">
+    <a class="volver" href="/Listas">‹</a>
+    <h1>@l.Icono @l.Nombre</h1>
+    @if (total > 0) { <button type="button" class="btn pequeno" data-share="texto-lista">Compartir ⤴</button> }
+</div>
+@if (total > 0)
+{
+    <div class="progreso" aria-hidden="true"><i id="barra" style="width:@(hechos * 100 / total)%"></i></div>
+    <p class="suave peq" style="margin-top:0" id="cuenta">@(hechos == total ? "¡Todo listo!" : $"{hechos} de {total} marcadas")</p>
+}
+<div class="tarjeta">
+    @if (total == 0) { <p class="suave" style="margin:0 0 10px">La lista está vacía. Escribe abajo lo que no puede faltar.</p> }
+    @foreach (var e in l.Elementos)
+    {
+        <div class="linea-compra linea-lista @(e.Hecho ? "comprado" : "")">
+            <form method="post" asp-page-handler="Marcar" asp-route-id="@l.Id" asp-route-elemento="@e.Id" class="crece fila marcar" style="gap:10px">
+                <button class="check" aria-label="Marcar @e.Texto"></button>
+                <button class="texto-boton"><span class="nombre">@e.Texto</span></button>
+            </form>
+            <form method="post" asp-page-handler="Quitar" asp-route-id="@l.Id" asp-route-elemento="@e.Id">
+                <button class="quitar" aria-label="Quitar @e.Texto" title="Quitar de la lista">×</button>
+            </form>
+        </div>
+    }
+    <form method="post" asp-page-handler="Anadir" asp-route-id="@l.Id" id="anadir" class="fila mt" style="align-items:flex-end">
+        <textarea name="texto" id="nuevo" rows="1" class="crece" placeholder="Añadir algo" autocomplete="off" required></textarea>
+        <button class="btn primario">Añadir</button>
+    </form>
+    <p class="suave peq" style="margin:6px 0 0">Puedes pegar varias cosas de golpe, una por línea.</p>
+</div>
+@if (hechos > 0)
+{
+    <form method="post" asp-page-handler="Desmarcar" asp-route-id="@l.Id" data-confirm="¿Desmarcar todo para la próxima vez?">
+        <button class="btn ancho">Desmarcar todo</button>
+    </form>
+}
+<details class="ticket mt">
+    <summary>Cambiar nombre o borrar la lista</summary>
+    <form method="post" asp-page-handler="Renombrar" asp-route-id="@l.Id" class="fila mt">
+        <input type="text" name="emoji" value="@l.Emoji" placeholder="@l.Icono" maxlength="8" aria-label="Icono" style="width:56px;text-align:center" />
+        <input type="text" name="nombre" value="@l.Nombre" required class="crece" />
+        <button class="btn">Guardar</button>
+    </form>
+    <form method="post" asp-page-handler="Borrar" asp-route-id="@l.Id" data-confirm="¿Borrar la lista «@l.Nombre» con todo lo que tiene?" class="mt">
+        <button class="btn peligro ancho">Borrar la lista</button>
+    </form>
+</details>
+<pre id="texto-lista" hidden>@compartir</pre>
+@section Scripts {
+<script>
+(() => {
+  const lineas = [...document.querySelectorAll('.linea-lista')], barra = document.getElementById('barra'), cuenta = document.getElementById('cuenta');
+  const pinta = () => { const h = lineas.filter(x => x.classList.contains('comprado')).length, t = lineas.length; if (!t) return;
+    barra.style.width = (h * 100 / t) + '%'; cuenta.textContent = h === t ? '¡Todo listo!' : `${h} de ${t} marcadas`; };
+  // Marcar sin recargar: la página no salta arriba y se puede ir tocando seguido.
+  document.querySelectorAll('form.marcar').forEach(f => f.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const linea = f.closest('.linea-lista'); linea.classList.toggle('comprado'); pinta();
+    try {
+      const r = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { 'X-Requested-With': 'fetch' } });
+      if (!r.ok) throw 0;
+      linea.classList.toggle('comprado', (await r.json()).hecho); pinta();
+    } catch { location.reload(); }
+  }));
+  const nuevo = document.getElementById('nuevo');
+  const crecer = () => { nuevo.style.height = 'auto'; nuevo.style.height = nuevo.scrollHeight + 2 + 'px'; };
+  nuevo.addEventListener('input', crecer);
+  nuevo.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && nuevo.value.trim()) { e.preventDefault(); nuevo.form.requestSubmit(); } });
+  @if (Model.Foco) { <text>nuevo.focus({ preventScroll: true }); nuevo.scrollIntoView({ block: 'center' });</text> }
+})();
+</script>
+}

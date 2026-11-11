@@ -7,6 +7,7 @@
     var excluidos = Model.Semana.Lista.Where(i => !i.Incluido).OrderBy(i => i.Nombre).ToList();
     var pendientes = incluidos.Count(i => !i.Comprado);
 }
+<partial name="_PestanasCompra" model="@("compra")" />
 <div class="cab">
     <h1>La compra</h1>
     <button type="button" class="btn pequeno" data-share="texto-lista">Compartir ⤴</button>

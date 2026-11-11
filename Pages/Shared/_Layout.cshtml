@@ -33,7 +33,7 @@
         <nav class="barra">
             <a href="/Amor" class="@act("/Amor")"><span class="ico">♥</span><span>@(esAdmin ? "Raquel" : "Para ti")</span></a>
             <a href="/Menu/Recetas" class="@act("/Menu/Recetas")"><span class="ico">🍲</span><span>Recetas</span></a>
-            <a href="/Menu/Lista" class="@(act("/Menu/Lista"))@(act("/Menu/Semana"))"><span class="ico">🛒</span><span>Compra</span></a>
+            <a href="/Menu/Lista" class="@(act("/Menu/Lista"))@(act("/Menu/Semana"))@(act("/Listas"))"><span class="ico">🛒</span><span>Compra</span></a>
             <a href="/Gastos" class="@act("/Gastos")"><span class="ico">€</span><span>Gastos</span></a>
             @if (!esAdmin)
             {

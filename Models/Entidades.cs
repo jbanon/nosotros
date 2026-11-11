@@ -235,6 +235,8 @@ public static class ConfigClaves
     public const string Declaracion = "Declaracion";
     /// <summary>Marca de que las recetas existentes ya se escalaron a las raciones de la lista.</summary>
     public const string RecetasEscaladas = "RecetasEscaladas";
+    /// <summary>Las listas iniciales (Viaje, Camping) ya se crearon; no se vuelven a crear si se borran.</summary>
+    public const string ListasSembradas = "ListasSembradas";
     /// <summary>Frase final del calendario de adviento (con espacios; las letras salen de las casillas).</summary>
     public const string AdvientoFrase = "AdvientoFrase";
     /// <summary>Viñetas: cuántos días por semana sale una (por defecto 3).</summary>
@@ -285,6 +287,31 @@ public class AdvientoCasilla
 
     public bool Resuelta => ResueltaEl != null;
     public bool DaLetra => !string.IsNullOrWhiteSpace(Letra);
+}
+
+/// <summary>Lista reutilizable para ir marcando (viaje, camping…). Al acabar se desmarca todo y vale para la próxima vez.</summary>
+public class Lista
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; } = "";
+    public string? Emoji { get; set; }
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
+    public List<ListaElemento> Elementos { get; set; } = new();
+
+    public string Icono => !string.IsNullOrWhiteSpace(Emoji) ? Emoji : Nombre.ToLowerInvariant() switch
+    {
+        var n when n.Contains("viaje") => "🧳", var n when n.Contains("camping") => "⛺", var n when n.Contains("playa") => "🏖️", _ => "📋"
+    };
+}
+
+public class ListaElemento
+{
+    public int Id { get; set; }
+    public int ListaId { get; set; }
+    public Lista Lista { get; set; } = null!;
+    public string Texto { get; set; } = "";
+    public bool Hecho { get; set; }
+    public int Orden { get; set; }
 }
 
 public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta }

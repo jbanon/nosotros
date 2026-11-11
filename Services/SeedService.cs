@@ -90,6 +90,7 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         await EscalarRecetas();
         await CargarAdviento();
         await CorregirAdviento();
+        await SembrarListas();
         await LimpiarMesesAnteriores();
     }
 
@@ -177,6 +178,18 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
 
     /// <summary>Cambios en casillas del adviento ya creadas (la carga solo ocurre una vez). Cada cambio se aplica
     /// únicamente si la casilla conserva el texto original, para no pisar lo que Javier haya editado en Admin.</summary>
+    /// <summary>Listas que Javier dejó apuntadas (2026-11-10): Viaje con lo que siempre se olvida y Camping vacía para completar.</summary>
+    async Task SembrarListas()
+    {
+        if (await db.Configs.AnyAsync(c => c.Clave == ConfigClaves.ListasSembradas)) return;
+        var viaje = new Lista { Nombre = "Viaje", Emoji = "🧳" };
+        int i = 0;
+        foreach (var t in new[] { "Especias", "Infusiones", "Adaptador de corriente" }) viaje.Elementos.Add(new ListaElemento { Texto = t, Orden = i++ });
+        db.Listas.AddRange(viaje, new Lista { Nombre = "Camping", Emoji = "⛺" });
+        db.Configs.Add(new Config { Clave = ConfigClaves.ListasSembradas, Valor = "1" });
+        await db.SaveChangesAsync();
+    }
+
     async Task CorregirAdviento()
     {
         // 2026-11-11: en el murdoku del día 3 la sospechosa es Aroa, no Miranda.

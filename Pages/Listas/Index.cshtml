@@ -1,0 +1,30 @@
+@page
+@model Love.Pages.Listas.IndexModel
+@{ ViewData["Title"] = "Listas"; }
+<partial name="_PestanasCompra" model="@("listas")" />
+<div class="cab"><h1>Listas</h1></div>
+<p class="suave peq" style="margin-top:0">Para no olvidar nada: se marcan al prepararlo todo y, a la vuelta, se desmarcan para la próxima vez.</p>
+@if (!Model.Listas.Any())
+{
+    <div class="vacio"><span class="ico">📋</span>Todavía no hay listas. Crea la primera abajo.</div>
+}
+@foreach (var l in Model.Listas)
+{
+    var total = l.Elementos.Count; var hechos = l.Elementos.Count(e => e.Hecho);
+    <a class="tarjeta enlace fila lista-tarjeta" href="/Listas/Ver/@l.Id">
+        <span class="lista-ico">@l.Icono</span>
+        <div class="crece">
+            <b>@l.Nombre</b>
+            <div class="sub suave peq">@(total == 0 ? "Vacía · toca para añadir cosas" : hechos == 0 ? $"{total} cosa{(total == 1 ? "" : "s")}" : $"{hechos} de {total} marcadas")</div>
+        </div>
+        <span class="suave">›</span>
+    </a>
+}
+<div class="tarjeta">
+    <h2 class="mb">Nueva lista</h2>
+    <form method="post" asp-page-handler="Crear" class="fila">
+        <input type="text" name="emoji" placeholder="📋" maxlength="8" aria-label="Icono (opcional)" style="width:56px;text-align:center" />
+        <input type="text" name="nombre" placeholder="Playa, cumpleaños…" required class="crece" />
+        <button class="btn primario">Crear</button>
+    </form>
+</div>

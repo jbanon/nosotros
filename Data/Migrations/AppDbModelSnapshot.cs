@@ -282,6 +282,53 @@ namespace Love.Data.Migrations
                     b.ToTable("Lecturas");
                 });
 
+            modelBuilder.Entity("Love.Models.Lista", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Emoji")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Listas");
+                });
+
+            modelBuilder.Entity("Love.Models.ListaElemento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Hecho")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ListaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListaId");
+
+                    b.ToTable("ListaElementos");
+                });
+
             modelBuilder.Entity("Love.Models.ListaItem", b =>
                 {
                     b.Property<int>("Id")
@@ -918,6 +965,17 @@ namespace Love.Data.Migrations
                     b.ToTable("VinetaDias");
                 });
 
+            modelBuilder.Entity("Love.Models.ListaElemento", b =>
+                {
+                    b.HasOne("Love.Models.Lista", "Lista")
+                        .WithMany("Elementos")
+                        .HasForeignKey("ListaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lista");
+                });
+
             modelBuilder.Entity("Love.Models.ListaItem", b =>
                 {
                     b.HasOne("Love.Models.Semana", "Semana")
@@ -1008,6 +1066,11 @@ namespace Love.Data.Migrations
             modelBuilder.Entity("Love.Models.Ingrediente", b =>
                 {
                     b.Navigation("Recetas");
+                });
+
+            modelBuilder.Entity("Love.Models.Lista", b =>
+                {
+                    b.Navigation("Elementos");
                 });
 
             modelBuilder.Entity("Love.Models.Obra", b =>

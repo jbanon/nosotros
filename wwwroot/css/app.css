@@ -260,6 +260,16 @@ details.ticket[open] summary::before { rotate: 90deg; }
 .pestanas { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 10px; scrollbar-width: none; }
 .pestanas a { flex: none; padding: 8px 14px; border-radius: 999px; background: var(--tarjeta); border: 1px solid var(--linea); color: var(--tinta); font-weight: 700; font-size: .85rem; }
 .pestanas a.on { background: var(--acento); color: #fff; border-color: var(--acento); }
+.pestanas-compra { padding: 12px 0 0; }
+.pestanas-compra + .cab { padding-top: 10px; }
+/* Listas reutilizables */
+.tarjeta.enlace.lista-tarjeta { display: flex; align-items: center; gap: 12px; }
+.lista-ico { font-size: 1.8rem; line-height: 1; }
+.linea-lista .texto-boton { background: none; border: 0; padding: 0; text-align: left; font: inherit; color: inherit; flex: 1; cursor: pointer; }
+.linea-lista .check { cursor: pointer; color: #fff; }
+.linea-lista.comprado .check::after { content: "✓"; }
+.linea-lista.comprado .nombre { opacity: .7; } .linea-lista .quitar { opacity: .75; }
+#nuevo { resize: none; min-height: 44px; line-height: 1.3; }
 .msg-fila { display: flex; gap: 12px; align-items: flex-start; color: inherit; }
 .msg-fila .dia { width: 36px; height: 36px; border-radius: 10px; background: var(--acento-claro); color: var(--acento-texto); font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none; }
 .msg-fila .txt { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; line-height: 1.3; }

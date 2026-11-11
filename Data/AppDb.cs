@@ -29,6 +29,8 @@ public class AppDb : DbContext
     public DbSet<VinetaDia> VinetaDias => Set<VinetaDia>();
     public DbSet<Obra> Obras => Set<Obra>();
     public DbSet<ParadaObra> ParadasObra => Set<ParadaObra>();
+    public DbSet<Lista> Listas => Set<Lista>();
+    public DbSet<ListaElemento> ListaElementos => Set<ListaElemento>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {

@@ -17,6 +17,7 @@
 - **Lista de la compra: "elementos abajo que no se ven"** (captura en modo oscuro,
   2026-11-08). Se aumentó el relleno inferior y se versionó el CSS; Javier debe confirmar tras
   desplegar. Si sigue, pedir captura.
+- **Listas: Javier completa la de Camping** (Compra → pestaña Listas).
 - Javier aún no ha pegado el texto de "¡Oigan!" (Javier Marías) en Lecturas: lo hace él.
 
 ## Ideas apuntadas (sin empezar, 2026-11-10)
@@ -25,9 +26,6 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 - **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
 - **Recordatorio de francés**: Raquel habla bien francés; algo gracioso para repasar (frase o expresión del
   día, falsos amigos, mini quiz).
-- **Apartado de Listas**: listas reutilizables para marcar.
-  - Viaje: especias, infusiones, adaptador de corriente.
-  - Camping: (pendiente de que Javier la complete).
 
 ## Resueltas
 | Fecha | Tarea | Commit |
@@ -67,3 +65,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Vale del adviento: sello "Canjeado" con día y hora al canjearlo, aviso para Javier arriba en Admin (también el vale de los corazones), y el admin ve cómo queda al pulsar sin guardar nada | 003d726 |
 | 2026-11-11 | Crucigrama y criptofrase: tocar una casilla ya no desplaza la página (campo oculto del teclado arriba y `focus({ preventScroll })`) | 71e6713 |
 | 2026-11-11 | Adviento: vídeo en una casilla (día 1, villancico) a pantalla completa con guirnalda, nieve y acebo; subida por trozos desde Admin y servido con rangos | cbc74c1 |
+| 2026-11-11 | Listas reutilizables (pestaña junto a La compra): Viaje y Camping de inicio, marcar sin recargar, añadir varias líneas, desmarcar todo, compartir, renombrar y borrar | (este) |
