@@ -7,6 +7,13 @@
   Npgsql + migraciones nuevas para Postgres, cadena de conexión fuera del repo (`/etc/love.env`), copiar los
   datos de producción (SQLite → Postgres), revisar `ExecuteUpdate`, fechas `DateOnly`/UTC, comparaciones
   sin distinción de mayúsculas (`ToLower`) y la copia de seguridad del despliegue.
+- **Arte por capítulos (después de Postgres; Javier, 2026-11-13).** Se alternan: cuando hay un capítulo listo se
+  publica ese domingo; si no, una obra suelta. Primero: **Vallotton** (texto de Javier en
+  `.arq/borradores/vallotton.md`; Javier manda la lista de obras: ~10 con reseña breve y 3-4 con paseo).
+  Diseño pensado: entidad `Capitulo` (artista, título, fechas, entradilla, texto con secciones, portada,
+  `Publicacion`), `Obra.CapituloId` opcional (obras sin paradas = solo reseña); al marcar un capítulo como
+  listo se fija su domingo (no reordenar domingos pasados); `/Arte/Capitulo/{id}` con el texto y las dos
+  galerías; Admin y `Seed/arte.json` con `capitulos`. Un agente puede buscar las imágenes en Commons.
 - **Botón 🎤 en la lista de la compra** (Web Speech en el navegador): dictar "fideos, manzanas y leche" y que
   se añadan separados y clasificados con `ZonaAuto`. Alexa y Google ya no dejan leer sus listas (ver
   decisiones → Comida); una skill propia de Alexa queda como opción si la piden.
