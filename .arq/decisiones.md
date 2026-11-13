@@ -103,6 +103,14 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   que tocarlo), máx. 1 GB, y se sirve con rangos en `/Adviento/Video/{id}`. Sin transcodificar (no hay ffmpeg):
   mejor MP4 grabado en 1080p y sin HEVC; los .mov se sirven como video/mp4.
 
+## Base de datos
+- PostgreSQL desde 2026-11-13 (Javier quita SQL Server del servidor y quiere Postgres; la app venía de SQLite).
+  `DateTime` como timestamp sin zona (`Npgsql.EnableLegacyTimestampBehavior`), igual que hacía SQLite; decimales
+  como numeric (en SQLite eran double). Búsquedas con `ILike` para no distinguir mayúsculas.
+- Si Postgres está vacío y existe `App_Data/love.db`, se importa al arrancar (mismos Id, secuencias ajustadas) y el
+  fichero se renombra `love.db.migrado-…`. La copia de seguridad de Admin sigue siendo un ZIP con un love.db
+  (SQLite portable): restaurar = ponerlo en App_Data con Postgres vacío.
+
 ## Agente (claude -p)
 - Opción B elegida (2026-11-09): la app lanza el CLI `claude -p` en segundo plano (`AgenteService`,
   cola en memoria, tareas en la tabla `TareasAgente`, se retoman al arrancar). Modelo **Sonnet 5.5

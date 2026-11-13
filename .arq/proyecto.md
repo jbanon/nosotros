@@ -12,12 +12,14 @@ fichas de películas y recetas; Viñetas (ilustraciones con frase de Javi, repar
 Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
 
 ## Stack
-- ASP.NET Core Razor Pages, .NET 10, EF Core + SQLite (`App_Data/love.db`, fuera del repo).
+- ASP.NET Core Razor Pages, .NET 10, EF Core + PostgreSQL 16 (Npgsql; cadena `ConnectionStrings:Love` fuera del
+  repo: `/etc/love.env` en producción, `appsettings.Local.json` en local). Hasta 2026-11-13 fue SQLite.
   Sin frameworks CSS/JS: `wwwroot/css/app.css` y `wwwroot/js/app.js`, versionados por hash
   (`asp-append-version`).
 - Auth por cookie con PIN. Usuarios `Javi` (rol Admin) y `Raquel`. `User.EsAdmin()` en
   `Services/PinAuth.cs`. La carpeta `/Admin` exige el rol Admin; todo lo demás lo ven los dos.
-- Migraciones EF en `Data/Migrations`. Al arrancar: `MigrateAsync` + `SeedService.Ejecutar()`
+- Migraciones EF en `Data/Migrations` (Postgres). `Data/MigracionesSqlite` + `AppDbSqlite` son de la base antigua:
+  solo para importar un love.db y para la copia de seguridad; no añadir migraciones ahí. Al arrancar: `MigrateAsync` + `SeedService.Ejecutar()`
   (idempotente: ahí van los arreglos de datos que deben aplicarse una vez en producción,
   guardados con una clave en la tabla Config).
 - Tabla `Config` clave/valor (`ConfigClaves` en `Models/Entidades.cs`): objetivo de compra,
@@ -56,7 +58,9 @@ dotnet ef migrations add Nombre -o Data/Migrations
   página. Los handlers son `?handler=X` en la URL del `action` del formulario.
 - No hay navegador ni Chromium utilizable aquí; el diseño se valida a ciegas y Javier manda
   capturas.
-- PIN locales en `appsettings.Local.json` (ignorado). Preguntar a Javier si hacen falta.
+- PIN locales y cadena de Postgres en `appsettings.Local.json` (ignorado). Postgres local instalado con
+  `sudo LOVE_ENV=App_Data/love.env ./deploy/instalar-postgres.sh` (la contraseña está en ese fichero).
+  Migraciones: `ConnectionStrings__Love=... dotnet ef migrations add Nombre --context AppDb -o Data/Migrations`.
 - Agente: en local usa `~/.local/bin/claude` con la sesión de Javier. Si se arranca la app desde
   Claude Code, el servicio ya limpia `CLAUDECODE`/`CLAUDE_CODE_ENTRYPOINT`. Log: "Agente: tarea N".
 

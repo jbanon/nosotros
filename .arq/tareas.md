@@ -1,12 +1,9 @@
 # Tareas
 
 ## Para la próxima sesión (Javier, 2026-11-11: "déjalo anotado para la próxima")
-- **Migrar la base de datos a PostgreSQL.** Javier: "quitamos SQL Server así que tenemos que migrar".
-  Ojo: la app usa **SQLite** (`UseSqlite`, `App_Data/love.db`), no SQL Server; confirmar con Javier antes de
-  empezar (¿se quiere Postgres igualmente? ¿hay ya un Postgres en el servidor, versión, usuario?). Trabajo:
-  Npgsql + migraciones nuevas para Postgres, cadena de conexión fuera del repo (`/etc/love.env`), copiar los
-  datos de producción (SQLite → Postgres), revisar `ExecuteUpdate`, fechas `DateOnly`/UTC, comparaciones
-  sin distinción de mayúsculas (`ToLower`) y la copia de seguridad del despliegue.
+- **Postgres en producción:** en `/srv/nosotros`, `git pull`, `sudo ./deploy/instalar-postgres.sh` y
+  `./deploy/publicar.sh`. Al arrancar importa `/opt/love/App_Data/love.db` (queda `love.db.migrado-…` como copia);
+  comprobar en el log "Importado de SQLite: N filas". SQL Server se puede quitar: la app nunca lo usó.
 - **Arte por capítulos (después de Postgres; Javier, 2026-11-13).** Se alternan: cuando hay un capítulo listo se
   publica ese domingo; si no, una obra suelta. Primero: **Vallotton** (texto de Javier en
   `.arq/borradores/vallotton.md`; Javier manda la lista de obras: ~10 con reseña breve y 3-4 con paseo).
@@ -85,3 +82,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Adviento: vídeo en una casilla (día 1, villancico) a pantalla completa con guirnalda, nieve y acebo; subida por trozos desde Admin y servido con rangos | cbc74c1 |
 | 2026-11-11 | Listas reutilizables (pestaña junto a La compra): Viaje y Camping de inicio, marcar sin recargar, añadir varias líneas, desmarcar todo, compartir, renombrar y borrar | 2c492f8 |
 | 2026-11-11 | Compra: al añadir, sugerencias de lo ya comprado ("fi" → Fideos) y zona automática ("manzanas" → Frutería), también en "Quizá toca reponer" | 131d78f |
+| 2026-11-13 | PostgreSQL en lugar de SQLite: importación automática de love.db al primer arranque, copia de seguridad como love.db, `deploy/instalar-postgres.sh`; probado en local con Postgres 16 (todas las páginas, escrituras, reinicio, reimportación) | (este) |
