@@ -166,6 +166,9 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   Deslizar o botones; doble toque o botón para explorar con arrastre y pellizco (zoom máx. ×12).
 - Imágenes con ImageSharp **3.1.12** (la 4.x exige clave de licencia para compilar en Release). Se guardan en
   `adjuntos/arte` (-g y -r). El reductor de fotos de `app.js` se salta inputs con `data-sin-reducir`.
+- Capítulos (2026-11-13): un artista explicado + obras (paseo si tienen paradas, si no reseña). Se alternan con
+  las obras sueltas: el capítulo sale cuando Javier lo marca listo (próximo domingo libre). Textos desenfadados.
+  Para móvil vale ~2000-2600 px; si Commons no llega, WikiArt.
 - Solo dominio público, con URL de origen y licencia en cada obra; nada del Prado directamente (Commons). No
   usar capturas de baja resolución. Descartadas: Matisse (DP en España en 2035) y fotos de esculturas con
   derechos del fotógrafo.

@@ -4,12 +4,10 @@
 - **Postgres en producción:** en `/srv/nosotros`, `git pull`, `sudo ./deploy/instalar-postgres.sh` y
   `./deploy/publicar.sh`. Al arrancar importa `/opt/love/App_Data/love.db` (queda `love.db.migrado-…` como copia);
   comprobar en el log "Importado de SQLite: N filas". SQL Server se puede quitar: la app nunca lo usó.
-- **Arte por capítulos: Vallotton (en curso, 2026-11-13).** Hecho: datos, calendario, importación, Admin
-  (91874dd). En curso: la experiencia de usuario la hace un agente con Fable (Javier lo pidió así); yo integro.
-  Obras elegidas por Javier: Intimidad / Interior con pareja y biombo (1898), Mujer con cántaro (1906),
-  Perseo matando al dragón (1910), Coquetería (1911), La sábana amarilla (1913), Atardecer en el Loira (1923),
-  Château Gaillard en Les Andelys (1924) + algún paisaje a mi elección. Paseo por detalles en las 3 con más
-  detalle; textos **desenfadados y divertidos**. Imágenes de Commons (ojo: limita peticiones; User-Agent con URL).
+- **Vallotton en producción:** copiar `App_Data/entrada/arte/vallotton/` (8 jpg) al servidor en
+  `/opt/love/App_Data/entrada/arte/vallotton/`, desplegar, Admin → Arte → Importar, revisar el capítulo y pulsar
+  "Está listo" (sale el próximo domingo libre). Javier revisa en el móvil textos, paradas y diseño; puede escribir
+  su frase en cada obra.
 - **Botón 🎤 en la lista de la compra** (Web Speech en el navegador): dictar "fideos, manzanas y leche" y que
   se añadan separados y clasificados con `ZonaAuto`. Alexa y Google ya no dejan leer sus listas (ver
   decisiones → Comida); una skill propia de Alexa queda como opción si la piden.
@@ -82,3 +80,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Listas reutilizables (pestaña junto a La compra): Viaje y Camping de inicio, marcar sin recargar, añadir varias líneas, desmarcar todo, compartir, renombrar y borrar | 2c492f8 |
 | 2026-11-11 | Compra: al añadir, sugerencias de lo ya comprado ("fi" → Fideos) y zona automática ("manzanas" → Frutería), también en "Quizá toca reponer" | 131d78f |
 | 2026-11-13 | PostgreSQL en lugar de SQLite: importación automática de love.db al primer arranque, copia de seguridad como love.db, `deploy/instalar-postgres.sh`; probado en local con Postgres 16 (todas las páginas, escrituras, reinicio, reimportación) | fb15984 |
+| 2026-11-13 | Arte por capítulos: Vallotton (texto, 3 paseos: Perseo, Coquetería, Mujer con cántaro; 5 obras con reseña), diseño del agente Fable; imágenes de WikiArt (Commons solo tenía baja resolución) | (este) |

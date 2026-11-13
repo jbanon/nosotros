@@ -723,8 +723,243 @@
    "fechas": "Lausana, 1865 – Neuilly-sur-Seine, 1925",
    "entradilla": "Pintaba como quien levanta acta: líneas limpias, colores planos y una calma que, si miras dos segundos más, empieza a dar un poco de miedo. Suizo en París, anarquista con traje y el más frío de un grupo de pintores que se llamaban a sí mismos profetas. Hoy, Vallotton.",
    "textoFichero": "capitulos/vallotton.md",
-   "portada": null,
-   "obras": []
+   "portada": "vallotton-perseo",
+   "obras": [
+    {
+     "clave": "vallotton-perseo",
+     "fichero": "vallotton/vallotton-perseo.jpg",
+     "titulo": "Perseo matando al dragón",
+     "autor": "Félix Vallotton",
+     "anio": "1910",
+     "intro": "El mito dice: héroe con sandalias aladas, espada divina y la cabeza de Medusa en el bolso. Vallotton dice: señor desnudo con un palo. Y una princesa que no parece nada contenta de que la rescaten.",
+     "fuente": "https://www.wikiart.org/en/felix-vallotton/persee-killing-the-dragon-1910",
+     "licencia": "Dominio público",
+     "museo": "Musée d'art et d'histoire, Ginebra",
+     "paradas": [
+      {
+       "x": 0.075,
+       "y": 0.56,
+       "zoom": 4,
+       "titulo": "La rescatada",
+       "texto": "Andrómeda lleva horas encadenada esperando al monstruo y por fin llega su salvador. Mira qué cara pone: no es gratitud, es «¿y este quién es?»."
+      },
+      {
+       "x": 0.08,
+       "y": 0.52,
+       "zoom": 5.5,
+       "titulo": "El peinado",
+       "texto": "Princesa etíope del mito, sí, pero peinada en una peluquería de París en 1910. Vallotton no pinta Grecia: pinta a sus vecinos disfrazados de Grecia."
+      },
+      {
+       "x": 0.645,
+       "y": 0.3,
+       "zoom": 4,
+       "titulo": "El héroe concentrado",
+       "texto": "Ceño fruncido, mandíbula apretada, colorete en la mejilla. Es la cara de alguien montando un mueble sin instrucciones."
+      },
+      {
+       "x": 0.74,
+       "y": 0.2,
+       "zoom": 2.2,
+       "titulo": "El arma",
+       "texto": "En el mito, una espada regalo de los dioses. Aquí, un palo. Largo, eso sí. Vallotton se ríe de los cuadros de héroes con toda la seriedad del mundo."
+      },
+      {
+       "x": 0.8,
+       "y": 0.45,
+       "zoom": 3,
+       "titulo": "El dragón",
+       "texto": "Ni alas, ni fuego, ni escamas de leyenda: es un cocodrilo. Con el ojo rojo y muchos dientes, pero un cocodrilo de zoológico."
+      },
+      {
+       "x": 0.5,
+       "y": 0.9,
+       "zoom": 3,
+       "titulo": "La cola",
+       "texto": "Fíjate dónde pone el pie Perseo: encima de la cola. Ganar, va a ganar. Elegante no está siendo."
+      },
+      {
+       "x": 0.955,
+       "y": 0.98,
+       "zoom": 5,
+       "titulo": "La firma",
+       "texto": "«F. Vallotton 10». Firma limpia, de dibujante, como todo en él."
+      }
+     ]
+    },
+    {
+     "clave": "vallotton-coqueteria",
+     "fichero": "vallotton/vallotton-coqueteria.jpg",
+     "titulo": "Coquetería",
+     "autor": "Félix Vallotton",
+     "anio": "1911",
+     "intro": "Una mujer se arregla delante de una caja con espejo. Debería ser una escena ligera y coqueta… pero esto es Vallotton: nadie sonríe y el mueble tiene más personalidad que nadie.",
+     "fuente": "https://www.wikiart.org/en/felix-vallotton/coquettery-1911",
+     "licencia": "Dominio público",
+     "paradas": [
+      {
+       "x": 0.345,
+       "y": 0.25,
+       "zoom": 3.5,
+       "titulo": "La cara",
+       "texto": "Coquetería, dice el título. Pues ni una sonrisa: se mira con la seriedad de quien revisa una factura."
+      },
+      {
+       "x": 0.3,
+       "y": 0.11,
+       "zoom": 3.5,
+       "titulo": "Las manos",
+       "texto": "Se sujeta el pelo con las dos manos, a medio peinar. Vallotton congela justo el momento menos glamuroso."
+      },
+      {
+       "x": 0.3,
+       "y": 0.42,
+       "zoom": 4,
+       "titulo": "El collar",
+       "texto": "Un collar negro, de cuentas, sobre la camisola blanca: el único adorno de la escena. Negro sobre blanco, como en sus grabados."
+      },
+      {
+       "x": 0.567,
+       "y": 0.21,
+       "zoom": 3.5,
+       "titulo": "El cuadro de la pared",
+       "texto": "Un cuadro dentro del cuadro: otra mujer, otro peinado, estilo estampa japonesa. Las dos parecen mirar lo mismo sin hablarse."
+      },
+      {
+       "x": 0.5,
+       "y": 0.62,
+       "zoom": 2.6,
+       "titulo": "El desorden",
+       "texto": "Telas rojas, azules, amarillas a punto de caerse. En un pintor tan ordenado, este revoltijo es casi un escándalo."
+      },
+      {
+       "x": 0.45,
+       "y": 0.73,
+       "zoom": 5,
+       "titulo": "El herraje",
+       "texto": "Un herraje dorado redondo, pintado con mimo de joyero. Vallotton dedica más cariño a la caja que a la señora."
+      },
+      {
+       "x": 0.075,
+       "y": 0.81,
+       "zoom": 3,
+       "titulo": "La silla cortada",
+       "texto": "La silla negra se sale del cuadro por la izquierda: un corte de encuadre como de foto, muy de los que aprendió de las estampas japonesas."
+      },
+      {
+       "x": 0.98,
+       "y": 0.98,
+       "zoom": 6,
+       "titulo": "La firma",
+       "texto": "«F. Vallotton 11», casi escondida en la esquina oscura."
+      }
+     ]
+    },
+    {
+     "clave": "vallotton-cantaro",
+     "fichero": "vallotton/vallotton-cantaro.jpg",
+     "titulo": "Mujer con cántaro",
+     "autor": "Félix Vallotton",
+     "anio": "1906",
+     "intro": "Una mujer, un cántaro verde y un paisaje donde no hay nada más. Vallotton pinta un desnudo sin ningún misterio de diosa: es una mujer cualquiera llevando agua, muy tranquila, como si no la estuviera mirando nadie.",
+     "fuente": "https://www.wikiart.org/en/felix-vallotton/woman-with-the-jug-1906",
+     "licencia": "Dominio público",
+     "paradas": [
+      {
+       "x": 0.26,
+       "y": 0.19,
+       "zoom": 3,
+       "titulo": "El cántaro",
+       "texto": "Mira los brillos: el cántaro es lo más pulido del cuadro. Si hubiera un concurso de protagonismo, ganaría la cerámica."
+      },
+      {
+       "x": 0.16,
+       "y": 0.345,
+       "zoom": 4,
+       "titulo": "La mano de abajo",
+       "texto": "Lo sujeta con la palma abierta, en equilibrio. Vallotton estudió mucho a Ingres: manos así, limpias, sin una pincelada de más."
+      },
+      {
+       "x": 0.42,
+       "y": 0.09,
+       "zoom": 4,
+       "titulo": "La mano del asa",
+       "texto": "La otra mano agarra el asa por encima de la cabeza. Un gesto de fuerza que ella hace como quien se rasca la oreja."
+      },
+      {
+       "x": 0.48,
+       "y": 0.25,
+       "zoom": 3.5,
+       "titulo": "La cara",
+       "texto": "Ojos casi cerrados y media sonrisa: está a sus cosas. Ni posa ni seduce, que era lo que se esperaba de un desnudo en 1906."
+      },
+      {
+       "x": 0.84,
+       "y": 0.79,
+       "zoom": 3,
+       "titulo": "El horizonte",
+       "texto": "Una raya naranja de atardecer y un suelo marrón sin nada. Un paisaje inventado, de esos que Vallotton componía de memoria en el taller."
+      },
+      {
+       "x": 0.91,
+       "y": 0.98,
+       "zoom": 5,
+       "titulo": "La firma",
+       "texto": "«F. Vallotton 06»: el año en dos cifras, como siempre."
+      }
+     ]
+    },
+    {
+     "clave": "vallotton-pareja",
+     "fichero": "vallotton/vallotton-pareja.jpg",
+     "titulo": "Intimidad (interior con pareja y biombo)",
+     "autor": "Félix Vallotton",
+     "anio": "1898",
+     "intro": "Una pareja abrazada en un salón, medio escondida tras un biombo. Parece romántico hasta que te das cuenta de que los estás espiando, y de que la habitación ocupa más sitio que ellos. Vallotton en estado puro: lo íntimo visto por el ojo de la cerradura.",
+     "fuente": "https://www.wikiart.org/en/felix-vallotton/intimacy-couple-in-interior-1898",
+     "licencia": "Dominio público"
+    },
+    {
+     "clave": "vallotton-sabana",
+     "fichero": "vallotton/vallotton-sabana.jpg",
+     "titulo": "La sábana amarilla",
+     "autor": "Félix Vallotton",
+     "anio": "1913",
+     "intro": "Una mujer tumbada sobre una sábana de un amarillo que casi hace ruido. Vallotton y sus desnudos de piel fría como el mármol: aquí el que tiene calor es el color, no la escena.",
+     "fuente": "https://www.wikiart.org/en/felix-vallotton/the-yellow-sheet-1913",
+     "licencia": "Dominio público"
+    },
+    {
+     "clave": "vallotton-atardecer",
+     "fichero": "vallotton/vallotton-atardecer.jpg",
+     "titulo": "Atardecer",
+     "autor": "Félix Vallotton",
+     "anio": "1910",
+     "intro": "Uno de sus paisajes compuestos, pintados de memoria: un sol que es casi un círculo de cartulina y un cielo en franjas de color. Parece un decorado de teatro, y es justo lo que buscaba.",
+     "fuente": "https://www.wikiart.org/en/felix-vallotton/sunset-1910",
+     "licencia": "Dominio público"
+    },
+    {
+     "clave": "vallotton-loira",
+     "fichero": "vallotton/vallotton-loira.jpg",
+     "titulo": "Atardecer en el Loira",
+     "autor": "Félix Vallotton",
+     "anio": "1923",
+     "intro": "Dos años antes de morir, Vallotton sigue con lo suyo: un río quieto, árboles recortados como de papel y un cielo que no se mueve. Tranquilidad absoluta, o calma antes de algo. Con él nunca se sabe.",
+     "fuente": "https://www.wikiart.org/en/felix-vallotton/evening-on-the-loire-1923",
+     "licencia": "Dominio público"
+    },
+    {
+     "clave": "vallotton-gaillard",
+     "fichero": "vallotton/vallotton-gaillard.jpg",
+     "titulo": "Château Gaillard en Les Andelys",
+     "autor": "Félix Vallotton",
+     "anio": "1924",
+     "intro": "Las ruinas del castillo de Ricardo Corazón de León, sobre el Sena. Vallotton lo pinta como una maqueta perfecta: ni una piedra fuera de sitio. Hasta las ruinas, con él, están ordenadas.",
+     "fuente": "https://commons.wikimedia.org/wiki/File:Vallotton_-_Le_ch%C3%A2teau_Gaillard,_1924,_Inv._625.jpg",
+     "licencia": "Dominio público"
+    }
+   ]
   }
  ]
 }
