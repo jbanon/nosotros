@@ -35,7 +35,15 @@ var fs = new FileStorage(builder.Environment, builder.Configuration);
 Directory.CreateDirectory(Path.GetDirectoryName(fs.RutaDb)!);
 Directory.CreateDirectory(fs.Raiz);
 builder.Services.AddSingleton(fs);
-builder.Services.AddDbContext<AppDb>(o => o.UseSqlite($"Data Source={fs.RutaDb}"));
+// Base de datos: PostgreSQL. La cadena va fuera del repo (/etc/love.env o appsettings.Local.json).
+// Si App_Data/love.db (la base SQLite de antes) existe y Postgres está vacío, SeedService la importa al arrancar.
+var cadena = builder.Configuration.GetConnectionString("Love");
+if (string.IsNullOrWhiteSpace(cadena))
+    throw new InvalidOperationException("Falta la cadena de PostgreSQL: ConnectionStrings__Love=Host=localhost;Database=love;Username=love;Password=... " +
+                                        "en /etc/love.env (sudo ./deploy/instalar-postgres.sh la crea) o ConnectionStrings:Love en appsettings.Local.json.");
+// DateTime se guarda tal cual (timestamp sin zona), como hacía SQLite: los valores ya son UTC donde toca.
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+builder.Services.AddDbContext<AppDb>(o => o.UseNpgsql(cadena));
 
 builder.Services.AddScoped<ConfigService>();
 builder.Services.AddScoped<MensajeService>();

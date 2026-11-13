@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Love.Data.Migrations
+namespace Love.Data.MigracionesSqlite
 {
-    [DbContext(typeof(AppDb))]
-    [Migration("20261109174242_Agente")]
-    partial class Agente
+    [DbContext(typeof(AppDbSqlite))]
+    [Migration("20261110120938_TiempoCompra")]
+    partial class TiempoCompra
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,6 +155,9 @@ namespace Love.Data.Migrations
 
                     b.Property<DateTime>("Creado")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("DuracionMin")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("EsFijo")
                         .HasColumnType("INTEGER");
@@ -504,6 +507,9 @@ namespace Love.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("CompraInicio")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateOnly>("LunesInicio")
                         .HasColumnType("TEXT");

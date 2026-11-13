@@ -18,7 +18,7 @@ public class IndexModel(AppDb db) : PageModel
         Q = q?.Trim();
         Mes = mes ?? Reloj.Hoy.Month;
         var query = db.Mensajes.AsQueryable();
-        query = string.IsNullOrEmpty(Q) ? query.Where(m => m.Mes == Mes) : query.Where(m => EF.Functions.Like(m.Texto, $"%{Q}%"));
+        query = string.IsNullOrEmpty(Q) ? query.Where(m => m.Mes == Mes) : query.Where(m => EF.Functions.ILike(m.Texto, $"%{Q}%"));
         Lista = await query.OrderBy(m => m.Mes).ThenBy(m => m.Dia).ToListAsync();
     }
 }

@@ -1,7 +1,8 @@
 # /etc/systemd/system/love.service
 [Unit]
 Description=Nosotros (love) - app privada
-After=network.target
+After=network.target postgresql.service
+Wants=postgresql.service
 
 [Service]
 WorkingDirectory=/opt/love

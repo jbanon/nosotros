@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Love.Data.Migrations
+namespace Love.Data.MigracionesSqlite
 {
-    [DbContext(typeof(AppDb))]
-    [Migration("20261108214827_IdeasYPeliculas")]
-    partial class IdeasYPeliculas
+    [DbContext(typeof(AppDbSqlite))]
+    [Migration("20261105222341_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -115,37 +115,6 @@ namespace Love.Data.Migrations
                     b.HasIndex("Fecha");
 
                     b.ToTable("Gastos");
-                });
-
-            modelBuilder.Entity("Love.Models.Idea", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Autor")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Creada")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Hecha")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("HechaEl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Nota")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Texto")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ideas");
                 });
 
             modelBuilder.Entity("Love.Models.Ingrediente", b =>
@@ -266,37 +235,6 @@ namespace Love.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("MesesInicializados");
-                });
-
-            modelBuilder.Entity("Love.Models.Pelicula", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Anadida")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Autor")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Nota")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Vista")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("VistaEl")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Peliculas");
                 });
 
             modelBuilder.Entity("Love.Models.Receta", b =>

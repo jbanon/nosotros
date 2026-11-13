@@ -2,17 +2,17 @@
 
 #nullable disable
 
-namespace Love.Data.Migrations
+namespace Love.Data.MigracionesSqlite
 {
     /// <inheritdoc />
-    public partial class IdeaResumen : Migration
+    public partial class AdvientoVideo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Resumen",
-                table: "Ideas",
+                name: "VideoPath",
+                table: "Adviento",
                 type: "TEXT",
                 nullable: true);
         }
@@ -21,8 +21,8 @@ namespace Love.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Resumen",
-                table: "Ideas");
+                name: "VideoPath",
+                table: "Adviento");
         }
     }
 }

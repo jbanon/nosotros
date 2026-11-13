@@ -8,78 +8,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Love.Data.Migrations
+namespace Love.Data.MigracionesSqlite
 {
-    [DbContext(typeof(AppDb))]
-    [Migration("20261109161736_Adviento")]
-    partial class Adviento
+    [DbContext(typeof(AppDbSqlite))]
+    [Migration("20261108214827_IdeasYPeliculas")]
+    partial class IdeasYPeliculas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.14");
-
-            modelBuilder.Entity("Love.Models.AdvientoCasilla", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("AbiertaEl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Anio")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("CanjeadoEl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Datos")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Dia")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Estado")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FotoPath")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Intro")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Letra")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Pistas")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Pregunta")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Respuesta")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ResueltaEl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Tipo")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Anio", "Dia")
-                        .IsUnique();
-
-                    b.ToTable("Adviento");
-                });
 
             modelBuilder.Entity("Love.Models.Config", b =>
                 {
@@ -200,9 +139,6 @@ namespace Love.Data.Migrations
                     b.Property<string>("Nota")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Resumen")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Texto")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -234,46 +170,6 @@ namespace Love.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Ingredientes");
-                });
-
-            modelBuilder.Entity("Love.Models.Lectura", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Autor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Creada")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Dedicatoria")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Fuente")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Leida")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("LeidaEl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Publicada")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Texto")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Lecturas");
                 });
 
             modelBuilder.Entity("Love.Models.ListaItem", b =>
@@ -513,34 +409,6 @@ namespace Love.Data.Migrations
                     b.ToTable("SemanaRecetas");
                 });
 
-            modelBuilder.Entity("Love.Models.TicketLinea", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("GastoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double?>("Importe")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("Orden")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Producto")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GastoId");
-
-                    b.HasIndex("Producto");
-
-                    b.ToTable("TicketLineas");
-                });
-
             modelBuilder.Entity("Love.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -610,22 +478,6 @@ namespace Love.Data.Migrations
                     b.Navigation("Receta");
 
                     b.Navigation("Semana");
-                });
-
-            modelBuilder.Entity("Love.Models.TicketLinea", b =>
-                {
-                    b.HasOne("Love.Models.Gasto", "Gasto")
-                        .WithMany("Lineas")
-                        .HasForeignKey("GastoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Gasto");
-                });
-
-            modelBuilder.Entity("Love.Models.Gasto", b =>
-                {
-                    b.Navigation("Lineas");
                 });
 
             modelBuilder.Entity("Love.Models.Ingrediente", b =>

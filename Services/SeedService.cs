@@ -6,13 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Love.Services;
 
-public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, ILogger<SeedService> log)
+public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, ILogger<SeedService> log, FileStorage files)
 {
     string Ruta(string f) => Path.Combine(env.ContentRootPath, "Seed", f);
 
     public async Task Ejecutar()
     {
         await db.Database.MigrateAsync();
+        if (db.Database.IsNpgsql() && File.Exists(files.RutaDb) && await CopiaDatos.Vacia(db))
+            await ImportarSqlite();
 
         if (!await db.Usuarios.AnyAsync())
         {
@@ -212,5 +214,34 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         db.Gastos.RemoveRange(fijos); db.MesesInicializados.RemoveRange(meses);
         await db.SaveChangesAsync();
         log.LogInformation("Meses anteriores a {Inicio} limpiados: {Fijos} fijos", inicio, fijos.Count);
+    }
+
+    /// <summary>
+    /// Paso de SQLite a PostgreSQL (noviembre de 2026): copia App_Data/love.db, la pone al día con sus
+    /// migraciones, vuelca todas las tablas con los mismos Id y deja el fichero renombrado como copia
+    /// (love.db.migrado-AAAAMMDD) para que no se vuelva a importar.
+    /// </summary>
+    async Task ImportarSqlite()
+    {
+        var origen = files.RutaDb; var tmp = origen + ".importando";
+        log.LogWarning("PostgreSQL vacío y existe {Ruta}: importando la base SQLite", origen);
+        foreach (var suf in new[] { "", "-wal", "-shm" })
+        {
+            if (File.Exists(tmp + suf)) File.Delete(tmp + suf);
+            if (File.Exists(origen + suf)) File.Copy(origen + suf, tmp + suf);
+        }
+        await using (var src = AppDbSqlite.Abrir(tmp))
+        {
+            await src.Database.MigrateAsync();
+            var n = await CopiaDatos.Copiar(src, db);
+            log.LogWarning("Importado de SQLite: {Filas} filas ({Detalle})", n.Values.Sum(), string.Join(", ", n.Where(x => x.Value > 0).Select(x => $"{x.Key} {x.Value}")));
+        }
+        Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
+        var guardado = $"{origen}.migrado-{DateTime.Now:yyyyMMdd-HHmm}";
+        foreach (var suf in new[] { "", "-wal", "-shm" })
+        {
+            if (File.Exists(origen + suf)) File.Move(origen + suf, guardado + suf);
+            if (File.Exists(tmp + suf)) File.Delete(tmp + suf);
+        }
     }
 }

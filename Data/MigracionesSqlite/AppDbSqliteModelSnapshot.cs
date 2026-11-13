@@ -3,19 +3,16 @@ using System;
 using Love.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Love.Data.Migrations
+namespace Love.Data.MigracionesSqlite
 {
-    [DbContext(typeof(AppDb))]
-    [Migration("20261111173117_Listas")]
-    partial class Listas
+    [DbContext(typeof(AppDbSqlite))]
+    partial class AppDbSqliteModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.14");

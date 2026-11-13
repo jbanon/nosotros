@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Love.Data.Migrations
+namespace Love.Data.MigracionesSqlite
 {
     /// <inheritdoc />
     public partial class TicketLineas : Migration

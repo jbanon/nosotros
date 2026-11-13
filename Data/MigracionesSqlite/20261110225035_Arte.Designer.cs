@@ -8,17 +8,81 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Love.Data.Migrations
+namespace Love.Data.MigracionesSqlite
 {
-    [DbContext(typeof(AppDb))]
-    [Migration("20261108225447_Lecturas")]
-    partial class Lecturas
+    [DbContext(typeof(AppDbSqlite))]
+    [Migration("20261110225035_Arte")]
+    partial class Arte
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.14");
+
+            modelBuilder.Entity("Love.Models.AdvientoCasilla", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("AbiertaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Anio")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("CanjeadoEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Datos")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Dia")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Estado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotoPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Intro")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Letra")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Pistas")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Pregunta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Respuesta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ResueltaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("VinetaId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Anio", "Dia")
+                        .IsUnique();
+
+                    b.ToTable("Adviento");
+                });
 
             modelBuilder.Entity("Love.Models.Config", b =>
                 {
@@ -94,6 +158,9 @@ namespace Love.Data.Migrations
 
                     b.Property<DateTime>("Creado")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("DuracionMin")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("EsFijo")
                         .HasColumnType("INTEGER");
@@ -311,6 +378,122 @@ namespace Love.Data.Migrations
                     b.ToTable("MesesInicializados");
                 });
 
+            modelBuilder.Entity("Love.Models.Obra", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Activa")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Alto")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Ancho")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Anio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Autor")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Favorita")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FraseMia")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FuenteUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImagenPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Intro")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Licencia")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Museo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Origen")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("Publicacion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReducidaPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("RespondidaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RespuestaRaquel")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("RespuestaVista")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("VistaEl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Origen");
+
+                    b.ToTable("Obras");
+                });
+
+            modelBuilder.Entity("Love.Models.ParadaObra", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ObraId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("X")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Y")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Zoom")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ObraId");
+
+                    b.ToTable("ParadasObra");
+                });
+
             modelBuilder.Entity("Love.Models.Pelicula", b =>
                 {
                     b.Property<int>("Id")
@@ -320,15 +503,45 @@ namespace Love.Data.Migrations
                     b.Property<DateTime>("Anadida")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("Anio")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Autor")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Curiosidad")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Director")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("Duracion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("FichaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Genero")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nota")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PosterPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Reparto")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Sinopsis")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TituloOriginal")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Vista")
@@ -414,6 +627,9 @@ namespace Love.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("CompraInicio")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateOnly>("LunesInicio")
                         .HasColumnType("TEXT");
 
@@ -450,6 +666,76 @@ namespace Love.Data.Migrations
                     b.HasIndex("SemanaId");
 
                     b.ToTable("SemanaRecetas");
+                });
+
+            modelBuilder.Entity("Love.Models.TareaAgente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("Aplicada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Autor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("CosteUsd")
+                        .HasColumnType("REAL");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DuracionMs")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Entrada")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FotoPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Historial")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notas")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PeliculaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Propuesta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("RecetaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Rondas")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("Terminada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("VinetaId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Estado");
+
+                    b.ToTable("TareasAgente");
                 });
 
             modelBuilder.Entity("Love.Models.TicketLinea", b =>
@@ -502,6 +788,136 @@ namespace Love.Data.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("Love.Models.Vineta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Activa")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Autor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Conocida")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EspacioFrase")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Favorita")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly?>("FechaFija")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FraseAutor")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FraseMia")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Intenciones")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("JuegoSugerido")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Libro")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Momentos")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("MostradaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Origen")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Pregunta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("RespondidaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Respuesta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RespuestaRaquel")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("RespuestaVista")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Tono")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("UsoJuego")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("UsoPortada")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Origen");
+
+                    b.ToTable("Vinetas");
+                });
+
+            modelBuilder.Entity("Love.Models.VinetaDia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("AbiertaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Corazones")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Estado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Juego")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Pistas")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ResueltaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("VinetaId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Fecha")
+                        .IsUnique();
+
+                    b.HasIndex("VinetaId");
+
+                    b.ToTable("VinetaDias");
+                });
+
             modelBuilder.Entity("Love.Models.ListaItem", b =>
                 {
                     b.HasOne("Love.Models.Semana", "Semana")
@@ -511,6 +927,17 @@ namespace Love.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Semana");
+                });
+
+            modelBuilder.Entity("Love.Models.ParadaObra", b =>
+                {
+                    b.HasOne("Love.Models.Obra", "Obra")
+                        .WithMany("Paradas")
+                        .HasForeignKey("ObraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Obra");
                 });
 
             modelBuilder.Entity("Love.Models.RecetaIngrediente", b =>
@@ -562,6 +989,17 @@ namespace Love.Data.Migrations
                     b.Navigation("Gasto");
                 });
 
+            modelBuilder.Entity("Love.Models.VinetaDia", b =>
+                {
+                    b.HasOne("Love.Models.Vineta", "Vineta")
+                        .WithMany("Dias")
+                        .HasForeignKey("VinetaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vineta");
+                });
+
             modelBuilder.Entity("Love.Models.Gasto", b =>
                 {
                     b.Navigation("Lineas");
@@ -570,6 +1008,11 @@ namespace Love.Data.Migrations
             modelBuilder.Entity("Love.Models.Ingrediente", b =>
                 {
                     b.Navigation("Recetas");
+                });
+
+            modelBuilder.Entity("Love.Models.Obra", b =>
+                {
+                    b.Navigation("Paradas");
                 });
 
             modelBuilder.Entity("Love.Models.Receta", b =>
@@ -582,6 +1025,11 @@ namespace Love.Data.Migrations
                     b.Navigation("Lista");
 
                     b.Navigation("Recetas");
+                });
+
+            modelBuilder.Entity("Love.Models.Vineta", b =>
+                {
+                    b.Navigation("Dias");
                 });
 #pragma warning restore 612, 618
         }

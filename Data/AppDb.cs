@@ -6,6 +6,7 @@ namespace Love.Data;
 public class AppDb : DbContext
 {
     public AppDb(DbContextOptions<AppDb> o) : base(o) { }
+    protected AppDb(DbContextOptions o) : base(o) { }
 
     public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<Mensaje> Mensajes => Set<Mensaje>();
@@ -45,18 +46,30 @@ public class AppDb : DbContext
         b.Entity<SemanaReceta>().HasOne(sr => sr.Semana).WithMany(s => s.Recetas).OnDelete(DeleteBehavior.Cascade);
         b.Entity<SemanaReceta>().HasOne(sr => sr.Receta).WithMany().OnDelete(DeleteBehavior.Cascade);
         b.Entity<ListaItem>().HasOne(l => l.Semana).WithMany(s => s.Lista).OnDelete(DeleteBehavior.Cascade);
-        b.Entity<Gasto>().Property(g => g.Importe).HasConversion<double>();
         b.Entity<TicketLinea>().HasOne(l => l.Gasto).WithMany(g => g.Lineas).OnDelete(DeleteBehavior.Cascade);
-        b.Entity<TicketLinea>().Property(l => l.Importe).HasConversion<double?>();
         b.Entity<TicketLinea>().HasIndex(l => l.Producto);
-        b.Entity<RecetaIngrediente>().Property(g => g.Cantidad).HasConversion<double?>();
-        b.Entity<ListaItem>().Property(g => g.Cantidad).HasConversion<double?>();
-        b.Entity<TareaAgente>().Property(t => t.CosteUsd).HasConversion<double>();
         b.Entity<TareaAgente>().HasIndex(t => t.Estado);
         b.Entity<VinetaDia>().HasIndex(v => v.Fecha).IsUnique();
         b.Entity<VinetaDia>().HasOne(v => v.Vineta).WithMany(x => x.Dias).OnDelete(DeleteBehavior.Cascade);
         b.Entity<Vineta>().HasIndex(v => v.Origen);
         b.Entity<ParadaObra>().HasOne(p => p.Obra).WithMany(o => o.Paradas).OnDelete(DeleteBehavior.Cascade);
         b.Entity<Obra>().HasIndex(o => o.Origen);
+        if (Database.IsSqlite())
+        {
+            // SQLite no ordena ni suma decimal: allí se guardaban como double. En PostgreSQL son numeric.
+            b.Entity<Gasto>().Property(g => g.Importe).HasConversion<double>();
+            b.Entity<TicketLinea>().Property(l => l.Importe).HasConversion<double?>();
+            b.Entity<RecetaIngrediente>().Property(g => g.Cantidad).HasConversion<double?>();
+            b.Entity<ListaItem>().Property(g => g.Cantidad).HasConversion<double?>();
+            b.Entity<TareaAgente>().Property(t => t.CosteUsd).HasConversion<double>();
+        }
+        else
+        {
+            b.Entity<Gasto>().Property(g => g.Importe).HasPrecision(12, 2);
+            b.Entity<TicketLinea>().Property(l => l.Importe).HasPrecision(12, 2);
+            b.Entity<RecetaIngrediente>().Property(g => g.Cantidad).HasPrecision(12, 3);
+            b.Entity<ListaItem>().Property(g => g.Cantidad).HasPrecision(12, 3);
+            b.Entity<TareaAgente>().Property(t => t.CosteUsd).HasPrecision(12, 6);
+        }
     }
 }

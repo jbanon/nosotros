@@ -17,7 +17,7 @@ public class IndexModel(AppDb db, AgenteService agente) : PageModel
         Q = q?.Trim();
         var query = db.Recetas.Include(r => r.Ingredientes).ThenInclude(i => i.Ingrediente).AsQueryable();
         if (!string.IsNullOrEmpty(Q))
-            query = query.Where(r => EF.Functions.Like(r.Nombre, $"%{Q}%") || r.Ingredientes.Any(i => EF.Functions.Like(i.Ingrediente.Nombre, $"%{Q}%")));
+            query = query.Where(r => EF.Functions.ILike(r.Nombre, $"%{Q}%") || r.Ingredientes.Any(i => EF.Functions.ILike(i.Ingrediente.Nombre, $"%{Q}%")));
         Lista = await query.OrderBy(r => r.Nombre).ToListAsync();
     }
 }

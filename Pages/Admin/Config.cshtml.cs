@@ -1,14 +1,16 @@
 using System.Globalization;
 using System.IO.Compression;
 using Microsoft.Data.Sqlite;
+using Love.Data;
 using Love.Models;
+using Microsoft.EntityFrameworkCore;
 using Love.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Love.Pages.Admin;
 
-public class ConfigModel(ConfigService config, PinAuth auth, FileStorage files, SeedService seed) : PageModel
+public class ConfigModel(ConfigService config, PinAuth auth, FileStorage files, SeedService seed, AppDb db) : PageModel
 {
     [BindProperty] public string Objetivo { get; set; } = "";
     [BindProperty] public string Veva { get; set; } = "";
@@ -66,28 +68,27 @@ public class ConfigModel(ConfigService config, PinAuth auth, FileStorage files, 
         return Page();
     }
 
-    public IActionResult OnGetBackup()
+    /// <summary>ZIP con la base entera como love.db (SQLite, se abre con cualquier visor) y los adjuntos.
+    /// Para restaurar: poner ese love.db en App_Data con PostgreSQL vacío y arrancar (se importa solo).</summary>
+    public async Task<IActionResult> OnGetBackup()
     {
         var ms = new MemoryStream();
-        using (var zip = new ZipArchive(ms, ZipArchiveMode.Create, true))
+        var tmp = Path.Combine(Path.GetTempPath(), $"love-backup-{Guid.NewGuid():N}.db");
+        try
         {
-            if (System.IO.File.Exists(files.RutaDb))
+            await using (var dst = AppDbSqlite.Abrir(tmp))
             {
-                // Copia consistente aunque SQLite esté en modo WAL
-                var tmp = Path.Combine(Path.GetTempPath(), $"love-backup-{Guid.NewGuid():N}.db");
-                using (var src = new SqliteConnection($"Data Source={files.RutaDb}"))
-                using (var dst = new SqliteConnection($"Data Source={tmp}"))
-                {
-                    src.Open(); dst.Open(); src.BackupDatabase(dst);
-                }
-                SqliteConnection.ClearAllPools();
-                zip.CreateEntryFromFile(tmp, "love.db");
-                System.IO.File.Delete(tmp);
+                await dst.Database.MigrateAsync();
+                await CopiaDatos.Copiar(db, dst);
             }
+            SqliteConnection.ClearAllPools();
+            using var zip = new ZipArchive(ms, ZipArchiveMode.Create, true);
+            zip.CreateEntryFromFile(tmp, "love.db");
             if (Directory.Exists(files.Raiz))
                 foreach (var f in Directory.EnumerateFiles(files.Raiz, "*", SearchOption.AllDirectories))
                     zip.CreateEntryFromFile(f, "adjuntos/" + Path.GetRelativePath(files.Raiz, f).Replace('\\', '/'));
         }
+        finally { if (System.IO.File.Exists(tmp)) System.IO.File.Delete(tmp); }
         ms.Position = 0;
         return File(ms, "application/zip", $"nosotros-{Reloj.Hoy:yyyyMMdd}.zip");
     }
