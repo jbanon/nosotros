@@ -110,7 +110,13 @@ public class ArteService(AppDb db, FileStorage files, IWebHostEnvironment env, I
                 secciones.Add((id, t));
                 sb.Append($"<h2 id=\"{id}\">").Append(Inline(t)).Append("</h2>");
             }
-            else if (b.StartsWith("### ")) sb.Append("<h3>").Append(Inline(b[4..])).Append("</h3>");
+            else if (b.StartsWith("### "))
+            {
+                // "### Título" y, si sigue en la línea de abajo sin línea en blanco, su párrafo
+                var nl = b.IndexOf('\n');
+                sb.Append("<h3>").Append(Inline(nl < 0 ? b[4..] : b[4..nl])).Append("</h3>");
+                if (nl >= 0) sb.Append("<p>").Append(Inline(b[(nl + 1)..].Replace('\n', ' '))).Append("</p>");
+            }
             else if (b.StartsWith("- "))
             {
                 sb.Append("<ul>");

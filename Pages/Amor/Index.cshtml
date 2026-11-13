@@ -82,7 +82,7 @@
     {
         <a class="lectura-aviso" href="/Arte/Capitulo/@Model.CapituloSemana.Id">
             <span class="ico">🎨</span>
-            <span class="crece"><b>Esta semana: @Model.CapituloSemana.Artista</b><br /><span>Un capítulo entero: su época, su manera de mirar y sus obras</span></span>
+            <span class="crece"><b>Esta semana, un capítulo: @Model.CapituloSemana.Artista</b><br /><span>Su vida, su manera de mirar y @(Model.CapituloSemana.Obras.Count > 0 ? $"{Model.CapituloSemana.Obras.Count} obras para entrar despacio" : "sus obras, para entrar despacio")</span></span>
             <span class="flecha">›</span>
         </a>
     }

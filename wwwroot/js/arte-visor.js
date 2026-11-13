@@ -24,9 +24,12 @@
 
   for (let i = 0; i < total; i++) { const b = document.createElement('i'); puntos.appendChild(b); }
 
+  const volverCap = document.getElementById('volver-cap');
   function pintar() {
     [...puntos.children].forEach((b, i) => b.className = i === paso ? 'on' : i < paso ? 'hecho' : '');
     btnAtras.disabled = paso === 0;
+    // Si la obra es de un capítulo, al final del paseo se ofrece volver a él.
+    if (volverCap) volverCap.hidden = paso <= d.paradas.length;
     if (paso === 0) {
       contenido.innerHTML = `<p class="visor-sobre">${esc([d.autor, d.anio].filter(Boolean).join(' · '))}${d.museo ? ' · ' + esc(d.museo) : ''}</p><h2>${esc(d.titulo)}</h2>${parrafos(d.intro)}`;
       btnSig.textContent = d.paradas.length ? `Empezar · ${d.paradas.length} detalles` : 'Ver la obra';

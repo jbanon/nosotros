@@ -1,10 +1,38 @@
 @page
 @model Love.Pages.Arte.IndexModel
-@{ ViewData["Title"] = "Disfruta la vista"; var otras = Model.Publicadas.Where(p => Model.Semana == null || p.obra.Id != Model.Semana.Value.obra.Id).ToList(); }
+@using Love.Models
+@{
+    ViewData["Title"] = "Disfruta la vista";
+    var capSemana = Model.CapituloSemana;
+    // Si esta semana toca capítulo, la portada es el capítulo; una obra suelta de la misma semana pasa al álbum.
+    var otras = Model.Publicadas.Where(p => capSemana != null || Model.Semana == null || p.obra.Id != Model.Semana.Value.obra.Id).ToList();
+    var album = otras.Select(p => (p.fecha, obra: (Obra?)p.obra, cap: (Capitulo?)null))
+        .Concat(Model.Capitulos.Where(c => capSemana == null || c.cap.Id != capSemana.Value.cap.Id).Select(c => (c.fecha, obra: (Obra?)null, cap: (Capitulo?)c.cap)))
+        .OrderByDescending(x => x.fecha).ToList();
+    var hayAlgo = Model.Publicadas.Any() || Model.Capitulos.Any();
+    static string Inicial(Capitulo c) => string.IsNullOrWhiteSpace(c.Artista) ? "·" : c.Artista.Trim().Split(' ')[^1][..1].ToUpperInvariant();
+    static int Minutos(Capitulo c) => Math.Max(1, (int)Math.Round((c.Entradilla + " " + c.Texto).Split((char[])[' ', '\n'], StringSplitOptions.RemoveEmptyEntries).Length / 200.0));
+}
 <div class="cab"><a class="volver" href="/Amor">‹</a><h1>Disfruta la vista 🎨</h1></div>
-<div class="ideas-intro arte">Cada domingo, una obra. Entra despacio: te iré llevando a los detalles que casi nadie mira.</div>
+<div class="ideas-intro arte">Cada domingo, una obra; de vez en cuando, un artista entero. Entra despacio: te iré llevando a los detalles que casi nadie mira.</div>
 
-@if (Model.Semana is var (so, sf) && so != null)
+@if (capSemana is var (cs, cf) && cs != null)
+{
+    var portada = IndexModel.PortadaDe(cs);
+    var paseos = cs.Obras.Count(o => o.Paradas.Count > 0);
+    <a class="arte-portada cap-semana" href="/Arte/Capitulo/@cs.Id">
+        <span class="cap-etiqueta">Capítulo</span>
+        @if (portada != null) { <img src="/Arte/Imagen/@portada.Id?t=r" alt="" /> }
+        else { <div class="cap-planos" aria-hidden="true"><span>@Inicial(cs)</span></div> }
+        <div class="arte-portada-texto">
+            <span class="adv-sobre">Esta semana@(cs.VistoEl == null ? " · nuevo" : "")</span>
+            <b>@cs.Artista</b>
+            @if (!string.IsNullOrWhiteSpace(cs.Titulo)) { <span class="cap-semana-tit">@cs.Titulo</span> }
+            <span>@Minutos(cs) min de lectura@(cs.Obras.Count > 0 ? $" · {cs.Obras.Count} obras" : "")@(paseos > 0 ? $" · {paseos} paseo{(paseos == 1 ? "" : "s")}" : "")</span>
+        </div>
+    </a>
+}
+else if (Model.Semana is var (so, sf) && so != null)
 {
     <a class="arte-portada" href="/Arte/Ver/@so.Id">
         <img src="/Arte/Imagen/@so.Id?t=r" alt="" />
@@ -15,24 +43,44 @@
         </div>
     </a>
 }
-else if (!Model.Publicadas.Any())
+else if (!hayAlgo)
 {
     <div class="vacio"><span class="ico">🎨</span>La primera obra llega el domingo @(Model.Proxima?.ToString("d 'de' MMMM") ?? "").</div>
 }
 
-@if (otras.Any())
+@if (album.Any())
 {
     <h2 class="mb mt">Las anteriores <span class="suave peq" style="font-weight:600">· siguen aquí@(Model.Favoritas > 0 ? $" · {Model.Favoritas} favorita{(Model.Favoritas == 1 ? "" : "s")}" : "")</span></h2>
     <div class="album">
-        @foreach (var (o, f) in otras)
+        @foreach (var (f, o, c) in album)
         {
-            <a class="album-item" href="/Arte/Ver/@o.Id">
-                <img src="/Arte/Imagen/@o.Id?t=r" alt="" loading="lazy" />
-                @if (o.Favorita) { <span class="fav">♥</span> }
-                @if (o.VistaEl == null) { <span class="juego">✨</span> }
-                <div class="pie"><span class="fecha">@f.ToString("d MMM")</span><span class="frase">@o.Titulo</span></div>
-            </a>
+            if (c != null)
+            {
+                var portada = IndexModel.PortadaDe(c);
+                var paseos = c.Obras.Count(x => x.Paradas.Count > 0);
+                <a class="album-item cap-album" href="/Arte/Capitulo/@c.Id">
+                    <span class="cap-etiqueta">Capítulo</span>
+                    @if (portada != null) { <img src="/Arte/Imagen/@portada.Id?t=r" alt="" loading="lazy" /> }
+                    else { <div class="cap-planos" aria-hidden="true"><span>@Inicial(c)</span></div> }
+                    @if (c.VistoEl == null) { <span class="juego" style="left:auto;right:10px">✨</span> }
+                    <div class="pie">
+                        <span class="fecha">@f.ToString("d MMM")</span>
+                        <span class="frase">@c.Artista</span>
+                        @if (!string.IsNullOrWhiteSpace(c.Titulo)) { <span class="sub">@c.Titulo</span> }
+                        <span class="datos">@Minutos(c) min@(c.Obras.Count > 0 ? $" · {c.Obras.Count} obras" : "")@(paseos > 0 ? $" · {paseos} paseo{(paseos == 1 ? "" : "s")}" : "")</span>
+                    </div>
+                </a>
+            }
+            else if (o != null)
+            {
+                <a class="album-item" href="/Arte/Ver/@o.Id">
+                    <img src="/Arte/Imagen/@o.Id?t=r" alt="" loading="lazy" />
+                    @if (o.Favorita) { <span class="fav">♥</span> }
+                    @if (o.VistaEl == null) { <span class="juego">✨</span> }
+                    <div class="pie"><span class="fecha">@f.ToString("d MMM")</span><span class="frase">@o.Titulo</span></div>
+                </a>
+            }
         }
     </div>
 }
-@if (Model.Proxima != null && Model.Publicadas.Any()) { <p class="suave peq centrado mt">La próxima obra llega el domingo @Model.Proxima.Value.ToString("d 'de' MMMM").</p> }
+@if (Model.Proxima != null && hayAlgo) { <p class="suave peq centrado mt">Lo próximo llega el domingo @Model.Proxima.Value.ToString("d 'de' MMMM").</p> }

@@ -1,15 +1,142 @@
 @page "{id:int}"
 @model Love.Pages.Arte.CapituloModel
-@* Vista provisional (funcional). El diseño definitivo lo hace el agente de diseño. *@
-@{ var c = Model.C; ViewData["Title"] = c.Titulo; }
-<div class="cab"><a class="volver" href="/Arte">‹</a><h1>@c.Artista</h1></div>
-@if (Model.Portada != null) { <img src="/Arte/Imagen/@Model.Portada.Id?t=r" alt="" style="width:100%;border-radius:16px" /> }
-<h2>@c.Titulo</h2>
-@if (c.Fechas != null) { <p class="suave">@c.Fechas · @Model.MinutosLectura min de lectura</p> }
-@if (c.Entradilla != null) { <p><b>@c.Entradilla</b></p> }
-<nav>@foreach (var (id, t) in Model.Secciones) { <a href="#@id">@t</a><br /> }</nav>
-<article>@Html.Raw(Model.TextoHtml)</article>
-<h2>Paseos por los detalles</h2>
-@foreach (var o in Model.ConPaseo) { <p><a href="/Arte/Ver/@o.Id">@o.Titulo (@o.Anio) · @o.Paradas.Count detalles</a></p> }
-<h2>Para mirar</h2>
-@foreach (var o in Model.ParaMirar) { <div><a href="/Arte/Ver/@o.Id"><img src="/Arte/Imagen/@o.Id?t=r" alt="" style="width:120px" /> @o.Titulo (@o.Anio)</a><p>@o.Intro</p></div> }
+@{
+    var c = Model.C;
+    ViewData["Title"] = c.Artista;
+    ViewData["SinNav"] = true;
+    var total = Model.ConPaseo.Count + Model.ParaMirar.Count;
+    var fecha = Model.Fecha?.ToString("d 'de' MMMM");
+    var inicial = string.IsNullOrWhiteSpace(c.Artista) ? "·" : c.Artista.Trim().Split(' ')[^1][..1].ToUpperInvariant();
+    string Plural(int n, string uno, string varios) => n == 1 ? uno : varios;
+    string NumObras(int n) => n switch { 1 => "una", 2 => "dos", 3 => "tres", 4 => "cuatro", 5 => "cinco", 6 => "seis", 7 => "siete", 8 => "ocho", 9 => "nueve", 10 => "diez", _ => n.ToString() };
+    var detalles = Model.ConPaseo.Sum(o => o.Paradas.Count);
+}
+<div class="cap" id="cap">
+    <header class="cap-barra" id="cap-barra">
+        <div class="cap-barra-fila">
+            <a class="volver" href="/Arte" aria-label="Volver a Disfruta la vista">‹</a>
+            <span class="cap-barra-titulo">@c.Artista</span>
+            <div class="cap-tam" aria-label="Tamaño de letra">
+                <button type="button" class="menor" id="tam-menos" aria-label="Letra más pequeña">A</button>
+                <button type="button" class="mayor" id="tam-mas" aria-label="Letra más grande">A</button>
+            </div>
+        </div>
+        @if (Model.Secciones.Any() || total > 0)
+        {
+            <nav class="cap-chips" id="cap-chips" aria-label="Secciones del capítulo">
+                @foreach (var (id, t) in Model.Secciones) { <a href="#@id" data-seccion="@id">@t</a> }
+                @if (total > 0) { <a href="#obras" data-seccion="obras">Las obras</a> }
+            </nav>
+        }
+    </header>
+
+    <section class="cap-portada@(Model.Portada == null ? " sin-imagen" : "")" id="cap-portada">
+        @if (Model.Portada is Obra po)
+        {
+            <img src="/Arte/Imagen/@po.Id?t=r" alt="@po.Titulo" width="@po.Ancho" height="@po.Alto" />
+        }
+        else
+        {
+            <div class="cap-planos" aria-hidden="true"><span>@inicial</span></div>
+        }
+        <div class="cap-placa">
+            <span class="cap-sobre">Capítulo @Model.Numero@(fecha != null ? $" · {fecha}" : "")</span>
+            <h1>@c.Artista</h1>
+            @if (!string.IsNullOrWhiteSpace(c.Titulo)) { <p class="cap-titulo">@c.Titulo</p> }
+            <p class="cap-meta">@(c.Fechas != null ? c.Fechas + " · " : "")@Model.MinutosLectura min de lectura</p>
+        </div>
+    </section>
+
+    <div class="cap-cuerpo">
+        @if (!string.IsNullOrWhiteSpace(c.Entradilla)) { <p class="cap-entradilla">@c.Entradilla</p> }
+
+        @if (Model.Secciones.Any())
+        {
+            <nav class="cap-indice" aria-label="En este capítulo">
+                <span class="cap-sobre">En este capítulo</span>
+                <ol>
+                    @foreach (var (id, t) in Model.Secciones) { <li><a href="#@id">@t</a></li> }
+                    @if (Model.ConPaseo.Any()) { <li class="obra"><a href="#paseos">Paseos por los detalles <small>· @NumObras(Model.ConPaseo.Count) @Plural(Model.ConPaseo.Count, "obra", "obras")</small></a></li> }
+                    @if (Model.ParaMirar.Any()) { <li class="obra"><a href="#mirar">Para mirar <small>· @NumObras(Model.ParaMirar.Count) más</small></a></li> }
+                </ol>
+            </nav>
+        }
+
+        <article class="cap-texto">@Html.Raw(Model.TextoHtml)</article>
+
+        <section class="cap-obras" id="obras">
+            @if (total == 0)
+            {
+                <div class="cap-vacio">
+                    <span class="ico">🖼️</span>
+                    <b>Las obras están de camino</b>
+                    <p>Las estoy colgando una a una, como en un museo de verdad. Mientras tanto el texto ya se deja leer; vuelve luego y estarán aquí abajo.</p>
+                </div>
+            }
+
+            @if (Model.ConPaseo.Any())
+            {
+                <header class="cap-obras-cab" id="paseos">
+                    <span class="cap-sobre">Paseos por los detalles</span>
+                    <h2>@(Model.ConPaseo.Count == 1 ? "Una obra para entrar despacio" : $"{char.ToUpper(NumObras(Model.ConPaseo.Count)[0])}{NumObras(Model.ConPaseo.Count)[1..]} obras para entrar despacio")</h2>
+                    <p>@detalles @Plural(detalles, "parada", "paradas") en total. Toca una y te llevo de la mano por sus rincones.</p>
+                </header>
+                var n = 0;
+                foreach (var o in Model.ConPaseo)
+                {
+                    n++;
+                    <a class="cap-paseo" href="/Arte/Ver/@o.Id">
+                        <span class="cap-paseo-img">
+                            <img src="/Arte/Imagen/@o.Id?t=r" alt="" width="@o.Ancho" height="@o.Alto" loading="lazy" />
+                            @if (o.Favorita) { <span class="cap-fav" aria-label="Favorita">♥</span> }
+                        </span>
+                        <span class="cap-paseo-texto">
+                            <span class="cap-sobre">Paseo @n de @Model.ConPaseo.Count · @o.Paradas.Count @Plural(o.Paradas.Count, "detalle", "detalles")@(o.VistaEl == null ? " · nuevo ✨" : "")</span>
+                            <b>@o.Titulo</b>
+                            <span class="cap-paseo-meta">@(o.Anio ?? "")@(o.Anio != null && o.Museo != null ? " · " : "")@(o.Museo ?? "")</span>
+                            @if (!string.IsNullOrWhiteSpace(o.Intro)) { <span class="cap-paseo-intro">@o.Intro</span> }
+                            <span class="btn primario cap-paseo-btn">@(o.VistaEl == null ? "Entrar al paseo" : "Volver a pasear")</span>
+                        </span>
+                    </a>
+                }
+            }
+
+            @if (Model.ParaMirar.Any())
+            {
+                <header class="cap-obras-cab" id="mirar">
+                    <span class="cap-sobre">Para mirar</span>
+                    <h2>@(Model.ConPaseo.Any() ? $"Y {NumObras(Model.ParaMirar.Count)} más, sin prisa" : $"{char.ToUpper(NumObras(Model.ParaMirar.Count)[0])}{NumObras(Model.ParaMirar.Count)[1..]} obras, sin prisa")</h2>
+                    <p>Sin paradas, solo una línea mía para cada una. Toca cualquiera para verla grande y acercarte con los dedos.</p>
+                </header>
+                <div class="cap-galeria">
+                    @foreach (var o in Model.ParaMirar)
+                    {
+                        <figure class="cap-obra">
+                            <a class="cap-obra-img" href="/Arte/Ver/@o.Id" aria-label="Ver grande: @o.Titulo">
+                                <img src="/Arte/Imagen/@o.Id?t=r" alt="" width="@o.Ancho" height="@o.Alto" loading="lazy" />
+                                <span class="cap-lupa" aria-hidden="true">🔍</span>
+                                @if (o.Favorita) { <span class="cap-fav" aria-label="Favorita">♥</span> }
+                            </a>
+                            <figcaption>
+                                <b>@o.Titulo</b>
+                                <span class="cap-obra-meta">@(o.Anio ?? "")@(o.Anio != null && o.Museo != null ? " · " : "")@(o.Museo ?? "")</span>
+                                @if (!string.IsNullOrWhiteSpace(o.Intro)) { <p>@o.Intro</p> }
+                            </figcaption>
+                        </figure>
+                    }
+                </div>
+            }
+        </section>
+
+        <footer class="cap-fin">
+            <span class="orn">❦</span>
+            <p class="cap-fin-titulo">Fin del capítulo</p>
+            <p class="suave">@(total > 0 ? "Las obras siguen aquí cuando quieras volver a ellas." : "El resto llega enseguida.")</p>
+            <a class="btn" href="/Arte">‹ Volver a Disfruta la vista</a>
+            @if (User.EsAdmin()) { <p class="peq"><a href="/Admin/Arte/Capitulo/@c.Id">Editar este capítulo</a></p> }
+        </footer>
+    </div>
+</div>
+@section Scripts {
+    <script src="/js/arte-capitulo.js" asp-append-version="true"></script>
+}

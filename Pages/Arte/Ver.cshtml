@@ -20,6 +20,7 @@
             <button type="button" class="btn primario crece" id="sig">Empezar</button>
         </div>
         <button type="button" class="visor-explorar" id="explorar">🔍 Explorar a mi aire</button>
+        @if (Model.O.CapituloId is int capId) { <a class="visor-volver-cap" id="volver-cap" href="/Arte/Capitulo/@capId#obras" hidden>‹ Seguir con el capítulo</a> }
     </section>
 </div>
 @Html.AntiForgeryToken()

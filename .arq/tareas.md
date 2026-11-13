@@ -4,13 +4,12 @@
 - **Postgres en producción:** en `/srv/nosotros`, `git pull`, `sudo ./deploy/instalar-postgres.sh` y
   `./deploy/publicar.sh`. Al arrancar importa `/opt/love/App_Data/love.db` (queda `love.db.migrado-…` como copia);
   comprobar en el log "Importado de SQLite: N filas". SQL Server se puede quitar: la app nunca lo usó.
-- **Arte por capítulos (después de Postgres; Javier, 2026-11-13).** Se alternan: cuando hay un capítulo listo se
-  publica ese domingo; si no, una obra suelta. Primero: **Vallotton** (texto de Javier en
-  `.arq/borradores/vallotton.md`; Javier manda la lista de obras: ~10 con reseña breve y 3-4 con paseo).
-  Diseño pensado: entidad `Capitulo` (artista, título, fechas, entradilla, texto con secciones, portada,
-  `Publicacion`), `Obra.CapituloId` opcional (obras sin paradas = solo reseña); al marcar un capítulo como
-  listo se fija su domingo (no reordenar domingos pasados); `/Arte/Capitulo/{id}` con el texto y las dos
-  galerías; Admin y `Seed/arte.json` con `capitulos`. Un agente puede buscar las imágenes en Commons.
+- **Arte por capítulos: Vallotton (en curso, 2026-11-13).** Hecho: datos, calendario, importación, Admin
+  (91874dd). En curso: la experiencia de usuario la hace un agente con Fable (Javier lo pidió así); yo integro.
+  Obras elegidas por Javier: Intimidad / Interior con pareja y biombo (1898), Mujer con cántaro (1906),
+  Perseo matando al dragón (1910), Coquetería (1911), La sábana amarilla (1913), Atardecer en el Loira (1923),
+  Château Gaillard en Les Andelys (1924) + algún paisaje a mi elección. Paseo por detalles en las 3 con más
+  detalle; textos **desenfadados y divertidos**. Imágenes de Commons (ojo: limita peticiones; User-Agent con URL).
 - **Botón 🎤 en la lista de la compra** (Web Speech en el navegador): dictar "fideos, manzanas y leche" y que
   se añadan separados y clasificados con `ZonaAuto`. Alexa y Google ya no dejan leer sus listas (ver
   decisiones → Comida); una skill propia de Alexa queda como opción si la piden.

@@ -21,6 +21,8 @@ public class CapituloModel(AppDb db, ArteService arte) : PageModel
     public List<Obra> ParaMirar { get; set; } = new();
     public Obra? Portada { get; set; }
     public int MinutosLectura { get; set; }
+    /// <summary>Número de orden del capítulo según su domingo (el primero publicado es el 1).</summary>
+    public int Numero { get; set; } = 1;
 
     public async Task<IActionResult> OnGet(int id)
     {
@@ -29,7 +31,9 @@ public class CapituloModel(AppDb db, ArteService arte) : PageModel
         var c = await db.Capitulos.Include(x => x.Obras.Where(o => o.Activa)).ThenInclude(o => o.Paradas).FirstOrDefaultAsync(x => x.Id == id);
         if (c == null) return Redirect("/Arte");
         C = c;
-        Fecha = (await arte.CalendarioCapitulos()).TryGetValue(id, out var f) ? f : null;
+        var cal = await arte.CalendarioCapitulos();
+        Fecha = cal.TryGetValue(id, out var f) ? f : null;
+        Numero = Fecha is DateOnly fd ? cal.Values.Count(x => x < fd) + 1 : cal.Count + 1;
         TextoHtml = ArteService.TextoHtml(c.Texto, out var secs);
         Secciones = secs;
         var obras = c.Obras.OrderBy(o => o.Orden).ThenBy(o => o.Id).ToList();
