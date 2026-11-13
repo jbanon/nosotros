@@ -714,5 +714,17 @@
    "fuente": "https://commons.wikimedia.org/wiki/File:The_Chess_Players_MET_DT1506.jpg",
    "licencia": "CC0"
   }
+ ],
+ "capitulos": [
+  {
+   "clave": "vallotton",
+   "artista": "Félix Vallotton",
+   "titulo": "El nabi extranjero",
+   "fechas": "Lausana, 1865 – Neuilly-sur-Seine, 1925",
+   "entradilla": "Pintaba como quien levanta acta: líneas limpias, colores planos y una calma que, si miras dos segundos más, empieza a dar un poco de miedo. Suizo en París, anarquista con traje y el más frío de un grupo de pintores que se llamaban a sí mismos profetas. Hoy, Vallotton.",
+   "textoFichero": "capitulos/vallotton.md",
+   "portada": null,
+   "obras": []
+  }
  ]
 }

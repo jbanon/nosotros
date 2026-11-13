@@ -28,6 +28,8 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
     public int VinetasDescubiertas { get; set; }
     public int JuegosPendientes { get; set; }
     public Obra? ObraSemana { get; set; }
+    /// <summary>Capítulo de arte de esta semana, mientras Raquel no lo haya abierto.</summary>
+    public Capitulo? CapituloSemana { get; set; }
     public int ObrasPublicadas { get; set; }
 
     public async Task OnGet(DateOnly? fecha)
@@ -54,6 +56,9 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
         var publicadas = await arte.Publicadas(Fecha);
         ObrasPublicadas = publicadas.Count;
         ObraSemana = publicadas.Where(p => p.fecha == ArteService.DomingoDe(Fecha) && p.obra.VistaEl == null).Select(p => p.obra).FirstOrDefault();
+        var capitulos = await arte.CapitulosPublicados(Fecha);
+        ObrasPublicadas += capitulos.Count;
+        CapituloSemana = capitulos.Where(p => p.fecha == ArteService.DomingoDe(Fecha) && p.cap.VistoEl == null).Select(p => p.cap).FirstOrDefault();
 
         var h = Reloj.Ahora.Hour;
         Saludo = h < 6 ? "Buenas noches" : h < 13 ? "Buenos días" : h < 21 ? "Buenas tardes" : "Buenas noches";

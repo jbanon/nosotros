@@ -78,6 +78,14 @@
             <span class="flecha">›</span>
         </a>
     }
+    @if (Model.CapituloSemana != null)
+    {
+        <a class="lectura-aviso" href="/Arte/Capitulo/@Model.CapituloSemana.Id">
+            <span class="ico">🎨</span>
+            <span class="crece"><b>Esta semana: @Model.CapituloSemana.Artista</b><br /><span>Un capítulo entero: su época, su manera de mirar y sus obras</span></span>
+            <span class="flecha">›</span>
+        </a>
+    }
 
     @if (Model.Adviento != null)
     {

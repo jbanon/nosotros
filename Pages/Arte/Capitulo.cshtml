@@ -1,0 +1,15 @@
+@page "{id:int}"
+@model Love.Pages.Arte.CapituloModel
+@* Vista provisional (funcional). El diseño definitivo lo hace el agente de diseño. *@
+@{ var c = Model.C; ViewData["Title"] = c.Titulo; }
+<div class="cab"><a class="volver" href="/Arte">‹</a><h1>@c.Artista</h1></div>
+@if (Model.Portada != null) { <img src="/Arte/Imagen/@Model.Portada.Id?t=r" alt="" style="width:100%;border-radius:16px" /> }
+<h2>@c.Titulo</h2>
+@if (c.Fechas != null) { <p class="suave">@c.Fechas · @Model.MinutosLectura min de lectura</p> }
+@if (c.Entradilla != null) { <p><b>@c.Entradilla</b></p> }
+<nav>@foreach (var (id, t) in Model.Secciones) { <a href="#@id">@t</a><br /> }</nav>
+<article>@Html.Raw(Model.TextoHtml)</article>
+<h2>Paseos por los detalles</h2>
+@foreach (var o in Model.ConPaseo) { <p><a href="/Arte/Ver/@o.Id">@o.Titulo (@o.Anio) · @o.Paradas.Count detalles</a></p> }
+<h2>Para mirar</h2>
+@foreach (var o in Model.ParaMirar) { <div><a href="/Arte/Ver/@o.Id"><img src="/Arte/Imagen/@o.Id?t=r" alt="" style="width:120px" /> @o.Titulo (@o.Anio)</a><p>@o.Intro</p></div> }

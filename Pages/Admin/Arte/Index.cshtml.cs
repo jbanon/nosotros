@@ -13,6 +13,8 @@ public class IndexModel(AppDb db, ArteService arte) : PageModel
     public Dictionary<int, DateOnly> Calendario { get; set; } = new();
     public List<ArteService.ObraSeed> Seed { get; set; } = new();
     public int? Importadas { get; set; }
+    public List<Capitulo> Capitulos { get; set; } = new();
+    public Dictionary<int, DateOnly> CalCapitulos { get; set; } = new();
 
     public async Task OnGet(int? importadas)
     {
@@ -21,6 +23,8 @@ public class IndexModel(AppDb db, ArteService arte) : PageModel
         Obras = (await db.Obras.Include(o => o.Paradas).ToListAsync())
             .OrderBy(o => Calendario.TryGetValue(o.Id, out var f) ? f : DateOnly.MaxValue).ThenBy(o => o.Orden).ToList();
         Seed = await arte.EstadoSeed();
+        CalCapitulos = await arte.CalendarioCapitulos();
+        Capitulos = await db.Capitulos.Include(c => c.Obras).OrderBy(c => c.Publicacion == null).ThenBy(c => c.Publicacion).ThenByDescending(c => c.Id).ToListAsync();
     }
 
     public async Task<IActionResult> OnPostImportar() => RedirectToPage(new { importadas = await arte.ImportarSeed() });
@@ -28,7 +32,7 @@ public class IndexModel(AppDb db, ArteService arte) : PageModel
     /// <summary>Mover una obra en la cola (solo afecta a las que no tienen domingo fijado).</summary>
     public async Task<IActionResult> OnPostMover(int id, int dir)
     {
-        var cola = await db.Obras.Where(o => o.Activa && o.Publicacion == null).OrderBy(o => o.Orden).ThenBy(o => o.Id).ToListAsync();
+        var cola = await db.Obras.Where(o => o.Activa && o.Publicacion == null && o.CapituloId == null).OrderBy(o => o.Orden).ThenBy(o => o.Id).ToListAsync();
         var i = cola.FindIndex(o => o.Id == id); var j = i + dir;
         if (i >= 0 && j >= 0 && j < cola.Count)
         {

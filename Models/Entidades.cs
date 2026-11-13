@@ -439,6 +439,36 @@ public class Obra
     public string? Origen { get; set; }
     public DateTime Creada { get; set; } = DateTime.UtcNow;
     public List<ParadaObra> Paradas { get; set; } = new();
+    /// <summary>Si pertenece a un capítulo, sale con él (no ocupa domingo propio). Sin paradas = solo reseña (Intro).</summary>
+    public int? CapituloId { get; set; }
+    public Capitulo? Capitulo { get; set; }
+}
+
+/// <summary>
+/// Un capítulo de "Disfruta la vista": un artista explicado (contexto, movimiento, claves) y una selección de obras,
+/// unas con paseo por los detalles y otras solo con reseña. Se publica un domingo, en lugar de una obra suelta.
+/// </summary>
+public class Capitulo
+{
+    public int Id { get; set; }
+    public string Artista { get; set; } = "";
+    /// <summary>Título del capítulo: "Félix Vallotton, el nabi extranjero".</summary>
+    public string Titulo { get; set; } = "";
+    /// <summary>"Lausana, 1865 – Neuilly-sur-Seine, 1925".</summary>
+    public string? Fechas { get; set; }
+    /// <summary>Un párrafo de entrada, antes del texto largo.</summary>
+    public string? Entradilla { get; set; }
+    /// <summary>El texto: bloques separados por línea en blanco; "## " sección, "### " subtítulo, "- " lista, **negrita**.</summary>
+    public string Texto { get; set; } = "";
+    /// <summary>Obra cuya imagen sirve de portada (si no, la primera con paseo).</summary>
+    public int? PortadaObraId { get; set; }
+    /// <summary>Domingo en que sale. Vacío = en preparación (no se publica).</summary>
+    public DateOnly? Publicacion { get; set; }
+    public bool Activo { get; set; } = true;
+    public DateTime? VistoEl { get; set; }
+    public string? Origen { get; set; }
+    public DateTime Creado { get; set; } = DateTime.UtcNow;
+    public List<Obra> Obras { get; set; } = new();
 }
 
 /// <summary>Una parada del recorrido: punto de la obra (fracción 0–1), zoom y bocadillo.</summary>

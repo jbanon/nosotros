@@ -1,0 +1,54 @@
+@page "{id:int?}"
+@model Love.Pages.Admin.Arte.CapituloModel
+@{ var c = Model.C; ViewData["Title"] = Model.Nuevo ? "Nuevo capítulo" : c.Artista; var hoy = Reloj.Hoy; var publicado = c.Publicacion <= hoy; }
+<div class="cab"><a class="volver" href="/Admin/Arte">‹</a><h1>@(Model.Nuevo ? "Nuevo capítulo" : "Capítulo")</h1>@if (!Model.Nuevo) { <a class="accion" href="/Arte/Capitulo/@c.Id">Ver</a> }</div>
+@if (!Model.Nuevo)
+{
+    <div class="tarjeta">
+        @if (c.Publicacion is DateOnly f)
+        {
+            <p style="margin:0 0 8px"><b>@(publicado ? "Publicado" : "Sale") el domingo @f.ToString("d 'de' MMMM")</b>@(c.VistoEl != null ? " · Raquel ya lo ha visto ✓" : "")</p>
+            @if (!publicado) { <form method="post" asp-page-handler="QuitarFecha" asp-route-id="@c.Id"><button class="btn pequeno">Quitar la fecha (vuelve a preparación)</button></form> }
+        }
+        else
+        {
+            <p style="margin:0 0 8px">En preparación: no sale hasta que lo marques como listo. Mientras, siguen saliendo obras sueltas.</p>
+            <form method="post" asp-page-handler="Publicar" asp-route-id="@c.Id" data-confirm="¿Sale el domingo @Model.ProximoLibre.ToString("d 'de' MMMM")? La obra suelta de ese domingo pasa a la semana siguiente."><button class="btn primario ancho">Está listo · que salga el domingo @Model.ProximoLibre.ToString("d 'de' MMMM")</button></form>
+        }
+    </div>
+}
+<form method="post">
+    <input type="hidden" asp-for="C.Id" />
+    @if (Model.Error != null) { <p class="error">@Model.Error</p> }
+    <div class="cuadricula">
+        <label class="campo"><span>Artista</span><input asp-for="C.Artista" placeholder="Félix Vallotton" /></label>
+        <label class="campo"><span>Fechas</span><input asp-for="C.Fechas" placeholder="Lausana, 1865 – Neuilly-sur-Seine, 1925" /></label>
+    </div>
+    <label class="campo"><span>Título del capítulo</span><input asp-for="C.Titulo" placeholder="El nabi extranjero" /></label>
+    <label class="campo"><span>Entradilla (un párrafo)</span><textarea asp-for="C.Entradilla" rows="3"></textarea></label>
+    <label class="campo"><span>Texto · "## " sección, "### " subtítulo, "- " lista, **negrita**, *cursiva*; línea en blanco entre bloques</span><textarea asp-for="C.Texto" rows="18" style="font-size:.9rem"></textarea></label>
+    <div class="cuadricula">
+        <label class="campo"><span>Portada</span>
+            <select asp-for="C.PortadaObraId"><option value="">La primera con paseo</option>@foreach (var o in Model.Obras) { <option value="@o.Id">@o.Titulo</option> }</select>
+        </label>
+        <label class="campo"><span>Fijar domingo (opcional)</span><input asp-for="C.Publicacion" type="date" /></label>
+    </div>
+    <label class="chip mb"><input type="checkbox" asp-for="C.Activo" style="display:inline" /> Activo</label>
+    <button class="btn primario ancho">Guardar</button>
+</form>
+@if (!Model.Nuevo)
+{
+    <h2 class="mb mt">Obras del capítulo <span class="suave peq" style="font-weight:600">· @Model.Obras.Count(o => o.Paradas.Count > 0) con paseo · @Model.Obras.Count(o => o.Paradas.Count == 0) solo reseña</span></h2>
+    <p class="suave peq" style="margin-top:0"><a href="/Admin/Arte/Editar?capitulo=@c.Id">+ Añadir una obra a este capítulo</a>. Sin paradas = solo reseña (la "entrada" de la obra).</p>
+    <div class="lista">
+        @foreach (var o in Model.Obras)
+        {
+            <a class="tarjeta fila" href="/Admin/Arte/Editar/@o.Id" style="color:inherit;align-items:center;padding:10px">
+                @if (o.ReducidaPath != null) { <img src="/Arte/Imagen/@o.Id?t=r" class="miniatura" alt="" loading="lazy" style="width:56px;height:56px" /> }
+                <div class="crece" style="min-width:0"><b>@o.Titulo</b> <span class="suave peq">· @o.Anio</span>
+                    <div class="sub suave">@(o.Paradas.Count > 0 ? $"🔍 paseo · {o.Paradas.Count} paradas" : "🖼️ reseña")@(string.IsNullOrWhiteSpace(o.Intro) ? " · ⚠️ sin texto" : "")@(o.Activa ? "" : " · inactiva")</div></div>
+            </a>
+        }
+    </div>
+    <form method="post" asp-page-handler="Borrar" asp-route-id="@c.Id" data-confirm="¿Borrar el capítulo? Sus obras se quedan como sueltas." class="mt"><button class="btn peligro ancho">Borrar capítulo</button></form>
+}

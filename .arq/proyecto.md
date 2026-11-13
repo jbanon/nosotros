@@ -19,7 +19,9 @@ Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
 - Auth por cookie con PIN. Usuarios `Javi` (rol Admin) y `Raquel`. `User.EsAdmin()` en
   `Services/PinAuth.cs`. La carpeta `/Admin` exige el rol Admin; todo lo demás lo ven los dos.
 - Migraciones EF en `Data/Migrations` (Postgres). `Data/MigracionesSqlite` + `AppDbSqlite` son de la base antigua:
-  solo para importar un love.db y para la copia de seguridad; no añadir migraciones ahí. Al arrancar: `MigrateAsync` + `SeedService.Ejecutar()`
+  solo para importar un love.db y para la copia de seguridad. **Cada cambio de modelo lleva DOS migraciones**
+  (si no, la copia de seguridad falla): `--context AppDb -o Data/Migrations` y
+  `NombreSqlite --context AppDbSqlite -o Data/MigracionesSqlite --namespace Love.Data.MigracionesSqlite`. Al arrancar: `MigrateAsync` + `SeedService.Ejecutar()`
   (idempotente: ahí van los arreglos de datos que deben aplicarse una vez en producción,
   guardados con una clave en la tabla Config).
 - Tabla `Config` clave/valor (`ConfigClaves` en `Models/Entidades.cs`): objetivo de compra,

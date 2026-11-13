@@ -13,11 +13,14 @@
         <label class="campo"><span>Año</span><input asp-for="O.Anio" /></label>
     </div>
     <label class="campo"><span>Museo</span><input asp-for="O.Museo" /></label>
+    <label class="campo"><span>Capítulo (si es parte de uno, sale con él y no ocupa domingo propio)</span>
+        <select asp-for="O.CapituloId"><option value="">Obra suelta</option>@foreach (var c in Model.Capitulos) { <option value="@c.Id">@c.Artista · @c.Titulo</option> }</select>
+    </label>
     <div class="cuadricula">
         <label class="campo"><span>URL de origen</span><input asp-for="O.FuenteUrl" /></label>
         <label class="campo"><span>Licencia</span><input asp-for="O.Licencia" placeholder="Dominio público" /></label>
     </div>
-    <label class="campo"><span>Entrada (antes del recorrido)</span><textarea asp-for="O.Intro" rows="3"></textarea></label>
+    <label class="campo"><span>Entrada (antes del recorrido; en un capítulo, sin paradas, es la reseña)</span><textarea asp-for="O.Intro" rows="3"></textarea></label>
     <label class="campo"><span>Tu frase para Raquel (al volver a la obra entera)</span><textarea asp-for="O.FraseMia" rows="2" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem"></textarea></label>
     <div class="cuadricula">
         <label class="campo"><span>Fijar domingo (opcional)</span><input asp-for="O.Publicacion" type="date" /></label>

@@ -18,3 +18,16 @@ public class AppDbSqliteDiseno : Microsoft.EntityFrameworkCore.Design.IDesignTim
 {
     public AppDbSqlite CreateDbContext(string[] args) => AppDbSqlite.Abrir("App_Data/diseno.db");
 }
+
+/// <summary>
+/// Para <c>dotnet ef ... --context AppDb</c>: sin esto, EF usaría la fábrica de AppDbSqlite (que también es un AppDb)
+/// y generaría migraciones de SQLite. Para generar migraciones no hace falta conexión real.
+/// </summary>
+public class AppDbDiseno : Microsoft.EntityFrameworkCore.Design.IDesignTimeDbContextFactory<AppDb>
+{
+    public AppDb CreateDbContext(string[] args)
+    {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); // igual que en Program.cs
+        return new(new DbContextOptionsBuilder<AppDb>().UseNpgsql(Environment.GetEnvironmentVariable("ConnectionStrings__Love") ?? "Host=localhost;Database=love").Options);
+    }
+}

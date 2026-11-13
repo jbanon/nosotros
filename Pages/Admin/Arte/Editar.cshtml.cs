@@ -17,25 +17,30 @@ public class EditarModel(AppDb db, ArteService arte, FileStorage files) : PageMo
     public bool Nueva => O.Id == 0;
     public string? Error { get; set; }
     public DateOnly? Fecha { get; set; }
+    public List<Capitulo> Capitulos { get; set; } = new();
 
     public record ParadaDto(double X, double Y, double Zoom, string? Titulo, string? Texto);
     static readonly JsonSerializerOptions Opc = new() { PropertyNameCaseInsensitive = true };
 
-    public async Task<IActionResult> OnGet(int? id)
+    public async Task<IActionResult> OnGet(int? id, int? capitulo)
     {
+        Capitulos = await db.Capitulos.OrderByDescending(c => c.Id).ToListAsync();
+        if (capitulo != null) O.CapituloId = capitulo;
         if (id is int i)
         {
             var o = await db.Obras.Include(x => x.Paradas.OrderBy(p => p.Orden)).FirstOrDefaultAsync(x => x.Id == i);
             if (o == null) return NotFound();
             O = o;
             ParadasJson = AdvientoService.Serializar(o.Paradas.OrderBy(p => p.Orden).Select(p => new { x = p.X, y = p.Y, zoom = p.Zoom, titulo = p.Titulo, texto = p.Texto }));
-            Fecha = (await arte.Calendario()).TryGetValue(o.Id, out var f) ? f : null;
+            Fecha = o.CapituloId is int ci ? ((await arte.CalendarioCapitulos()).TryGetValue(ci, out var fc) ? fc : null)
+                  : (await arte.Calendario()).TryGetValue(o.Id, out var f) ? f : null;
         }
         return Page();
     }
 
     public async Task<IActionResult> OnPost()
     {
+        Capitulos = await db.Capitulos.OrderByDescending(c => c.Id).ToListAsync();
         Obra o;
         if (O.Id == 0)
         {
@@ -46,7 +51,7 @@ public class EditarModel(AppDb db, ArteService arte, FileStorage files) : PageMo
         else o = await db.Obras.Include(x => x.Paradas).FirstOrDefaultAsync(x => x.Id == O.Id) ?? throw new InvalidOperationException();
         if (string.IsNullOrWhiteSpace(O.Titulo)) { Error = "Ponle título."; return Page(); }
         o.Titulo = O.Titulo.Trim(); o.Autor = L(O.Autor); o.Anio = L(O.Anio); o.Museo = L(O.Museo); o.FuenteUrl = L(O.FuenteUrl); o.Licencia = L(O.Licencia);
-        o.Intro = L(O.Intro); o.FraseMia = L(O.FraseMia); o.Activa = O.Activa;
+        o.Intro = L(O.Intro); o.FraseMia = L(O.FraseMia); o.Activa = O.Activa; o.CapituloId = O.CapituloId;
         o.Publicacion = O.Publicacion is DateOnly p ? ArteService.DomingoDe(p) : null;
         if (Imagen != null && Imagen.Length > 0)
         {

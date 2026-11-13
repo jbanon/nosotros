@@ -84,6 +84,55 @@ namespace Love.Data.MigracionesSqlite
                     b.ToTable("Adviento");
                 });
 
+            modelBuilder.Entity("Love.Models.Capitulo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Artista")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Creado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Entradilla")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Fechas")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Origen")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PortadaObraId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly?>("Publicacion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("VistoEl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Origen");
+
+                    b.ToTable("Capitulos");
+                });
+
             modelBuilder.Entity("Love.Models.Config", b =>
                 {
                     b.Property<string>("Clave")
@@ -446,6 +495,9 @@ namespace Love.Data.MigracionesSqlite
                     b.Property<string>("Autor")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("CapituloId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Creada")
                         .HasColumnType("TEXT");
 
@@ -499,6 +551,8 @@ namespace Love.Data.MigracionesSqlite
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CapituloId");
 
                     b.HasIndex("Origen");
 
@@ -987,6 +1041,16 @@ namespace Love.Data.MigracionesSqlite
                     b.Navigation("Semana");
                 });
 
+            modelBuilder.Entity("Love.Models.Obra", b =>
+                {
+                    b.HasOne("Love.Models.Capitulo", "Capitulo")
+                        .WithMany("Obras")
+                        .HasForeignKey("CapituloId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Capitulo");
+                });
+
             modelBuilder.Entity("Love.Models.ParadaObra", b =>
                 {
                     b.HasOne("Love.Models.Obra", "Obra")
@@ -1056,6 +1120,11 @@ namespace Love.Data.MigracionesSqlite
                         .IsRequired();
 
                     b.Navigation("Vineta");
+                });
+
+            modelBuilder.Entity("Love.Models.Capitulo", b =>
+                {
+                    b.Navigation("Obras");
                 });
 
             modelBuilder.Entity("Love.Models.Gasto", b =>

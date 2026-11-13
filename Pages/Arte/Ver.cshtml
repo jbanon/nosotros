@@ -3,7 +3,7 @@
 @{ ViewData["Title"] = Model.O.Titulo; }
 <div class="visor-arte" id="visor">
     <header class="visor-cab">
-        <a class="volver" href="/Arte" aria-label="Volver">‹</a>
+        <a class="volver" href="@(Model.O.CapituloId is int cap ? $"/Arte/Capitulo/{cap}" : "/Arte")" aria-label="Volver">‹</a>
         <div class="crece"><b>@Model.O.Titulo</b><span>@Model.O.Autor@(Model.O.Anio != null ? $" · {Model.O.Anio}" : "")</span></div>
         <button type="button" class="fav-btn @(Model.O.Favorita ? "on" : "")" id="fav" aria-label="Favorita">♥</button>
     </header>

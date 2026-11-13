@@ -12,9 +12,22 @@
     </div>
 }
 @if (nuevas > 0) { <form method="post" asp-page-handler="Vistas" class="mb"><button class="btn pequeno">💬 @nuevas respuesta@(nuevas == 1 ? "" : "s") nueva@(nuevas == 1 ? "" : "s") · marcar vistas</button></form> }
+<div class="fila mb" style="align-items:center"><h2 class="crece" style="margin:0">Capítulos</h2><a class="btn pequeno" href="/Admin/Arte/Capitulo">+ Capítulo</a></div>
+@if (!Model.Capitulos.Any()) { <p class="suave peq">Un capítulo es un artista explicado con varias obras. Cuando hay uno listo, sale ese domingo en lugar de una obra suelta.</p> }
+<div class="lista mb">
+    @foreach (var c in Model.Capitulos)
+    {
+        var fc = Model.CalCapitulos.TryGetValue(c.Id, out var x) ? x : (DateOnly?)null;
+        <a class="tarjeta" href="/Admin/Arte/Capitulo/@c.Id" style="color:inherit;padding:10px 14px;display:block">
+            <b>🎨 @c.Artista</b> <span class="suave peq">· @c.Titulo</span>
+            <div class="sub suave">@(fc == null ? (c.Activo ? "en preparación" : "inactivo") : (fc <= hoy ? "publicado el " : "sale el domingo ") + fc.Value.ToString("d MMM")) · @c.Obras.Count obras@(c.VistoEl != null ? " · visto ✓" : "")</div>
+        </a>
+    }
+</div>
+<h2 class="mb">Obras sueltas</h2>
 <p class="suave peq">Una obra cada domingo. Las que no tienen fecha fija van en el orden de la cola (flechas).</p>
 <div class="lista">
-    @foreach (var o in Model.Obras)
+    @foreach (var o in Model.Obras.Where(o => o.CapituloId == null))
     {
         var f = Model.Calendario.TryGetValue(o.Id, out var ff) ? ff : (DateOnly?)null;
         var publicada = f != null && f <= hoy;
