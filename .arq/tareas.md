@@ -34,7 +34,6 @@
 
 ## Ideas apuntadas (sin empezar, 2026-11-10)
 Javier las dejó apuntadas para hacer más adelante; también pueden entrar como casillas del adviento.
-- **Cifras (de "Cifras y letras")**: le encanta. Seis números y un objetivo, llegar con + − × ÷.
 - **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
 - **Recordatorio de francés**: Raquel habla bien francés; algo gracioso para repasar (frase o expresión del
   día, falsos amigos, mini quiz).
@@ -82,3 +81,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-13 | PostgreSQL en lugar de SQLite: importación automática de love.db al primer arranque, copia de seguridad como love.db, `deploy/instalar-postgres.sh`; probado en local con Postgres 16 (todas las páginas, escrituras, reinicio, reimportación) | fb15984 |
 | 2026-11-13 | Arte por capítulos: Vallotton (texto, 3 paseos: Perseo, Coquetería, Mujer con cántaro; 5 obras con reseña), diseño del agente Fable; imágenes de WikiArt (Commons solo tenía baja resolución) | e395df9 |
 | 2026-11-14 | Visor de arte: el círculo del detalle parpadea dos veces y desaparece 5 s (en bucle) para no tapar la obra | 3263034 |
+| 2026-11-14 | Juegos: Cifras (45 s, solución al final) y crucigrama del día generado; enlace en la portada. Pendiente: Javier lo prueba en el móvil (JS sin probar en navegador aquí) | (este) |

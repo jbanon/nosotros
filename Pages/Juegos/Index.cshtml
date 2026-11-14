@@ -1,0 +1,43 @@
+@page
+@{ ViewData["Title"] = "Juegos"; }
+<div class="cab"><h1>Juegos</h1></div>
+<p class="suave peq" style="margin-top:0">Un ratito para pensar. Sin prisas… salvo en Cifras.</p>
+<a class="jg-tarjeta jg-cifras" href="/Juegos/Cifras">
+    <div class="jg-vista" aria-hidden="true">
+        <div class="cf-marcador mini"><span>7</span><span>4</span><span>2</span></div>
+        <div class="jg-fichas"><i>75</i><i>8</i><i>3</i></div>
+    </div>
+    <div class="jg-texto">
+        <h2>Cifras</h2>
+        <p>Seis números, un objetivo y 45 segundos. Suma, resta, multiplica y divide hasta clavarlo.</p>
+        <p class="jg-stats" data-stats="cifras"></p>
+    </div>
+</a>
+<a class="jg-tarjeta jg-cruci" href="/Juegos/Crucigrama">
+    <div class="jg-vista" aria-hidden="true">
+        <div class="jg-mini-cruci">
+            @foreach (var c in "·A··|AMOR|·O··|·R··".Split('|'))
+            {
+                foreach (var ch in c) { if (ch == '·') { <i class="h"></i> } else { <i>@ch</i> } }
+            }
+        </div>
+    </div>
+    <div class="jg-texto">
+        <h2>Crucigrama del día</h2>
+        <p>Uno nuevo cada día, con definiciones con guasa. Y si se acaba, otro.</p>
+        <p class="jg-stats" data-stats="cruci"></p>
+    </div>
+</a>
+@section Scripts {
+<script>
+(() => {
+  const lee = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch { return null; } };
+  const cf = lee('cifras-stats');
+  const el1 = document.querySelector('[data-stats="cifras"]');
+  if (cf && cf.jugadas) el1.textContent = `${cf.exactas} exactas de ${cf.jugadas}` + (cf.racha > 1 ? ` · racha de ${cf.racha} 🔥` : '');
+  const cr = lee('cruci-stats');
+  const el2 = document.querySelector('[data-stats="cruci"]');
+  if (cr && cr.hechos) el2.textContent = `${cr.hechos} resuelto${cr.hechos === 1 ? '' : 's'}`;
+})();
+</script>
+}

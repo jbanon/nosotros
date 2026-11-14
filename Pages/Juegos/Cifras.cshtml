@@ -1,0 +1,28 @@
+@page
+@{ ViewData["Title"] = "Cifras"; }
+<div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Cifras</h1><span class="jg-record suave peq" id="cf-record"></span></div>
+<div class="cf" id="cf">
+    <div class="cf-panel">
+        <div class="cf-marcador" id="cf-objetivo" aria-label="Objetivo"></div>
+        <div class="cf-reloj" aria-hidden="true"><div id="cf-barra"></div></div>
+        <div class="cf-seg" id="cf-seg">45</div>
+    </div>
+    <div class="cf-fichas" id="cf-fichas"></div>
+    <div class="cf-ops" id="cf-ops">
+        <button type="button" data-op="+" aria-label="Sumar">+</button>
+        <button type="button" data-op="-" aria-label="Restar">−</button>
+        <button type="button" data-op="*" aria-label="Multiplicar">×</button>
+        <button type="button" data-op="/" aria-label="Dividir">÷</button>
+    </div>
+    <ol class="cf-pasos" id="cf-pasos"></ol>
+    <div class="fila cf-acciones">
+        <button type="button" class="btn crece" id="cf-deshacer">↶ Deshacer</button>
+        <button type="button" class="btn crece" id="cf-reiniciar">Empezar de nuevo</button>
+    </div>
+    <div class="cf-final" id="cf-final" hidden></div>
+    <div class="cf-inicio" id="cf-inicio">
+        <p>Seis números y un objetivo de tres cifras.<br />Combínalos con + − × ÷ (cada número, una vez) y acércate todo lo que puedas.</p>
+        <button type="button" class="btn primario ancho" id="cf-empezar">¡Vamos! · 45 s</button>
+    </div>
+</div>
+@section Scripts { <script src="/js/cifras.js" asp-append-version="true"></script> }

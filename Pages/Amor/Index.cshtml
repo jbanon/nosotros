@@ -111,14 +111,14 @@
             <span class="flecha">›</span>
         </a>
     }
-    else if (Model.NumLecturas > 0 || Model.VinetasDescubiertas > 0 || Model.ObrasPublicadas > 0)
-    {
+    @{
         var enlaces = new List<(string url, string txt)>();
-        if (Model.NumLecturas > 0) enlaces.Add(("/Lecturas", "📖 Lecturas"));
+        if (Model.NumLecturas > 0 && Model.LecturaNueva == null) enlaces.Add(("/Lecturas", "📖 Lecturas"));
         if (Model.VinetasDescubiertas > 0) enlaces.Add(("/Vinetas", "💌 Álbum"));
         if (Model.ObrasPublicadas > 0) enlaces.Add(("/Arte", "🎨 Arte"));
-        <p class="lectura-enlace">@for (int i = 0; i < enlaces.Count; i++) { if (i > 0) { <text> · </text> } <a href="@enlaces[i].url">@enlaces[i].txt</a> }</p>
+        enlaces.Add(("/Juegos", "🎲 Juegos"));
     }
+    <p class="lectura-enlace">@for (int i = 0; i < enlaces.Count; i++) { if (i > 0) { <text> · </text> } <a href="@enlaces[i].url">@enlaces[i].txt</a> }</p>
 
     <footer class="amor-pie">
         <button class="corazon" id="corazon" type="button" aria-label="Corazón">♥</button>
