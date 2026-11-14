@@ -694,7 +694,10 @@ html.con-cine, html.con-cine body { overflow: hidden; }
 .visor-escena img { position: absolute; top: 0; left: 0; transform-origin: 0 0; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; backface-visibility: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
 .visor-cargando { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: .6; font-size: .9rem; }
 .visor-marca { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 2px rgba(0,0,0,.35); pointer-events: none; opacity: 0; transform: scale(.4); transition: opacity .4s, transform .4s; z-index: 2; }
-.visor-marca.visible { opacity: 1; transform: scale(1); animation: marca-latido 1.8s ease-out .4s 2; }
+.visor-marca.visible { transform: scale(1); animation: marca-intermitente 7s ease-in-out infinite; }
+/* Parpadea dos veces (~2 s) y desaparece 5 s, en bucle, para no tapar el detalle */
+@keyframes marca-intermitente { 0% { opacity: 0; transform: scale(.6); } 7% { opacity: 1; transform: scale(1); } 14% { opacity: 0; } 21% { opacity: 1; } 28%, 100% { opacity: 0; } }
+@keyframes marca-quieta { 0%, 28% { opacity: 1; } 32%, 100% { opacity: 0; } }
 @keyframes marca-latido { 0% { box-shadow: 0 0 0 2px rgba(0,0,0,.35), 0 0 0 0 rgba(255,255,255,.7); } 100% { box-shadow: 0 0 0 2px rgba(0,0,0,.35), 0 0 0 18px rgba(255,255,255,0); } }
 .visor-tarjeta { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 12px 18px calc(14px + env(safe-area-inset-bottom)); background: linear-gradient(rgba(20,17,15,.0), rgba(20,17,15,.94) 22px); max-height: 46vh; overflow-y: auto; }
 .visor-tarjeta > * { max-width: 560px; margin-left: auto; margin-right: auto; }
@@ -718,7 +721,7 @@ html.con-cine, html.con-cine body { overflow: hidden; }
 .visor-frase span { display: block; font-size: 1.05rem; opacity: .75; margin-top: 4px; }
 .visor-respuesta span { display: block; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; opacity: .6; margin: 6px 0 4px; }
 .visor-respuesta textarea { background: rgba(255,255,255,.08); color: inherit; border-color: rgba(255,255,255,.18); min-height: 0; }
-@media (prefers-reduced-motion: reduce) { .visor-marca.visible { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .visor-marca.visible { animation: marca-quieta 7s linear infinite; } }
 
 /* Editor de paradas */
 .editor-arte { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }

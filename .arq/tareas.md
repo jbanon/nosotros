@@ -81,3 +81,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-11 | Compra: al añadir, sugerencias de lo ya comprado ("fi" → Fideos) y zona automática ("manzanas" → Frutería), también en "Quizá toca reponer" | 131d78f |
 | 2026-11-13 | PostgreSQL en lugar de SQLite: importación automática de love.db al primer arranque, copia de seguridad como love.db, `deploy/instalar-postgres.sh`; probado en local con Postgres 16 (todas las páginas, escrituras, reinicio, reimportación) | fb15984 |
 | 2026-11-13 | Arte por capítulos: Vallotton (texto, 3 paseos: Perseo, Coquetería, Mujer con cántaro; 5 obras con reseña), diseño del agente Fable; imágenes de WikiArt (Commons solo tenía baja resolución) | e395df9 |
+| 2026-11-14 | Visor de arte: el círculo del detalle parpadea dos veces y desaparece 5 s (en bucle) para no tapar la obra | (este) |
