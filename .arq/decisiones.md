@@ -186,8 +186,13 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   Renacimiento por algo más llamativo y exótico, con Japón):
   1. **Postimpresionismo y nabis**: Vallotton (ya hecho), Bonnard, Vuillard, Gauguin, Van Gogh, Cézanne.
   2. **Impresionismo**: Monet, Renoir, Degas, Berthe Morisot, Pissarro, Caillebotte.
-  3. **Japón: ukiyo-e y rarezas**: Hokusai, Hiroshige, Utamaro, Kuniyoshi (gatos, esqueletos gigantes),
-     Yoshitoshi (fantasmas), Kyōsai (demonios), Jakuchū (gallos imposibles).
+  3. **Japón: del oro al grabado** (2026-11-15, Javier quiere lo más vistoso y no solo ukiyo-e): Hokusai,
+     Rimpa (Ogata Kōrin y Sōtatsu: biombos de oro, *Lirios*, *Dioses del viento y del trueno*), Kuniyoshi,
+     Itō Jakuchū (gallos y pavos reales en seda), Hiroshige, Kobayashi Kiyochika (luz nocturna de la era
+     Meiji) y Ohara Koson (pájaros shin-hanga, de dominio público en España desde 2026). En el tour, el
+     japonismo: cómo estos les volaron la cabeza a Monet, Van Gogh y los nabis.
+     Fuera por derechos en España (80 años desde la muerte): Hasui Kawase (2038), Hiroshi Yoshida (2031),
+     Kayama Matazō y Higashiyama Kaii.
   4. **Simbolismo y Art Nouveau**: Klimt, Mucha, Gustave Moreau, Odilon Redon, Böcklin, Franz von Stuck.
   5. **Lo fantástico**: El Bosco, Bruegel el Viejo, Arcimboldo, Füssli, William Blake.
   6. **Luz del Norte** (en lugar de Romanticismo, 2026-11-15): Munch, Hammershøi, Hilma af Klint,
@@ -195,11 +200,11 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Orden de los domingos (vueltas: un capítulo de cada tema; primero los tours generales):
   1. Tours: Japón · Impresionismo · Lo fantástico · Luz del Norte (cae en diciembre) · Simbolismo · Nabis.
   2. Hokusai · Monet · El Bosco · Munch · Klimt · Van Gogh.
-  3. Kuniyoshi · Degas · Arcimboldo · Hammershøi · Mucha · Bonnard.
-  4. Hiroshige · Morisot · Bruegel · Gallen-Kallela · Redon · Gauguin.
-  5. Yoshitoshi · Renoir · Füssli · Hilma af Klint · Böcklin · Vuillard.
-  6. Kyōsai · Caillebotte · Blake · Krøyer · Moreau · Cézanne.
-  7. Utamaro · Pissarro · Zorn · Von Stuck.  8. Jakuchū.
+  3. Rimpa (Kōrin) · Degas · Arcimboldo · Hammershøi · Mucha · Bonnard.
+  4. Kuniyoshi · Morisot · Bruegel · Gallen-Kallela · Redon · Gauguin.
+  5. Jakuchū · Renoir · Füssli · Hilma af Klint · Böcklin · Vuillard.
+  6. Hiroshige · Caillebotte · Blake · Krøyer · Moreau · Cézanne.
+  7. Kiyochika · Pissarro · Zorn · Von Stuck.  8. Ohara Koson.
   (41 domingos, unos 9 meses.)
 - Las obras sueltas ya cargadas (Sorolla, Arnolfini…) pasan a los miércoles.
 
