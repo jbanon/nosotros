@@ -41,6 +41,15 @@
 ## Ideas apuntadas (sin empezar, 2026-11-10)
 Javier las dejó apuntadas para hacer más adelante; también pueden entrar como casillas del adviento.
 - **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
+- **La cocina de Julia** (Javier, 2026-11-15). Sección con unos 40 clásicos franceses propuestos y buscador por
+  nombre o ingrediente principal.
+  - **Generar:** al elegir una, el agente (reutilizando `TipoTareaAgente.Receta`) la escribe AL ESTILO de Julia
+    Child (cálido, preciso, que anima), nunca copiando el libro.
+  - **Ilustración:** 1-2 dibujos de línea SVG del gesto clave, o grabados de recetarios en dominio público (sin
+    decidir). Las ilustraciones del libro tienen derechos.
+  - **Guardar:** pasa a Recetas, marcada "de Julia", para no generarla otra vez.
+  - **Realizar:** mete los ingredientes en la lista de la compra de la semana (zona automática) y abre un modo
+    cocina con fichas paso a paso con humor, temporizadores y pantalla encendida.
 - **Clases de francés divertidas, nivel B2-C1** (Javier, 2026-11-15: "le gusta"). Píldoras cortas:
   - **Formato:** una lectura breve en tono distendido con toques cómicos, a veces con imagen.
   - **Temas:** textos, recetas, noticias, curiosidades.
