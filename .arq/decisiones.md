@@ -190,9 +190,17 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
      Yoshitoshi (fantasmas), Kyōsai (demonios), Jakuchū (gallos imposibles).
   4. **Simbolismo y Art Nouveau**: Klimt, Mucha, Gustave Moreau, Odilon Redon, Böcklin, Franz von Stuck.
   5. **Lo fantástico**: El Bosco, Bruegel el Viejo, Arcimboldo, Füssli, William Blake.
-  6. **Romanticismo**: Goya, Friedrich, Turner, Delacroix, Constable.
-- Reserva si alguno no convence: **Luz del Norte** (Munch, Hammershøi, Hilma af Klint, Gallen-Kallela, Krøyer,
-  Zorn; DP en España: muertos antes de 1945).
+  6. **Luz del Norte** (en lugar de Romanticismo, 2026-11-15): Munch, Hammershøi, Hilma af Klint,
+     Gallen-Kallela, Krøyer, Zorn (DP en España: muertos antes de 1945).
+- Orden de los domingos (vueltas: un capítulo de cada tema; primero los tours generales):
+  1. Tours: Japón · Impresionismo · Lo fantástico · Luz del Norte (cae en diciembre) · Simbolismo · Nabis.
+  2. Hokusai · Monet · El Bosco · Munch · Klimt · Van Gogh.
+  3. Kuniyoshi · Degas · Arcimboldo · Hammershøi · Mucha · Bonnard.
+  4. Hiroshige · Morisot · Bruegel · Gallen-Kallela · Redon · Gauguin.
+  5. Yoshitoshi · Renoir · Füssli · Hilma af Klint · Böcklin · Vuillard.
+  6. Kyōsai · Caillebotte · Blake · Krøyer · Moreau · Cézanne.
+  7. Utamaro · Pissarro · Zorn · Von Stuck.  8. Jakuchū.
+  (41 domingos, unos 9 meses.)
 - Las obras sueltas ya cargadas (Sorolla, Arnolfini…) pasan a los miércoles.
 
 ## Juegos (`/Juegos`)

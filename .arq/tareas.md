@@ -13,7 +13,8 @@
   decisiones → Comida); una skill propia de Alexa queda como opción si la piden.
 
 ## Hilos abiertos
-- **Arte por temas** (plan en decisiones → "Arte por temas"). Falta implementar:
+- **Arte por temas: trabajarlo la semana del 16 de noviembre de 2026** (Javier). El plan y el orden están en
+  decisiones → "Arte por temas". Falta implementar:
   - Entidad Tema, con el capítulo de tipo "tour general" o "autor".
   - Calendario: capítulos los domingos, alternando temas; obras sueltas los miércoles.
   - Álbum agrupado por tema.
