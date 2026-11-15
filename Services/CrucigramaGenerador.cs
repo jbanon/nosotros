@@ -22,7 +22,20 @@ public class CrucigramaGenerador(IWebHostEnvironment env)
 
     public static int Semilla(DateOnly dia, int n) => dia.DayNumber * 31 + n * 7919;
 
-    public Rejilla Generar(int semilla)
+    readonly System.Collections.Concurrent.ConcurrentDictionary<int, Rejilla> cache = new();
+
+    public Rejilla Generar(int semilla) => cache.GetOrAdd(semilla, Crear);
+
+    /// <summary>Letra correcta por celda "f,c".</summary>
+    public Dictionary<string, string> Solucion(int semilla)
+    {
+        var d = new Dictionary<string, string>();
+        foreach (var x in Generar(semilla).Defs)
+            for (int i = 0; i < x.Largo; i++) d[x.Dir == "V" ? $"{x.Fila + i},{x.Col}" : $"{x.Fila},{x.Col + i}"] = x.Palabra[i].ToString();
+        return d;
+    }
+
+    Rejilla Crear(int semilla)
     {
         var rnd = new Random(semilla);
         // Una pista por palabra (si hay varias, al azar)

@@ -156,6 +156,35 @@ namespace Love.Data.Migrations
                     b.ToTable("Configs");
                 });
 
+            modelBuilder.Entity("Love.Models.CrucigramaPartida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Actualizado")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ResueltoEl")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Semilla")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Semilla")
+                        .IsUnique();
+
+                    b.ToTable("CrucigramaPartidas");
+                });
+
             modelBuilder.Entity("Love.Models.DueloRonda", b =>
                 {
                     b.Property<int>("Id")

@@ -51,6 +51,7 @@ builder.Services.AddScoped<ListaCompraService>();
 builder.Services.AddScoped<ZonaAuto>();
 builder.Services.AddSingleton<CrucigramaGenerador>();
 builder.Services.AddSingleton<DueloCifras>();
+builder.Services.AddSingleton<CruciCompartido>();
 builder.Services.AddScoped<GastoService>();
 builder.Services.AddScoped<SugerenciaService>();
 builder.Services.AddScoped<RecurrenteService>();

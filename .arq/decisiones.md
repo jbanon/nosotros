@@ -185,6 +185,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Crucigrama: banco `Seed/crucigrama.json` ([palabra, pista], pistas con guasa y algún guiño a la familia).
   `CrucigramaGenerador` arma hasta 12 palabras en 11×11 como mucho; semilla = fecha (+ n para "otro"), así el
   del día es el mismo para los dos. Se comprueba en el cliente (lleva la solución; no hay premio que proteger).
+- Crucigrama compartido (siempre, sin invitación): una fila `CrucigramaPartidas` por semilla con las letras y
+  quién puso cada una (JSON); `CruciCompartido` la cachea en memoria. Una sola llamada `Sync` (cursor +
+  letras pendientes → estado): cada 1 s si el otro está dentro, 3 s si no, nada con la app en segundo plano.
+  Lo del otro se ve en violeta (`--otro`): sus letras, su palabra y su casilla. Gana la última letra escrita.
 - Duelo de Cifras (`/Juegos/Duelo`, `DueloCifras` singleton, una sala en memoria): uno reta, al otro le sale el
   aviso en la portada y en Juegos; al aceptar empieza la ronda (cuenta atrás de 4 s). Mismos números, el
   servidor cronometra y decide: gana el más cercano, a igualdad el que llegó antes; si alguien lo clava se

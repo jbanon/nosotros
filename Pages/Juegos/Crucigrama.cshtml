@@ -11,8 +11,9 @@
         defs = r.Defs.Select(d => new { num = d.Num, dir = d.Dir, fila = d.Fila, col = d.Col, largo = d.Largo, pista = d.Pista, sol = d.Palabra }),
     };
 }
+@Html.AntiForgeryToken()
 <div class="cab cr-cab"><a class="volver" href="/Juegos">‹</a><h1>@(Model.N == 0 ? "Crucigrama del día" : $"Crucigrama extra nº {Model.N}")</h1></div>
-<p class="suave peq cr-sub">@Reloj.Hoy.ToString("dddd d 'de' MMMM") · @r.Defs.Count palabras · <span id="cr-progreso"></span></p>
+<p class="suave peq cr-sub">@Reloj.Hoy.ToString("dddd d 'de' MMMM") · @r.Defs.Count palabras · a medias · <span id="cr-progreso"></span> <span class="cr-otro" id="cr-otro" hidden></span></p>
 <div class="cr-pista" id="cr-pista" aria-live="polite">
     <button type="button" id="cr-ant" aria-label="Definición anterior">‹</button>
     <div class="cr-pista-txt" id="cr-pista-txt">Toca una casilla para empezar</div>

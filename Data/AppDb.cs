@@ -32,6 +32,7 @@ public class AppDb : DbContext
     public DbSet<ParadaObra> ParadasObra => Set<ParadaObra>();
     public DbSet<Capitulo> Capitulos => Set<Capitulo>();
     public DbSet<DueloRonda> DueloRondas => Set<DueloRonda>();
+    public DbSet<CrucigramaPartida> CrucigramaPartidas => Set<CrucigramaPartida>();
     public DbSet<Lista> Listas => Set<Lista>();
     public DbSet<ListaElemento> ListaElementos => Set<ListaElemento>();
 
@@ -56,6 +57,7 @@ public class AppDb : DbContext
         b.Entity<Vineta>().HasIndex(v => v.Origen);
         b.Entity<ParadaObra>().HasOne(p => p.Obra).WithMany(o => o.Paradas).OnDelete(DeleteBehavior.Cascade);
         b.Entity<Obra>().HasIndex(o => o.Origen);
+        b.Entity<CrucigramaPartida>().HasIndex(p => p.Semilla).IsUnique();
         b.Entity<Obra>().HasOne(o => o.Capitulo).WithMany(c => c.Obras).OnDelete(DeleteBehavior.SetNull);
         b.Entity<Capitulo>().HasIndex(c => c.Origen);
         if (Database.IsSqlite())

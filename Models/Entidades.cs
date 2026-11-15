@@ -502,3 +502,14 @@ public class DueloRonda
     /// <summary>Null = empate.</summary>
     public int? GanadorId { get; set; }
 }
+
+/// <summary>Crucigrama compartido por los dos: una fila por semilla con las letras puestas (JSON).</summary>
+public class CrucigramaPartida
+{
+    public int Id { get; set; }
+    public int Semilla { get; set; }
+    /// <summary>JSON: {"letras":{"f,c":["A",usuarioId]}, "ayudas":["f,c"], "rendido":false}</summary>
+    public string Estado { get; set; } = "{}";
+    public DateTime? ResueltoEl { get; set; }
+    public DateTime Actualizado { get; set; } = DateTime.UtcNow;
+}

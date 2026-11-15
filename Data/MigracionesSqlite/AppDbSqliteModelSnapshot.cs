@@ -147,6 +147,33 @@ namespace Love.Data.MigracionesSqlite
                     b.ToTable("Configs");
                 });
 
+            modelBuilder.Entity("Love.Models.CrucigramaPartida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Actualizado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ResueltoEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Semilla")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Semilla")
+                        .IsUnique();
+
+                    b.ToTable("CrucigramaPartidas");
+                });
+
             modelBuilder.Entity("Love.Models.DueloRonda", b =>
                 {
                     b.Property<int>("Id")
