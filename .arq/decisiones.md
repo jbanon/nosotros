@@ -182,13 +182,17 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Los capítulos se agrupan en **temas (movimientos)**. Cada tema tiene un **tour general** (obras de varios
   autores que cuentan el movimiento) y **4-5 autores**, o más si el movimiento lo pide. Se intercalan los temas
   (un domingo de uno, el siguiente de otro) y se van completando poco a poco.
-- Temas elegidos (todos de dominio público):
+- Temas elegidos (todos de dominio público; 2026-11-15 Javier pidió cambiar holandeses, españoles y
+  Renacimiento por algo más llamativo y exótico, con Japón):
   1. **Postimpresionismo y nabis**: Vallotton (ya hecho), Bonnard, Vuillard, Gauguin, Van Gogh, Cézanne.
   2. **Impresionismo**: Monet, Renoir, Degas, Berthe Morisot, Pissarro, Caillebotte.
-  3. **Siglo de Oro holandés**: Rembrandt, Vermeer, Frans Hals, Jan Steen, Pieter de Hooch.
-  4. **Siglo de Oro español**: El Greco, Velázquez, Zurbarán, Murillo, Ribera.
-  5. **Renacimiento italiano**: Botticelli, Leonardo, Rafael, Tiziano, Caravaggio (de cierre, ya barroco).
+  3. **Japón: ukiyo-e y rarezas**: Hokusai, Hiroshige, Utamaro, Kuniyoshi (gatos, esqueletos gigantes),
+     Yoshitoshi (fantasmas), Kyōsai (demonios), Jakuchū (gallos imposibles).
+  4. **Simbolismo y Art Nouveau**: Klimt, Mucha, Gustave Moreau, Odilon Redon, Böcklin, Franz von Stuck.
+  5. **Lo fantástico**: El Bosco, Bruegel el Viejo, Arcimboldo, Füssli, William Blake.
   6. **Romanticismo**: Goya, Friedrich, Turner, Delacroix, Constable.
+- Reserva si alguno no convence: **Luz del Norte** (Munch, Hammershøi, Hilma af Klint, Gallen-Kallela, Krøyer,
+  Zorn; DP en España: muertos antes de 1945).
 - Las obras sueltas ya cargadas (Sorolla, Arnolfini…) pasan a los miércoles.
 
 ## Juegos (`/Juegos`)
