@@ -156,6 +156,50 @@ namespace Love.Data.Migrations
                     b.ToTable("Configs");
                 });
 
+            modelBuilder.Entity("Love.Models.DueloRonda", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AId")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("ASeg")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("AValor")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BId")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("BSeg")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("BValor")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("GanadorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Numeros")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Objetivo")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DueloRondas");
+                });
+
             modelBuilder.Entity("Love.Models.FechaEspecial", b =>
                 {
                     b.Property<int>("Id")

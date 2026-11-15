@@ -185,3 +185,9 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Crucigrama: banco `Seed/crucigrama.json` ([palabra, pista], pistas con guasa y algún guiño a la familia).
   `CrucigramaGenerador` arma hasta 12 palabras en 11×11 como mucho; semilla = fecha (+ n para "otro"), así el
   del día es el mismo para los dos. Se comprueba en el cliente (lleva la solución; no hay premio que proteger).
+- Duelo de Cifras (`/Juegos/Duelo`, `DueloCifras` singleton, una sala en memoria): uno reta, al otro le sale el
+  aviso en la portada y en Juegos; al aceptar empieza la ronda (cuenta atrás de 4 s). Mismos números, el
+  servidor cronometra y decide: gana el más cercano, a igualdad el que llegó antes; si alguien lo clava se
+  acaba la ronda. "Nueva partida" (cualquiera de los dos) lanza otra sin volver a retar. Durante la ronda solo
+  se ve lo cerca que va el otro. Consulta cada ~1 s (sin websockets: nginx no los pasa). Las rondas
+  terminadas se guardan en `DueloRondas` (marcador histórico); si se reinicia el servidor se pierde la sala.

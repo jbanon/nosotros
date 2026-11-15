@@ -485,3 +485,20 @@ public class ParadaObra
     public string Titulo { get; set; } = "";
     public string Texto { get; set; } = "";
 }
+
+/// <summary>Ronda terminada de un duelo de Cifras (para el marcador histórico).</summary>
+public class DueloRonda
+{
+    public int Id { get; set; }
+    public DateTime Fecha { get; set; } = DateTime.UtcNow;
+    public string Numeros { get; set; } = "";
+    public int Objetivo { get; set; }
+    public int AId { get; set; }
+    public int? AValor { get; set; }
+    public double? ASeg { get; set; }
+    public int BId { get; set; }
+    public int? BValor { get; set; }
+    public double? BSeg { get; set; }
+    /// <summary>Null = empate.</summary>
+    public int? GanadorId { get; set; }
+}

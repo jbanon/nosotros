@@ -1,5 +1,6 @@
 @page
 @model Love.Pages.Amor.IndexModel
+@inject Love.Services.DueloCifras Duelo
 @{
     ViewData["Title"] = "Para " + Model.Nombre;
     var t = Model.Msg.Tema;
@@ -103,6 +104,15 @@
         }
     }
 
+    @{ var retoDuelo = Duelo.RetoPara(int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value)); }
+    @if (retoDuelo != null)
+    {
+        <a class="lectura-aviso" href="/Juegos/Duelo">
+            <span class="ico">⚔️</span>
+            <span class="crece"><b>@retoDuelo te reta a Cifras</b><br /><span>Mismos números, a la vez. ¿Aceptas?</span></span>
+            <span class="flecha">›</span>
+        </a>
+    }
     @if (Model.LecturaNueva != null)
     {
         <a class="lectura-aviso" href="/Lecturas/Leer/@Model.LecturaNueva.Id">

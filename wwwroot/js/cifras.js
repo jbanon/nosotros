@@ -1,6 +1,7 @@
 // Cifras: seis números, un objetivo (101-999), + − × ÷ con resultados enteros positivos y 45 segundos.
 (() => {
   const $ = id => document.getElementById(id);
+  const D = window.cifrasDuelo || null; // modo duelo: duelo.js manda la ronda y recibe las jugadas
   const SEG = 45, OPS = { '+': '+', '-': '−', '*': '×', '/': '÷' };
   const elObj = $('cf-objetivo'), elFichas = $('cf-fichas'), elPasos = $('cf-pasos'), elFinal = $('cf-final'),
         elBarra = $('cf-barra'), elSeg = $('cf-seg'), elInicio = $('cf-inicio'), raiz = $('cf');
@@ -10,7 +11,11 @@
 
   let objetivo, fichas, pasos, sel, op, fin, inicio, tick, vistos, agotado;
 
-  function nueva() {
+  function nueva(r) {
+    if (r) {
+      objetivo = r.objetivo; fichas = r.nums.map((v, i) => ({ v, usado: false, k: i }));
+      vistos = new Set(r.nums); pasos = []; sel = null; op = null; fin = false; agotado = false; return;
+    }
     const bolsa = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100];
     const nums = [];
     for (let i = 0; i < 6; i++) nums.push(bolsa.splice(Math.floor(Math.random() * bolsa.length), 1)[0]);
@@ -74,6 +79,7 @@
     fichas[sel].usado = true; fichas[i] = { v: r, usado: false, k };
     vistos.add(r); sel = null; op = null;
     pinta(k);
+    if (D) { D.valor(r, segsJugados()); if (r === objetivo) { parar(); confeti(); } return; }
     if (r === objetivo) terminar();
   }
 
@@ -90,7 +96,7 @@
     elBarra.style.transform = `scaleX(${queda / SEG})`;
     elSeg.textContent = Math.ceil(queda);
     raiz.classList.toggle('apurando', queda <= 10 && queda > 0);
-    if (queda <= 0) return tiempo();
+    if (queda <= 0) return D ? parar() : tiempo();
     tick = requestAnimationFrame(reloj);
   }
 
@@ -179,20 +185,28 @@
   }
 
   function pintaRecord() {
+    if (!$('cf-record')) return;
     const st = lee('cifras-stats', null);
     $('cf-record').textContent = st && st.jugadas ? `${st.exactas}/${st.jugadas} exactas` + (st.racha > 1 ? ` · 🔥${st.racha}` : '') : '';
   }
 
-  function empezar() {
-    nueva(); elFinal.hidden = true; elInicio.hidden = true; raiz.classList.remove('agotado'); elObj.classList.remove('fijado');
+  function parar() { fin = true; cancelAnimationFrame(tick); raiz.classList.remove('apurando'); pinta(); }
+
+  // r (duelo): { nums, objetivo, inicio } con inicio en reloj de performance.now()
+  function empezar(r) {
+    if (r && !r.nums) r = null;
+    cancelAnimationFrame(tick);
+    nueva(r); elFinal.hidden = true; if (elInicio) elInicio.hidden = true; raiz.classList.remove('agotado'); elObj.classList.remove('fijado');
     raiz.classList.add('jugando');
     elBarra.style.transform = 'scaleX(1)'; elSeg.textContent = SEG;
     fin = true; pinta(); fin = false;
     raiz.classList.add('repartiendo');
-    rodar(() => { raiz.classList.remove('repartiendo'); raiz.classList.add('reparte'); setTimeout(() => raiz.classList.remove('reparte'), 900); pinta(); inicio = performance.now(); tick = requestAnimationFrame(reloj); });
+    const arranca = () => { raiz.classList.remove('repartiendo'); raiz.classList.add('reparte'); setTimeout(() => raiz.classList.remove('reparte'), 900); pinta(); inicio = r ? r.inicio : performance.now(); tick = requestAnimationFrame(reloj); };
+    rodar(() => setTimeout(arranca, r ? Math.max(0, r.inicio - performance.now()) : 0));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   pintaObjetivo('???'); pintaRecord();
-  $('cf-empezar').addEventListener('click', empezar);
+  if (D) window.cifras = { empezar, parar, resolver, confeti, valores: () => [...vistos] };
+  else $('cf-empezar').addEventListener('click', () => empezar());
 })();

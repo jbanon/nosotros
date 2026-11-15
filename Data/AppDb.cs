@@ -31,6 +31,7 @@ public class AppDb : DbContext
     public DbSet<Obra> Obras => Set<Obra>();
     public DbSet<ParadaObra> ParadasObra => Set<ParadaObra>();
     public DbSet<Capitulo> Capitulos => Set<Capitulo>();
+    public DbSet<DueloRonda> DueloRondas => Set<DueloRonda>();
     public DbSet<Lista> Listas => Set<Lista>();
     public DbSet<ListaElemento> ListaElementos => Set<ListaElemento>();
 

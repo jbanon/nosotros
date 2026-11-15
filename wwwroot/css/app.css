@@ -968,3 +968,39 @@ html.con-cine, html.con-cine body { overflow: hidden; }
 .cf-res.tiempo { border-top-color: var(--mal); }
 .agotado .cf-reloj div { background: var(--mal); transform: scaleX(1) !important; opacity: .45; }
 .agotado .cf-seg { color: #ff8a8a; }
+
+/* Duelo de Cifras */
+.cf-retar { display: block; text-align: center; font-weight: 800; padding: 10px; margin: -6px 0 12px; border-radius: 14px; background: var(--acento-claro); color: var(--acento-texto); }
+.dl-tarjeta { background: var(--tarjeta); border-radius: var(--radio); box-shadow: var(--sombra); padding: 24px 18px 18px; text-align: center; }
+.dl-tarjeta h2 { margin: 6px 0 6px; font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; line-height: 1.1; }
+.dl-tarjeta p { margin: 0 0 16px; color: var(--suave); }
+.dl-espadas { font-size: 2.6rem; }
+.dl-llega { border-top: 5px solid var(--acento); animation: cf-pop .45s cubic-bezier(.3,1.6,.5,1); }
+.dl-llega .dl-espadas { animation: dl-choca 1.2s ease-in-out infinite; }
+@keyframes dl-choca { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-12deg) scale(1.1); } 50% { transform: rotate(10deg); } }
+.dl-puntos { display: flex; gap: 8px; justify-content: center; height: 40px; align-items: center; }
+.dl-puntos i { width: 12px; height: 12px; border-radius: 50%; background: var(--acento); animation: dl-punto 1.2s ease-in-out infinite; }
+.dl-puntos i:nth-child(2) { animation-delay: .15s; } .dl-puntos i:nth-child(3) { animation-delay: .3s; }
+@keyframes dl-punto { 0%, 80%, 100% { transform: scale(.5); opacity: .4; } 40% { transform: scale(1); opacity: 1; } }
+.dl-marcador { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-bottom: 12px; }
+.dl-jug { background: var(--tarjeta); border-radius: 14px; box-shadow: var(--sombra); padding: 8px 10px; min-width: 0; border: 2px solid transparent; transition: border-color .2s, background .2s; }
+.dl-jug b { display: block; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--suave); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dl-jug span { display: block; font-weight: 900; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dl-jug.rival { text-align: right; }
+.dl-jug.yo { border-color: color-mix(in srgb, var(--acento) 40%, transparent); }
+.dl-jug.clavado { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, var(--tarjeta)); }
+.dl-jug.clavado span { color: var(--ok-texto); }
+.dl-tanteo { display: flex; align-items: center; gap: 6px; font-weight: 900; font-size: 1.9rem; font-variant-numeric: tabular-nums; }
+.dl-tanteo i { font-style: normal; color: var(--suave); font-size: 1.2rem; }
+.dl-final { margin-top: 16px; }
+.dl-tabla { margin: 8px 0 12px; }
+.dl-fila { display: grid; grid-template-columns: 1fr auto auto auto; gap: 10px; align-items: center; text-align: left; padding: 8px 10px; border-radius: 10px; font-variant-numeric: tabular-nums; }
+.dl-fila:nth-child(odd) { background: color-mix(in srgb, var(--linea) 50%, transparent); }
+.dl-fila span:nth-child(2) { font-weight: 900; font-size: 1.15rem; }
+.dl-fila span:nth-child(3), .dl-fila span:nth-child(4) { color: var(--suave); font-size: .85rem; font-weight: 700; }
+.dl-fila.ok span:nth-child(3) { color: var(--ok-texto); }
+.dl-cuenta { position: fixed; inset: 0; z-index: 35; display: flex; align-items: center; justify-content: center; pointer-events: none; font-size: 7rem; font-weight: 900; color: #ffcf5a; text-shadow: 0 6px 30px rgba(0,0,0,.45); background: radial-gradient(circle, rgba(28,31,54,.55), rgba(28,31,54,.15) 60%, transparent); }
+.dl-cuenta.late { animation: dl-late .7s ease-out; }
+@keyframes dl-late { from { transform: scale(1.8); opacity: 0; } 30% { opacity: 1; } }
+.jg-duelo .jg-vista { background: linear-gradient(160deg, #7a2f24, #b05540); font-size: 2.6rem; }
+.jg-badge { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 99px; background: var(--acento); color: #fff; font-size: .72rem; font-family: 'Nunito', system-ui, sans-serif; vertical-align: middle; animation: cf-late 1.2s ease-in-out infinite; }

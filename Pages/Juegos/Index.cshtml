@@ -1,5 +1,9 @@
 @page
-@{ ViewData["Title"] = "Juegos"; }
+@inject Love.Services.DueloCifras Duelo
+@{
+    ViewData["Title"] = "Juegos";
+    var reto = Duelo.RetoPara(int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value));
+}
 <div class="cab"><h1>Juegos</h1></div>
 <p class="suave peq" style="margin-top:0">Un ratito para pensar. Sin prisas… salvo en Cifras.</p>
 <a class="jg-tarjeta jg-cifras" href="/Juegos/Cifras">
@@ -11,6 +15,13 @@
         <h2>Cifras</h2>
         <p>Seis números, un objetivo y 45 segundos. Suma, resta, multiplica y divide hasta clavarlo.</p>
         <p class="jg-stats" data-stats="cifras"></p>
+    </div>
+</a>
+<a class="jg-tarjeta jg-duelo" href="/Juegos/Duelo">
+    <div class="jg-vista" aria-hidden="true">⚔️</div>
+    <div class="jg-texto">
+        <h2>Duelo de Cifras @if (reto != null) { <span class="jg-badge">¡reto!</span> }</h2>
+        <p>@(reto != null ? $"{reto} te ha retado. Mismos números, a la vez: ¿quién se acerca más?" : "Los dos a la vez con los mismos números. Gana quien más se acerque.")</p>
     </div>
 </a>
 <a class="jg-tarjeta jg-cruci" href="/Juegos/Crucigrama">

@@ -1,0 +1,50 @@
+@page
+@model Love.Pages.Juegos.DueloModel
+@{ ViewData["Title"] = "Duelo de Cifras"; }
+@Html.AntiForgeryToken()
+<div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Duelo de Cifras</h1><span class="jg-record suave peq" id="dl-hist"></span></div>
+
+<div class="dl-sala" id="dl-sala">
+    <div class="dl-vista" data-v="cargando"><p class="suave centrado">Un momento…</p></div>
+    <div class="dl-vista" data-v="nada" hidden>
+        <div class="dl-tarjeta">
+            <div class="dl-espadas">⚔️</div>
+            <h2>Reta al otro</h2>
+            <p>Los mismos seis números para los dos, a la vez. Gana quien más se acerque; si empatáis, quien llegue antes. Si alguien lo clava, se acaba la ronda.</p>
+            <button type="button" class="btn primario ancho" data-accion="Retar">Lanzar el reto</button>
+        </div>
+    </div>
+    <div class="dl-vista" data-v="reto" hidden>
+        <div class="dl-tarjeta dl-llega">
+            <div class="dl-espadas">⚔️</div>
+            <h2><span data-rival></span> te reta</h2>
+            <p>Una ronda de Cifras, cara a cara. ¿Te atreves?</p>
+            <button type="button" class="btn primario ancho" data-accion="Aceptar">¡Acepto!</button>
+        </div>
+    </div>
+    <div class="dl-vista" data-v="esperando" hidden>
+        <div class="dl-tarjeta">
+            <div class="dl-puntos"><i></i><i></i><i></i></div>
+            <h2>Reto lanzado</h2>
+            <p>En cuanto el otro entre en Juegos verá el reto. Empezará solo cuando lo acepte.</p>
+            <button type="button" class="btn ancho" data-accion="Salir">Cancelar el reto</button>
+        </div>
+    </div>
+    <div class="dl-vista" data-v="juego" hidden>
+        <div class="dl-marcador">
+            <div class="dl-jug yo"><b>Tú</b><span id="dl-yo-txt">—</span></div>
+            <div class="dl-tanteo"><span id="dl-s-yo">0</span><i>–</i><span id="dl-s-rival">0</span></div>
+            <div class="dl-jug rival"><b data-rival></b><span id="dl-rival-txt">pensando…</span></div>
+        </div>
+        <div class="cf" id="cf">
+            <partial name="_CifrasTablero" />
+        </div>
+        <div class="dl-final" id="dl-final" hidden></div>
+        <div class="dl-cuenta" id="dl-cuenta" hidden></div>
+    </div>
+</div>
+<p class="centrado peq mt" id="dl-salir-p" hidden><button type="button" class="btn fantasma pequeno" data-accion="Salir">Salir del duelo</button></p>
+@section Scripts {
+<script src="/js/duelo.js" asp-append-version="true"></script>
+<script src="/js/cifras.js" asp-append-version="true"></script>
+}

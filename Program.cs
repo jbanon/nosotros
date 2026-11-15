@@ -50,6 +50,7 @@ builder.Services.AddScoped<MensajeService>();
 builder.Services.AddScoped<ListaCompraService>();
 builder.Services.AddScoped<ZonaAuto>();
 builder.Services.AddSingleton<CrucigramaGenerador>();
+builder.Services.AddSingleton<DueloCifras>();
 builder.Services.AddScoped<GastoService>();
 builder.Services.AddScoped<SugerenciaService>();
 builder.Services.AddScoped<RecurrenteService>();
