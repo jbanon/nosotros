@@ -8,7 +8,7 @@
   const guarda = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { } };
   const zumba = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch { } };
 
-  let objetivo, fichas, pasos, sel, op, fin, inicio, tick, vistos;
+  let objetivo, fichas, pasos, sel, op, fin, inicio, tick, vistos, agotado;
 
   function nueva() {
     const bolsa = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100];
@@ -16,7 +16,7 @@
     for (let i = 0; i < 6; i++) nums.push(bolsa.splice(Math.floor(Math.random() * bolsa.length), 1)[0]);
     objetivo = 101 + Math.floor(Math.random() * 899);
     fichas = nums.map((v, i) => ({ v, usado: false, k: i }));
-    vistos = new Set(nums); pasos = []; sel = null; op = null; fin = false;
+    vistos = new Set(nums); pasos = []; sel = null; op = null; fin = false; agotado = false;
   }
 
   function pintaObjetivo(txt) { elObj.innerHTML = String(txt).split('').map(d => `<span>${d}</span>`).join(''); }
@@ -90,7 +90,7 @@
     elBarra.style.transform = `scaleX(${queda / SEG})`;
     elSeg.textContent = Math.ceil(queda);
     raiz.classList.toggle('apurando', queda <= 10 && queda > 0);
-    if (queda <= 0) return terminar();
+    if (queda <= 0) return tiempo();
     tick = requestAnimationFrame(reloj);
   }
 
@@ -122,25 +122,41 @@
     return { ...mejor, pasos: usados };
   }
 
-  function terminar() {
-    if (fin) return;
-    fin = true; cancelAnimationFrame(tick); raiz.classList.remove('apurando');
-    const segs = Math.round((performance.now() - inicio) / 1000);
-    let mio = null; vistos.forEach(v => { if (mio === null || Math.abs(v - objetivo) < Math.abs(mio - objetivo)) mio = v; });
-    const d = Math.abs(mio - objetivo), exacta = d === 0;
+  const segsJugados = () => Math.round((performance.now() - inicio) / 1000);
+  function masCerca() { let m = null; vistos.forEach(v => { if (m === null || Math.abs(v - objetivo) < Math.abs(m - objetivo)) m = v; }); return m; }
+
+  function registrar(exacta, segs) {
     const st = lee('cifras-stats', { jugadas: 0, exactas: 0, racha: 0, mejorSeg: null });
     st.jugadas++; if (exacta) { st.exactas++; st.racha++; if (st.mejorSeg == null || segs < st.mejorSeg) st.mejorSeg = segs; } else st.racha = 0;
-    guarda('cifras-stats', st);
+    guarda('cifras-stats', st); pintaRecord();
+  }
+
+  // Se acaba el reloj: cuenta como no conseguido, pero se puede seguir jugando hasta pedir la solución
+  function tiempo() {
+    cancelAnimationFrame(tick); raiz.classList.remove('apurando'); raiz.classList.add('agotado');
+    agotado = true; elSeg.textContent = '⏰'; registrar(false, SEG); zumba([60, 60, 60]);
+    const mio = masCerca(), d = Math.abs(mio - objetivo);
+    elFinal.innerHTML = `<div class="cf-res tiempo"><h2>⏰ ¡Tiempo!</h2><p>No conseguido en 45 s${d < Infinity ? ` (te has quedado a ${d}, con ${mio})` : ''}. Pero puedes seguir intentándolo sin reloj.</p>
+      <button type="button" class="btn ancho" id="cf-ver">Ver la solución</button></div>`;
+    elFinal.hidden = false;
+    $('cf-ver').addEventListener('click', terminar);
+  }
+
+  function terminar() {
+    if (fin) return;
+    fin = true; cancelAnimationFrame(tick); raiz.classList.remove('apurando', 'agotado');
+    const segs = segsJugados(), mio = masCerca(), d = Math.abs(mio - objetivo), exacta = d === 0;
+    if (!agotado) registrar(exacta, segs);
     pinta();
-    const titulo = exacta ? `¡Exacto! <small>en ${segs} s</small>` : d <= 5 ? `¡Casi! A ${d} <small>(${mio})</small>` : d <= 10 ? `A ${d} <small>(${mio})</small>` : `Uy… a ${d} <small>(${mio})</small>`;
-    const frase = exacta ? (segs <= 15 ? 'Eso ha sido de calculadora humana.' : 'Clavado. Ni el del concurso.') :
-                  d <= 10 ? 'En el concurso eso puntúa. Aquí también.' : 'Los números hoy estaban rebeldes.';
+    let titulo, frase;
+    if (exacta && !agotado) { titulo = `¡Exacto! <small>en ${segs} s</small>`; frase = segs <= 15 ? 'Eso ha sido de calculadora humana.' : 'Clavado. Ni el del concurso.'; }
+    else if (exacta) { titulo = '¡Exacto! <small>fuera de tiempo</small>'; frase = 'No puntúa, pero lo has sacado. Eso no te lo quita nadie.'; }
+    else { titulo = d <= 5 ? `¡Casi! A ${d} <small>(${mio})</small>` : `A ${d} <small>(${mio})</small>`; frase = d <= 10 ? 'En el concurso eso puntúa. Aquí también.' : 'Los números hoy estaban rebeldes.'; }
     elFinal.innerHTML = `<div class="cf-res ${exacta ? 'ok' : ''}"><h2>${titulo}</h2><p>${frase}</p><div id="cf-sol" class="cf-sol"><span class="suave peq">Buscando la mejor solución…</span></div>
       <button type="button" class="btn primario ancho" id="cf-otra">Otra partida</button></div>`;
     elFinal.hidden = false;
     $('cf-otra').addEventListener('click', empezar);
     if (exacta) confeti();
-    pintaRecord();
     setTimeout(() => {
       const s = resolver(fichasIniciales(), objetivo);
       const lista = s.pasos.map(p => `<li>${p.a} ${OPS[p.op]} ${p.b} = <b>${p.r}</b></li>`).join('');
@@ -168,7 +184,7 @@
   }
 
   function empezar() {
-    nueva(); elFinal.hidden = true; elInicio.hidden = true; elObj.classList.remove('fijado');
+    nueva(); elFinal.hidden = true; elInicio.hidden = true; raiz.classList.remove('agotado'); elObj.classList.remove('fijado');
     raiz.classList.add('jugando');
     elBarra.style.transform = 'scaleX(1)'; elSeg.textContent = SEG;
     fin = true; pinta(); fin = false;

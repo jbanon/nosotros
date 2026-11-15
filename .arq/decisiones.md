@@ -180,7 +180,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Sección propia, enlazada desde la portada (🎲 Juegos). Todo se juega en el navegador; récords y partidas en
   `localStorage` (`cifras-stats`, `cruci-stats`, `cruci-<semilla>`), sin corazones ni base de datos.
 - Cifras: 6 números de {1-10 ×2, 25, 50, 75, 100}, objetivo 101-999, + − × ÷ con resultados enteros positivos,
-  cada número una vez, 45 s. Al acabar se enseña la mejor solución (buscador en JS).
+  cada número una vez, 45 s. Pasado el tiempo cuenta como no conseguido pero se puede seguir jugando sin
+  reloj; la solución (buscador en JS) sale al pulsar "Ver la solución" o al clavarlo.
 - Crucigrama: banco `Seed/crucigrama.json` ([palabra, pista], pistas con guasa y algún guiño a la familia).
   `CrucigramaGenerador` arma hasta 12 palabras en 11×11 como mucho; semilla = fecha (+ n para "otro"), así el
   del día es el mismo para los dos. Se comprueba en el cliente (lleva la solución; no hay premio que proteger).

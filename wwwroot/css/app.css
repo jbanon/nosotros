@@ -965,3 +965,6 @@ html.con-cine, html.con-cine body { overflow: hidden; }
 .cr-hecho h2 { margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 2rem; }
 .cr-hecho p { color: var(--suave); margin: 4px 0 14px; }
 @media (prefers-reduced-motion: reduce) { .cf-ficha, .cr-c, .cf-res, .cr-hecho, .cf-marcador span { animation: none !important; } }
+.cf-res.tiempo { border-top-color: var(--mal); }
+.agotado .cf-reloj div { background: var(--mal); transform: scaleX(1) !important; opacity: .45; }
+.agotado .cf-seg { color: #ff8a8a; }
