@@ -41,8 +41,15 @@
 ## Ideas apuntadas (sin empezar, 2026-11-10)
 Javier las dejó apuntadas para hacer más adelante; también pueden entrar como casillas del adviento.
 - **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
-- **Recordatorio de francés**: Raquel habla bien francés; algo gracioso para repasar (frase o expresión del
-  día, falsos amigos, mini quiz).
+- **Clases de francés divertidas, nivel B2-C1** (Javier, 2026-11-15: "le gusta"). Píldoras cortas:
+  - **Formato:** una lectura breve en tono distendido con toques cómicos, a veces con imagen.
+  - **Temas:** textos, recetas, noticias, curiosidades.
+  - **Después de leer:** preguntas o un comentario libre, y ejercicios de rellenar frases o de vocabulario
+    (expresiones, falsos amigos).
+  - **Corrección:** las respuestas de Raquel pasan al agente (`claude -p`, cola de tareas como las viñetas),
+    que corrige con cariño y explica los fallos. Javier puede ver las respuestas y las correcciones.
+  - **Sin decidir:** frecuencia, si cuenta para los corazones y dónde vive (¿Lecturas, Juegos o una sección
+    propia?).
 
 ## Resueltas
 | Fecha | Tarea | Commit |
