@@ -82,4 +82,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-13 | Arte por capítulos: Vallotton (texto, 3 paseos: Perseo, Coquetería, Mujer con cántaro; 5 obras con reseña), diseño del agente Fable; imágenes de WikiArt (Commons solo tenía baja resolución) | e395df9 |
 | 2026-11-14 | Visor de arte: el círculo del detalle parpadea dos veces y desaparece 5 s (en bucle) para no tapar la obra | 3263034 |
 | 2026-11-14 | Juegos: Cifras (45 s, solución al final) y crucigrama del día generado; enlace en la portada. Pendiente: Javier lo prueba en el móvil (JS sin probar en navegador aquí) | a136aa2 |
-| 2026-11-15 | Cifras: al acabar los 45 s cuenta como no conseguido pero se sigue jugando; botón "Ver la solución" | (este) |
+| 2026-11-15 | Cifras: al acabar los 45 s cuenta como no conseguido pero se sigue jugando; botón "Ver la solución" | 060a6b1 |
