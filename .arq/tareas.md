@@ -13,6 +13,11 @@
   decisiones → Comida); una skill propia de Alexa queda como opción si la piden.
 
 ## Hilos abiertos
+- **Arte por temas** (plan en decisiones → "Arte por temas"). Falta implementar:
+  - Entidad Tema, con el capítulo de tipo "tour general" o "autor".
+  - Calendario: capítulos los domingos, alternando temas; obras sueltas los miércoles.
+  - Álbum agrupado por tema.
+  - Contenido, empezando por los tours generales.
 - **Arte en producción:** copiar `App_Data/entrada/arte/` (12 jpg, ~52 MB) al servidor en
   `/opt/love/App_Data/entrada/arte/` y pulsar Importar en Admin → Disfruta la vista antes del domingo 15/11.
   Javier revisa los textos y escribe/ajusta su frase final en cada obra. Visor sin probar en navegador real.

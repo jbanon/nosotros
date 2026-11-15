@@ -176,6 +176,21 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   familia) + imágenes en `App_Data/entrada/arte/` (fuera del repo); se importan desde Admin → Disfruta la vista.
 
 
+## Arte por temas (Javier, 2026-11-15; sin implementar)
+- **Domingos: capítulo completo de un artista**, como el de Vallotton. **Miércoles: una obra suelta** (más rápida).
+- Tono siempre desenfadado, con pinceladas cómicas. Texto de contexto ~60 % del de Vallotton (~500 palabras).
+- Los capítulos se agrupan en **temas (movimientos)**. Cada tema tiene un **tour general** (obras de varios
+  autores que cuentan el movimiento) y **4-5 autores**, o más si el movimiento lo pide. Se intercalan los temas
+  (un domingo de uno, el siguiente de otro) y se van completando poco a poco.
+- Temas elegidos (todos de dominio público):
+  1. **Postimpresionismo y nabis**: Vallotton (ya hecho), Bonnard, Vuillard, Gauguin, Van Gogh, Cézanne.
+  2. **Impresionismo**: Monet, Renoir, Degas, Berthe Morisot, Pissarro, Caillebotte.
+  3. **Siglo de Oro holandés**: Rembrandt, Vermeer, Frans Hals, Jan Steen, Pieter de Hooch.
+  4. **Siglo de Oro español**: El Greco, Velázquez, Zurbarán, Murillo, Ribera.
+  5. **Renacimiento italiano**: Botticelli, Leonardo, Rafael, Tiziano, Caravaggio (de cierre, ya barroco).
+  6. **Romanticismo**: Goya, Friedrich, Turner, Delacroix, Constable.
+- Las obras sueltas ya cargadas (Sorolla, Arnolfini…) pasan a los miércoles.
+
 ## Juegos (`/Juegos`)
 - Sección propia, enlazada desde la portada (🎲 Juegos). Todo se juega en el navegador; récords y partidas en
   `localStorage` (`cifras-stats`, `cruci-stats`, `cruci-<semilla>`), sin corazones ni base de datos.
