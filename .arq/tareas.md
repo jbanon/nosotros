@@ -107,3 +107,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-15 | Cifras: al acabar los 45 s cuenta como no conseguido pero se sigue jugando; botón "Ver la solución" | 060a6b1 |
 | 2026-11-15 | Duelo de Cifras a dos: reto, aviso en portada, rondas simultáneas, marcador de sesión e histórico. Probado con curl; falta probar en los dos móviles | 1d63de7 |
 | 2026-11-15 | Crucigrama compartido: la misma rejilla para los dos, letras y cursor del otro en violeta, guardado en servidor. Probado con curl; falta probar en los dos móviles | 81e5311 |
+| 2026-11-16 | Gastos: la compra que pasa del objetivo se descuenta de la hipoteca del mes siguiente | (este) |

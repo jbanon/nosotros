@@ -17,6 +17,8 @@ public class IndexModel(GastoService gastos, ConfigService config) : PageModel
     public decimal Hipoteca => Lista.Where(g => g.Tipo == TipoGasto.Hipoteca).Sum(g => g.Importe);
     public decimal Total => Lista.Sum(g => g.Importe);
     public DateOnly Inicio => new(Anio, Mes, 1);
+    /// <summary>Lo que se descuenta de la hipoteca de este mes por la compra de más del anterior.</summary>
+    public decimal DescuentoHipoteca { get; set; }
 
     public async Task OnGet(int? anio, int? mes)
     {
@@ -25,5 +27,7 @@ public class IndexModel(GastoService gastos, ConfigService config) : PageModel
         await gastos.AsegurarFijos(Anio, Mes);
         Lista = await gastos.DelMes(Anio, Mes);
         Objetivo = await config.GetDecimal(ConfigClaves.ObjetivoCompra, 350);
+        var ant = Inicio.AddMonths(-1);
+        if (Lista.Any(g => g.EsFijo && g.Tipo == TipoGasto.Hipoteca)) DescuentoHipoteca = await gastos.ExcesoCompra(ant.Year, ant.Month);
     }
 }

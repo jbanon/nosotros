@@ -24,6 +24,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   botón de empezar; hay "Cancelar" por si se marca algo en casa). Al apuntar el ticket (desde la lista o
   desde el formulario con `lunes`) se guarda `Gasto.DuracionMin` y se vacía el inicio. Si pasaron más de
   5 h se considera un olvido y no se guarda. Gastos muestra 🕒 por compra y total/media del mes.
+- Fijos: Veva 300, Hipoteca 900, objetivo de compra 350 (Config). Si la compra de un mes pasa del objetivo,
+  el exceso se descuenta de la hipoteca del mes siguiente (540 de compra → 900 − 190 = 710). Nunca baja de 0.
+  `GastoService.AjustarHipoteca` lo recalcula cada vez que se abre Gastos o el Histórico (un ticket tardío
+  también cuenta); por eso, si se edita a mano el importe del fijo de hipoteca, se sobrescribe.
 
 ## Comida
 - La lista de la compra es SIEMPRE para 12 raciones ("somos una gran familia"), configurable en
