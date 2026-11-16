@@ -100,15 +100,19 @@ public class ArteService(AppDb db, FileStorage files, IWebHostEnvironment env, I
             h = System.Text.RegularExpressions.Regex.Replace(h, @"\*\*(.+?)\*\*", "<strong>$1</strong>");
             return System.Text.RegularExpressions.Regex.Replace(h, @"(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])", "<em>$1</em>");
         }
-        foreach (var raw in texto.Replace("\r", "").Split("\n\n", StringSplitOptions.RemoveEmptyEntries))
+        var bloques = new Queue<string>(texto.Replace("\r", "").Split("\n\n", StringSplitOptions.RemoveEmptyEntries));
+        while (bloques.Count > 0)
         {
-            var b = raw.Trim('\n');
+            var b = bloques.Dequeue().Trim('\n');
             if (string.IsNullOrWhiteSpace(b)) continue;
             if (b.StartsWith("## "))
             {
-                var t = b[3..].Trim(); var id = "s" + (secciones.Count + 1);
+                // "## Título" ocupa solo su línea; lo que siga sin línea en blanco es otro bloque
+                var nl = b.IndexOf('\n');
+                var t = (nl < 0 ? b[3..] : b[3..nl]).Trim(); var id = "s" + (secciones.Count + 1);
                 secciones.Add((id, t));
                 sb.Append($"<h2 id=\"{id}\">").Append(Inline(t)).Append("</h2>");
+                if (nl >= 0) { var resto = new Queue<string>(); resto.Enqueue(b[(nl + 1)..]); foreach (var x in bloques) resto.Enqueue(x); bloques = resto; }
             }
             else if (b.StartsWith("### "))
             {
