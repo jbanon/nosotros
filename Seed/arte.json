@@ -960,6 +960,240 @@
      "licencia": "Dominio público"
     }
    ]
+  },
+  {
+   "clave": "japon",
+   "artista": "Japón",
+   "titulo": "Del oro al grabado",
+   "fechas": "Siglos XVII – XIX",
+   "entradilla": "Dioses que bailan sobre oro, una ola con garras, un esqueleto del tamaño de un edificio y un pavo real que parece de nieve. Dos siglos encerrado en sí mismo le sentaron de maravilla a Japón: cuando por fin abrió la puerta, le voló la cabeza a medio París. Hoy, el tour general.",
+   "textoFichero": "capitulos/japon.md",
+   "portada": "japon-ola",
+   "obras": [
+    {
+     "clave": "japon-ola",
+     "fichero": "japon/japon-ola.jpg",
+     "titulo": "La gran ola de Kanagawa",
+     "autor": "Katsushika Hokusai",
+     "anio": "hacia 1830-1832",
+     "intro": "Probablemente la imagen japonesa más famosa del planeta: está en tazas, camisetas y hasta en emojis. La hizo un señor de setenta años que se llamaba a sí mismo «el viejo loco por la pintura». Y no es un cuadro: es un grabado, del que se tiraron miles de copias que se vendían por lo que cuesta un plato de fideos.",
+     "fuente": "https://www.metmuseum.org/art/collection/search/45434",
+     "licencia": "Dominio público (Met Open Access)",
+     "museo": "The Metropolitan Museum of Art, Nueva York",
+     "paradas": [
+      {
+       "x": 0.5,
+       "y": 0.3,
+       "zoom": 3.2,
+       "titulo": "Las garras",
+       "texto": "Mira la cresta: la espuma se rompe en dedos, casi en zarpas. La ola no rompe, agarra. Hokusai convirtió el mar en un monstruo sin dibujar ningún monstruo."
+      },
+      {
+       "x": 0.3,
+       "y": 0.47,
+       "zoom": 2.4,
+       "titulo": "El azul nuevo",
+       "texto": "Ese azul intenso es azul de Prusia, un pigmento sintético que llegaba de Europa a través de los holandeses. Era la novedad del momento, y Hokusai lo usó sin miedo."
+      },
+      {
+       "x": 0.85,
+       "y": 0.62,
+       "zoom": 3.6,
+       "titulo": "Los remeros",
+       "texto": "Los remeros, agachados y pegados a la barca. Son pescadores de vuelta a puerto con prisa. Nadie sale gritando: aguantan, y ya está. Nos caen bien."
+      },
+      {
+       "x": 0.7,
+       "y": 0.9,
+       "zoom": 3,
+       "titulo": "Otra barca",
+       "texto": "Hay tres barcas, no una. Esta va directa al seno de la ola. Spoiler: no sabemos qué pasó. Hokusai nos deja con el corazón en un puño a propósito."
+      },
+      {
+       "x": 0.635,
+       "y": 0.685,
+       "zoom": 4,
+       "titulo": "El Fuji, pequeñito",
+       "texto": "El monte sagrado, protagonista de la serie (Treinta y seis vistas del monte Fuji), sale diminuto, como si la ola lo fuera a tragar. Es un truco de perspectiva aprendido de los grabados holandeses."
+      },
+      {
+       "x": 0.475,
+       "y": 0.6,
+       "zoom": 3.5,
+       "titulo": "¿Nieva?",
+       "texto": "Esas gotas de espuma caen sobre el Fuji como si nevara. La ola y la montaña nevada se parecen: la grande imita a la pequeña. Hokusai, el rey de las rimas visuales."
+      },
+      {
+       "x": 0.07,
+       "y": 0.2,
+       "zoom": 4.2,
+       "titulo": "El cartucho",
+       "texto": "El recuadro dice el título de la serie y de la obra. Al lado, la firma: «pintado por Hokusai, que ahora se llama Iitsu». Se cambió de nombre más de treinta veces. El DNI le duraba poco."
+      }
+     ]
+    },
+    {
+     "clave": "japon-dioses",
+     "fichero": "japon/japon-dioses.png",
+     "titulo": "Dioses del viento y del trueno",
+     "autor": "Tawaraya Sōtatsu",
+     "anio": "principios del siglo XVII",
+     "intro": "Dos biombos de oro y dos dioses de mal humor, cada uno en su esquina como boxeadores antes de la pelea. Es tesoro nacional de Japón y tuvo tanto éxito que, cien años después, Kōrin hizo una versión, y otros cien años después Hōitsu hizo la versión de la versión. Una canción con dos siglos de covers.",
+     "fuente": "https://commons.wikimedia.org/wiki/File:Wind_God_and_Thunder_God_Screens_by_Tawaraya_Sotatsu_hi-res.png",
+     "licencia": "Dominio público",
+     "museo": "Templo Kennin-ji (en depósito en el Museo Nacional de Kioto)",
+     "paradas": [
+      {
+       "x": 0.155,
+       "y": 0.36,
+       "zoom": 2.6,
+       "titulo": "Raijin, el del trueno",
+       "texto": "Blanco, con cuernos y bailando en el aire. Lleva palillos en las manos: el trueno es él aporreando una batería celestial. Un poco heavy, la verdad."
+      },
+      {
+       "x": 0.265,
+       "y": 0.56,
+       "zoom": 4.5,
+       "titulo": "La batería",
+       "texto": "Fíjate en el aro con tambores que lo rodea. Cada tambor, un trueno. En noches de tormenta ya sabes quién está ensayando."
+      },
+      {
+       "x": 0.835,
+       "y": 0.33,
+       "zoom": 2.6,
+       "titulo": "Fūjin, el del viento",
+       "texto": "Verde, con melena al viento (cómo no) y un saco gigante a la espalda. Cuando abre el saco, sale el viento. Es el dios del aire acondicionado."
+      },
+      {
+       "x": 0.805,
+       "y": 0.31,
+       "zoom": 5,
+       "titulo": "Esa sonrisa",
+       "texto": "Ojos dorados, dientes al aire y cara de travieso. No da miedo: da un poco de risa. Los dioses japoneses pueden ser terribles y simpáticos a la vez."
+      },
+      {
+       "x": 0.5,
+       "y": 0.5,
+       "zoom": 1.3,
+       "titulo": "El oro vacío",
+       "texto": "El centro está vacío y es lo mejor del biombo. Los dos dioses se miran desde los bordes y toda la tensión está en el hueco entre ellos. Con los biombos plegados en zigzag, el oro brilla distinto según te muevas."
+      },
+      {
+       "x": 0.8,
+       "y": 0.66,
+       "zoom": 3,
+       "titulo": "Las nubes",
+       "texto": "Las nubes son manchas de tinta que se dejaron correr sobre el fondo húmedo. Técnica tarashikomi: dejar que la pintura haga lo que quiera. Sōtatsu fue de los primeros en atreverse."
+      }
+     ]
+    },
+    {
+     "clave": "japon-takiyasha",
+     "fichero": "japon/japon-takiyasha.jpg",
+     "titulo": "La bruja Takiyasha y el esqueleto espectral",
+     "autor": "Utagawa Kuniyoshi",
+     "anio": "hacia 1844",
+     "intro": "Tres hojas de grabado que, juntas, forman una de las imágenes más bestias del arte japonés: un esqueleto del tamaño de un edificio asomándose a un palacio en ruinas. Kuniyoshi era el rey de los monstruos, los samuráis y los gatos. Aquí tocan monstruos.",
+     "fuente": "https://commons.wikimedia.org/wiki/File:Takiyasha_the_Witch_and_the_Skeleton_Spectre,_by_Utagawa_Kuniyoshi.jpg",
+     "licencia": "Dominio público",
+     "museo": "Varias colecciones (es un grabado: hay varios ejemplares)",
+     "paradas": [
+      {
+       "x": 0.065,
+       "y": 0.25,
+       "zoom": 3.2,
+       "titulo": "La princesa bruja",
+       "texto": "Es Takiyasha, hija de un rebelde vencido. Ha aprendido magia con un sapo (sí, con un sapo) y lee el pergamino del conjuro con una calma que da más miedo que el esqueleto."
+      },
+      {
+       "x": 0.45,
+       "y": 0.25,
+       "zoom": 2.6,
+       "titulo": "El esqueleto",
+       "texto": "En la leyenda eran muchos esqueletos pequeños. Kuniyoshi pensó que uno gigante quedaba mejor. Tenía razón."
+      },
+      {
+       "x": 0.39,
+       "y": 0.43,
+       "zoom": 4,
+       "titulo": "La mano",
+       "texto": "Los dedos huesudos apartan la persiana de bambú como quien abre una cortina para ver si llueve. Un gesto doméstico para un monstruo de diez metros."
+      },
+      {
+       "x": 0.825,
+       "y": 0.35,
+       "zoom": 2,
+       "titulo": "Anatomía de libro",
+       "texto": "Las costillas, la columna, la clavícula… está bastante bien dibujado. Kuniyoshi había visto libros holandeses de anatomía. Ciencia occidental al servicio del susto japonés."
+      },
+      {
+       "x": 0.375,
+       "y": 0.45,
+       "zoom": 4.5,
+       "titulo": "El samurái",
+       "texto": "Ōya no Mitsukuni, enviado a limpiar el palacio de conspiradores. Su cara dice «no me pagan lo suficiente para esto», pero ahí sigue, con la espada lista."
+      },
+      {
+       "x": 0.515,
+       "y": 0.75,
+       "zoom": 4,
+       "titulo": "El compañero",
+       "texto": "Su ayudante está en pleno forcejeo con alguien. Nadie mira hacia arriba. Error de principiante."
+      },
+      {
+       "x": 0.955,
+       "y": 0.925,
+       "zoom": 5,
+       "titulo": "La firma",
+       "texto": "En el cartucho rojo, «Ichiyūsai Kuniyoshi». Firma tres veces, una por hoja: los trípticos se vendían también por separado."
+      }
+     ]
+    },
+    {
+     "clave": "japon-lirios",
+     "fichero": "japon/japon-lirios.jpg",
+     "titulo": "Lirios en Yatsuhashi",
+     "autor": "Ogata Kōrin",
+     "anio": "después de 1709",
+     "intro": "Un puente en zigzag y un mar de lirios azules sobre oro. Ni una persona. Sale de un poema clásico en el que un viajero se para en los «Ocho puentes» y le entra la nostalgia de casa. Kōrin quitó al viajero, quitó el poema y dejó solo el sentimiento.",
+     "fuente": "https://www.metmuseum.org/art/collection/search/39664",
+     "licencia": "Dominio público (Met Open Access)",
+     "museo": "The Metropolitan Museum of Art, Nueva York"
+    },
+    {
+     "clave": "japon-pavo",
+     "fichero": "japon/japon-pavo.jpg",
+     "titulo": "Pino viejo y pavo real",
+     "autor": "Itō Jakuchū",
+     "anio": "hacia 1760",
+     "intro": "Jakuchū heredó una frutería en Kioto, se la pasó a su hermano y se dedicó a pintar animales. Tuvo gallos en el jardín durante años antes de pintarlos. Este pavo real blanco, de una serie de treinta rollos que regaló a un templo, tiene cada pluma hecha a mano sobre seda. Visto de cerca, marea. En la misma serie hay un pulpo con su pulpito a cuestas.",
+     "fuente": "https://commons.wikimedia.org/wiki/File:%27Old_Pine_Tree_and_Peacock%27_from_the_%27Colorful_Realm_of_Living_Beings%27_by_Ito_Jakuchu.jpg",
+     "licencia": "Dominio público",
+     "museo": "Museo de las Colecciones Imperiales (Sannomaru Shōzōkan), Tokio"
+    },
+    {
+     "clave": "japon-chubasco",
+     "fichero": "japon/japon-chubasco.jpg",
+     "titulo": "Chubasco repentino sobre el puente Shin-Ōhashi",
+     "autor": "Utagawa Hiroshige",
+     "anio": "1857",
+     "intro": "La lluvia, a rayas. Unos cuantos vecinos corren por el puente tapándose como pueden y al fondo todo se difumina en gris. Van Gogh lo copió al óleo en 1887, con un marco de letras japonesas copiadas de otros grabados sin saber lo que decían. Muy Van Gogh.",
+     "fuente": "https://www.metmuseum.org/art/collection/search/55433",
+     "licencia": "Dominio público (Met Open Access)",
+     "museo": "The Metropolitan Museum of Art, Nueva York"
+    },
+    {
+     "clave": "japon-fuegos",
+     "fichero": "japon/japon-fuegos.jpg",
+     "titulo": "Fuegos artificiales en Ikenohata",
+     "autor": "Kobayashi Kiyochika",
+     "anio": "1881",
+     "intro": "Japón ya ha abierto la puerta y llegan las farolas de gas, el tren y la fotografía. Kiyochika, «el Hiroshige de la era Meiji», pinta la noche con luz de verdad: siluetas a contraluz, reflejos en el agua y el cielo estallando. Es el ukiyo-e despidiéndose con fuegos artificiales. Literalmente.",
+     "fuente": "https://www.metmuseum.org/art/collection/search/712976",
+     "licencia": "Dominio público (Met Open Access)",
+     "museo": "The Metropolitan Museum of Art, Nueva York"
+    }
+   ]
   }
  ]
 }
