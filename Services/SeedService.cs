@@ -255,6 +255,14 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             await db.SaveChangesAsync();
             log.LogInformation("Adviento: día {Dia} actualizado con el contenido nuevo del seed", dia);
         }
+        // 2026-11-17: el vale del día 24 es por una serie (la navideña noruega), no por una película. Solo cambia el vale.
+        var fin = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 24 && x.Datos.Contains("Vale por una película sin discutir"));
+        if (fin != null)
+        {
+            fin.Datos = fin.Datos.Replace("Vale por una película sin discutir", "Vale por una serie sin discutir");
+            await db.SaveChangesAsync();
+            log.LogInformation("Adviento: vale del día 24 corregido (serie)");
+        }
         // 2026-11-17: el mini Arkanoid va en el día 13 (en lugar de su crucigrama "Junto al fuego"); conserva la letra.
         var a = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 13 && x.Tipo == TipoCasilla.Crucigrama && x.Datos.Contains("CARICIA"));
         if (a != null)
