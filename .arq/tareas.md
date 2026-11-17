@@ -125,6 +125,6 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Criptofrases 19 y 23 retocadas por Javier ("tú, la lluvia y yo"; "galletas de chocolate a escondidas") | 2d5e58a |
 | 2026-11-17 | Arkanoid: BriskaBird caga (la pala manchada va lenta 10 s), sin bloques se sigue hasta cazar todas las palabras y pala un 15 % más pequeña | b44c15b |
 | 2026-11-17 | Juegos diarios: globos, bloques y comecocos también en la zona Juegos, una partida al día por juego (admin sin límite), frase del día y desbloqueo con su casilla del adviento | 1ee3837 |
-| 2026-11-17 | Juegos con frase: comodín desde el 3º fallo (las palabras una a una y en orden, una vez por partida) en lugar de regalar palabras | (este) |
+| 2026-11-17 | Juegos con frase: comodín desde el 3º fallo (las palabras una a una y en orden, una vez por partida) en lugar de regalar palabras | a6071ac |
 | 2026-11-17 | Adviento: mini Arkanoid en el día 13 (pala, pelota, 42 bloques, 3 vidas; BriskaBird revolotea y suelta una palabra al darle; final con palabras que se esfuman y escritura de la frase como globos). Kit común `adv-juego.js` (sonido + escribir la frase). Briska asomando por el calendario y las casillas (`img/briska/*.png` listados por el servidor, bocadillos, ladridos) | 9850e62 |
 | 2026-11-17 | Adviento: mini comecocos del súper en el día 18 (carrito por los pasillos, ticket/oferta/piña persiguiendo, cafés, control por deslizar; Briskanguro dando saltitos con música boing-boing suelta las palabras; final como Arkanoid). `S.boing` en el kit común | 51ea44b |
