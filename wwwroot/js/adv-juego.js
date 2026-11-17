@@ -140,9 +140,11 @@
         <p class="gl-ayuda">${ayuda()}</p>
         <textarea id="gl-frase" rows="2" autocomplete="off" autocapitalize="sentences" placeholder="Escribe la frase completa…"></textarea>
         <button class="btn adv-btn primario ancho" id="gl-comprobar" type="button">Comprobar</button>
+        ${E.intentos >= 3 && !E.comodin ? '<button class="btn adv-btn ancho gl-btn-comodin" id="gl-comodin" type="button">🃏 Comodín: ver las palabras en orden</button>' : ''}
         ${D.diario ? '' : '<button class="btn adv-btn fantasma pequeno ancho" id="gl-otra" type="button">Volver a jugar para verlas otra vez</button>'}`;
       const ta = $('gl-frase'); ta.value = E.texto || '';
       $('gl-comprobar').addEventListener('click', comprobar);
+      if ($('gl-comodin')) $('gl-comodin').addEventListener('click', comodin);
       ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); comprobar(); } });
       if ($('gl-otra')) $('gl-otra').addEventListener('click', () => opc.jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
       if (ver && chips) { E.ocultas = true; guardarE(); esfumar(); }
@@ -163,7 +165,26 @@
       if (E.intentos === 0) return 'Ordénalas y completa lo que falte. Sin preocuparte de tildes ni comas.';
       if (E.intentos === 1) return 'Casi. Las verdes ya están en su sitio; los huecos te dicen cuántas letras tiene cada palabra.';
       if (E.intentos === 2) return 'Te doy la primera letra de cada palabra que falta.';
+      if (!E.comodin) return '¿Atascada? Tienes un comodín: verás las palabras una a una y en orden, solo una vez.';
       return 'Te regalo una palabra más. ¡Ya casi!';
+    }
+    // Comodín (una vez por partida): las palabras de la frase, una a una y en orden, a pantalla completa
+    function comodin() {
+      if (E.comodin) return;
+      E.comodin = true; guardarE();
+      const capa = document.createElement('div'); capa.className = 'gl-comodin';
+      capa.innerHTML = '<p class="gl-comodin-num"></p><p class="gl-comodin-pal"></p>';
+      document.body.appendChild(capa);
+      const num = capa.firstChild, pal = capa.lastChild;
+      let i = -1;
+      const sig = () => {
+        i++;
+        if (i >= n) { capa.classList.add('fuera'); setTimeout(() => { capa.remove(); pintaEscribir(); $('gl-frase')?.focus(); }, 350); return; }
+        num.textContent = `${i + 1} / ${n}`; pal.textContent = visibles[i];
+        pal.classList.remove('entra'); void pal.offsetWidth; pal.classList.add('entra');
+        setTimeout(sig, opc.comodinCada || 750);
+      };
+      setTimeout(sig, 400);
     }
     function guardarE() { A.guardarEstado(E); }
     async function comprobar() {
@@ -180,7 +201,7 @@
       }
       E.intentos++; E.texto = txt;
       toks.forEach((w, i) => { if (w === objetivo[i] && !E.sabidas.includes(i)) E.sabidas.push(i); });
-      if (E.intentos >= 3) { const f = objetivo.findIndex((_, i) => !E.sabidas.includes(i)); if (f >= 0) E.sabidas.push(f); }
+      if (E.comodin && E.intentos >= 4) { const f = objetivo.findIndex((_, i) => !E.sabidas.includes(i)); if (f >= 0) E.sabidas.push(f); }
       guardarE(); pintaEscribir();
       A.aviso('Todavía no…', true);
     }
