@@ -230,20 +230,21 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         }
         // 2026-11-17: murdokus con pistas menos evidentes y criptofrases con más gracia. Cada casilla toma el contenido
         // del seed actual solo si aún contiene un fragmento del texto original (así no se pisa lo editado en Admin).
-        var originales = new Dictionary<int, string>
+        // 2026-11-17 (2): días 19 y 23 retocados por Javier; también se actualizan si tienen la versión anterior.
+        var originales = new Dictionary<int, string[]>
         {
-            [2] = "Bastó una conversación", [3] = "Aroa estaba con un tenedor", [8] = "La que llevaba la guitarra",
-            [10] = "Una casita en el campo y un despachito", [12] = "Marcos no suelta la pelota", [14] = "Siete en casa, una perra y un montón",
-            [17] = "Raquel había ido a por el correo", [19] = "Cada verano, una semana solo", [21] = "Aroa estaba achuchando",
-            [23] = "Buena, generosa y amorosa",
+            [2] = ["Bastó una conversación"], [3] = ["Aroa estaba con un tenedor"], [8] = ["La que llevaba la guitarra"],
+            [10] = ["Una casita en el campo y un despachito"], [12] = ["Marcos no suelta la pelota"], [14] = ["Siete en casa, una perra y un montón"],
+            [17] = ["Raquel había ido a por el correo"], [19] = ["Cada verano, una semana solo", "tú, yo y la lluvia"], [21] = ["Aroa estaba achuchando"],
+            [23] = ["Buena, generosa y amorosa", "que las croquetas, y eso es decir mucho"],
         };
         var seed = await LeerSeedAdviento();
         if (seed == null) return;
-        foreach (var (dia, fragmento) in originales)
+        foreach (var (dia, fragmentos) in originales)
         {
             var nueva = seed.Casillas.FirstOrDefault(x => x.Dia == dia);
-            var vieja = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == seed.Anio && x.Dia == dia && x.Datos.Contains(fragmento));
-            if (nueva == null || vieja == null || vieja.Tipo != nueva.Tipo) continue;
+            var vieja = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == seed.Anio && x.Dia == dia);
+            if (nueva == null || vieja == null || vieja.Tipo != nueva.Tipo || !fragmentos.Any(vieja.Datos.Contains)) continue;
             vieja.Titulo = nueva.Titulo; vieja.Intro = nueva.Intro; vieja.Datos = nueva.Datos; vieja.Estado = null; vieja.Pistas = 0;
             await db.SaveChangesAsync();
             log.LogInformation("Adviento: día {Dia} actualizado con el contenido nuevo del seed", dia);

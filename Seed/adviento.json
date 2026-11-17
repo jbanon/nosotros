@@ -159,7 +159,7 @@
       } },
 
     { "dia": 19, "tipo": "Criptofrase", "letra": "M", "titulo": "Criptofrase",
-      "datos": { "frase": "Cada verano una semana en el norte: tú, yo y la lluvia", "pista": "Nuestra tradición (con paraguas)" } },
+      "datos": { "frase": "Cada verano una semana en el norte: tú, la lluvia y yo", "pista": "Nuestra tradición (con paraguas)" } },
 
     { "dia": 20, "tipo": "Foto", "letra": "E", "titulo": "Tú",
       "intro": "Mi foto favorita de ti. Hoy no hay pregunta: solo mírala y sonríe como sonrío yo cuando la veo." },
@@ -197,7 +197,7 @@
       } },
 
     { "dia": 23, "tipo": "Criptofrase", "letra": "I", "titulo": "La última criptofrase",
-      "datos": { "frase": "Me gustas más que las croquetas, y eso es decir mucho", "pista": "Una declaración muy seria" } },
+      "datos": { "frase": "Me gustas más que las galletas de chocolate a escondidas, y eso es mucho decir", "pista": "Una declaración muy seria" } },
 
     { "dia": 24, "tipo": "Final", "titulo": "Para ti",
       "intro": "Amor:\n\nVeinticuatro días de enigmas para decirte algo que ya sabes, pero que me gusta repetir. Nos conocimos en una pantalla y conectamos en un segundo; desde entonces no he dejado de dar las gracias.\n\nGracias por ser buena, generosa y amorosa. Por tus caricias. Por los paseos, por el fuego y el libro, por el norte cada verano. Por esta casa de siete y una perra, que es ruido y es hogar.\n\nY gracias por soñar conmigo: la casita en el campo con su despachito para leer y estudiar, y el barracón para toda la familia (habitación, baño, habitación, habitación, baño…) para cuando los niños traigan a sus niños. Big project o no tan big: contigo, cualquiera.\n\nTe quiero.\nJavi",
