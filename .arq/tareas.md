@@ -123,5 +123,5 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Globos: +15 % de dificultad, las palabras cazadas ya no se apuntan abajo durante la partida y al final se esfuman antes (1,25 s) y un 10 % más rápido | 877047b |
 | 2026-11-17 | Adviento: murdokus con pistas indirectas (solución única comprobada por fuerza bruta) y criptofrases con más gracia; `CorregirAdviento` aplica el seed nuevo a esas 10 casillas si conservan el texto original | cf93c95 |
 | 2026-11-17 | Criptofrases 19 y 23 retocadas por Javier ("tú, la lluvia y yo"; "galletas de chocolate a escondidas") | 2d5e58a |
-| 2026-11-17 | Arkanoid: BriskaBird caga (la pala manchada va lenta 10 s), sin bloques se sigue hasta cazar todas las palabras y pala un 15 % más pequeña | (este) |
+| 2026-11-17 | Arkanoid: BriskaBird caga (la pala manchada va lenta 10 s), sin bloques se sigue hasta cazar todas las palabras y pala un 15 % más pequeña | b44c15b |
 | 2026-11-17 | Adviento: mini Arkanoid en el día 13 (pala, pelota, 42 bloques, 3 vidas; BriskaBird revolotea y suelta una palabra al darle; final con palabras que se esfuman y escritura de la frase como globos). Kit común `adv-juego.js` (sonido + escribir la frase). Briska asomando por el calendario y las casillas (`img/briska/*.png` listados por el servidor, bocadillos, ladridos) | 9850e62 |
