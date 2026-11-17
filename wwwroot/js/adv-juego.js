@@ -1,4 +1,4 @@
-// Adviento · trozos comunes de los juegos en canvas (globos, arkanoid): sonido sintetizado con Web Audio
+// Adviento · trozos comunes de los juegos en canvas (globos, arkanoid, comecocos): sonido sintetizado con Web Audio
 // y la fase final de escribir la frase (palabras que se esfuman, intentos con pistas, comprobación en el servidor).
 // Se carga después de adviento.js (usa window.adv) y antes del juego, que llama a window.advJuego.
 (() => {
@@ -80,6 +80,14 @@
       o.type = 'triangle'; o.frequency.setValueAtTime(frec, t); o.frequency.exponentialRampToValueAtTime(frec * 0.7, t + dur);
       g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
       o.connect(g); g.connect(S.salida); o.start(t); o.stop(t + dur + 0.02);
+    };
+    // Boing de saltito: nota corta con glissando ascendente (sube desde media octava por debajo) y un pelín de caída al final.
+    // `t` es tiempo absoluto del AudioContext, para poder encadenar varios (música de saltitos del comecocos).
+    S.boing = (t, frec, dur = 0.2, vol = 0.3, tipo = 'triangle', dest) => {
+      const AC = S.AC, o = AC.createOscillator(), g = AC.createGain();
+      o.type = tipo; o.frequency.setValueAtTime(frec * 0.55, t); o.frequency.exponentialRampToValueAtTime(frec, t + dur * 0.5); o.frequency.exponentialRampToValueAtTime(frec * 0.94, t + dur);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.012); g.gain.setValueAtTime(vol, t + dur * 0.45); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(dest || S.salida); o.start(t); o.stop(t + dur + 0.02);
     };
     const pinta = () => { const b = opc.boton; if (b) { b.textContent = S.mudo ? '🔇' : '🔊'; b.setAttribute('aria-label', S.mudo ? 'Activar el sonido' : 'Silenciar'); b.setAttribute('aria-pressed', S.mudo ? 'true' : 'false'); } };
     S.silenciar = v => {

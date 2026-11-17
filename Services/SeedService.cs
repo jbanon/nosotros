@@ -203,6 +203,9 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
     const string ArkanoidTitulo = "Tira los bloques";
     const string ArkanoidIntro = "Hoy toca pulso firme. Mueve la pala con el dedo y no dejes caer la pelota: hay que tirar todos los bloques.\nBriskaBird andará revoloteando por ahí; si le das con la pelota, suelta una palabra. Al final tendrás que escribir la frase que forman.";
 
+    const string ComecocosTitulo = "Vamos a hacer la compra";
+    const string ComecocosIntro = "Hoy toca pasillo arriba, pasillo abajo. Lleva el carrito deslizando el dedo y recoge toda la compra sin que te pillen el ticket, la oferta ni la piña.\nBriskanguro andará dando saltitos por ahí; si la alcanzas, suelta una palabra. Al final tendrás que escribir la frase que forman.";
+
     /// <summary>Cambios en casillas del adviento ya creadas (la carga solo ocurre una vez). Cada cambio se aplica
     /// únicamente si la casilla conserva el texto original, para no pisar lo que Javier haya editado en Admin.</summary>
     async Task CorregirAdviento()
@@ -260,6 +263,15 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             a.Datos = AdvientoService.Serializar(new { frase = AdvientoService.FraseArkanoidDefecto });
             await db.SaveChangesAsync();
             log.LogInformation("Adviento: día 13 pasa a ser el mini Arkanoid");
+        }
+        // 2026-11-17: el mini comecocos va en el día 18 (en lugar de su crucigrama "Cómo empezó"); conserva la letra.
+        var k = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 18 && x.Tipo == TipoCasilla.Crucigrama && x.Datos.Contains("INTERNET"));
+        if (k != null)
+        {
+            k.Tipo = TipoCasilla.Comecocos; k.Titulo = ComecocosTitulo; k.Intro = ComecocosIntro; k.Estado = null; k.Pistas = 0;
+            k.Datos = AdvientoService.Serializar(new { frase = AdvientoService.FraseComecocosDefecto });
+            await db.SaveChangesAsync();
+            log.LogInformation("Adviento: día 18 pasa a ser el mini comecocos");
         }
     }
 

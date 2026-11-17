@@ -154,6 +154,11 @@ public class AdvientoService(AppDb db)
     public static string FraseArkanoid(AdvientoCasilla c) => Json(c)["frase"]?.GetValue<string>() is { Length: > 0 } f ? f : FraseArkanoidDefecto;
     public bool ComprobarArkanoid(AdvientoCasilla c, string respuesta) => Coincide(FraseArkanoid(c), respuesta);
 
+    // ---------- Comecocos (misma mecánica de frase) ----------
+    public const string FraseComecocosDefecto = "Contigo hasta hacer la compra parece una cita. Te quiero";
+    public static string FraseComecocos(AdvientoCasilla c) => Json(c)["frase"]?.GetValue<string>() is { Length: > 0 } f ? f : FraseComecocosDefecto;
+    public bool ComprobarComecocos(AdvientoCasilla c, string respuesta) => Coincide(FraseComecocos(c), respuesta);
+
     // ---------- Frase final ----------
     /// <summary>Palabras de la frase final con sus letras: las ganadas en su sitio y huecos en las demás.</summary>
     public static List<List<(string? letra, int dia)>> FraseFinal(string frase, List<AdvientoCasilla> casillas)

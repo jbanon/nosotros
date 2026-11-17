@@ -85,7 +85,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   próxima vez. Viaje y Camping se crean una sola vez (`Config.ListasSembradas`); si se borran no vuelven.
 
 ## Calendario de adviento
-- 24 casillas del 1 al 24 de diciembre (año en `AdvientoCasilla.Anio`; en enero sigue valiendo el de diciembre). Una casilla se abre cuando llega su día (hora de Madrid); las pasadas siguen abiertas; las futuras muestran un mensaje gracioso. Reparto: 5 criptofrases, 5 murdokus, 4 crucigramas, 5 fotos, 1 juego de globos (día 6), 1 mini Arkanoid (día 13), 2 vales y la carta final del 24.
+- 24 casillas del 1 al 24 de diciembre (año en `AdvientoCasilla.Anio`; en enero sigue valiendo el de diciembre). Una casilla se abre cuando llega su día (hora de Madrid); las pasadas siguen abiertas; las futuras muestran un mensaje gracioso. Reparto: 5 criptofrases, 5 murdokus, 3 crucigramas, 5 fotos, 1 juego de globos (día 6), 1 mini Arkanoid (día 13), 1 mini comecocos (día 18), 2 vales y la carta final del 24.
 - Cada enigma (y cada foto) da una letra; las 21 letras en orden de día forman la frase final (`Config.AdvientoFrase`, "Gracias por quererme así"). Admin avisa si letras y frase no coinciden.
 - Fotos: con pregunta → borrosa hasta acertar (la letra se gana al acertar); sin pregunta → se ve directa y la letra se gana al abrir. Fotos en `App_Data/adjuntos/adviento`, fuera del repo. Cualquier casilla con foto sale en el collage del 24.
 - El contenido inicial vive en `Seed/adviento.json` (se carga una vez por año si no hay casillas); después se edita en Admin → Calendario de adviento (JSON del pasatiempo plegado). Las comprobaciones se hacen en el servidor (handlers JSON `Resolver`, `Pista`, `Estado`, `Canjear`); el admin puede jugar en vista previa sin que se guarde nada.
@@ -163,6 +163,27 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     se mancha de marrón durante 10 s (parpadea los 2 últimos, con cuenta atrás) y deja de seguir al dedo al momento:
     va detrás a 0,75 anchos de pantalla por segundo. La pala mide un 15 % menos (0,255 del ancho).
   - Todos los ajustes en la constante `AJ` de `arkanoid.js` (vidas, rejilla, pala, velocidades, visitas de Briska).
+- Mini comecocos (`TipoCasilla.Comecocos`, día 18 en lugar de su crucigrama "Cómo empezó", misma letra R; `js/comecocos.js`,
+  canvas a pantalla completa como los otros; Javier, 2026-11-17). Tema "hacer la compra": el jugador es un **carrito** rojo con
+  un corazoncito que recorre los pasillos de un súper (laberinto propio de 11 × 15, estanterías de madera con cajitas de
+  colores, túnel lateral en la fila central) recogiendo la compra (71 puntitos + 4 cafés en las esquinas que dan 4,5 s de
+  velocidad). Le persiguen **el ticket kilométrico** (va a por ti), **la oferta 3x2** (se te adelanta 3 casillas) y **una piña
+  con mal genio** (medio al azar); salen del almacén central escalonados, alternan 8 s de persecución y 2,5 s de dispersión a
+  su esquina y van más lentos por el túnel. 3 vidas; sin vidas, vuelta a empezar (también se pierden las palabras).
+  - **Control por deslizar**: el dedo pide una dirección y el carrito gira en el siguiente cruce donde se pueda (se puede
+    seguir arrastrando para encadenar giros); la media vuelta es inmediata y un deslizamiento justo pasado un cruce aún gira
+    (vuelve al cruce). Flechas del teclado en ordenador. Nada se mueve hasta el primer deslizamiento.
+  - **Briskanguro** (`img/briska/briskanguro.png`) aparece hasta 16 veces (11 palabras) en una casilla lejana y va dando
+    **saltitos** de casilla en casilla (bote con estiramiento en el aire, aplastamiento al caer y sombra que encoge; el 40 % de
+    los saltos se aleja del carrito, el resto al azar). Mientras está en pantalla suena la **música de saltitos**: en cada bote
+    una nota con glissando ascendente (`S.boing`, nuevo en el kit de `adv-juego.js`), un bajo que alterna y un toquecito en el
+    aire. Se queda 5,2 s (parpadea antes de irse); si el carrito la alcanza, ladridos + la **palabra en grande** como en
+    Arkanoid; si se va, la palabra vuelve a la cola. Entradilla con su imagen al empezar (3,2 s, un toque la salta).
+  - Frase (`datos.frase`): "Contigo hasta hacer la compra parece una cita. Te quiero". El juego acaba al recoger toda la
+    compra (los perseguidores se paran; si Briskanguro está en pantalla, aún se la puede pillar); después palabras que se
+    esfuman al ritmo de globos y escribir la frase con el mismo sistema. Comprobación en el servidor (`ComprobarComecocos`).
+  - Todos los ajustes en la constante `AJ` de `comecocos.js` (velocidades, salidas, vidas, cafés, visitas y saltos de Briska);
+    el laberinto, en la constante `MAPA` del mismo fichero.
 - **Briska por el calendario** (Javier, 2026-11-17: que BriskaBird y las demás Briskas tengan protagonismo). En `/Adviento`
   y en cada casilla sale una Briska asomando por la esquina inferior derecha con un bocadillo de frase graciosa que cambia
   cada 16-30 s; tocarla: ladra (Web Audio), bota y suelta otra frase. De vez en cuando (18-45 s) otra cruza la pantalla

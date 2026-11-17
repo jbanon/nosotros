@@ -1075,6 +1075,13 @@ body.gl-jugando { overflow: hidden; }
 .ak-ico-bloques i { width: 22px; height: 11px; border-radius: 3px; background: #ff5d73; }
 .ak-ico-bloques i:nth-child(2) { background: #ffb84d; } .ak-ico-bloques i:nth-child(3) { background: #6bcb77; } .ak-ico-bloques i:nth-child(4) { background: #4d96ff; }
 
+/* ---------- Adviento · mini comecocos (reutiliza gl-pantalla, gl-hud, ak-vidas, gl-aviso y la fase de escribir) ---------- */
+.cc-pantalla { background: radial-gradient(120% 80% at 50% 0%, #1d6b5e 0%, #123f3a 45%, #07201d 100%); }
+.cc-ico { display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 0; }
+.cc-ico-puntos { display: inline-flex; gap: 7px; }
+.cc-ico-puntos b { width: 9px; height: 9px; border-radius: 50%; background: #ffe9a8; box-shadow: 0 0 6px rgba(255,233,168,.8); }
+.cc-ico-ticket { animation-delay: .6s; }
+
 /* ---------- Briska asomando por el calendario (js/briska.js; imágenes en img/briska) ---------- */
 .briska { position: fixed; inset: 0; z-index: 25; pointer-events: none; overflow: hidden; }
 .briska[hidden], .briska.escondida, body.gl-jugando .briska { display: none; }

@@ -138,17 +138,9 @@
         "explicacion": "Los auriculares estaban en la habitación, y Naia no estaba allí, así que no los llevaba ella; tampoco las llaves: Naia llevaba la carta. La carta no estaba en el garaje, luego Naia estaba en el buzón (esperaba algo, dice). Raquel no estaba en el garaje, así que estaba en la habitación con los auriculares, y Javi en el garaje con las llaves. Culpable: Javi. Lo siento. Iba pensando en ti."
       } },
 
-    { "dia": 18, "tipo": "Crucigrama", "letra": "R", "titulo": "Cómo empezó",
-      "datos": {
-        "palabras": [
-          { "palabra": "AMOR", "dir": "H", "fila": 1, "col": 4, "pista": "Cómo nos llamamos el uno al otro" },
-          { "palabra": "INTERNET", "dir": "H", "fila": 3, "col": 0, "pista": "Donde nos encontramos antes de encontrarnos" },
-          { "palabra": "RAPIDO", "dir": "V", "fila": 0, "col": 0, "pista": "Así de deprisa conectamos" },
-          { "palabra": "CHAT", "dir": "V", "fila": 0, "col": 2, "pista": "Así fueron nuestras primeras conversaciones" },
-          { "palabra": "MENSAJE", "dir": "V", "fila": 1, "col": 5, "pista": "Lo que esperabas que llegara (y llegaba)" }
-        ],
-        "letra": { "fila": 1, "col": 7 }
-      } },
+    { "dia": 18, "tipo": "Comecocos", "letra": "R", "titulo": "Vamos a hacer la compra",
+      "intro": "Hoy toca pasillo arriba, pasillo abajo. Lleva el carrito deslizando el dedo y recoge toda la compra sin que te pillen el ticket, la oferta ni la piña.\nBriskanguro andará dando saltitos por ahí; si la alcanzas, suelta una palabra. Al final tendrás que escribir la frase que forman.",
+      "datos": { "frase": "Contigo hasta hacer la compra parece una cita. Te quiero" } },
 
     { "dia": 19, "tipo": "Criptofrase", "letra": "M", "titulo": "Criptofrase",
       "datos": { "frase": "Cada verano una semana en el norte: tú, la lluvia y yo", "pista": "Nuestra tradición (con paraguas)" } },

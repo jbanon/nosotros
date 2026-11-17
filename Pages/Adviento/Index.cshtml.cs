@@ -39,6 +39,6 @@ public class IndexModel(AdvientoService adv, ConfigService config, BriskaImagene
     public static string Icono(AdvientoCasilla c) => c.Tipo switch
     {
         TipoCasilla.Foto => c.VideoPath != null ? "🎬" : "📷", TipoCasilla.Criptofrase => "🔡", TipoCasilla.Murdoku => "🔍",
-        TipoCasilla.Crucigrama => "✏️", TipoCasilla.Vale => "🎟️", TipoCasilla.Globos => "🎈", TipoCasilla.Arkanoid => "🧱", _ => "💌"
+        TipoCasilla.Crucigrama => "✏️", TipoCasilla.Vale => "🎟️", TipoCasilla.Globos => "🎈", TipoCasilla.Arkanoid => "🧱", TipoCasilla.Comecocos => "🛒", _ => "💌"
     };
 }
