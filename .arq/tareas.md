@@ -114,4 +114,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-16 | Gastos: la compra que pasa del objetivo se descuenta de la hipoteca del mes siguiente | c2f9eb1 |
 | 2026-11-16 | Arte: tour general de Japón (texto ~420 palabras, 3 paseos: La gran ola, Dioses del viento y del trueno, Takiyasha; 4 reseñas: Kōrin, Jakuchū, Hiroshige, Kiyochika). Imágenes en `App_Data/entrada/arte/japon/` (Met Open Access y Commons, dominio público) | 5db4c10 |
 | 2026-11-16 | Arte: el índice del capítulo se tragaba el texto si un `## ` no llevaba línea en blanco detrás (ahora el título ocupa solo su línea) | 1a0f705 |
-| 2026-11-17 | Adviento: juego de los globos en el día 7 (corazones dorados con las palabras de la frase, dificultad adaptable, intentos con pistas) | (este) |
+| 2026-11-17 | Adviento: juego de los globos en el día 7 (corazones dorados con las palabras de la frase, dificultad adaptable, intentos con pistas) | 526d5ac |
