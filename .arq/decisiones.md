@@ -154,10 +154,14 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     vuelve a la cola). Una visita sale cuando se han tirado bloques suficientes o han pasado 8 s desde la anterior, con
     1,8 s mínimo entre visitas. Si la pelota le da: ladridos, rebote redondo y la **palabra en grande** con brillo.
     Las palabras salen desordenadas (primero la mitad fácil), como en globos.
-  - Frase (`datos.frase`): "Quien fuera tu ombligo para estar a la sombra de tus tetas". El juego acaba al tirar el último
-    bloque (si Briska está en pantalla, espera a que se vaya o a que le den); después las palabras cazadas se enseñan y se
+  - Frase (`datos.frase`): "Quien fuera tu ombligo para estar a la sombra de tus tetas". El juego acaba con los bloques
+    fuera **y** todas las palabras cazadas: sin bloques se sigue jugando, con Briska volviendo enseguida (0,7 s) y
+    soltando 2 cacas por visita; perder las 3 pelotas sigue siendo perder. Después las palabras cazadas se enseñan y se
     esfuman **al mismo ritmo que en globos** (1,25 s de espera, una cada 0,91 s) y toca escribir la frase con el mismo
     sistema de intentos y pistas. La comprobación final la hace el servidor (`ComprobarArkanoid`), sin tildes ni comas.
+  - **Cacas** (Javier, 2026-11-17): con bloques, 3 o 4 visitas al azar sueltan una 💩 que cae. Si cae en la pala, esta
+    se mancha de marrón durante 10 s (parpadea los 2 últimos, con cuenta atrás) y deja de seguir al dedo al momento:
+    va detrás a 0,75 anchos de pantalla por segundo. La pala mide un 15 % menos (0,255 del ancho).
   - Todos los ajustes en la constante `AJ` de `arkanoid.js` (vidas, rejilla, pala, velocidades, visitas de Briska).
 - **Briska por el calendario** (Javier, 2026-11-17: que BriskaBird y las demás Briskas tengan protagonismo). En `/Adviento`
   y en cada casilla sale una Briska asomando por la esquina inferior derecha con un bocadillo de frase graciosa que cambia

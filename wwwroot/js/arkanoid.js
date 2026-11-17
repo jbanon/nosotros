@@ -7,12 +7,12 @@
 
   // ---------- Ajustes (afinar probando en el móvil) ----------
   const AJ = {
-    vidas: 3,                // pelotas que se pueden perder; sin vidas, vuelta a empezar
+    vidas: 3,                // pelotas que se pueden perder; sin vidas, vuelta a empezar (también sin bloques)
     filas: 6, cols: 7,       // rejilla de bloques (42)
     bloquesArriba: 0.14,     // fracción de la altura donde empieza la zona de bloques
     bloquesAlto: 0.30,       // fracción de la altura que ocupa la zona de bloques
     hueco: 4,                // px entre bloques
-    palaAncho: 0.30,         // ancho de la pala, fracción del ancho (máx. 480)
+    palaAncho: 0.255,        // ancho de la pala, fracción del ancho (máx. 480)
     palaAlto: 14,            // px
     palaY: 0.86,             // fracción de la altura donde está la pala
     pelotaR: 0.02,           // radio de la pelota, fracción del ancho (máx. 480)
@@ -27,6 +27,13 @@
     briskaPasada: 2600,      // ms que tarda en cruzar la pantalla de lado a lado
     briskaPasadas: 2,        // pasadas por visita (ida y vuelta)
     briskaTam: 0.24,         // tamaño de BriskaBird, fracción del ancho (máx. 480)
+    briskaPausaSinBloques: 700, // sin bloques, vuelve enseguida hasta cazar todas las palabras
+    cacas: [3, 4],           // cacas de BriskaBird mientras quedan bloques (al azar entre estos dos)
+    cacasSinBloques: 2,      // cacas por visita cuando ya no hay bloques
+    cacaVel: 0.42,           // velocidad de caída, en alturas por segundo
+    cacaTam: 0.075,          // tamaño, fracción del ancho (máx. 480)
+    manchaMs: 10000,         // lo que dura la pala manchada
+    palaVelManchada: 0.75,   // con la pala manchada, la pala sigue al dedo a esta velocidad (anchos de pantalla por segundo)
     entradilla: 3200,        // ms de la presentación de BriskaBird al empezar (un toque la salta)
     esfumaEspera: 1250,      // ms que se ven las palabras al acabar antes de empezar a esfumarse (igual que en globos)
     esfumaCada: 910,         // ms entre palabra y palabra que se esfuma (igual que en globos)
@@ -77,9 +84,16 @@
     // Visita k de BriskaBird: cuando se han tirado ⌊(k + ½)·bloques / visitas⌋ bloques (o pasado briskaEspera desde la anterior)
     const bbPend = Array.from({ length: AJ.briskaVeces }, (_, k) => Math.floor((k + 0.5) * bloques.length / AJ.briskaVeces));
     P = { t: 0, real: 0, vidas: AJ.vidas, bloques, total: bloques.length, rotos: 0, pala: { x: W / 2 }, bola: null,
-          cola: orden, cazadas: [], perdidas: 0, bb: null, bbPend, bbFin: -AJ.briskaEspera + 2500, efectos: [], fin: false, intro: AJ.entradilla };
+          cola: orden, cazadas: [], perdidas: 0, bb: null, bbPend, cacas: [], mancha: 0, visitas: 0,
+          visitasCaca: cacasEn(),  bbFin: -AJ.briskaEspera + 2500, efectos: [], fin: false, intro: AJ.entradilla };
     reponer(); pintaHud();
   }
+  // Visitas (de las primeras) en las que BriskaBird suelta una caca mientras quedan bloques
+  function cacasEn() {
+    const k = AJ.cacas[0] + Math.floor(Math.random() * (AJ.cacas[1] - AJ.cacas[0] + 1));
+    return baraja([...Array(Math.max(k, AJ.briskaVeces - 3)).keys()]).slice(0, k);
+  }
+  const sinBloques = () => P.rotos >= P.total;
   function reponer() { P.bola = { x: P.pala.x, y: palaTop() - anchoRef() * AJ.pelotaR - 1, vx: 0, vy: 0, r: anchoRef() * AJ.pelotaR, pegada: true }; }
   function lanzar() {
     const b = P.bola, v = AJ.velInicio * H, ang = azar(-0.3, 0.3);
@@ -87,8 +101,14 @@
     S.tic(520, 0.3);
   }
   function muevePala(x) {
-    const w = palaW(); P.pala.x = Math.max(w / 2, Math.min(W - w / 2, x));
-    if (P.bola && P.bola.pegada) P.bola.x = P.pala.x;
+    const w = palaW(); P.pala.obj = Math.max(w / 2, Math.min(W - w / 2, x));
+    if (P.mancha <= P.t) { P.pala.x = P.pala.obj; if (P.bola && P.bola.pegada) P.bola.x = P.pala.x; }
+  }
+  // Con la pala manchada, va detrás del dedo despacito
+  function siguePala(dt) {
+    if (P.pala.obj == null || P.mancha <= P.t) return;
+    const max = AJ.palaVelManchada * W * dt / 1000, d = P.pala.obj - P.pala.x;
+    P.pala.x += Math.max(-max, Math.min(max, d));
   }
   function acelera() {
     const b = P.bola, v = Math.hypot(b.vx, b.vy), nv = Math.min(AJ.velMax * H, v * AJ.velPorBloque);
@@ -145,7 +165,7 @@
         const p = posBriska(P.bb, P.bb.t), T = tamBB();
         if (p) { const dx = b.x - p.x, dy = b.y - p.y, d = Math.hypot(dx, dy) || 1; if (d < T * 0.45 + b.r) cazaBriska(p, dx / d, dy / d); }
       }
-      if (b.y - b.r > H) { if (P.rotos >= P.total) { P.bb = null; ganar(); } else pierdeVida(); return; }   // sin bloques ya se ha ganado, aunque se caiga
+      if (b.y - b.r > H) { pierdeVida(); return; }
     }
   }
 
@@ -156,7 +176,11 @@
     let dir = Math.random() < 0.5 ? 1 : -1;
     for (let i = 0; i < AJ.briskaPasadas; i++, dir = -dir)
       pasadas.push({ dir, y: azar(G.fondo - G.bh * 3 * (P.rotos / P.total), G.fondo + H * 0.12), amp: azar(0.3, 0.8) * T, fr: azar(1.5, 3) });   // al principio por debajo de los bloques; según caen, se mete entre ellos
-    P.bb = { t: 0, pasadas, idx: P.cola.shift(), sonado: -1 };
+    // Cacas: instantes de la visita en que se le escapa una (dentro de pantalla)
+    const total = AJ.briskaPasadas * AJ.briskaPasada, nc = sinBloques() ? AJ.cacasSinBloques : (P.visitasCaca.includes(P.visitas) ? 1 : 0);
+    const cuando = Array.from({ length: nc }, (_, k) => (k + azar(0.3, 0.7)) * total / nc).sort((a, b) => a - b);
+    P.visitas++;
+    P.bb = { t: 0, pasadas, idx: P.cola.shift(), sonado: -1, cuando };
   }
   // Dónde está en el instante t de su visita (null si ya se fue)
   function posBriska(B, t) {
@@ -172,6 +196,32 @@
       P.bb = null; P.bbFin = P.t; P.perdidas++; P.cola.push(B.idx); S.gemido(0, false); return;
     }
     if (p.seg !== B.sonado) { B.sonado = p.seg; S.guau(0, p.seg ? 1.3 : 1.15); }
+    if (B.cuando.length && B.t >= B.cuando[0] && p.x > tamBB() * 0.3 && p.x < W - tamBB() * 0.3) { B.cuando.shift(); caga(p); }
+  }
+
+  // ---------- Cacas ----------
+  function prrt() {
+    if (!S.AC || !S.ruido) return;
+    const t0 = S.AC.currentTime;
+    for (let i = 0; i < 5; i++) S.soplo(t0 + i * 0.05, 0.06, 'lowpass', 300 - i * 35, 0.4);
+  }
+  function caga(p) {
+    P.cacas.push({ x: p.x + (p.flip ? 1 : -1) * tamBB() * 0.25, y: p.y + tamBB() * 0.2, r: anchoRef() * AJ.cacaTam / 2, giro: azar(-1, 1) });
+    prrt();
+  }
+  function mueveCacas(dt) {
+    const s = dt / 1000, pt = palaTop(), pw = palaW();
+    for (let i = P.cacas.length - 1; i >= 0; i--) {
+      const c = P.cacas[i]; c.y += AJ.cacaVel * H * s;
+      if (c.y + c.r >= pt && c.y - c.r <= pt + AJ.palaAlto && Math.abs(c.x - P.pala.x) <= pw / 2 + c.r * 0.6) {
+        P.cacas.splice(i, 1);
+        const ya = P.mancha > P.t; P.mancha = P.t + AJ.manchaMs; if (!ya) P.pala.obj = P.pala.x;
+        S.pum(false, 0.6); S.gemido(0.05, true);
+        if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+        P.efectos.push({ tipo: 'palabra', x: P.pala.x, y: pt - anchoRef() * 0.12, texto: '¡Puaj! 💩', t0: P.real, dur: 1300, peq: true });
+        for (let k = 0; k < 8; k++) { const a = azar(3.3, 6.1), v = azar(60, 160); P.efectos.push({ tipo: 'trozo', x: c.x, y: pt, vx: Math.cos(a) * v, vy: Math.sin(a) * v, col: '#7a4a1e', t0: P.real, dur: 500 }); }
+      } else if (c.y - c.r > H) P.cacas.splice(i, 1);
+    }
   }
   function cazaBriska(p, nx, ny) {
     const B = P.bb, b = P.bola, v = Math.hypot(b.vx, b.vy);
@@ -212,9 +262,14 @@
     else if (!P.fin) {
       P.t += dt;
       if (P.bb) pasoBriska(dt);
-      else if (P.cola.length && P.bbPend.length && !P.bola.pegada && P.t - P.bbFin >= AJ.briskaPausa && (P.rotos >= P.bbPend[0] || P.t - P.bbFin >= AJ.briskaEspera)) empiezaBriska();
+      else if (P.cola.length && !P.bola.pegada && (sinBloques()
+        ? P.t - P.bbFin >= AJ.briskaPausaSinBloques
+        : P.bbPend.length && P.t - P.bbFin >= AJ.briskaPausa && (P.rotos >= P.bbPend[0] || P.t - P.bbFin >= AJ.briskaEspera))) empiezaBriska();
+      siguePala(dt); mueveCacas(dt);
       mueve(dt);
-      if (!P.fin && P.rotos >= P.total && !P.bb) ganar();
+      // Se gana con los bloques fuera y todas las palabras cazadas (sin bloques se sigue jugando hasta cazarlas)
+      if (!P.fin && sinBloques() && !P.bb && !P.cola.length) ganar();
+      else if (!P.fin && sinBloques() && !P.avisoSin) { P.avisoSin = true; P.efectos.push({ tipo: 'palabra', x: W / 2, y: H * 0.45, texto: `¡Faltan ${P.cola.length + (P.bb ? 1 : 0)} palabras!`, t0: P.real, dur: 1800, peq: true }); }
     }
     dibujar();
     raf = requestAnimationFrame(paso);
@@ -255,12 +310,16 @@
   }
   function dibujaPala() {
     const w = palaW(), h = AJ.palaAlto, x = P.pala.x - w / 2, y = palaTop();
-    const brillo = P.efectos.some(e => e.tipo === 'pala');
-    const s = sprite('pala' + Math.round(w) + (brillo ? 'b' : ''), w + 8, h + 8, c => {
+    const brillo = P.efectos.some(e => e.tipo === 'pala'), queda = P.mancha - P.t;
+    // Manchada: marrón con grumos; parpadea los 2 últimos segundos
+    const sucia = queda > 0 && (queda > 2000 || Math.floor(queda / 200) % 2 === 0);
+    const s = sprite('pala' + Math.round(w) + (brillo ? 'b' : '') + (sucia ? 'm' : ''), w + 8, h + 8, c => {
       c.shadowColor = brillo ? 'rgba(255,230,120,.95)' : 'rgba(255,255,255,.5)'; c.shadowBlur = brillo ? 14 : 8;
       const gr = c.createLinearGradient(0, 4, 0, h + 4);
-      gr.addColorStop(0, '#fff6d6'); gr.addColorStop(0.5, '#ffd45e'); gr.addColorStop(1, '#d99a12');
+      if (sucia) { gr.addColorStop(0, '#b07a45'); gr.addColorStop(0.5, '#7a4a1e'); gr.addColorStop(1, '#4e2c0f'); }
+      else { gr.addColorStop(0, '#fff6d6'); gr.addColorStop(0.5, '#ffd45e'); gr.addColorStop(1, '#d99a12'); }
       c.fillStyle = gr; redondo(c, 4, 4, w, h, h / 2); c.fill();
+      if (sucia) { c.shadowBlur = 0; c.fillStyle = '#5a3412'; for (let i = 0; i < 6; i++) { c.beginPath(); c.arc(4 + w * (0.1 + 0.16 * i), 4 + h * (i % 2 ? 0.35 : 0.7), h * 0.22, 0, 6.2832); c.fill(); } }
     });
     ctx.drawImage(s, x - 4, y - 4, w + 8, h + 8);
   }
@@ -278,7 +337,17 @@
     const G = geo();
     for (const b of P.bloques) dibujaBloque(b, rectDe(b, G));
     if (P.bb) { const p = posBriska(P.bb, P.bb.t); if (p) dibujaBriska(p); }
+    if (P.cacas.length) {
+      ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (const c of P.cacas) { ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(Math.sin(c.y / 30) * 0.3 * c.giro); ctx.font = `${Math.round(c.r * 2)}px system-ui, sans-serif`; ctx.fillText('💩', 0, 0); ctx.restore(); }
+      ctx.restore();
+    }
     dibujaPala(); dibujaBola();
+    if (P.mancha > P.t && !P.fin) {
+      const tam = Math.round(anchoRef() * 0.04);
+      ctx.save(); ctx.fillStyle = '#e8c39e'; ctx.textAlign = 'center'; ctx.font = `700 ${tam}px system-ui, sans-serif`;
+      ctx.fillText(`💩 ${Math.ceil((P.mancha - P.t) / 1000)} s`, P.pala.x, palaTop() + AJ.palaAlto + tam * 1.4); ctx.restore();
+    }
     if (P.bola.pegada && P.intro <= 0 && !P.fin) {
       const tam = Math.round(anchoRef() * 0.05);
       ctx.save(); ctx.globalAlpha = 0.55 + 0.45 * Math.sin(P.real / 300); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -296,7 +365,7 @@
         ctx.restore(); dibujaBriska({ x: e.x, y: e.y - f * 80, flip: e.flip, rot: 0 }, f * 9, 1 - f * 0.8, 1 - f); continue;
       } else if (e.tipo === 'palabra') {
         // La palabra entra de golpe, se queda grande y se va al final
-        const tam = Math.round(anchoRef() * 0.13), esc = Math.min(1, f * 7) * (1 + 0.04 * Math.sin(f * 20));
+        const tam = Math.round(anchoRef() * (e.peq ? 0.075 : 0.13)), esc = Math.min(1, f * 7) * (1 + 0.04 * Math.sin(f * 20));
         ctx.globalAlpha = f < 0.7 ? 1 : (1 - f) / 0.3;
         ctx.translate(e.x, e.y - f * 40); ctx.scale(esc, esc);
         ctx.font = `800 ${tam}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -313,7 +382,7 @@
     alAcabar = fn; S.audio();
     pantalla.hidden = false; document.body.classList.add('gl-jugando');
     medir(); nueva();
-    avisar(`<img class="gl-bb-img" src="${bbImg.src}" alt="" /><p class="gl-titulo">¡Ahí anda BriskaBird!</p><p>Revolotea entre los bloques. Si le das con la pelota, suelta una palabra: memorízala.</p><p class="gl-bb-premio">Arrastra para mover la pala · toca para lanzar</p>`);
+    avisar(`<img class="gl-bb-img" src="${bbImg.src}" alt="" /><p class="gl-titulo">¡Ahí anda BriskaBird!</p><p>Revolotea entre los bloques. Si le das con la pelota, suelta una palabra. Y ojo, que a veces se le escapa algo: si te cae en la pala, irá más lenta un rato 💩. Sin bloques se sigue hasta cazar todas las palabras.</p><p class="gl-bb-premio">Arrastra para mover la pala · toca para lanzar</p>`);
     S.guau(0.1); S.guau(0.32, 0.95);
     ultimo = 0; cancelAnimationFrame(raf); raf = requestAnimationFrame(paso);
   }
@@ -330,7 +399,7 @@
     P.fin = true; S.guau(0.05, 1.3); S.guau(0.2, 1.45); S.guau(0.35, 1.75);
     A.celebrar();
     const cazadas = P.cazadas.slice(), faltan = n - cazadas.length;
-    avisar(`<p class="gl-titulo">¡Todos los bloques fuera!</p><p>Has cazado <b>${cazadas.length}</b> de ${n} palabras${faltan ? `; ${faltan} se te ${faltan === 1 ? 'escapó' : 'escaparon'} con Briska` : ''}.</p>`,
+    avisar(`<p class="gl-titulo">¡Bloques fuera y palabras cazadas!</p><p>Tienes las <b>${cazadas.length}</b> palabras${faltan ? ` (faltan ${faltan})` : ''}. Ahora, a memorizarlas.</p>`,
       [[D.resuelta ? 'Salir' : 'Escribir la frase', () => { cerrar(); alAcabar && alAcabar(cazadas); }, 'primario']]);
   }
 
