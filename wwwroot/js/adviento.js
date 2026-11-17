@@ -55,22 +55,37 @@
 
   // ------------------------------------------------------------ Criptofrase
   if (datos.tipo === 'Criptofrase') {
-    const v = datos.vista; estado.letras = estado.letras || {};
+    // Cada casilla se rellena por separado: escribir una letra NO completa las demás con el mismo número
+    // (eso es trabajo de quien juega). Estado: estado.cel = { "palabra,posición": letra }.
+    const v = datos.vista; estado.cel = estado.cel || {};
+    const celdas = []; v.palabras.forEach((pal, pi) => pal.forEach((c, ci) => { if (c.n != null) celdas.push({ k: pi + ',' + ci, n: c.n }); }));
+    if (estado.letras) {   // partidas guardadas con el sistema anterior (letra por número)
+      celdas.forEach(x => { if (estado.letras[x.n] && !estado.cel[x.k]) estado.cel[x.k] = estado.letras[x.n]; });
+      delete estado.letras;
+    }
+    // Para el servidor: número → letra, solo si todas sus casillas tienen la misma; si no, "?" (no cuadra)
+    const asignacion = () => {
+      const a = {};
+      celdas.forEach(x => { const l = estado.cel[x.k] || ''; a[x.n] = a[x.n] === undefined ? l : (a[x.n] === l ? l : '?'); });
+      Object.keys(a).forEach(n => { if (!a[n]) delete a[n]; });
+      return a;
+    };
     let activo = null;
     const render = () => {
       juego.innerHTML = '';
       if (v.pista) { const p = document.createElement('p'); p.className = 'cripto-pista'; p.textContent = 'Pista: ' + v.pista; juego.appendChild(p); }
       const cont = document.createElement('div'); cont.className = 'cripto';
-      v.palabras.forEach(pal => {
+      v.palabras.forEach((pal, pi) => {
         const w = document.createElement('span'); w.className = 'cripto-palabra';
-        pal.forEach(c => {
+        pal.forEach((c, ci) => {
           const celda = document.createElement('span');
           if (c.n == null) { celda.className = 'signo'; celda.textContent = c.s; }
           else {
-            celda.className = 'celda' + (activo === c.n ? ' activa' : '') + (estado.letras[c.n] ? ' llena' : '');
+            const k = pi + ',' + ci;
+            celda.className = 'celda' + (activo === k ? ' activa' : '') + (estado.cel[k] ? ' llena' : '');
             celda.dataset.n = c.n;
-            celda.innerHTML = `<b>${estado.letras[c.n] || ''}</b><i>${c.n}</i>`;
-            celda.addEventListener('click', () => { activo = c.n; render(); teclado.focus({ preventScroll: true }); });
+            celda.innerHTML = `<b>${estado.cel[k] || ''}</b><i>${c.n}</i>`;
+            celda.addEventListener('click', () => { activo = k; render(); teclado.focus({ preventScroll: true }); });
           }
           w.appendChild(celda);
         });
@@ -91,32 +106,33 @@
     window.addEventListener('resize', () => { const c = juego.querySelector('.cripto'); if (c) ajustar(c); });
     const teclado = document.createElement('input'); teclado.className = 'teclado-oculto'; teclado.autocapitalize = 'characters'; teclado.autocomplete = 'off'; teclado.setAttribute('aria-label', 'Letra');
     document.body.appendChild(teclado);
+    // Siguiente casilla vacía en orden de lectura
     const siguiente = () => {
-      const nums = []; v.palabras.forEach(p => p.forEach(c => { if (c.n != null && !nums.includes(c.n)) nums.push(c.n); }));
-      const i = nums.indexOf(activo);
-      for (let k = 1; k <= nums.length; k++) { const n = nums[(i + k) % nums.length]; if (!estado.letras[n]) return n; }
+      const i = celdas.findIndex(x => x.k === activo);
+      for (let k = 1; k <= celdas.length; k++) { const x = celdas[(i + k) % celdas.length]; if (!estado.cel[x.k]) return x.k; }
       return activo;
     };
     teclado.addEventListener('input', () => {
       const ch = norm(teclado.value).slice(-1); teclado.value = '';
       if (activo == null || datos.resuelta) return;
-      if (letraOk(ch)) { estado.letras[activo] = ch; activo = siguiente(); }
+      if (letraOk(ch)) { estado.cel[activo] = ch; activo = siguiente(); }
       guardar(); render();
     });
     teclado.addEventListener('keydown', e => {
-      if (e.key === 'Backspace' && activo != null) { delete estado.letras[activo]; guardar(); render(); e.preventDefault(); }
+      if (e.key === 'Backspace' && activo != null) { delete estado.cel[activo]; guardar(); render(); e.preventDefault(); }
     });
     render();
     if (datos.resuelta) btnComprobar?.closest('#acciones')?.classList.add('oculto');
     btnComprobar?.addEventListener('click', async () => {
       try {
-        const r = await post('Resolver', { asignacion: estado.letras, estado: JSON.stringify(estado) });
+        const r = await post('Resolver', { asignacion: asignacion(), estado: JSON.stringify(estado) });
         if (r.ok) { datos.solucion = r.solucion; render(); ganado(r); } else aviso(r.mensaje, true);
       } catch { aviso('No se pudo comprobar', true); }
     });
     btnPista?.addEventListener('click', async () => {
-      const p = await pedirPista({ asignacion: estado.letras });
-      if (p) { estado.letras[p.n] = p.letra; activo = p.n; guardar(); render(); aviso(`El ${p.n} es la ${p.letra}`); }
+      // La pista sí rellena todas las casillas de ese número
+      const p = await pedirPista({ asignacion: asignacion() });
+      if (p) { celdas.forEach(x => { if (x.n == p.n) estado.cel[x.k] = p.letra; }); activo = (celdas.find(x => x.n == p.n) || {}).k ?? activo; guardar(); render(); aviso(`El ${p.n} es la ${p.letra}`); }
     });
   }
 
