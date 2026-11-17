@@ -148,38 +148,43 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         return n;
     }
 
+    record SeedAdviento(int Anio, string? Frase, List<AdvientoCasilla> Casillas);
+
+    /// <summary>Lee Seed/adviento.json (null si no existe).</summary>
+    async Task<SeedAdviento?> LeerSeedAdviento()
+    {
+        var ruta = Ruta("adviento.json");
+        if (!File.Exists(ruta)) return null;
+        using var doc = JsonDocument.Parse(await File.ReadAllTextAsync(ruta));
+        var raiz = doc.RootElement;
+        int anio = raiz.GetProperty("anio").GetInt32();
+        var casillas = raiz.GetProperty("casillas").EnumerateArray().Select(c => new AdvientoCasilla
+        {
+            Anio = anio,
+            Dia = c.GetProperty("dia").GetInt32(),
+            Tipo = Enum.Parse<TipoCasilla>(c.GetProperty("tipo").GetString()!),
+            Titulo = c.GetProperty("titulo").GetString() ?? "",
+            Intro = c.TryGetProperty("intro", out var i) ? i.GetString() : null,
+            Letra = c.TryGetProperty("letra", out var l) ? l.GetString() : null,
+            Pregunta = c.TryGetProperty("pregunta", out var p) ? p.GetString() : null,
+            Respuesta = c.TryGetProperty("respuesta", out var r) ? r.GetString() : null,
+            Datos = c.TryGetProperty("datos", out var d) ? d.GetRawText() : "{}",
+        }).ToList();
+        return new(anio, raiz.TryGetProperty("frase", out var f) ? f.GetString() : null, casillas);
+    }
+
     /// <summary>Crea las casillas del calendario de adviento de Seed/adviento.json si aún no existen para ese año.</summary>
     async Task CargarAdviento()
     {
-        var ruta = Ruta("adviento.json");
-        if (!File.Exists(ruta)) return;
-        using var doc = System.Text.Json.JsonDocument.Parse(await File.ReadAllTextAsync(ruta));
-        var raiz = doc.RootElement;
-        int anio = raiz.GetProperty("anio").GetInt32();
-        if (await db.Adviento.AnyAsync(c => c.Anio == anio)) return;
-        if (raiz.TryGetProperty("frase", out var frase) && await db.Configs.FindAsync(ConfigClaves.AdvientoFrase) == null)
-            db.Configs.Add(new Config { Clave = ConfigClaves.AdvientoFrase, Valor = frase.GetString() ?? "" });
-        foreach (var c in raiz.GetProperty("casillas").EnumerateArray())
-        {
-            db.Adviento.Add(new AdvientoCasilla
-            {
-                Anio = anio,
-                Dia = c.GetProperty("dia").GetInt32(),
-                Tipo = Enum.Parse<TipoCasilla>(c.GetProperty("tipo").GetString()!),
-                Titulo = c.GetProperty("titulo").GetString() ?? "",
-                Intro = c.TryGetProperty("intro", out var i) ? i.GetString() : null,
-                Letra = c.TryGetProperty("letra", out var l) ? l.GetString() : null,
-                Pregunta = c.TryGetProperty("pregunta", out var p) ? p.GetString() : null,
-                Respuesta = c.TryGetProperty("respuesta", out var r) ? r.GetString() : null,
-                Datos = c.TryGetProperty("datos", out var d) ? d.GetRawText() : "{}",
-            });
-        }
+        var seed = await LeerSeedAdviento();
+        if (seed == null || await db.Adviento.AnyAsync(c => c.Anio == seed.Anio)) return;
+        if (seed.Frase != null && await db.Configs.FindAsync(ConfigClaves.AdvientoFrase) == null)
+            db.Configs.Add(new Config { Clave = ConfigClaves.AdvientoFrase, Valor = seed.Frase });
+        db.Adviento.AddRange(seed.Casillas);
         await db.SaveChangesAsync();
-        log.LogInformation("Calendario de adviento {Anio} creado", anio);
+        log.LogInformation("Calendario de adviento {Anio} creado", seed.Anio);
     }
 
-    /// <summary>Cambios en casillas del adviento ya creadas (la carga solo ocurre una vez). Cada cambio se aplica
-    /// únicamente si la casilla conserva el texto original, para no pisar lo que Javier haya editado en Admin.</summary>
     /// <summary>Listas que Javier dejó apuntadas (2026-11-10): Viaje con lo que siempre se olvida y Camping vacía para completar.</summary>
     async Task SembrarListas()
     {
@@ -195,6 +200,8 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
     const string GlobosTitulo = "Explota los globos";
     const string GlobosIntro = "Hoy toca ser rápida. Explota los globos antes de que se escapen; si se te escapan demasiados, vuelta a empezar.\nAlgunos son corazones dorados y esconden una palabra: duran poquísimo, así que estate atenta. Al final tendrás que escribir la frase que forman.";
 
+    /// <summary>Cambios en casillas del adviento ya creadas (la carga solo ocurre una vez). Cada cambio se aplica
+    /// únicamente si la casilla conserva el texto original, para no pisar lo que Javier haya editado en Admin.</summary>
     async Task CorregirAdviento()
     {
         // 2026-11-11: en el murdoku del día 3 la sospechosa es Aroa, no Miranda.
@@ -220,6 +227,26 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             f.Tipo = TipoCasilla.Foto; f.Titulo = "¿Te acuerdas?"; f.Intro = "Mira bien esta foto. ¿Te acuerdas de ese día?"; f.Datos = "{}"; f.Estado = null;
             await db.SaveChangesAsync();
             log.LogInformation("Adviento: día 7 vuelve a ser foto");
+        }
+        // 2026-11-17: murdokus con pistas menos evidentes y criptofrases con más gracia. Cada casilla toma el contenido
+        // del seed actual solo si aún contiene un fragmento del texto original (así no se pisa lo editado en Admin).
+        var originales = new Dictionary<int, string>
+        {
+            [2] = "Bastó una conversación", [3] = "Aroa estaba con un tenedor", [8] = "La que llevaba la guitarra",
+            [10] = "Una casita en el campo y un despachito", [12] = "Marcos no suelta la pelota", [14] = "Siete en casa, una perra y un montón",
+            [17] = "Raquel había ido a por el correo", [19] = "Cada verano, una semana solo", [21] = "Aroa estaba achuchando",
+            [23] = "Buena, generosa y amorosa",
+        };
+        var seed = await LeerSeedAdviento();
+        if (seed == null) return;
+        foreach (var (dia, fragmento) in originales)
+        {
+            var nueva = seed.Casillas.FirstOrDefault(x => x.Dia == dia);
+            var vieja = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == seed.Anio && x.Dia == dia && x.Datos.Contains(fragmento));
+            if (nueva == null || vieja == null || vieja.Tipo != nueva.Tipo) continue;
+            vieja.Titulo = nueva.Titulo; vieja.Intro = nueva.Intro; vieja.Datos = nueva.Datos; vieja.Estado = null; vieja.Pistas = 0;
+            await db.SaveChangesAsync();
+            log.LogInformation("Adviento: día {Dia} actualizado con el contenido nuevo del seed", dia);
         }
     }
 

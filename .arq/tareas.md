@@ -121,3 +121,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Globos: más difícil y largo, BriskaBird (3 apariciones con entradilla, ladridos y +3 de margen si la caza) y palabras que se esfuman al acabar | 7134b5d |
 | 2026-11-17 | Globos: música de ladridos y explosiones (Web Audio) con botón de silenciar; BriskaBird se presenta una vez y sale 10 veces sin pausa (+1 globo); hay que cazar todas las palabras (las perdidas vuelven a salir) | 1386c4c |
 | 2026-11-17 | Globos: +15 % de dificultad, las palabras cazadas ya no se apuntan abajo durante la partida y al final se esfuman antes (1,25 s) y un 10 % más rápido | (este commit) |
+| 2026-11-17 | Adviento: murdokus con pistas indirectas (solución única comprobada por fuerza bruta) y criptofrases con más gracia; `CorregirAdviento` aplica el seed nuevo a esas 10 casillas si conservan el texto original | (este) |

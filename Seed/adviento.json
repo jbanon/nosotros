@@ -7,25 +7,25 @@
 
     { "dia": 2, "tipo": "Criptofrase", "letra": "R", "titulo": "La primera criptofrase",
       "intro": "Cada número es una letra. Toca una casilla, escribe la letra y se rellenarán todas las que lleven ese número.",
-      "datos": { "frase": "Bastó una conversación para saber que eras tú", "pista": "Cómo empezó todo" } },
+      "datos": { "frase": "Un chat, mil mensajes y ninguna gana de parar", "pista": "Cómo empezó todo (y cómo sigue)" } },
 
     { "dia": 3, "tipo": "Murdoku", "letra": "A", "titulo": "El caso de la última croqueta",
       "datos": {
-        "caso": "Había una croqueta en la fuente. Una. Y ha desaparecido. Tres sospechosos, tres lugares y tres pruebas: cada sospechoso estaba en un sitio distinto con una prueba distinta.",
+        "caso": "Había una croqueta en la fuente. Una. La última. Y ha desaparecido. Tres sospechosos, tres sitios y tres pruebas: cada uno estaba en un sitio distinto y dejó una prueba distinta. Y ojo: la prueba más obvia no siempre es del más obvio.",
         "categorias": [
           { "nombre": "¿Quién?", "items": ["Marcos", "Aroa", "Briska"] },
           { "nombre": "¿Dónde?", "items": ["En la cocina", "En el sofá", "En el jardín"] },
-          { "nombre": "¿Con qué?", "items": ["Un tenedor", "Las manos", "El hocico"] }
+          { "nombre": "¿Qué prueba?", "items": ["Un tenedor", "Una mancha de grasa", "Un rastro de migas"] }
         ],
         "pistas": [
-          "El tenedor apareció en la cocina, y el rastro de hocico, en el jardín.",
-          "Marcos no pisó el jardín, y Aroa tampoco: dice que hacía frío.",
-          "Briska no entra en la cocina (ni se lo permiten).",
-          "Aroa estaba con un tenedor en la mano cuando llegaste."
+          "En la cocina no había ni una miga ni una mancha: alguien la dejó impecable. Sospechosamente impecable.",
+          "Briska no salió al jardín (llovía, y ella con lluvia ni muerta) y al sofá no se sube, que lo tiene prohibidísimo.",
+          "Marcos enseñó las manos antes de que nadie se lo pidiera: ni una mancha de grasa. Muy sobrado, pero limpias.",
+          "Las migas no estaban en el sofá: en ese sofá se habrían notado al momento."
         ],
-        "remate": "La última croqueta desapareció en el jardín.",
-        "solucion": [2, 2, 2],
-        "explicacion": "Briska no podía estar en la cocina y los otros dos no salieron al jardín, así que la del jardín era ella, con el hocico. Aroa, con su tenedor, estaba en la cocina; Marcos, en el sofá, comiendo con las manos. Y la croqueta desapareció en el jardín: fue Briska. Futura perra guía, presente ladrona de croquetas."
+        "remate": "La croqueta se fue por donde se fue el rastro de migas.",
+        "solucion": [0, 2, 2],
+        "explicacion": "En la cocina no había migas ni mancha, así que allí estaba el tenedor. Briska no estaba en el jardín ni en el sofá: estaba en la cocina… con el tenedor (nadie sabe cómo; ella tampoco). Las migas no estaban en el sofá, luego estaban en el jardín, y la mancha de grasa, en el sofá. Marcos no tenía la mancha, así que la mancha era de Aroa, en el sofá, y Marcos estaba en el jardín con las migas. Culpable: Marcos. Tanto enseñar las manos limpias… y la croqueta en el jardín."
       } },
 
     { "dia": 4, "tipo": "Crucigrama", "letra": "C", "titulo": "Los nuestros",
@@ -53,21 +53,21 @@
 
     { "dia": 8, "tipo": "Murdoku", "letra": "S", "titulo": "El caso de la luz del baño",
       "datos": {
-        "caso": "Otra vez la luz del baño encendida. Nadie ha sido, claro. Tres sospechosas, tres lugares donde estaban después y tres cosas que llevaban.",
+        "caso": "Otra vez la luz del baño encendida. Nadie ha sido, claro; nunca es nadie. Tres sospechosas, tres sitios donde estaban justo después y tres cosas que llevaban. Aviso: en esta casa las cosas cambian de dueña sin avisar.",
         "categorias": [
           { "nombre": "¿Quién?", "items": ["Naia", "Elsa", "Aroa"] },
           { "nombre": "¿Dónde estaba?", "items": ["En su cuarto", "En el salón", "En la cocina"] },
           { "nombre": "¿Qué llevaba?", "items": ["La guitarra", "Los auriculares", "El peluche"] }
         ],
         "pistas": [
-          "La que llevaba la guitarra se encerró en su cuarto.",
-          "Aroa no se separa de su peluche.",
-          "En la cocina no había nadie con auriculares.",
-          "Naia no estaba en el salón."
+          "La guitarra no sonó en el salón. Sonó, y mal, pero en otra parte.",
+          "En la cocina no había nada que hiciera ruido: ni cuerdas ni cascos.",
+          "Elsa no estaba en su cuarto (demasiado quieto para ella) y no llevaba el peluche: con un peluche no se puede correr.",
+          "Aroa no pisó la cocina."
         ],
-        "remate": "La culpable pasó por el baño a toda velocidad, con la música a tope, y no oyó el «¡apaga!».",
+        "remate": "La culpable pasó por el baño a toda velocidad y con la música a tope: no oyó el «¡apaga!».",
         "solucion": [1, 1, 1],
-        "explicacion": "La guitarra estaba en el cuarto y Aroa llevaba el peluche. Como los auriculares no estaban en la cocina, estaban en el salón, y el peluche, en la cocina. Naia no estaba en el salón, así que estaba en su cuarto con la guitarra, y Elsa en el salón con los auriculares. A toda velocidad y sin oír nada: Elsa."
+        "explicacion": "En la cocina no había ni guitarra ni auriculares, así que allí estaba el peluche. La guitarra no estaba en el salón, luego estaba en un cuarto, y los auriculares, en el salón. Elsa no estaba en su cuarto y no tenía el peluche: estaba en el salón, con los auriculares. Aroa no estaba en la cocina, así que estaba en su cuarto… con la guitarra de Naia, desafinándola. Y Naia en la cocina con el peluche de Aroa, nadie sabe por qué. A toda velocidad y sin oír nada: Elsa."
       } },
 
     { "dia": 9, "tipo": "Crucigrama", "letra": "P", "titulo": "Nuestro norte",
@@ -82,28 +82,28 @@
       } },
 
     { "dia": 10, "tipo": "Criptofrase", "letra": "O", "titulo": "Criptofrase",
-      "datos": { "frase": "Una casita en el campo y un despachito para los dos", "pista": "Nuestro proyecto, el no tan big" } },
+      "datos": { "frase": "Casita en el campo, despachito y un barracón para la tropa", "pista": "El big project, versión realista" } },
 
     { "dia": 11, "tipo": "Foto", "letra": "R", "titulo": "Nuestro norte",
       "intro": "Una semana al año solo para los dos, en el norte, lejos de todo." },
 
     { "dia": 12, "tipo": "Murdoku", "letra": "Q", "titulo": "El caso del mando perdido",
       "datos": {
-        "caso": "El mando de la tele ha desaparecido justo antes de la peli. Tres sospechosos, tres sitios y tres cosas que tenían entre manos.",
+        "caso": "El mando de la tele ha desaparecido justo antes de la peli. Tres sospechosos, tres sitios y tres cosas entre manos. Hoy nadie tenía lo que suele tener.",
         "categorias": [
           { "nombre": "¿Quién?", "items": ["Marcos", "Miranda", "Elsa"] },
           { "nombre": "¿Dónde?", "items": ["En el sofá", "En la cocina", "En el pasillo"] },
           { "nombre": "¿Qué tenía?", "items": ["La pelota de basket", "El móvil", "Las galletas"] }
         ],
         "pistas": [
-          "Marcos no suelta la pelota de basket ni para cenar.",
-          "En el sofá, alguien grababa un baile con el móvil.",
-          "Elsa estaba merendando galletas.",
-          "Nadie botó la pelota en la cocina (lo tienen prohibido)."
+          "En la cocina no se bota (prohibido desde lo del jarrón) y por el pasillo nadie iba con galletas: se caen.",
+          "Marcos, por una vez, no tenía nada que botar ni nada que mirar. Estaba desconcertado.",
+          "Miranda no pisó la cocina: cuando entra, se la oye.",
+          "Elsa no tenía el móvil (sin batería, como siempre) y sentada no estaba: nadie ha visto nunca a Elsa sentada."
         ],
-        "remate": "El mando apareció justo donde alguien grababa un baile.",
+        "remate": "El mando apareció debajo de quien estaba grabando un baile.",
         "solucion": [1, 0, 1],
-        "explicacion": "Marcos tenía la pelota y no estaba en la cocina; como en el sofá estaba quien tenía el móvil, Marcos estaba en el pasillo. Elsa, con sus galletas, no podía estar en el sofá, así que estaba en la cocina. Queda Miranda en el sofá, grabando un baile con el móvil… sentada encima del mando. Dice que fue sin querer, pero se le escapa la risa."
+        "explicacion": "Marcos no tenía ni la pelota ni el móvil: tenía las galletas, y como con galletas no se va por el pasillo, estaba en el sofá o en la cocina. Elsa no tenía el móvil, así que tenía la pelota, que no podía estar en la cocina; y Miranda, el móvil. Miranda no estaba en la cocina, luego en la cocina estaba Marcos, con las galletas. Elsa no estaba sentada, así que estaba en el pasillo botando la pelota de su hermano, y Miranda en el sofá, grabando un baile con el móvil… sentada encima del mando. Dice que fue sin querer, pero se le escapa la risa."
       } },
 
     { "dia": 13, "tipo": "Crucigrama", "letra": "U", "titulo": "Junto al fuego",
@@ -119,7 +119,7 @@
       } },
 
     { "dia": 14, "tipo": "Criptofrase", "letra": "E", "titulo": "Criptofrase",
-      "datos": { "frase": "Siete en casa, una perra y un montón de amor", "pista": "Nuestra familia" } },
+      "datos": { "frase": "Siete en casa, una perra y la luz del baño siempre encendida", "pista": "Nuestra familia, retrato fiel" } },
 
     { "dia": 15, "tipo": "Vale", "titulo": "Vale por una cena donde tú elijas",
       "intro": "Restaurante, terraza o la cocina de casa con las velas puestas. Tú eliges sitio y plato; yo elijo tu compañía. Canjéalo cuando quieras." },
@@ -129,21 +129,21 @@
 
     { "dia": 17, "tipo": "Murdoku", "letra": "E", "titulo": "El caso de la puerta abierta",
       "datos": {
-        "caso": "La puerta de la calle, abierta de par en par, y Briska a punto de irse de excursión por su cuenta. Tres sospechosos, tres lugares y tres cosas que llevaban.",
+        "caso": "La puerta de la calle, abierta de par en par, y Briska a punto de irse de excursión por su cuenta. Tres sospechosos, tres sitios y tres cosas que llevaban. Nadie se acuerda de nada, lo cual ya es sospechoso.",
         "categorias": [
           { "nombre": "¿Quién?", "items": ["Javi", "Raquel", "Naia"] },
           { "nombre": "¿Dónde estaba?", "items": ["En el garaje", "En el buzón", "En su habitación"] },
           { "nombre": "¿Qué llevaba?", "items": ["Las llaves", "Una carta", "Los auriculares"] }
         ],
         "pistas": [
-          "Quien estaba en su habitación llevaba los auriculares puestos y no se enteró de nada.",
-          "Raquel había ido a por el correo.",
-          "Las llaves no estaban en el buzón, ni la carta en el garaje.",
-          "Javi no sube a la habitación de Naia (Naia tampoco le deja)."
+          "Los auriculares no salieron de casa: ni al garaje ni al buzón.",
+          "Naia no estaba en su habitación. Sí, lo sabemos: rarísimo.",
+          "La carta no estaba en el garaje, y Raquel tampoco: al garaje no baja ni con escolta.",
+          "Naia no llevaba las llaves (no se las dejan desde lo del verano) y Javi no estaba en el buzón: Javi no sabe muy bien dónde está el buzón."
         ],
         "remate": "La puerta la dejó abierta quien salió con las llaves en la mano y la cabeza en otra parte.",
         "solucion": [0, 0, 0],
-        "explicacion": "Los auriculares estaban en la habitación. Raquel llevaba la carta, que no estaba en el garaje, así que estaba en el buzón; las llaves, entonces, en el garaje. Javi no estaba en la habitación, luego estaba en el garaje con las llaves, y Naia en su cuarto con los auriculares. Culpable: Javi. Lo siento. Iba pensando en ti."
+        "explicacion": "Los auriculares estaban en la habitación, y Naia no estaba allí, así que no los llevaba ella; tampoco las llaves: Naia llevaba la carta. La carta no estaba en el garaje, luego Naia estaba en el buzón (esperaba algo, dice). Raquel no estaba en el garaje, así que estaba en la habitación con los auriculares, y Javi en el garaje con las llaves. Culpable: Javi. Lo siento. Iba pensando en ti."
       } },
 
     { "dia": 18, "tipo": "Crucigrama", "letra": "R", "titulo": "Cómo empezó",
@@ -159,28 +159,28 @@
       } },
 
     { "dia": 19, "tipo": "Criptofrase", "letra": "M", "titulo": "Criptofrase",
-      "datos": { "frase": "Cada verano, una semana solo para los dos", "pista": "Nuestra tradición" } },
+      "datos": { "frase": "Cada verano una semana en el norte: tú, yo y la lluvia", "pista": "Nuestra tradición (con paraguas)" } },
 
     { "dia": 20, "tipo": "Foto", "letra": "E", "titulo": "Tú",
       "intro": "Mi foto favorita de ti. Hoy no hay pregunta: solo mírala y sonríe como sonrío yo cuando la veo." },
 
     { "dia": 21, "tipo": "Murdoku", "letra": "A", "titulo": "El caso de los polvorones",
       "datos": {
-        "caso": "Los polvorones eran para Nochebuena. Faltan tres. Tres sospechosas, tres lugares y tres pruebas.",
+        "caso": "Los polvorones eran para Nochebuena. Faltan tres. Tres sospechosas, tres sitios y tres pruebas. Y no, las migas en la cara no son necesariamente de la perra.",
         "categorias": [
           { "nombre": "¿Quién?", "items": ["Aroa", "Miranda", "Briska"] },
           { "nombre": "¿Dónde?", "items": ["Junto al árbol", "En la cocina", "En el sofá"] },
-          { "nombre": "¿Qué prueba?", "items": ["Una servilleta", "Migas en el morro", "Un envoltorio en el bolsillo"] }
+          { "nombre": "¿Qué prueba?", "items": ["Una servilleta doblada", "Migas en la cara", "Un envoltorio escondido"] }
         ],
         "pistas": [
-          "Las migas estaban en la cocina.",
-          "Aroa estaba achuchando a alguien en el sofá.",
-          "Briska no se acerca al árbol desde que tiró una bola.",
-          "La servilleta no estaba junto al árbol."
+          "Junto al árbol no había ni una miga: todo impecable, de postal.",
+          "Briska no estaba en la cocina (la puerta estaba cerrada y ella aún no abre puertas, está en ello) ni en el sofá, que lo tiene prohibido.",
+          "Miranda no estaba en el sofá, y la servilleta no era suya: Miranda y las servilletas no se han presentado.",
+          "En el sofá no había ningún envoltorio, y Aroa tenía la cara limpia. Limpísima. Sospechosamente limpia."
         ],
-        "remate": "La culpable se limpió los labios con una servilleta y puso cara de no haber roto un plato en su vida.",
+        "remate": "La culpable se limpió con una servilleta y puso cara de no haber roto un plato en su vida.",
         "solucion": [0, 2, 0],
-        "explicacion": "Aroa estaba en el sofá y Briska, que no se acerca al árbol, en la cocina con las migas; Miranda, junto al árbol. La servilleta no estaba en el árbol, así que estaba en el sofá, con Aroa, y el envoltorio en el bolsillo de Miranda. ¿Servilleta y carita de ángel? Aroa. Achuchable y golosa."
+        "explicacion": "Briska no estaba ni en la cocina ni en el sofá: estaba junto al árbol, y como allí no había migas, las migas no eran suyas. Miranda no estaba en el sofá, así que estaba en la cocina, y Aroa en el sofá. En el sofá no había envoltorio y Aroa tenía la cara limpia: Aroa tenía la servilleta. Miranda no tenía servilleta y las migas no estaban junto al árbol, luego Miranda tenía las migas en la cara y Briska, el envoltorio escondido (enterrado bajo el árbol, como un regalo). ¿Servilleta y carita de ángel? Aroa. Achuchable y golosa."
       } },
 
     { "dia": 22, "tipo": "Crucigrama", "letra": "S", "titulo": "Navidad en casa",
@@ -197,7 +197,7 @@
       } },
 
     { "dia": 23, "tipo": "Criptofrase", "letra": "I", "titulo": "La última criptofrase",
-      "datos": { "frase": "Buena, generosa y amorosa: no hay otra como tú", "pista": "Tú, en tres palabras" } },
+      "datos": { "frase": "Me gustas más que las croquetas, y eso es decir mucho", "pista": "Una declaración muy seria" } },
 
     { "dia": 24, "tipo": "Final", "titulo": "Para ti",
       "intro": "Amor:\n\nVeinticuatro días de enigmas para decirte algo que ya sabes, pero que me gusta repetir. Nos conocimos en una pantalla y conectamos en un segundo; desde entonces no he dejado de dar las gracias.\n\nGracias por ser buena, generosa y amorosa. Por tus caricias. Por los paseos, por el fuego y el libro, por el norte cada verano. Por esta casa de siete y una perra, que es ruido y es hogar.\n\nY gracias por soñar conmigo: la casita en el campo con su despachito para leer y estudiar, y el barracón para toda la familia (habitación, baño, habitación, habitación, baño…) para cuando los niños traigan a sus niños. Big project o no tan big: contigo, cualquiera.\n\nTe quiero.\nJavi",
