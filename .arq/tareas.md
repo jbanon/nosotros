@@ -127,4 +127,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Comecocos: estética de laberinto arcade (fondo negro, paredes de neón azul, bolas grandes con la taza de café), solo 2 perseguidores (ticket y oferta, algo más rápidos) y Briskanguro un 23 % más pequeña | badb4db |
 | 2026-11-17 | Comecocos: el carrito va siempre un 10% más rápido que los perseguidores | 82dcc29 |
 | 2026-11-17 | Français: píldoras de francés divertidas (B2-C1) que escribe el agente los lunes, miércoles y viernes; Raquel responde, ♥ +1 al entregar y el agente corrige con cariño; Javi ve sus copias y puede encargar una a mano | 8d009b5 |
-| 2026-11-17 | Juegos con frase: palabras en orden durante la partida (desordenadas al escribir) y botón de ayuda visible y bloqueado hasta el 3.er intento | (este) |
+| 2026-11-17 | Juegos con frase: palabras en orden durante la partida (desordenadas al escribir) y botón de ayuda visible y bloqueado hasta el 3.er intento | 685b655 |
