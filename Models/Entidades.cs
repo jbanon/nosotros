@@ -513,3 +513,18 @@ public class CrucigramaPartida
     public DateTime? ResueltoEl { get; set; }
     public DateTime Actualizado { get; set; } = DateTime.UtcNow;
 }
+
+/// <summary>Partida de un juego de la zona Juegos que se limita a una al día (globos, arkanoid, comecocos…).</summary>
+public class JuegoPartida
+{
+    public int Id { get; set; }
+    public int UsuarioId { get; set; }
+    /// <summary>Clave del juego: "globos", "arkanoid", "comecocos".</summary>
+    public string Juego { get; set; } = "";
+    public DateOnly Fecha { get; set; }
+    public DateTime Inicio { get; set; } = DateTime.UtcNow;
+    public DateTime? Fin { get; set; }
+    public bool Gano { get; set; }
+    public int Palabras { get; set; }
+    public int Total { get; set; }
+}

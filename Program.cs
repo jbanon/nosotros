@@ -58,6 +58,7 @@ builder.Services.AddScoped<RecurrenteService>();
 builder.Services.AddScoped<PinAuth>();
 builder.Services.AddScoped<SeedService>();
 builder.Services.AddScoped<AdvientoService>();
+builder.Services.AddScoped<JuegosDiarios>();
 builder.Services.AddSingleton<BriskaImagenes>();
 builder.Services.AddScoped<VinetaService>();
 builder.Services.AddScoped<ArteService>();

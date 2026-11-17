@@ -360,6 +360,45 @@ namespace Love.Data.MigracionesSqlite
                     b.ToTable("Ingredientes");
                 });
 
+            modelBuilder.Entity("Love.Models.JuegoPartida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("Fin")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Gano")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Inicio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Juego")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Palabras")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId", "Juego", "Fecha");
+
+                    b.ToTable("JuegoPartidas");
+                });
+
             modelBuilder.Entity("Love.Models.Lectura", b =>
                 {
                     b.Property<int>("Id")

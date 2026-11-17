@@ -382,6 +382,47 @@ namespace Love.Data.Migrations
                     b.ToTable("Ingredientes");
                 });
 
+            modelBuilder.Entity("Love.Models.JuegoPartida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("Fecha")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("Fin")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("Gano")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("Inicio")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Juego")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("Palabras")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId", "Juego", "Fecha");
+
+                    b.ToTable("JuegoPartidas");
+                });
+
             modelBuilder.Entity("Love.Models.Lectura", b =>
                 {
                     b.Property<int>("Id")
