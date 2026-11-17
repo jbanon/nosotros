@@ -85,7 +85,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   próxima vez. Viaje y Camping se crean una sola vez (`Config.ListasSembradas`); si se borran no vuelven.
 
 ## Calendario de adviento
-- 24 casillas del 1 al 24 de diciembre (año en `AdvientoCasilla.Anio`; en enero sigue valiendo el de diciembre). Una casilla se abre cuando llega su día (hora de Madrid); las pasadas siguen abiertas; las futuras muestran un mensaje gracioso. Reparto: 6 criptofrases, 5 murdokus, 5 crucigramas, 4 fotos, 1 juego de globos, 2 vales y la carta final del 24.
+- 24 casillas del 1 al 24 de diciembre (año en `AdvientoCasilla.Anio`; en enero sigue valiendo el de diciembre). Una casilla se abre cuando llega su día (hora de Madrid); las pasadas siguen abiertas; las futuras muestran un mensaje gracioso. Reparto: 5 criptofrases, 5 murdokus, 5 crucigramas, 5 fotos, 1 juego de globos, 2 vales y la carta final del 24.
 - Cada enigma (y cada foto) da una letra; las 21 letras en orden de día forman la frase final (`Config.AdvientoFrase`, "Gracias por quererme así"). Admin avisa si letras y frase no coinciden.
 - Fotos: con pregunta → borrosa hasta acertar (la letra se gana al acertar); sin pregunta → se ve directa y la letra se gana al abrir. Fotos en `App_Data/adjuntos/adviento`, fuera del repo. Cualquier casilla con foto sale en el collage del 24.
 - El contenido inicial vive en `Seed/adviento.json` (se carga una vez por año si no hay casillas); después se edita en Admin → Calendario de adviento (JSON del pasatiempo plegado). Las comprobaciones se hacen en el servidor (handlers JSON `Resolver`, `Pista`, `Estado`, `Canjear`); el admin puede jugar en vista previa sin que se guarde nada.
@@ -106,7 +106,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   Atrás cierra el vídeo. Se sube desde Admin por trozos de 8 MB (nginx limita a 30 MB por petición; así no hay
   que tocarlo), máx. 1 GB, y se sirve con rangos en `/Adviento/Video/{id}`. Sin transcodificar (no hay ffmpeg):
   mejor MP4 grabado en 1080p y sin HEVC; los .mov se sirven como video/mp4.
-- Juego de los globos (`TipoCasilla.Globos`, día 7 en lugar de la foto "¿Te acuerdas?"; `js/globos.js`, canvas
+- Juego de los globos (`TipoCasilla.Globos`, día 6 en lugar de su criptofrase; `js/globos.js`, canvas
   a pantalla completa). Se explotan tocándolos y la dificultad sube con cada palabra (intervalo, velocidad,
   tamaño, zigzag). Si se escapan 10 globos normales, se pierde y vuelve a empezar.
   - **Palabras:** cada ~8 globos sale un corazón dorado entre un racimo de globos; dura poco y lleva una
@@ -115,7 +115,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   - **Dificultad adaptable:** la vida del corazón se ajusta para que pierda unas 3-4 de 11.
   - **Escribir la frase:** en el 2º intento las bien colocadas salen en verde y los huecos con sus letras; en el
     3º, además, la inicial; desde ahí regala una palabra por fallo. Puede volver a jugar para cazar más.
-  - Sin tildes, mayúsculas ni comas; la comprobación final la hace el servidor, que da la letra "A".
+  - Sin tildes, mayúsculas ni comas; la comprobación final la hace el servidor, que da la letra "I".
   - Todos los ajustes, en la constante `AJ` de `globos.js`.
 
 ## Base de datos

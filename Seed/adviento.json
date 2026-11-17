@@ -44,12 +44,12 @@
     { "dia": 5, "tipo": "Vale", "titulo": "Vale por un masaje",
       "intro": "Canjeable cuando quieras, sin fecha de caducidad y sin excusas por mi parte. Tú te tumbas, yo me encargo. Pulsa el botón cuando quieras cobrarlo y me llegará el aviso." },
 
-    { "dia": 6, "tipo": "Criptofrase", "letra": "I", "titulo": "Criptofrase",
-      "datos": { "frase": "Me encanta cuando me acaricias", "pista": "Algo que me encanta y que haces tú" } },
-
-    { "dia": 7, "tipo": "Globos", "letra": "A", "titulo": "Explota los globos",
+    { "dia": 6, "tipo": "Globos", "letra": "I", "titulo": "Explota los globos",
       "intro": "Hoy toca ser rápida. Explota los globos antes de que se escapen; si se te escapan demasiados, vuelta a empezar.\nAlgunos son corazones dorados y esconden una palabra: duran poquísimo, así que estate atenta. Al final tendrás que escribir la frase que forman.",
       "datos": { "frase": "Eres el amor de mi vida, no puedo vivir sin ti" } },
+
+    { "dia": 7, "tipo": "Foto", "letra": "A", "titulo": "¿Te acuerdas?",
+      "intro": "Mira bien esta foto. ¿Te acuerdas de ese día?" },
 
     { "dia": 8, "tipo": "Murdoku", "letra": "S", "titulo": "El caso de la luz del baño",
       "datos": {

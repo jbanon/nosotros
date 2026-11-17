@@ -205,14 +205,21 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             await db.SaveChangesAsync();
             log.LogInformation("Adviento: día 3 con Aroa en lugar de Miranda");
         }
-        // 2026-11-17: el día 7 (foto "¿Te acuerdas?") pasa a ser el juego de los globos. Solo si sigue sin foto.
-        var g = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 7 && x.Tipo == TipoCasilla.Foto && x.FotoPath == null && x.Titulo == "¿Te acuerdas?");
+        // 2026-11-17: el juego de los globos va en el día 6 (en lugar de su criptofrase); el día 7 sigue siendo foto.
+        var g = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 6 && x.Tipo == TipoCasilla.Criptofrase && x.Datos.Contains("Me encanta cuando me acaricias"));
         if (g != null)
         {
-            g.Tipo = TipoCasilla.Globos; g.Titulo = GlobosTitulo; g.Intro = GlobosIntro; g.Pregunta = null; g.Respuesta = null;
+            g.Tipo = TipoCasilla.Globos; g.Titulo = GlobosTitulo; g.Intro = GlobosIntro; g.Estado = null; g.Pistas = 0;
             g.Datos = AdvientoService.Serializar(new { frase = AdvientoService.FraseGlobosDefecto });
             await db.SaveChangesAsync();
-            log.LogInformation("Adviento: día 7 pasa a ser el juego de los globos");
+            log.LogInformation("Adviento: día 6 pasa a ser el juego de los globos");
+        }
+        var f = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 7 && x.Tipo == TipoCasilla.Globos && x.Titulo == GlobosTitulo);
+        if (f != null)
+        {
+            f.Tipo = TipoCasilla.Foto; f.Titulo = "¿Te acuerdas?"; f.Intro = "Mira bien esta foto. ¿Te acuerdas de ese día?"; f.Datos = "{}"; f.Estado = null;
+            await db.SaveChangesAsync();
+            log.LogInformation("Adviento: día 7 vuelve a ser foto");
         }
     }
 
