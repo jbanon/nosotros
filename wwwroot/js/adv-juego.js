@@ -140,11 +140,13 @@
         <p class="gl-ayuda">${ayuda()}</p>
         <textarea id="gl-frase" rows="2" autocomplete="off" autocapitalize="sentences" placeholder="Escribe la frase completa…"></textarea>
         <button class="btn adv-btn primario ancho" id="gl-comprobar" type="button">Comprobar</button>
-        ${E.intentos >= 3 && !E.comodin ? '<button class="btn adv-btn ancho gl-btn-comodin" id="gl-comodin" type="button">🃏 Comodín: ver las palabras en orden</button>' : ''}
+        ${E.intentos >= 3 && ayudaDe() === 'comodin' && !E.comodin ? '<button class="btn adv-btn ancho gl-btn-comodin" id="gl-comodin" type="button">🃏 Comodín: ver las palabras en orden</button>' : ''}
+        ${E.intentos >= 3 && ayudaDe() === 'caza' && E.sabidas.length < n ? `<button class="btn adv-btn ancho gl-btn-comodin" id="gl-caza" type="button">🎯 Pista: caza palabras (${Math.round(rondaMs() / 1000)} s)</button>` : ''}
         ${D.diario ? '' : '<button class="btn adv-btn fantasma pequeno ancho" id="gl-otra" type="button">Volver a jugar para verlas otra vez</button>'}`;
       const ta = $('gl-frase'); ta.value = E.texto || '';
       $('gl-comprobar').addEventListener('click', comprobar);
       if ($('gl-comodin')) $('gl-comodin').addEventListener('click', comodin);
+      if ($('gl-caza')) $('gl-caza').addEventListener('click', caza);
       ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); comprobar(); } });
       if ($('gl-otra')) $('gl-otra').addEventListener('click', () => opc.jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
       if (ver && chips) { E.ocultas = true; guardarE(); esfumar(); }
@@ -165,7 +167,9 @@
       if (E.intentos === 0) return 'Ordénalas y completa lo que falte. Sin preocuparte de tildes ni comas.';
       if (E.intentos === 1) return 'Casi. Las verdes ya están en su sitio; los huecos te dicen cuántas letras tiene cada palabra.';
       if (E.intentos === 2) return 'Te doy la primera letra de cada palabra que falta.';
-      if (!E.comodin) return '¿Atascada? Tienes un comodín: verás las palabras una a una y en orden, solo una vez.';
+      if (ayudaDe() === 'comodin' && !E.comodin) return '¿Atascada? Tienes un comodín: verás las palabras una a una y en orden, solo una vez.';
+      if (ayudaDe() === 'caza' && !E.rondas) return '¿Atascada? Pide pista: las palabras salen un instante y, si las tocas, se quedan fijas. ¡Cuidado con las trampas!';
+      if (ayudaDe() === 'caza') return 'Puedes cazar más palabras, pero cada ronda dura menos.';
       return 'Te regalo una palabra más. ¡Ya casi!';
     }
     // Comodín (una vez por partida): las palabras de la frase, una a una y en orden, a pantalla completa
@@ -186,6 +190,67 @@
       };
       setTimeout(sig, 400);
     }
+    // Cada partida tiene al azar una de las dos ayudas (las partidas guardadas de antes, el comodín)
+    const ayudaDe = () => E.ayuda || 'comodin';
+    const RONDAS = [15000, 10000, 7000, 5000];
+    const rondaMs = () => RONDAS[Math.min(E.rondas || 0, RONDAS.length - 1)];
+    const TRAMPAS = ['croqueta', 'manta', 'sofá', 'galleta', 'pijama', 'lunes', 'paraguas', 'calcetín', 'mando', 'siesta', 'churros', 'tortilla', 'Briska', 'ticket', 'piña', 'lluvia'];
+    let snd = null;
+    // Pista "caza palabras": salen palabras un instante en sitios al azar; tocar una buena la fija en su hueco,
+    // tocar una trampa quita un segundo. Cada ronda dura menos que la anterior.
+    function caza() {
+      if (!snd) snd = sonido({}); snd.audio();
+      const dur = rondaMs(); E.rondas = (E.rondas || 0) + 1; guardarE();
+      const enFrase = new Set(objetivo);
+      const trampas = TRAMPAS.filter(w => !enFrase.has(limpia(w)));
+      const capa = document.createElement('div'); capa.className = 'gl-caza';
+      capa.innerHTML = '<div class="gl-caza-barra"><i></i></div><p class="gl-caza-titulo">Toca las palabras de la frase</p><div class="gl-caza-campo"></div><div class="gl-plantilla gl-caza-plantilla"></div>';
+      document.body.appendChild(capa);
+      const barra = capa.querySelector('.gl-caza-barra i'), campo = capa.querySelector('.gl-caza-campo'), plant = capa.querySelector('.gl-caza-plantilla');
+      const pintaPlant = () => { plant.innerHTML = objetivo.map((_, i) => huecos(i)).join(''); };
+      pintaPlant();
+      let queda = dur, ultimo = performance.now(), proximo = 300, vivas = 0, acabado = false;
+      const faltan = () => objetivo.map((_, i) => i).filter(i => !E.sabidas.includes(i));
+      function suelta(t) {
+        const f = faltan(); if (!f.length) return;
+        const buena = !trampas.length || Math.random() < 0.6;
+        const idx = buena ? f[Math.floor(Math.random() * f.length)] : -1;
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'gl-caza-pal';
+        b.textContent = buena ? visibles[idx] : trampas[Math.floor(Math.random() * trampas.length)];
+        b.style.left = (12 + Math.random() * 76) + '%'; b.style.top = (8 + Math.random() * 80) + '%';
+        const prog = 1 - queda / dur, vis = 600 - 200 * prog;   // de 0,6 s a 0,4 s
+        campo.appendChild(b); vivas++;
+        const quita = () => { if (b.parentNode) { b.remove(); vivas--; } };
+        b.addEventListener('pointerdown', e => {
+          e.preventDefault(); if (acabado || !b.parentNode) return;
+          if (idx >= 0) {
+            if (!E.sabidas.includes(idx)) E.sabidas.push(idx);
+            b.classList.add('bien'); snd.tic(880, 0.25); if (navigator.vibrate) navigator.vibrate(15);
+            pintaPlant(); guardarE();
+            if (!faltan().length) setTimeout(fin, 500);
+          } else {
+            b.classList.add('mal'); queda -= 1000; snd.guau(0, 1.3); if (navigator.vibrate) navigator.vibrate([40, 30, 40]);
+            capa.classList.remove('sacude'); void capa.offsetWidth; capa.classList.add('sacude');
+          }
+          setTimeout(quita, 250);
+        });
+        setTimeout(quita, vis);
+      }
+      function fin() {
+        if (acabado) return; acabado = true;
+        capa.classList.add('fuera');
+        setTimeout(() => { capa.remove(); pintaEscribir(); $('gl-frase')?.focus(); }, 350);
+      }
+      function paso(ahora) {
+        if (acabado) return;
+        const dt = Math.min(100, ahora - ultimo); ultimo = ahora; queda -= dt; proximo -= dt;
+        barra.style.width = Math.max(0, queda / dur * 100) + '%';
+        if (queda <= 0) { fin(); return; }
+        if (proximo <= 0 && vivas < 2) { suelta(); proximo = 420 + Math.random() * 280; }
+        requestAnimationFrame(paso);
+      }
+      requestAnimationFrame(paso);
+    }
     function guardarE() { A.guardarEstado(E); }
     async function comprobar() {
       const ta = $('gl-frase'), txt = ta.value.trim();
@@ -201,14 +266,14 @@
       }
       E.intentos++; E.texto = txt;
       toks.forEach((w, i) => { if (w === objetivo[i] && !E.sabidas.includes(i)) E.sabidas.push(i); });
-      if (E.comodin && E.intentos >= 4) { const f = objetivo.findIndex((_, i) => !E.sabidas.includes(i)); if (f >= 0) E.sabidas.push(f); }
+      if ((E.comodin || E.rondas >= 2) && E.intentos >= 4) { const f = objetivo.findIndex((_, i) => !E.sabidas.includes(i)); if (f >= 0) E.sabidas.push(f); }
       guardarE(); pintaEscribir();
       A.aviso('Todavía no…', true);
     }
     // Al ganar la partida: se apuntan las palabras cazadas y empieza la fase de escribir
     function empezar(cazadas) {
       if (D.resuelta) return;
-      E = { fase: 'escribir', palabras: cazadas, intentos: 0, sabidas: [], texto: '' };
+      E = { fase: 'escribir', palabras: cazadas, intentos: 0, sabidas: [], texto: '', ayuda: Math.random() < 0.5 ? 'comodin' : 'caza', rondas: 0 };
       guardarE(); pintaEscribir();
       opc.escribir.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }

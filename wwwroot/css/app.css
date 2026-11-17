@@ -1125,3 +1125,17 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .gl-comodin-num { opacity: .6; font-weight: 700; margin: 0; }
 .gl-comodin-pal { font-size: clamp(2.6rem, 14vw, 4.5rem); font-weight: 900; margin: 0; text-shadow: 0 4px 24px rgba(255,200,80,.8); }
 .gl-comodin-pal.entra { animation: gl-entra .25s ease-out; }
+/* Pista "caza palabras" */
+.gl-caza { position: fixed; inset: 0; z-index: 1002; display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top) + 12px) 14px calc(env(safe-area-inset-bottom) + 14px);
+  background: radial-gradient(120% 80% at 50% 30%, #1d4f5f, #0b1d26); color: #fff; animation: gl-entra .3s ease-out; touch-action: none; user-select: none; -webkit-user-select: none; }
+.gl-caza.fuera { opacity: 0; transition: opacity .35s; }
+.gl-caza.sacude { animation: gl-sacude .35s; }
+.gl-caza-barra { height: 8px; border-radius: 99px; background: rgba(255,255,255,.15); overflow: hidden; }
+.gl-caza-barra i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #ffd45e, #ff8fab); }
+.gl-caza-titulo { text-align: center; font-weight: 800; margin: 10px 0 0; opacity: .85; }
+.gl-caza-campo { position: relative; flex: 1; }
+.gl-caza-pal { position: absolute; transform: translate(-50%, -50%); border: 0; border-radius: 14px; padding: 10px 16px; font: 800 1.35rem system-ui, sans-serif;
+  background: #fff; color: #2a1d4a; box-shadow: 0 6px 20px rgba(0,0,0,.35); animation: gl-entra .12s ease-out; touch-action: none; }
+.gl-caza-pal.bien { background: #2f9e5b; color: #fff; transform: translate(-50%, -50%) scale(1.15); }
+.gl-caza-pal.mal { background: #d1203a; color: #fff; }
+.gl-caza-plantilla { margin: 0; color: #fff; }
