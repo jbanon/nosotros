@@ -392,8 +392,9 @@
   }
   function perder() {
     P.fin = true; S.gemido(0.1, false);
-    avisar(`<p class="gl-titulo">¡Uy! Se te ha caído la última pelota</p><p>Llevabas ${P.rotos} de ${P.total} bloques y ${P.cazadas.length} de ${n} palabras. Vuelta a empezar.</p>`,
-      [['Otra vez', () => jugar(alAcabar), 'primario'], ['Salir', cerrar]]);
+    avisar(`<p class="gl-titulo">¡Uy! Se te ha caído la última pelota</p><p>Llevabas ${P.rotos} de ${P.total} bloques y ${P.cazadas.length} de ${n} palabras.${D.diario ? ' Mañana, la revancha.' : ' Vuelta a empezar.'}</p>`,
+      D.diario ? [['Salir', cerrar, 'primario']] : [['Otra vez', () => jugar(alAcabar), 'primario'], ['Salir', cerrar]]);
+    if (D.diario && A.fin) A.fin({ gano: false, palabras: P.cazadas.length });
   }
   function ganar() {
     P.fin = true; S.guau(0.05, 1.3); S.guau(0.2, 1.45); S.guau(0.35, 1.75);

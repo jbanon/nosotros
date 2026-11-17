@@ -1,8 +1,17 @@
 @page
 @inject Love.Services.DueloCifras Duelo
+@inject Love.Services.JuegosDiarios Diarios
 @{
     ViewData["Title"] = "Juegos";
-    var reto = Duelo.RetoPara(int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value));
+    var yo = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value);
+    var reto = Duelo.RetoPara(yo);
+    var diarios = new List<(JuegosDiarios.Juego j, DateOnly? bloq, Love.Models.JuegoPartida? hoy)>();
+    foreach (var j in JuegosDiarios.Todos)
+    {
+        var bloq = User.EsAdmin() ? null : await Diarios.BloqueadoHasta(j, Reloj.Hoy);
+        if (bloq == DateOnly.MaxValue) continue;   // juego aún sin hacer
+        diarios.Add((j, bloq, await Diarios.DeHoy(yo, j, Reloj.Hoy)));
+    }
 }
 <div class="cab"><h1>Juegos</h1></div>
 <p class="suave peq" style="margin-top:0">Un ratito para pensar. Sin prisas… salvo en Cifras.</p>
@@ -39,6 +48,22 @@
         <p class="jg-stats" data-stats="cruci"></p>
     </div>
 </a>
+@if (diarios.Count > 0)
+{
+    <h2 class="jg-seccion">Una partida al día <span class="suave peq" style="font-weight:600">· con Briska y una frase nueva cada día</span></h2>
+    foreach (var (j, bloq, hoy) in diarios)
+    {
+        var jugada = hoy != null && !User.EsAdmin();
+        <a class="jg-tarjeta jg-diario @(bloq != null ? "bloqueado" : "") @(jugada ? "jugada" : "")" href="@(bloq != null ? "#" : $"/Juegos/Partida/{j.Clave}")">
+            <div class="jg-vista" aria-hidden="true">@(bloq != null ? "🔒" : j.Emoji)</div>
+            <div class="jg-texto">
+                <h2>@j.Nombre @if (bloq == null && !jugada) { <span class="jg-badge">hoy</span> }</h2>
+                <p>@(bloq != null ? $"Llega con el calendario de adviento: se desbloquea el {bloq.Value:d 'de' MMMM}." : j.Descripcion)</p>
+                @if (jugada) { <p class="jg-stats">@(hoy!.Gano ? "Hoy: ¡frase acertada! 🏆" : hoy.Fin != null ? $"Hoy: {hoy.Palabras} de {hoy.Total} palabras" : "Hoy ya has jugado") · mañana, otra</p> }
+            </div>
+        </a>
+    }
+}
 @section Scripts {
 <script>
 (() => {

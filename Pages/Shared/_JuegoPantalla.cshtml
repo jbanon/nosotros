@@ -1,0 +1,42 @@
+@model TipoCasilla
+@* Pantalla completa (canvas + marcador) de los juegos con frase. *@
+@if (Model == TipoCasilla.Globos)
+{
+    <div class="gl-pantalla" id="gl-pantalla" hidden>
+        <canvas id="gl-canvas"></canvas>
+        <div class="gl-hud">
+            <div class="gl-fallos" id="gl-fallos" aria-label="Globos escapados"></div>
+            <div class="gl-cuenta-pal" id="gl-npal"></div>
+            <button type="button" class="gl-salir gl-mudo" id="gl-mudo" aria-label="Silenciar">🔊</button>
+            <button type="button" class="gl-salir" id="gl-salir" aria-label="Salir">×</button>
+        </div>
+        <div class="gl-bandeja" id="gl-bandeja"></div>
+        <div class="gl-aviso" id="gl-aviso" hidden></div>
+    </div>
+}
+else if (Model == TipoCasilla.Arkanoid)
+{
+    <div class="gl-pantalla ak-pantalla" id="ak-pantalla" hidden>
+        <canvas id="ak-canvas"></canvas>
+        <div class="gl-hud">
+            <div class="ak-vidas" id="ak-vidas" aria-label="Vidas"></div>
+            <div class="gl-cuenta-pal" id="ak-npal"></div>
+            <button type="button" class="gl-salir gl-mudo" id="ak-mudo" aria-label="Silenciar">🔊</button>
+            <button type="button" class="gl-salir" id="ak-salir" aria-label="Salir">×</button>
+        </div>
+        <div class="gl-aviso" id="ak-aviso" hidden></div>
+    </div>
+}
+else if (Model == TipoCasilla.Comecocos)
+{
+    <div class="gl-pantalla cc-pantalla" id="cc-pantalla" hidden>
+        <canvas id="cc-canvas"></canvas>
+        <div class="gl-hud">
+            <div class="ak-vidas" id="cc-vidas" aria-label="Vidas"></div>
+            <div class="gl-cuenta-pal" id="cc-npal"></div>
+            <button type="button" class="gl-salir gl-mudo" id="cc-mudo" aria-label="Silenciar">🔊</button>
+            <button type="button" class="gl-salir" id="cc-salir" aria-label="Salir">×</button>
+        </div>
+        <div class="gl-aviso" id="cc-aviso" hidden></div>
+    </div>
+}

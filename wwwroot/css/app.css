@@ -1112,3 +1112,8 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 @keyframes briska-asoma-izq { 0%, 100% { transform: translateX(-105%); } 30%, 70% { transform: translateX(-28%) rotate(12deg); } }
 @keyframes briska-asoma-der { 0%, 100% { transform: translateX(105%) scaleX(-1); } 30%, 70% { transform: translateX(28%) scaleX(-1) rotate(12deg); } }
 @media (prefers-reduced-motion: reduce) { .briska-rincon img, .briska-bocadillo { transition: none; } .briska-rincon.asoma.bota img { animation: none; } .briska-suelta { display: none !important; } }
+/* Juegos diarios (globos, bloques, comecocos) */
+.jg-seccion { font-size: 1.05rem; margin: 22px 0 10px; }
+.jg-diario .jg-vista { font-size: 2.4rem; display: grid; place-items: center; }
+.jg-diario.bloqueado { opacity: .6; pointer-events: none; }
+.jg-diario.jugada { opacity: .8; }

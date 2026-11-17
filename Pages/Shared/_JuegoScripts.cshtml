@@ -1,0 +1,6 @@
+@model TipoCasilla
+@* Scripts de los juegos con frase; antes tiene que existir window.adv (adviento.js o el modo Juegos). *@
+<script src="/js/adv-juego.js" asp-append-version="true"></script>
+@if (Model == TipoCasilla.Globos) { <script src="/js/globos.js" asp-append-version="true"></script> }
+else if (Model == TipoCasilla.Arkanoid) { <script src="/js/arkanoid.js" asp-append-version="true"></script> }
+else if (Model == TipoCasilla.Comecocos) { <script src="/js/comecocos.js" asp-append-version="true"></script> }

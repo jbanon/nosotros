@@ -184,6 +184,18 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     esfuman al ritmo de globos y escribir la frase con el mismo sistema. Comprobación en el servidor (`ComprobarComecocos`).
   - Todos los ajustes en la constante `AJ` de `comecocos.js` (velocidades, salidas, vidas, cafés, visitas y saltos de Briska);
     el laberinto, en la constante `MAPA` del mismo fichero.
+- **Juegos diarios** (Javier, 2026-11-17): globos, bloques (Arkanoid) y comecocos se quedan también en la zona Juegos
+  (`/Juegos/Partida/{globos|arkanoid|comecocos}`), igual que en su casilla pero con una **frase del día** distinta por
+  juego (lista de 24 en `Services/JuegosDiarios.cs`).
+  - **Una partida al día** por juego y persona (`JuegoPartida`): se gasta al pulsar Empezar, sin "Otra vez" ni
+    "Volver a jugar"; al acabar se apunta si acertó la frase y cuántas palabras cazó. El admin juega sin límite
+    para probar. Cifras, el duelo y el crucigrama siguen sin límite. **Todo juego nuevo de este tipo entra aquí
+    con el mismo límite.**
+  - Cada juego se desbloquea en Juegos el día de su casilla del adviento, para no destriparla.
+  - La tarjeta, la pantalla y los scripts de cada juego son parciales compartidos con la casilla
+    (`Pages/Shared/_JuegoTarjeta`, `_JuegoPantalla`, `_JuegoScripts`). En Juegos, `js/juego-diario.js` hace de
+    `window.adv`, comprueba la frase en el navegador y avisa al servidor (`Empezar`/`Terminar`). Los juegos miran
+    `datos.diario` para no ofrecer otra partida.
 - **Briska por el calendario** (Javier, 2026-11-17: que BriskaBird y las demás Briskas tengan protagonismo). En `/Adviento`
   y en cada casilla sale una Briska asomando por la esquina inferior derecha con un bocadillo de frase graciosa que cambia
   cada 16-30 s; tocarla: ladra (Web Audio), bota y suelta otra frase. De vez en cuando (18-45 s) otra cruza la pantalla

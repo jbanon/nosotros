@@ -1,0 +1,63 @@
+@page "{juego}"
+@model Love.Pages.Juegos.PartidaModel
+@{
+    var j = Model.Juego;
+    ViewData["Title"] = j.Nombre;
+    var datos = AdvientoService.Serializar(new { tipo = Model.Tipo.ToString(), vista = new { frase = Model.Frase }, resuelta = false, estado = (string?)null, diario = true, admin = Model.EsAdmin });
+}
+<div class="adviento dia" data-particulas="nieve">
+    <div class="cielo"></div>
+    <div class="particulas" id="particulas"></div>
+    <header class="adv-cab">
+        <a class="volver" href="/Juegos" aria-label="Volver">‹</a>
+        <div class="crece">
+            <p class="adv-sobre">Juegos · una partida al día</p>
+            <h1>@j.Emoji @j.Nombre</h1>
+        </div>
+    </header>
+    @if (Model.Bloqueado != null)
+    {
+        <section class="adv-tarjeta cerrada-msg">
+            <span class="grande">🔒</span>
+            <p class="msg">Este juego llega con el calendario de adviento.</p>
+            @if (Model.Bloqueado != DateOnly.MaxValue) { <p class="suave2">Se desbloquea el @Model.Bloqueado.Value.ToString("d 'de' MMMM").</p> }
+            <a class="btn adv-btn" href="/Juegos">Volver a Juegos</a>
+        </section>
+    }
+    else if (Model.YaJugada)
+    {
+        var h = Model.Hoy!;
+        <section class="adv-tarjeta cerrada-msg">
+            <span class="grande">@(h.Gano ? "🏆" : "🐾")</span>
+            @if (h.Gano)
+            {
+                <p class="msg">¡Hoy la has clavado!</p>
+                <p class="gl-frase-ok">@Model.Frase</p>
+            }
+            else
+            {
+                <p class="msg">La partida de hoy ya está jugada@(h.Fin != null ? $": {h.Palabras} de {h.Total} palabras" : "").</p>
+            }
+            <p class="suave2">Mañana, otra partida y otra frase.</p>
+            <a class="btn adv-btn" href="/Juegos">Volver a Juegos</a>
+        </section>
+    }
+    else
+    {
+        if (Model.EsAdmin && Model.Hoy != null) { <p class="adv-msg">Vista de admin: puedes jugar las veces que quieras.</p> }
+        <partial name="_JuegoTarjeta" model="@(new Love.Pages.Shared.JuegoAdv(Model.Tipo, false, Model.Frase, Diario: true))" />
+    }
+</div>
+@if (Model.Bloqueado == null && !Model.YaJugada)
+{
+    <partial name="_JuegoPantalla" model="@Model.Tipo" />
+}
+@Html.AntiForgeryToken()
+@section Scripts {
+    @if (Model.Bloqueado == null && !Model.YaJugada)
+    {
+        <script id="datos" type="application/json">@Html.Raw(datos)</script>
+        <script src="/js/juego-diario.js" asp-append-version="true"></script>
+        <partial name="_JuegoScripts" model="@Model.Tipo" />
+    }
+}

@@ -76,81 +76,9 @@
                 }
             </section>
         }
-        else if (c.Tipo == TipoCasilla.Globos)
+        else if (c.Tipo is TipoCasilla.Globos or TipoCasilla.Arkanoid or TipoCasilla.Comecocos)
         {
-            <section class="adv-tarjeta globos-caja" id="juego">
-                <div id="gl-inicio" class="gl-inicio">
-                    <div class="gl-ico" aria-hidden="true">🎈<span>💛</span>🎈</div>
-                    @if (c.Resuelta)
-                    {
-                        <p class="adv-sobre centrado">La frase</p>
-                        <p class="gl-frase-ok">@AdvientoService.FraseGlobos(c)</p>
-                    }
-                    else
-                    {
-                        <ul class="gl-reglas">
-                            <li>Toca los globos para explotarlos. Cada vez van más rápido.</li>
-                            <li>Los <b>corazones dorados</b> esconden una palabra y desaparecen enseguida. La que se te escape volverá a salir: hay que cazarlas <b>todas</b>.</li>
-                            <li>Si se te escapan <b><span id="gl-max">12</span> globos</b>, vuelta a empezar.</li>
-                            <li class="gl-regla-bb"><img src="/img/briska/briskabird.png" alt="" /><span>Cuidado con <b>BriskaBird</b>: sale 10 veces, sin avisar. Cada vez que la caces, puedes dejar escapar 1 globo más.</span></li>
-                            <li>Memoriza las palabras según las cazas: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
-                        </ul>
-                    }
-                    <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(c.Resuelta ? "Jugar otra vez" : "¡Empezar!")</button>
-                </div>
-                <div id="gl-escribir" class="gl-escribir" hidden></div>
-            </section>
-            <p class="adv-msg" id="msg"></p>
-        }
-        else if (c.Tipo == TipoCasilla.Arkanoid)
-        {
-            <section class="adv-tarjeta globos-caja" id="juego">
-                <div id="gl-inicio" class="gl-inicio">
-                    <div class="gl-ico ak-ico" aria-hidden="true"><span class="ak-ico-bloques"><i></i><i></i><i></i><i></i></span><span>🏓</span></div>
-                    @if (c.Resuelta)
-                    {
-                        <p class="adv-sobre centrado">La frase</p>
-                        <p class="gl-frase-ok">@AdvientoService.FraseArkanoid(c)</p>
-                    }
-                    else
-                    {
-                        <ul class="gl-reglas">
-                            <li>Arrastra el dedo para mover la <b>pala</b> y toca para lanzar la pelota. Tira todos los bloques sin que se te caiga.</li>
-                            <li>Tienes <b><span id="ak-vidas-max">3</span> vidas</b>. Si las pierdes, vuelta a empezar.</li>
-                            <li class="gl-regla-bb"><img src="/img/briska/briskabird.png" alt="" /><span><b>BriskaBird</b> revolotea entre los bloques. Cada vez que le des con la pelota, suelta una <b>palabra</b> de la frase. Que se te escape alguna es normal.</span></li>
-                            <li>Memoriza las palabras según salen: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
-                        </ul>
-                    }
-                    <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(c.Resuelta ? "Jugar otra vez" : "¡Empezar!")</button>
-                </div>
-                <div id="gl-escribir" class="gl-escribir" hidden></div>
-            </section>
-            <p class="adv-msg" id="msg"></p>
-        }
-        else if (c.Tipo == TipoCasilla.Comecocos)
-        {
-            <section class="adv-tarjeta globos-caja" id="juego">
-                <div id="gl-inicio" class="gl-inicio">
-                    <div class="gl-ico cc-ico" aria-hidden="true"><span>🛒</span><i class="cc-ico-puntos"><b></b><b></b><b></b><b></b></i><span class="cc-ico-ticket">🧾</span></div>
-                    @if (c.Resuelta)
-                    {
-                        <p class="adv-sobre centrado">La frase</p>
-                        <p class="gl-frase-ok">@AdvientoService.FraseComecocos(c)</p>
-                    }
-                    else
-                    {
-                        <ul class="gl-reglas">
-                            <li><b>Desliza el dedo</b> hacia donde quieras girar el carrito: va solo por los pasillos y gira en el siguiente cruce. Recoge <b>toda la compra</b> (los puntitos).</li>
-                            <li>Te persiguen <b>el ticket kilométrico</b>, <b>la oferta 3x2</b> y <b>una piña con mal genio</b>. Los <b>cafés</b> ☕ de las esquinas te dan un chute de velocidad. Tienes <b><span id="cc-vidas-max">3</span> vidas</b>; sin vidas, vuelta a empezar.</li>
-                            <li class="gl-regla-bb"><img src="/img/briska/briskanguro.png" alt="" /><span><b>Briskanguro</b> va dando saltitos por los pasillos. Cada vez que la pilles, suelta una <b>palabra</b> de la frase. La que se escape volverá a salir.</span></li>
-                            <li>Memoriza las palabras según salen: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
-                        </ul>
-                    }
-                    <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(c.Resuelta ? "Jugar otra vez" : "¡Empezar!")</button>
-                </div>
-                <div id="gl-escribir" class="gl-escribir" hidden></div>
-            </section>
-            <p class="adv-msg" id="msg"></p>
+            <partial name="_JuegoTarjeta" model="@(new Love.Pages.Shared.JuegoAdv(c.Tipo, c.Resuelta, c.Tipo == TipoCasilla.Globos ? AdvientoService.FraseGlobos(c) : c.Tipo == TipoCasilla.Arkanoid ? AdvientoService.FraseArkanoid(c) : AdvientoService.FraseComecocos(c)))" />
         }
         else if (c.Tipo == TipoCasilla.Vale)
         {
@@ -271,45 +199,9 @@
         </svg>
     </div>
 }
-@if (!Model.Cerrada && c.Tipo == TipoCasilla.Globos)
+@if (!Model.Cerrada && c.Tipo is TipoCasilla.Globos or TipoCasilla.Arkanoid or TipoCasilla.Comecocos)
 {
-    <div class="gl-pantalla" id="gl-pantalla" hidden>
-        <canvas id="gl-canvas"></canvas>
-        <div class="gl-hud">
-            <div class="gl-fallos" id="gl-fallos" aria-label="Globos escapados"></div>
-            <div class="gl-cuenta-pal" id="gl-npal"></div>
-            <button type="button" class="gl-salir gl-mudo" id="gl-mudo" aria-label="Silenciar">🔊</button>
-            <button type="button" class="gl-salir" id="gl-salir" aria-label="Salir">×</button>
-        </div>
-        <div class="gl-bandeja" id="gl-bandeja"></div>
-        <div class="gl-aviso" id="gl-aviso" hidden></div>
-    </div>
-}
-@if (!Model.Cerrada && c.Tipo == TipoCasilla.Arkanoid)
-{
-    <div class="gl-pantalla ak-pantalla" id="ak-pantalla" hidden>
-        <canvas id="ak-canvas"></canvas>
-        <div class="gl-hud">
-            <div class="ak-vidas" id="ak-vidas" aria-label="Vidas"></div>
-            <div class="gl-cuenta-pal" id="ak-npal"></div>
-            <button type="button" class="gl-salir gl-mudo" id="ak-mudo" aria-label="Silenciar">🔊</button>
-            <button type="button" class="gl-salir" id="ak-salir" aria-label="Salir">×</button>
-        </div>
-        <div class="gl-aviso" id="ak-aviso" hidden></div>
-    </div>
-}
-@if (!Model.Cerrada && c.Tipo == TipoCasilla.Comecocos)
-{
-    <div class="gl-pantalla cc-pantalla" id="cc-pantalla" hidden>
-        <canvas id="cc-canvas"></canvas>
-        <div class="gl-hud">
-            <div class="ak-vidas" id="cc-vidas" aria-label="Vidas"></div>
-            <div class="gl-cuenta-pal" id="cc-npal"></div>
-            <button type="button" class="gl-salir gl-mudo" id="cc-mudo" aria-label="Silenciar">🔊</button>
-            <button type="button" class="gl-salir" id="cc-salir" aria-label="Salir">×</button>
-        </div>
-        <div class="gl-aviso" id="cc-aviso" hidden></div>
-    </div>
+    <partial name="_JuegoPantalla" model="@c.Tipo" />
 }
 <partial name="_Briska" model="Model.BriskaJson" />
 @Html.AntiForgeryToken()
@@ -319,10 +211,7 @@
         <script id="datos" type="application/json">@Html.Raw(Model.DatosJson)</script>
         <script src="/js/adviento.js" asp-append-version="true"></script>
         @if (conVideo) { <script src="/js/cine.js" asp-append-version="true"></script> }
-        @if (c.Tipo == TipoCasilla.Globos || c.Tipo == TipoCasilla.Arkanoid || c.Tipo == TipoCasilla.Comecocos) { <script src="/js/adv-juego.js" asp-append-version="true"></script> }
-        @if (c.Tipo == TipoCasilla.Globos) { <script src="/js/globos.js" asp-append-version="true"></script> }
-        @if (c.Tipo == TipoCasilla.Arkanoid) { <script src="/js/arkanoid.js" asp-append-version="true"></script> }
-        @if (c.Tipo == TipoCasilla.Comecocos) { <script src="/js/comecocos.js" asp-append-version="true"></script> }
+        @if (c.Tipo is TipoCasilla.Globos or TipoCasilla.Arkanoid or TipoCasilla.Comecocos) { <partial name="_JuegoScripts" model="@c.Tipo" /> }
     }
     <script src="/js/briska.js" asp-append-version="true"></script>
 }

@@ -140,11 +140,11 @@
         <p class="gl-ayuda">${ayuda()}</p>
         <textarea id="gl-frase" rows="2" autocomplete="off" autocapitalize="sentences" placeholder="Escribe la frase completa…"></textarea>
         <button class="btn adv-btn primario ancho" id="gl-comprobar" type="button">Comprobar</button>
-        <button class="btn adv-btn fantasma pequeno ancho" id="gl-otra" type="button">Volver a jugar para verlas otra vez</button>`;
+        ${D.diario ? '' : '<button class="btn adv-btn fantasma pequeno ancho" id="gl-otra" type="button">Volver a jugar para verlas otra vez</button>'}`;
       const ta = $('gl-frase'); ta.value = E.texto || '';
       $('gl-comprobar').addEventListener('click', comprobar);
       ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); comprobar(); } });
-      $('gl-otra').addEventListener('click', () => opc.jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
+      if ($('gl-otra')) $('gl-otra').addEventListener('click', () => opc.jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
       if (ver && chips) { E.ocultas = true; guardarE(); esfumar(); }
     }
     // Tras la espera, se va esfumando una palabra cada poco (opc.esfumaEspera y opc.esfumaCada)

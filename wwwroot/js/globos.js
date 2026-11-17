@@ -394,8 +394,9 @@
   }
   function perder() {
     P.fin = true; musica(false); gemido(0.1, false);
-    avisar(`<p class="gl-titulo">¡Uy! Se han escapado ${P.fallos} globos</p><p>Llevabas ${P.cazadas.length} de ${n} palabras, y hay que cazarlas todas.</p>`,
-      [['Otra vez', () => jugar(alAcabar), 'primario'], ['Salir', cerrar]]);
+    avisar(`<p class="gl-titulo">¡Uy! Se han escapado ${P.fallos} globos</p><p>Llevabas ${P.cazadas.length} de ${n} palabras, y hay que cazarlas todas.${D.diario ? ' Mañana, la revancha.' : ''}</p>`,
+      D.diario ? [['Salir', cerrar, 'primario']] : [['Otra vez', () => jugar(alAcabar), 'primario'], ['Salir', cerrar]]);
+    if (D.diario && A.fin) A.fin({ gano: false, palabras: P.cazadas.length });
   }
   function ganar() {
     P.fin = true; musica(false); guau(0.05, 1.3); guau(0.2, 1.45); guau(0.35, 1.75);

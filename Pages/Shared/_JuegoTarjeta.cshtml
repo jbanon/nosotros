@@ -1,0 +1,78 @@
+@model Love.Pages.Shared.JuegoAdv
+@* Tarjeta de un juego con frase (globos, arkanoid, comecocos): reglas, botón de empezar y fase de escribir. Sirve para la casilla del adviento y para la zona Juegos. *@
+@if (Model.Tipo == TipoCasilla.Globos)
+{
+    <section class="adv-tarjeta globos-caja" id="juego">
+        <div id="gl-inicio" class="gl-inicio">
+            <div class="gl-ico" aria-hidden="true">🎈<span>💛</span>🎈</div>
+            @if (Model.Resuelta)
+            {
+                <p class="adv-sobre centrado">La frase</p>
+                <p class="gl-frase-ok">@Model.Frase</p>
+            }
+            else
+            {
+                <ul class="gl-reglas">
+                    <li>Toca los globos para explotarlos. Cada vez van más rápido.</li>
+                    <li>Los <b>corazones dorados</b> esconden una palabra y desaparecen enseguida. La que se te escape volverá a salir: hay que cazarlas <b>todas</b>.</li>
+                    <li>Si se te escapan <b><span id="gl-max">12</span> globos</b>, vuelta a empezar.</li>
+                    <li class="gl-regla-bb"><img src="/img/briska/briskabird.png" alt="" /><span>Cuidado con <b>BriskaBird</b>: sale 10 veces, sin avisar. Cada vez que la caces, puedes dejar escapar 1 globo más.</span></li>
+                    <li>Memoriza las palabras según las cazas: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
+                </ul>
+            }
+            <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(Model.Resuelta ? "Jugar otra vez" : Model.Diario ? "Jugar la partida de hoy" : "¡Empezar!")</button>
+        </div>
+        <div id="gl-escribir" class="gl-escribir" hidden></div>
+    </section>
+    <p class="adv-msg" id="msg"></p>
+}
+else if (Model.Tipo == TipoCasilla.Arkanoid)
+{
+    <section class="adv-tarjeta globos-caja" id="juego">
+        <div id="gl-inicio" class="gl-inicio">
+            <div class="gl-ico ak-ico" aria-hidden="true"><span class="ak-ico-bloques"><i></i><i></i><i></i><i></i></span><span>🏓</span></div>
+            @if (Model.Resuelta)
+            {
+                <p class="adv-sobre centrado">La frase</p>
+                <p class="gl-frase-ok">@Model.Frase</p>
+            }
+            else
+            {
+                <ul class="gl-reglas">
+                    <li>Arrastra el dedo para mover la <b>pala</b> y toca para lanzar la pelota. Tira todos los bloques sin que se te caiga.</li>
+                    <li>Tienes <b><span id="ak-vidas-max">3</span> vidas</b>. Si las pierdes, vuelta a empezar.</li>
+                    <li class="gl-regla-bb"><img src="/img/briska/briskabird.png" alt="" /><span><b>BriskaBird</b> revolotea entre los bloques. Cada vez que le des con la pelota, suelta una <b>palabra</b> de la frase. La que se escape vuelve a salir: sin bloques se sigue jugando hasta cazarlas todas. Y ojo con sus cacas 💩: si te cae una en la pala, irá más lenta 10 segundos.</span></li>
+                    <li>Memoriza las palabras según salen: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
+                </ul>
+            }
+            <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(Model.Resuelta ? "Jugar otra vez" : Model.Diario ? "Jugar la partida de hoy" : "¡Empezar!")</button>
+        </div>
+        <div id="gl-escribir" class="gl-escribir" hidden></div>
+    </section>
+    <p class="adv-msg" id="msg"></p>
+}
+else if (Model.Tipo == TipoCasilla.Comecocos)
+{
+    <section class="adv-tarjeta globos-caja" id="juego">
+        <div id="gl-inicio" class="gl-inicio">
+            <div class="gl-ico cc-ico" aria-hidden="true"><span>🛒</span><i class="cc-ico-puntos"><b></b><b></b><b></b><b></b></i><span class="cc-ico-ticket">🧾</span></div>
+            @if (Model.Resuelta)
+            {
+                <p class="adv-sobre centrado">La frase</p>
+                <p class="gl-frase-ok">@Model.Frase</p>
+            }
+            else
+            {
+                <ul class="gl-reglas">
+                    <li><b>Desliza el dedo</b> hacia donde quieras girar el carrito: va solo por los pasillos y gira en el siguiente cruce. Recoge <b>toda la compra</b> (los puntitos).</li>
+                    <li>Te persiguen <b>el ticket kilométrico</b>, <b>la oferta 3x2</b> y <b>una piña con mal genio</b>. Los <b>cafés</b> ☕ de las esquinas te dan un chute de velocidad. Tienes <b><span id="cc-vidas-max">3</span> vidas</b>; sin vidas, vuelta a empezar.</li>
+                    <li class="gl-regla-bb"><img src="/img/briska/briskanguro.png" alt="" /><span><b>Briskanguro</b> va dando saltitos por los pasillos. Cada vez que la pilles, suelta una <b>palabra</b> de la frase. La que se escape volverá a salir.</span></li>
+                    <li>Memoriza las palabras según salen: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
+                </ul>
+            }
+            <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(Model.Resuelta ? "Jugar otra vez" : Model.Diario ? "Jugar la partida de hoy" : "¡Empezar!")</button>
+        </div>
+        <div id="gl-escribir" class="gl-escribir" hidden></div>
+    </section>
+    <p class="adv-msg" id="msg"></p>
+}
