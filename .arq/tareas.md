@@ -32,6 +32,10 @@
 - **Adviento día 1: Javier sube el vídeo del villancico (Admin → Calendario de adviento → casilla 1 → Vídeo) y
   cambia en el texto "Hoy, para empezar, una foto."** Probar en su móvil con Vista previa (pantalla completa,
   sonido, botón Atrás); el reproductor solo se ha visto en Chromium sin interfaz con un WebM de prueba.
+- **Comecocos (día 18 y Juegos): Javier lo ve en el móvil.** El estilo nuevo (neón sobre negro) no se ha visto en
+  ningún navegador, solo simulado con node; la dificultad con 2 perseguidores se afina en `AJ` de `comecocos.js`
+  (`velPers`, `velPersSube`, `salidas`, `modo`). La casilla 18 ya sembrada conserva en su texto "…ni la piña":
+  se cambia en Admin → Calendario de adviento.
 - **Adviento día 6 (globos): Javier lo prueba en el móvil con Vista previa y ajusta la dificultad** (`AJ` en
   `wwwroot/js/globos.js`: fallos permitidos, velocidades, vida de los corazones, volumen y tempo de la música).
   Falta oír el sonido en el móvil (música de ladridos, explosiones, botón de silenciar). El JS solo se ha
@@ -129,3 +133,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Juegos con frase: pista "caza palabras" (salen 0,6-0,4 s, con trampas) y cada partida tiene al azar comodín o caza | 8c4df97 |
 | 2026-11-17 | Adviento: mini Arkanoid en el día 13 (pala, pelota, 42 bloques, 3 vidas; BriskaBird revolotea y suelta una palabra al darle; final con palabras que se esfuman y escritura de la frase como globos). Kit común `adv-juego.js` (sonido + escribir la frase). Briska asomando por el calendario y las casillas (`img/briska/*.png` listados por el servidor, bocadillos, ladridos) | 9850e62 |
 | 2026-11-17 | Adviento: mini comecocos del súper en el día 18 (carrito por los pasillos, ticket/oferta/piña persiguiendo, cafés, control por deslizar; Briskanguro dando saltitos con música boing-boing suelta las palabras; final como Arkanoid). `S.boing` en el kit común | 51ea44b |
+| 2026-11-17 | Comecocos: estética de laberinto arcade (fondo negro, paredes de neón azul, bolas grandes con la taza de café), solo 2 perseguidores (ticket y oferta, algo más rápidos) y Briskanguro un 23 % más pequeña | (este commit) |

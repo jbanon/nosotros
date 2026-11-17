@@ -1,6 +1,7 @@
 // Adviento · mini comecocos del súper: un carrito recorre los pasillos recogiendo la compra (puntitos) mientras le persiguen
-// el ticket kilométrico, la oferta 3x2 y una piña con mal genio. Briskanguro aparece dando saltitos por el laberinto y, si el
+// el ticket kilométrico y la oferta 3x2. Briskanguro aparece dando saltitos por el laberinto y, si el
 // carrito la alcanza, suelta una palabra de la frase. Con toda la compra hecha toca escribir la frase (adv-juego.js).
+// Estética de laberinto arcade clásico: fondo negro, paredes de neón azul con doble contorno, puntitos y bolas grandes.
 (() => {
   const A = window.adv, J = window.advJuego;
   if (!A || !J || A.datos.tipo !== 'Comecocos') return;
@@ -10,12 +11,12 @@
   const AJ = {
     vidas: 3,                // veces que te pueden pillar; sin vidas, vuelta a empezar
     velJug: 4.4,             // velocidad del carrito, en casillas por segundo
-    velPers: 3.4,            // velocidad de los perseguidores al empezar
-    velPersSube: 0.28,       // fracción que suben los perseguidores al acabar la compra (lineal con lo comido)
+    velPers: 3.7,            // velocidad de los perseguidores al empezar
+    velPersSube: 0.19,       // fracción que suben los perseguidores al acabar la compra (lineal con lo comido): acaban igualando al carrito
     velTunel: 0.6,           // los perseguidores van más lentos por el túnel (fuera del laberinto)
-    salidas: [600, 5000, 11000],   // ms tras el primer deslizamiento en que sale cada perseguidor del almacén
-    salidasTrasVida: [600, 2800, 5200],   // ms tras perder una vida
-    modo: [8000, 2500],      // ms persiguiendo / ms dispersándose a su esquina (alterna)
+    salidas: [600, 3500],   // ms tras el primer deslizamiento en que sale cada perseguidor del almacén
+    salidasTrasVida: [600, 2400],   // ms tras perder una vida
+    modo: [9000, 2000],      // ms persiguiendo / ms dispersándose a su esquina (alterna)
     choque: 0.62,            // distancia (casillas) a la que te pillan
     tolGiro: 0.4,            // casillas pasado un cruce en las que un deslizamiento tardío aún gira (vuelve al cruce)
     swipe: 16,               // px de deslizamiento para contar como dirección
@@ -29,8 +30,8 @@
     briskaEspera: 5500,      // ms tras los que vuelve aunque no se haya comido lo suficiente
     briskaLejos: 4,          // casillas (en línea) de distancia mínima al carrito al aparecer
     briskaHuye: 0.4,         // probabilidad de que cada salto sea alejándose del carrito (el resto, al azar)
-    briskaTam: 1.75,         // ancho de Briskanguro, en casillas
-    briskaAlcance: 0.7,      // distancia (casillas) a la que la pillas
+    briskaTam: 1.35,         // ancho de Briskanguro, en casillas
+    briskaAlcance: 0.75,     // distancia (casillas) a la que la pillas
     salto: 420,              // ms de cada salto
     saltoPausa: 90,          // ms agachada entre salto y salto
     saltoAlto: 0.75,         // altura del salto, en casillas
@@ -39,7 +40,7 @@
     esfumaEspera: 1250,      // ms que se ven las palabras al acabar antes de empezar a esfumarse (igual que en globos)
     esfumaCada: 910,         // ms entre palabra y palabra que se esfuma (igual que en globos)
   };
-  // Laberinto propio: # pared · . compra · o café · ' ' pasillo vacío · c almacén de los perseguidores · - su puerta · P salida del carrito.
+  // Laberinto propio: # pared · . compra · o café (bola grande) · ' ' pasillo vacío · c almacén de los perseguidores · - su puerta · P salida del carrito.
   // La fila 7 es un túnel: por los extremos se sale por un lado y se entra por el otro.
   const MAPA = [
     '###########',
@@ -128,11 +129,10 @@
   // ---------- Partida ----------
   let P = null, raf = 0, ultimo = 0;
   function nuevosPers() {
-    // Cada uno con su carácter: el ticket va a por ti, la oferta se te adelanta, la piña va a su bola
+    // Dos perseguidores, cada uno con su carácter: el ticket va a por ti y la oferta se te adelanta para cortarte el paso
     return [
-      { nombre: 'ticket', x: 4, y: 5, dir: -1, estado: 'casa', azar: 0.04, adelanta: 0, esquina: { x: 1, y: 1 }, sale: Infinity, fase: Math.random() * 7 },
-      { nombre: 'oferta', x: 5, y: 5, dir: -1, estado: 'casa', azar: 0.1, adelanta: 3, esquina: { x: COLS - 2, y: 1 }, sale: Infinity, fase: Math.random() * 7 },
-      { nombre: 'pina', x: 6, y: 5, dir: -1, estado: 'casa', azar: 0.45, adelanta: 0, esquina: { x: COLS - 2, y: ROWS - 2 }, sale: Infinity, fase: Math.random() * 7 },
+      { nombre: 'ticket', x: 4, y: 5, dir: -1, estado: 'casa', azar: 0.03, adelanta: 0, esquina: { x: 1, y: 1 }, sale: Infinity, fase: Math.random() * 7 },
+      { nombre: 'oferta', x: 6, y: 5, dir: -1, estado: 'casa', azar: 0.07, adelanta: 3, esquina: { x: COLS - 2, y: ROWS - 2 }, sale: Infinity, fase: Math.random() * 7 },
     ];
   }
   function nueva() {
@@ -233,7 +233,7 @@
     P.pausa = AJ.muerte; P.repuesto = false; P.jug.want = -1;
     for (let i = 0; i < 10; i++) {
       const a = Math.random() * 6.3, vv = 50 + Math.random() * 120;
-      P.efectos.push({ tipo: 'trozo', x: px(P.jug.x), y: py(P.jug.y), vx: Math.cos(a) * vv, vy: Math.sin(a) * vv - 60, col: elige(['#e8445a', '#6bcb77', '#e0b060', '#fff']), t0: P.real, dur: 700 });
+      P.efectos.push({ tipo: 'trozo', x: px(P.jug.x), y: py(P.jug.y), vx: Math.cos(a) * vv, vy: Math.sin(a) * vv - 60, col: elige(['#ff3b4e', '#5dff7a', '#ffd23e', '#fff']), t0: P.real, dur: 700 });
     }
     if (P.vidas <= 0) perder();
   }
@@ -304,7 +304,7 @@
     if (!bbImg.complete || !bbImg.naturalWidth) return;
     const T = G.cs * AJ.briskaTam, al = T * bbImg.naturalHeight / bbImg.naturalWidth, hp = h * G.cs, hr = Math.min(1, h / AJ.saltoAlto);
     if (sombra) {
-      ctx.save(); ctx.globalAlpha = alfa * 0.35 * (1 - 0.55 * hr); ctx.fillStyle = '#000';
+      ctx.save(); ctx.globalAlpha = alfa * 0.5 * (1 - 0.55 * hr); ctx.fillStyle = '#26348f';
       ctx.beginPath(); ctx.ellipse(p.x, p.y + G.cs * 0.32, T * 0.33 * (1 - 0.3 * hr), G.cs * 0.14 * (1 - 0.3 * hr), 0, 0, 6.2832); ctx.fill(); ctx.restore();
     }
     ctx.save(); ctx.globalAlpha = alfa; ctx.translate(p.x, p.y + G.cs * 0.32 - hp); ctx.rotate(rot); ctx.scale(sx * cara, sy);
@@ -366,53 +366,53 @@
     }
     return s;
   }
-  // Las paredes son estanterías de madera: se pintan una vez por tamaño de pantalla
+  // Paredes de neón: se trazan uniendo los centros de las casillas de pared con una línea gruesa azul y encima la misma
+  // más fina en negro, así queda solo el contorno (doble línea con esquinas redondeadas). Se pinta una vez por tamaño.
   function dibujaMapa() {
     const cs = G.cs;
     const s = sprite('mapa' + cs, cs * COLS, cs * ROWS, c => {
-      c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(0, 0, cs * COLS, cs * ROWS);
-      c.strokeStyle = 'rgba(255,255,255,.05)'; c.lineWidth = 1;
-      for (let x = 1; x < COLS; x++) { c.beginPath(); c.moveTo(x * cs + 0.5, 0); c.lineTo(x * cs + 0.5, cs * ROWS); c.stroke(); }
-      for (let y = 1; y < ROWS; y++) { c.beginPath(); c.moveTo(0, y * cs + 0.5); c.lineTo(cs * COLS, y * cs + 0.5); c.stroke(); }
-      const esPared = (x, y) => celda(x, y) === '#' && !(y === TUNEL && (x < 0 || x >= COLS));
-      for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
-        if (MAPA[y][x] !== '#') continue;
-        const X = x * cs, Y = y * cs;
-        c.fillStyle = '#b8743a'; c.fillRect(X, Y, cs, cs);
-        c.fillStyle = '#d99a5c';
-        if (!esPared(x, y - 1)) c.fillRect(X, Y, cs, Math.max(2, cs * 0.14));
-        if (!esPared(x - 1, y)) c.fillRect(X, Y, Math.max(2, cs * 0.1), cs);
-        c.fillStyle = '#7a4418';
-        if (!esPared(x, y + 1)) c.fillRect(X, Y + cs - Math.max(2, cs * 0.14), cs, Math.max(2, cs * 0.14));
-        if (!esPared(x + 1, y)) c.fillRect(X + cs - Math.max(2, cs * 0.1), Y, Math.max(2, cs * 0.1), cs);
-        // Cajitas de colores (la compra en las baldas) en las estanterías con pasillo a ambos lados
-        if ((!esPared(x, y - 1) && !esPared(x, y + 1)) || (!esPared(x - 1, y) && !esPared(x + 1, y))) {
-          c.fillStyle = ['#ff8fab', '#6bcb77', '#4d96ff', '#ffd45e'][(x * 3 + y) % 4]; c.fillRect(X + cs * 0.3, Y + cs * 0.3, cs * 0.4, cs * 0.4);
+      const esPared = (x, y) => x >= 0 && x < COLS && y >= 0 && y < ROWS && MAPA[y][x] === '#';
+      const ancho = cs * 0.56, grosor = Math.max(2, cs * 0.075);
+      const traza = (w, color) => {
+        c.strokeStyle = c.fillStyle = color; c.lineWidth = w; c.lineCap = c.lineJoin = 'round';
+        for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+          if (!esPared(x, y)) continue;
+          const X = (x + 0.5) * cs, Y = (y + 0.5) * cs;
+          c.beginPath(); c.arc(X, Y, w / 2, 0, 6.2832); c.fill();
+          if (esPared(x + 1, y)) { c.beginPath(); c.moveTo(X, Y); c.lineTo(X + cs, Y); c.stroke(); }
+          if (esPared(x, y + 1)) { c.beginPath(); c.moveTo(X, Y); c.lineTo(X, Y + cs); c.stroke(); }
+          if (esPared(x + 1, y) && esPared(x, y + 1) && esPared(x + 1, y + 1)) c.fillRect(X, Y, cs, cs);   // bloques de 2 × 2: sin hueco en medio
         }
+      };
+      c.shadowColor = '#3d6bff'; c.shadowBlur = cs * 0.22; traza(ancho, '#2a4dff');
+      c.shadowBlur = 0; traza(ancho, '#2a4dff'); traza(ancho - 2 * grosor, '#000');
+      // Almacén de los perseguidores: una línea fina por arriba y la puerta rosa por abajo
+      let x0 = COLS, x1 = -1, yc = 0;
+      for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) if (MAPA[y][x] === 'c') { x0 = Math.min(x0, x); x1 = Math.max(x1, x); yc = y; }
+      if (x1 >= 0) {
+        c.lineCap = 'butt'; c.lineWidth = grosor; c.strokeStyle = '#2a4dff';
+        const Y = (yc + 0.5) * cs - ancho / 2 + grosor / 2;
+        c.beginPath(); c.moveTo((x0 - 0.5) * cs + ancho / 2 - grosor, Y); c.lineTo((x1 + 1.5) * cs - ancho / 2 + grosor, Y); c.stroke();
       }
-      // Puerta del almacén
-      c.fillStyle = '#ffd45e'; c.fillRect((PUERTA.x) * cs + cs * 0.15, (PUERTA.y - 1) * cs + cs * 0.4, cs * 0.7, Math.max(2, cs * 0.12));
+      c.lineWidth = grosor * 1.4; c.strokeStyle = '#ffb3e0';
+      c.beginPath(); c.moveTo((PUERTA.x - 0.5) * cs + ancho / 2 - grosor, (PUERTA.y - 0.5) * cs); c.lineTo((PUERTA.x + 1.5) * cs - ancho / 2 + grosor, (PUERTA.y - 0.5) * cs); c.stroke();
     });
     ctx.drawImage(s, G.ox, G.oy, G.cs * COLS, G.cs * ROWS);
   }
+  // La compra son puntitos amarillentos; los cafés de las esquinas, bolas grandes que laten con su taza dentro
   function dibujaCosas() {
-    const cs = G.cs, r = Math.max(2, cs * 0.1);
-    ctx.fillStyle = '#fff1c9';
+    const cs = G.cs, r = Math.max(1.5, cs * 0.075), late = 0.5 + 0.5 * Math.sin(P.real / 170);
+    const taza = sprite('cafe' + cs, cs, cs, g => {
+      const m = cs / 2;
+      g.fillStyle = '#6b3214'; redondo(g, m - cs * 0.15, m - cs * 0.06, cs * 0.3, cs * 0.24, cs * 0.06); g.fill();
+      g.strokeStyle = '#6b3214'; g.lineWidth = Math.max(1.5, cs * 0.05); g.beginPath(); g.arc(m + cs * 0.16, m + cs * 0.05, cs * 0.07, -1.4, 1.4); g.stroke();
+      g.fillStyle = '#fff'; g.beginPath(); g.ellipse(m, m - cs * 0.06, cs * 0.13, cs * 0.045, 0, 0, 6.2832); g.fill();
+    });
+    ctx.fillStyle = '#ffd98a';
     for (const [k, c] of P.cosas) {
       const x = px(k % COLS), y = py(Math.floor(k / COLS));
-      if (c === '.') { ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill(); continue; }
-      const s = sprite('cafe' + cs, cs, cs, g => {
-        const m = cs / 2;
-        g.fillStyle = '#6b3e1e'; redondo(g, m - cs * 0.22, m - cs * 0.1, cs * 0.44, cs * 0.36, cs * 0.08); g.fill();
-        g.strokeStyle = '#6b3e1e'; g.lineWidth = Math.max(2, cs * 0.07); g.beginPath(); g.arc(m + cs * 0.25, m + cs * 0.06, cs * 0.1, -1.4, 1.4); g.stroke();
-        g.fillStyle = '#fff'; g.beginPath(); g.ellipse(m, m - cs * 0.1, cs * 0.2, cs * 0.07, 0, 0, 6.2832); g.fill();
-      });
-      const f = 0.55 + 0.45 * Math.sin(P.real / 260 + k);
-      ctx.drawImage(s, x - cs / 2, y - cs / 2, cs, cs);
-      ctx.save(); ctx.globalAlpha = f * 0.7; ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
-      for (let i = -1; i <= 1; i++) { ctx.beginPath(); ctx.moveTo(x + i * cs * 0.1, y - cs * 0.2); ctx.quadraticCurveTo(x + i * cs * 0.1 + 3, y - cs * 0.3, x + i * cs * 0.1, y - cs * 0.4 + f * 3); ctx.stroke(); }
-      ctx.restore();
-      ctx.fillStyle = '#fff1c9';
+      ctx.beginPath(); ctx.arc(x, y, c === '.' ? r : cs * (0.3 + 0.05 * late), 0, 6.2832); ctx.fill();
+      if (c === 'o') ctx.drawImage(taza, x - cs / 2, y - cs / 2, cs, cs);
     }
   }
   // Dibuja la entidad en su sitio y, si asoma por el túnel, también por el otro lado
@@ -431,22 +431,21 @@
     ctx.scale(e.cara * u, u);
     if (P.cafe > 0 && !muerto) { ctx.shadowColor = 'rgba(255,220,120,.95)'; ctx.shadowBlur = 14; }
     // Cesta
-    ctx.fillStyle = '#e8445a'; ctx.beginPath(); ctx.moveTo(-0.36, -0.16); ctx.lineTo(0.42, -0.16); ctx.lineTo(0.3, 0.2); ctx.lineTo(-0.26, 0.2); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#ff2f45'; ctx.beginPath(); ctx.moveTo(-0.36, -0.16); ctx.lineTo(0.42, -0.16); ctx.lineTo(0.3, 0.2); ctx.lineTo(-0.26, 0.2); ctx.closePath(); ctx.fill();
     ctx.shadowBlur = 0;
-    ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 0.025;
+    ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 0.025;
     for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(-0.3 + i * 0.19, -0.16); ctx.lineTo(-0.22 + i * 0.16, 0.2); ctx.stroke(); }
     ctx.beginPath(); ctx.moveTo(-0.32, 0.0); ctx.lineTo(0.36, 0.0); ctx.stroke();
     // Compra asomando: lechuga y barra de pan
-    ctx.fillStyle = '#6bcb77'; ctx.beginPath(); ctx.arc(-0.12, -0.2, 0.11, 0, 6.2832); ctx.fill();
-    ctx.fillStyle = '#e0b060'; ctx.save(); ctx.translate(0.14, -0.24); ctx.rotate(-0.6); ctx.beginPath(); ctx.ellipse(0, 0, 0.17, 0.06, 0, 0, 6.2832); ctx.fill(); ctx.restore();
+    ctx.fillStyle = '#5dff7a'; ctx.beginPath(); ctx.arc(-0.12, -0.2, 0.11, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = '#ffd23e'; ctx.save(); ctx.translate(0.14, -0.24); ctx.rotate(-0.6); ctx.beginPath(); ctx.ellipse(0, 0, 0.17, 0.06, 0, 0, 6.2832); ctx.fill(); ctx.restore();
     // Corazoncito en el lateral
     ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(0.04, 0.12); ctx.bezierCurveTo(-0.08, 0.02, 0.0, -0.08, 0.04, -0.02); ctx.bezierCurveTo(0.08, -0.08, 0.16, 0.02, 0.04, 0.12); ctx.fill();
     // Asa y ruedas
-    ctx.strokeStyle = '#d0d4dc'; ctx.lineWidth = 0.05; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-0.36, -0.16); ctx.lineTo(-0.5, -0.42); ctx.stroke();
-    ctx.fillStyle = '#2b2b33';
-    for (const wx of [-0.2, 0.2]) {
-      ctx.beginPath(); ctx.arc(wx, 0.32, 0.09, 0, 6.2832); ctx.fill();
-      ctx.fillStyle = '#9aa0ad'; ctx.beginPath(); ctx.arc(wx + Math.cos(e.rueda / 50) * 0.04, 0.32 + Math.sin(e.rueda / 50) * 0.04, 0.025, 0, 6.2832); ctx.fill(); ctx.fillStyle = '#2b2b33';
+    ctx.strokeStyle = '#eef2ff'; ctx.lineWidth = 0.05; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-0.36, -0.16); ctx.lineTo(-0.5, -0.42); ctx.stroke();
+    for (const wx of [-0.2, 0.2]) {   // ruedas claras: las negras no se verían sobre el fondo
+      ctx.fillStyle = '#8fd8ff'; ctx.beginPath(); ctx.arc(wx, 0.32, 0.09, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = '#12306b'; ctx.beginPath(); ctx.arc(wx + Math.cos(e.rueda / 50) * 0.04, 0.32 + Math.sin(e.rueda / 50) * 0.04, 0.028, 0, 6.2832); ctx.fill();
     }
     ctx.restore();
   }
@@ -454,7 +453,7 @@
     const ox = dir >= 0 ? DX[dir] * r * 0.4 : 0, oy = dir >= 0 ? DY[dir] * r * 0.4 : 0;
     for (const s of [-1, 1]) {
       c.fillStyle = '#fff'; c.beginPath(); c.arc(x + s * sep, y, r, 0, 6.2832); c.fill();
-      c.fillStyle = '#222'; c.beginPath(); c.arc(x + s * sep + ox, y + oy, r * 0.5, 0, 6.2832); c.fill();
+      c.fillStyle = '#1b2bd6'; c.beginPath(); c.arc(x + s * sep + ox, y + oy, r * 0.55, 0, 6.2832); c.fill();
       if (enfado) { c.strokeStyle = '#222'; c.lineWidth = r * 0.45; c.beginPath(); c.moveTo(x + s * sep - s * r * 1.1, y - r * 1.5); c.lineTo(x + s * sep + s * r * 0.4, y - r * 0.9); c.stroke(); }
     }
   }
@@ -463,30 +462,20 @@
     ctx.save(); ctx.translate(x, y + (enCasa ? Math.sin(t * 5) * 2 : 0));
     if (e.nombre === 'ticket') {
       ctx.rotate(Math.sin(t * 7) * 0.12); ctx.scale(u, u);
-      ctx.fillStyle = '#f7f4ea'; ctx.beginPath(); ctx.moveTo(-0.27, -0.42); ctx.lineTo(0.27, -0.42); ctx.lineTo(0.27, 0.3);
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(-0.27, -0.42); ctx.lineTo(0.27, -0.42); ctx.lineTo(0.27, 0.3);
       for (let i = 0; i < 6; i++) ctx.lineTo(0.27 - (i + 0.5) * 0.09, 0.3 + (i % 2 ? 0 : 0.08)); ctx.lineTo(-0.27, 0.3); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = '#b9b9c6'; for (let i = 0; i < 4; i++) ctx.fillRect(-0.18, 0.02 + i * 0.07, 0.36 - (i % 2) * 0.12, 0.025);
-      ctx.fillStyle = '#e8445a'; ctx.fillRect(-0.18, -0.36, 0.36, 0.05);
-      ojos(ctx, 0, -0.18, 0.1, 0.07, e.dir, false);
+      ctx.fillStyle = '#19c8f5'; for (let i = 0; i < 4; i++) ctx.fillRect(-0.18, 0.02 + i * 0.07, 0.36 - (i % 2) * 0.12, 0.025);
+      ctx.fillStyle = '#19c8f5'; ctx.fillRect(-0.18, -0.36, 0.36, 0.05);
+      ojos(ctx, 0, -0.18, 0.1, 0.08, e.dir, false);
       ctx.strokeStyle = '#222'; ctx.lineWidth = 0.025; ctx.beginPath(); ctx.arc(0.02, -0.06, 0.06, 0.2, 2.9); ctx.stroke();
-    } else if (e.nombre === 'oferta') {
+    } else {
       ctx.rotate(t * 0.9); ctx.scale(u, u);
-      ctx.fillStyle = '#ffd43b'; ctx.beginPath();
+      ctx.fillStyle = '#ff4fb0'; ctx.beginPath();
       for (let i = 0; i < 24; i++) { const a = i * Math.PI / 12, r = i % 2 ? 0.34 : 0.46; ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r); }
       ctx.closePath(); ctx.fill();
       ctx.rotate(-t * 0.9);
-      ctx.save(); ctx.scale(1 / u, 1 / u); ctx.fillStyle = '#d7263d'; ctx.font = `900 ${Math.round(u * 0.27)}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('3x2', 0, 0.13 * u); ctx.restore();
-      ojos(ctx, 0, -0.1, 0.1, 0.07, e.dir, false);
-    } else {
-      ctx.scale(u, u * (1 + Math.sin(t * 9) * 0.05));
-      ctx.fillStyle = '#5aa84a'; for (const a of [-0.5, 0, 0.5]) { ctx.save(); ctx.translate(0, -0.3); ctx.rotate(a); ctx.beginPath(); ctx.moveTo(-0.07, 0); ctx.lineTo(0, -0.32); ctx.lineTo(0.07, 0); ctx.closePath(); ctx.fill(); ctx.restore(); }
-      ctx.fillStyle = '#f2a93b'; ctx.beginPath(); ctx.ellipse(0, 0.08, 0.3, 0.38, 0, 0, 6.2832); ctx.fill();
-      ctx.save(); ctx.beginPath(); ctx.ellipse(0, 0.08, 0.3, 0.38, 0, 0, 6.2832); ctx.clip();
-      ctx.strokeStyle = 'rgba(140,80,10,.55)'; ctx.lineWidth = 0.02;
-      for (let i = -4; i <= 4; i++) { ctx.beginPath(); ctx.moveTo(-0.5 + i * 0.14, -0.4); ctx.lineTo(0.3 + i * 0.14, 0.6); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0.5 - i * 0.14, -0.4); ctx.lineTo(-0.3 - i * 0.14, 0.6); ctx.stroke(); }
-      ctx.restore();
-      ojos(ctx, 0, 0.0, 0.1, 0.07, e.dir, true);
-      ctx.strokeStyle = '#222'; ctx.lineWidth = 0.03; ctx.beginPath(); ctx.arc(0, 0.26, 0.08, 3.4, 6.0); ctx.stroke();
+      ctx.save(); ctx.scale(1 / u, 1 / u); ctx.fillStyle = '#fff'; ctx.font = `900 ${Math.round(u * 0.27)}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('3x2', 0, 0.13 * u); ctx.restore();
+      ojos(ctx, 0, -0.1, 0.1, 0.08, e.dir, false);
     }
     ctx.restore();
   }
@@ -521,7 +510,7 @@
         const s = (P.real - e.t0) / 1000;
         ctx.fillStyle = e.col; ctx.fillRect(e.x + e.vx * s - 3, e.y + e.vy * s + 300 * s * s - 3, 6, 6);
       } else if (e.tipo === 'texto') {
-        ctx.fillStyle = '#ffd45e'; ctx.font = `800 ${Math.round(G.cs * 0.6)}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#ffd98a'; ctx.font = `800 ${Math.round(G.cs * 0.6)}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 6; ctx.fillText(e.texto, e.x, e.y - f * 24);
       } else if (e.tipo === 'bbfuera') {
         ctx.restore(); dibujaBriska({ x: e.x, y: e.y - f * 90 }, 0, e.cara, 1 + f * 0.3, 1 + f * 0.3, f * 7, 1 - f, false); continue;

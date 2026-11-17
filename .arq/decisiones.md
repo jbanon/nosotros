@@ -172,15 +172,21 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   - Todos los ajustes en la constante `AJ` de `arkanoid.js` (vidas, rejilla, pala, velocidades, visitas de Briska).
 - Mini comecocos (`TipoCasilla.Comecocos`, día 18 en lugar de su crucigrama "Cómo empezó", misma letra R; `js/comecocos.js`,
   canvas a pantalla completa como los otros; Javier, 2026-11-17). Tema "hacer la compra": el jugador es un **carrito** rojo con
-  un corazoncito que recorre los pasillos de un súper (laberinto propio de 11 × 15, estanterías de madera con cajitas de
-  colores, túnel lateral en la fila central) recogiendo la compra (71 puntitos + 4 cafés en las esquinas que dan 4,5 s de
-  velocidad). Le persiguen **el ticket kilométrico** (va a por ti), **la oferta 3x2** (se te adelanta 3 casillas) y **una piña
-  con mal genio** (medio al azar); salen del almacén central escalonados, alternan 8 s de persecución y 2,5 s de dispersión a
-  su esquina y van más lentos por el túnel. 3 vidas; sin vidas, vuelta a empezar (también se pierden las palabras).
+  un corazoncito que recorre los pasillos de un súper (laberinto propio de 11 × 15, túnel lateral en la fila central)
+  recogiendo la compra (71 puntitos + 4 cafés en las esquinas que dan 4,5 s de velocidad). Le persiguen **solo dos**
+  (Javier, 2026-11-17; la piña se quita): **el ticket kilométrico** (va a por ti) y **la oferta 3x2** (se te adelanta 3
+  casillas); salen del almacén central a los 0,6 y 3,5 s, alternan 9 s de persecución y 2 s de dispersión a su esquina y van
+  más lentos por el túnel. Para compensar que son dos van más rápidos (3,7 casillas/s, hasta igualar al carrito, 4,4, al
+  acabar la compra) y dudan menos. 3 vidas; sin vidas, vuelta a empezar (también se pierden las palabras).
+  - **Estética de laberinto arcade clásico** (Javier, 2026-11-17, con captura de referencia): fondo negro, paredes de neón
+    azul con doble contorno y esquinas redondeadas, puntitos amarillentos y bolas grandes en las esquinas, personajes de
+    colores vivos. Se toma el estilo del género, **no** el laberinto ni los sprites del juego comercial, y **la temática
+    sigue siendo hacer la compra**: carrito, ticket, oferta, cafés (la bola grande lleva la taza dentro) y Briskanguro.
   - **Control por deslizar**: el dedo pide una dirección y el carrito gira en el siguiente cruce donde se pueda (se puede
     seguir arrastrando para encadenar giros); la media vuelta es inmediata y un deslizamiento justo pasado un cruce aún gira
     (vuelve al cruce). Flechas del teclado en ordenador. Nada se mueve hasta el primer deslizamiento.
-  - **Briskanguro** (`img/briska/briskanguro.png`) aparece hasta 16 veces (11 palabras) en una casilla lejana y va dando
+  - **Briskanguro** (`img/briska/briskanguro.png`, 1,35 casillas de ancho: un 23 % menos que al principio, con el alcance
+    subido a 0,75 casillas para que no cueste más pillarla) aparece hasta 16 veces (11 palabras) en una casilla lejana y va dando
     **saltitos** de casilla en casilla (bote con estiramiento en el aire, aplastamiento al caer y sombra que encoge; el 40 % de
     los saltos se aleja del carrito, el resto al azar). Mientras está en pantalla suena la **música de saltitos**: en cada bote
     una nota con glissando ascendente (`S.boing`, nuevo en el kit de `adv-juego.js`), un bajo que alterna y un toquecito en el

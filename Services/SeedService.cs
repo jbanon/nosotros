@@ -204,7 +204,7 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
     const string ArkanoidIntro = "Hoy toca pulso firme. Mueve la pala con el dedo y no dejes caer la pelota: hay que tirar todos los bloques.\nBriskaBird andará revoloteando por ahí; si le das con la pelota, suelta una palabra. Al final tendrás que escribir la frase que forman.";
 
     const string ComecocosTitulo = "Vamos a hacer la compra";
-    const string ComecocosIntro = "Hoy toca pasillo arriba, pasillo abajo. Lleva el carrito deslizando el dedo y recoge toda la compra sin que te pillen el ticket, la oferta ni la piña.\nBriskanguro andará dando saltitos por ahí; si la alcanzas, suelta una palabra. Al final tendrás que escribir la frase que forman.";
+    const string ComecocosIntro = "Hoy toca pasillo arriba, pasillo abajo. Lleva el carrito deslizando el dedo y recoge toda la compra sin que te pillen el ticket ni la oferta.\nBriskanguro andará dando saltitos por ahí; si la alcanzas, suelta una palabra. Al final tendrás que escribir la frase que forman.";
 
     /// <summary>Cambios en casillas del adviento ya creadas (la carga solo ocurre una vez). Cada cambio se aplica
     /// únicamente si la casilla conserva el texto original, para no pisar lo que Javier haya editado en Admin.</summary>
