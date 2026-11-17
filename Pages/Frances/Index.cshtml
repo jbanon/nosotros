@@ -1,0 +1,84 @@
+@page
+@model Love.Pages.Frances.IndexModel
+@{
+    ViewData["Title"] = "Français";
+    string Estado(PildoraEntrega? e) => e == null ? "" : e.Estado switch
+    {
+        EstadoEntrega.Corrigiendo => "✍️ el profe corrige…",
+        EstadoEntrega.Error => "⚠️ corrección atascada",
+        _ => "✓ " + (FrancesService.Txt(FrancesService.Json(e.Correccion), "titular") is { Length: > 0 } t ? t : "corregida"),
+    };
+}
+<div class="cab"><a class="volver" href="/Amor">‹</a><h1>Français 🥐</h1></div>
+<p class="suave peq" style="margin-top:-6px">Una píldora los lunes, miércoles y viernes: se lee en cinco minutos, se contesta y el profe corrige. Cada una entregada, ♥ +1.</p>
+
+@if (Model.Preparando)
+{
+    <div class="aviso mb" id="fr-preparando">🖋️ El profe está escribiendo la siguiente píldora…</div>
+}
+@if (!Model.Pildoras.Any())
+{
+    <div class="vacio"><span class="ico">🥐</span>@(Model.Preparando ? "La primera píldora está en el horno." : "Todavía no hay píldoras. La primera sale pronto.")</div>
+}
+@foreach (var p in Model.Pildoras)
+{
+    Model.Mias.TryGetValue(p.Id, out var mia);
+    Model.DeRaquel.TryGetValue(p.Id, out var suya);
+    <a class="tarjeta fila fr-item @(mia == null && !Model.EsAdmin ? "nueva" : "")" href="/Frances/Pildora/@p.Id">
+        <span class="fr-emoji">@p.Emoji</span>
+        <span class="crece">
+            <b>@p.Titulo</b>
+            <span class="suave peq" style="display:block">@FrancesService.Tema(p.Tema).Nombre · @p.Fecha.ToString("dddd d 'de' MMMM")</span>
+            @if (Model.EsAdmin)
+            {
+                <span class="peq" style="display:block">Raquel: @(suya == null ? "sin hacer" : Estado(suya))</span>
+            }
+            else if (mia != null)
+            {
+                <span class="peq" style="display:block">@Estado(mia)</span>
+            }
+        </span>
+        @if (mia == null && !Model.EsAdmin) { <span class="pill ok">nueva</span> }
+        <span class="flecha">›</span>
+    </a>
+}
+
+@if (Model.EsAdmin)
+{
+    <div class="tarjeta mt">
+        <h2 class="mb">Para Javi</h2>
+        <p class="suave peq" style="margin-top:0">
+            @if (!Model.AgenteDisponible) { <b>El agente no está disponible en este servidor.</b><br /> }
+            Se encargan solas un día antes de salir. Próxima: <b>@Model.Proxima.ToString("dddd d 'de' MMMM")</b>.
+        </p>
+        @foreach (var f in Model.Futuras)
+        {
+            <div class="fila mb">
+                <a class="crece" href="/Frances/Pildora/@f.Id">@f.Emoji @f.Titulo <span class="suave peq">· sale el @f.Fecha.ToString("ddd d MMM")</span></a>
+                <form method="post" asp-page-handler="Borrar" asp-route-id="@f.Id" data-confirm="¿Borrar esta píldora? Se escribirá otra."><button class="quitar" title="Borrar">×</button></form>
+            </div>
+        }
+        <form method="post" asp-page-handler="Encargar">
+            <div class="fila mb">
+                <select name="tema" class="crece" aria-label="Tema">@foreach (var t in FrancesService.Temas) { <option value="@t.Clave">@t.Emoji @t.Nombre</option> }</select>
+            </div>
+            <input type="text" name="idea" placeholder="Idea (opcional): la Navidad en Alsacia, el pan…" class="mb" autocomplete="off" />
+            <button class="btn ancho">Encargar una ahora (sale hoy)</button>
+        </form>
+        @if (Model.Tareas.Any())
+        {
+            <details class="mt"><summary class="peq">Últimos encargos al agente</summary>
+                @foreach (var t in Model.Tareas)
+                {
+                    <div class="fila peq mt">
+                        <span class="crece">@(t.Tipo == TipoTareaAgente.Pildora ? "📝 Píldora" : "✍️ Corrección") · @t.Estado · @t.Creada.ToLocalTime().ToString("d MMM HH:mm")@if (t.Error != null) { <br /><span class="error">@t.Error</span> }</span>
+                        @if (t.Estado == EstadoTarea.Error) { <form method="post" asp-page-handler="Reintentar" asp-route-id="@t.Id"><button class="btn pequeno">Reintentar</button></form> }
+                    </div>
+                }
+            </details>
+        }
+    </div>
+}
+@section Scripts {
+@if (Model.Preparando) { <script>setTimeout(() => location.reload(), 15000);</script> }
+}

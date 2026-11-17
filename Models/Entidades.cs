@@ -314,7 +314,7 @@ public class ListaElemento
     public int Orden { get; set; }
 }
 
-public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta }
+public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta, Pildora, PildoraCorreccion }
 public enum EstadoTarea { Pendiente, EnCurso, Lista, Error }
 
 /// <summary>Una petición al agente (claude -p): crear una ficha de película o una receta, con rondas de cambios.</summary>
@@ -336,6 +336,10 @@ public class TareaAgente
     public int? PeliculaId { get; set; }
     public int? RecetaId { get; set; }
     public int? VinetaId { get; set; }
+    /// <summary>Píldora de francés creada (tipo Pildora).</summary>
+    public int? PildoraId { get; set; }
+    /// <summary>Respuestas de una píldora que hay que corregir (tipo PildoraCorreccion).</summary>
+    public int? EntregaId { get; set; }
     public int Rondas { get; set; }
     public int DuracionMs { get; set; }
     /// <summary>Estimación que imprime el CLI (total_cost_usd). Con suscripción no es un cargo; solo informativo, no se muestra.</summary>
@@ -527,4 +531,37 @@ public class JuegoPartida
     public bool Gano { get; set; }
     public int Palabras { get; set; }
     public int Total { get; set; }
+}
+
+/// <summary>Píldora de francés (B2-C1) escrita por el agente: lectura divertida y ejercicios. Visible desde su Fecha.</summary>
+public class PildoraFrances
+{
+    public int Id { get; set; }
+    public DateOnly Fecha { get; set; }
+    public string Tema { get; set; } = "";
+    public string Titulo { get; set; } = "";
+    public string Emoji { get; set; } = "🥐";
+    /// <summary>JSON del agente: entradilla, texto, glosario, preguntas, huecos, vocabulario, comentario, fuente.</summary>
+    public string Contenido { get; set; } = "{}";
+    public string? ImagenPath { get; set; }
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
+    public List<PildoraEntrega> Entregas { get; set; } = new();
+}
+
+public enum EstadoEntrega { Corrigiendo, Corregida, Error }
+
+/// <summary>Respuestas de una persona a una píldora y la corrección del agente. Una por píldora y persona.</summary>
+public class PildoraEntrega
+{
+    public int Id { get; set; }
+    public int PildoraId { get; set; }
+    public PildoraFrances Pildora { get; set; } = null!;
+    public int UsuarioId { get; set; }
+    /// <summary>JSON: {preguntas:[texto], huecos:[texto], vocabulario:[índice|-1], comentario}.</summary>
+    public string Respuestas { get; set; } = "{}";
+    /// <summary>JSON de la corrección del agente (null mientras corrige).</summary>
+    public string? Correccion { get; set; }
+    public EstadoEntrega Estado { get; set; }
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
+    public DateTime? CorregidaEl { get; set; }
 }

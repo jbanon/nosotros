@@ -31,6 +31,9 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
     /// <summary>Capítulo de arte de esta semana, mientras Raquel no lo haya abierto.</summary>
     public Capitulo? CapituloSemana { get; set; }
     public int ObrasPublicadas { get; set; }
+    /// <summary>Píldoras de francés publicadas y la última aún sin hacer por quien mira.</summary>
+    public int NumPildoras { get; set; }
+    public PildoraFrances? PildoraNueva { get; set; }
 
     public async Task OnGet(DateOnly? fecha)
     {
@@ -42,6 +45,10 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
         Nombre = await config.Get(ConfigClaves.NombreElla, "Raquel");
         Declaracion = await config.Get(ConfigClaves.Declaracion, ConfigClaves.DeclaracionPorDefecto);
         NumLecturas = await db.Lecturas.CountAsync(l => l.Publicada);
+        var yo = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value);
+        NumPildoras = await db.Pildoras.CountAsync(p => p.Fecha <= Fecha);
+        PildoraNueva = await db.Pildoras.Where(p => p.Fecha <= Fecha && p.Fecha >= Fecha.AddDays(-7) && !p.Entregas.Any(e => e.UsuarioId == yo))
+            .OrderByDescending(p => p.Fecha).ThenByDescending(p => p.Id).FirstOrDefaultAsync();
         LecturaNueva = await db.Lecturas.Where(l => l.Publicada && !l.Leida).OrderByDescending(l => l.Creada).FirstOrDefaultAsync();
 
         var aniversario = await db.FechasEspeciales.Where(x => x.AnioOrigen != null && x.Tema == "aniversario").FirstOrDefaultAsync();

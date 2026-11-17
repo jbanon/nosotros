@@ -807,6 +807,84 @@ namespace Love.Data.Migrations
                     b.ToTable("Peliculas");
                 });
 
+            modelBuilder.Entity("Love.Models.PildoraEntrega", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Correccion")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CorregidaEl")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PildoraId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Respuestas")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PildoraId", "UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("PildoraEntregas");
+                });
+
+            modelBuilder.Entity("Love.Models.PildoraFrances", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly>("Fecha")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ImagenPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Tema")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Fecha");
+
+                    b.ToTable("Pildoras");
+                });
+
             modelBuilder.Entity("Love.Models.Receta", b =>
                 {
                     b.Property<int>("Id")
@@ -958,6 +1036,9 @@ namespace Love.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("EntregaId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Error")
                         .HasColumnType("text");
 
@@ -975,6 +1056,9 @@ namespace Love.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<int?>("PeliculaId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("PildoraId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Propuesta")
@@ -1234,6 +1318,17 @@ namespace Love.Data.Migrations
                     b.Navigation("Obra");
                 });
 
+            modelBuilder.Entity("Love.Models.PildoraEntrega", b =>
+                {
+                    b.HasOne("Love.Models.PildoraFrances", "Pildora")
+                        .WithMany("Entregas")
+                        .HasForeignKey("PildoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pildora");
+                });
+
             modelBuilder.Entity("Love.Models.RecetaIngrediente", b =>
                 {
                     b.HasOne("Love.Models.Ingrediente", "Ingrediente")
@@ -1317,6 +1412,11 @@ namespace Love.Data.Migrations
             modelBuilder.Entity("Love.Models.Obra", b =>
                 {
                     b.Navigation("Paradas");
+                });
+
+            modelBuilder.Entity("Love.Models.PildoraFrances", b =>
+                {
+                    b.Navigation("Entregas");
                 });
 
             modelBuilder.Entity("Love.Models.Receta", b =>

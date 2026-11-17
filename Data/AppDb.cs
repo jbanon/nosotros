@@ -34,6 +34,8 @@ public class AppDb : DbContext
     public DbSet<DueloRonda> DueloRondas => Set<DueloRonda>();
     public DbSet<CrucigramaPartida> CrucigramaPartidas => Set<CrucigramaPartida>();
     public DbSet<JuegoPartida> JuegoPartidas => Set<JuegoPartida>();
+    public DbSet<PildoraFrances> Pildoras => Set<PildoraFrances>();
+    public DbSet<PildoraEntrega> PildoraEntregas => Set<PildoraEntrega>();
     public DbSet<Lista> Listas => Set<Lista>();
     public DbSet<ListaElemento> ListaElementos => Set<ListaElemento>();
 
@@ -63,6 +65,9 @@ public class AppDb : DbContext
         b.Entity<JuegoPartida>().Property(p => p.Juego).HasMaxLength(20);
         b.Entity<Obra>().HasOne(o => o.Capitulo).WithMany(c => c.Obras).OnDelete(DeleteBehavior.SetNull);
         b.Entity<Capitulo>().HasIndex(c => c.Origen);
+        b.Entity<PildoraFrances>().HasIndex(p => p.Fecha);
+        b.Entity<PildoraEntrega>().HasIndex(e => new { e.PildoraId, e.UsuarioId }).IsUnique();
+        b.Entity<PildoraEntrega>().HasOne(e => e.Pildora).WithMany(p => p.Entregas).OnDelete(DeleteBehavior.Cascade);
         if (Database.IsSqlite())
         {
             // SQLite no ordena ni suma decimal: allí se guardaban como double. En PostgreSQL son numeric.

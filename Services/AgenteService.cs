@@ -115,16 +115,20 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             TipoTareaAgente.Receta => (PromptReceta(t, raciones, maestro, null), EsquemaReceta, "", null),
             TipoTareaAgente.RecetaFoto => (PromptReceta(t, raciones, maestro, files.RutaAbsoluta(t.FotoPath!)), EsquemaReceta, "Read", Path.GetDirectoryName(files.RutaAbsoluta(t.FotoPath!))),
             TipoTareaAgente.Vineta => await PreparaVineta(db, t, ct),
+            TipoTareaAgente.Pildora => await PreparaPildora(db, t, ct),
+            TipoTareaAgente.PildoraCorreccion => await PreparaCorreccion(db, t, ct),
             _ => throw new InvalidOperationException()
         };
 
         var sw = Stopwatch.StartNew();
-        var res = await Ejecutar(prompt, esquema, herramientas, dirExtra, ct);
+        // Las píldoras pueden buscar noticias: más margen
+        var res = await Ejecutar(prompt, esquema, herramientas, dirExtra, ct, t.Tipo == TipoTareaAgente.Pildora ? Math.Max(TimeoutSeg, 480) : TimeoutSeg);
         sw.Stop();
         t.DuracionMs += (int)sw.ElapsedMilliseconds; t.CosteUsd += res.Coste; t.Rondas++;
         if (res.Error != null || res.Salida == null)
         {
             t.Estado = EstadoTarea.Error; t.Error = res.Error ?? "El agente no devolvió una respuesta válida."; t.Terminada = DateTime.UtcNow;
+            if (t.Tipo == TipoTareaAgente.PildoraCorreccion && await db.PildoraEntregas.FindAsync([t.EntregaId ?? 0], ct) is { } en) en.Estado = EstadoEntrega.Error;
             await db.SaveChangesAsync(ct);
             log.LogWarning("Agente: tarea {Id} con error: {Error}", t.Id, t.Error);
             return;
@@ -142,6 +146,10 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             await AplicarFicha(db, t, res.Salida, ct);
         if (t.Tipo == TipoTareaAgente.Vineta && t.VinetaId != null)
             await AplicarVineta(db, t, res.Salida, ct);
+        if (t.Tipo == TipoTareaAgente.Pildora)
+            await AplicarPildora(db, t, res.Salida, ct);
+        if (t.Tipo == TipoTareaAgente.PildoraCorreccion)
+            await AplicarCorreccion(db, t, res.Salida, ct);
         log.LogInformation("Agente: tarea {Id} ({Tipo}) lista en {Ms} ms", t.Id, t.Tipo, sw.ElapsedMilliseconds);
     }
 
@@ -250,10 +258,126 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
          "required":["fraseAutor","intenciones","tono","momentos","juegoSugerido","espacioFrase","descripcion","mensaje"]}
         """;
 
+    // ---------- Píldoras de francés: escribirlas y corregirlas ----------
+    const string ContextoFrances = "Eres el profesor de francés de Raquel dentro de «Nosotros», la app privada que le ha hecho su marido Javi. " +
+        "Raquel es española, tiene un nivel B2-C1, cinco hijos, una perra llamada Briska y muy poco tiempo libre: cada píldora tiene que ser un rato de risa, no una clase. " +
+        "Tu estilo: ingenioso, con ironía amable, juegos de palabras y finales inesperados; nunca escolar ni moralizante. Devuelve únicamente el JSON pedido.";
+
+    async Task<(string, string, string, string?)> PreparaPildora(AppDb db, TareaAgente t, CancellationToken ct)
+    {
+        var partes = (t.Notas ?? "").Split('|', 2);
+        var tema = FrancesService.Tema(partes[0]);
+        var idea = partes.Length > 1 ? partes[1] : null;
+        var anteriores = await db.Pildoras.OrderByDescending(p => p.Id).Take(30).Select(p => p.Titulo).ToListAsync(ct);
+        var prompt = $"{ContextoFrances}\n\nEscribe una píldora de francés. Tema de hoy: {tema.Encargo}." +
+            (string.IsNullOrWhiteSpace(idea) ? "" : $" Idea de Javi para esta: «{idea}».") +
+            (anteriores.Count > 0 ? $" No repitas asuntos ya tratados: {string.Join(" · ", anteriores)}." : "") +
+            "\n\nLo importante es que sea DIVERTIDA: que Raquel sonría al menos dos veces. Francés auténtico y actual (registro de nivel B2-C1, con alguna expresión coloquial que merezca la pena aprender), sin traducir dentro del texto. " +
+            "De vez en cuando (no siempre) puedes guiñar a su vida: la casa llena de niños, la perra Briska, la compra, el marido que cocina. Si el tema es una noticia, usa WebSearch para encontrar una real y reciente y pon en «fuente» el medio y la fecha; si no, deja «fuente» vacía. " +
+            "Campos (todo en francés salvo lo que se indica): titulo (corto y con gracia); emoji (uno solo); tema (" + tema.Clave + "); entradilla (una frase de gancho, graciosa); " +
+            "texto (entre 180 y 280 palabras, párrafos separados por una línea en blanco); " +
+            "glosario (de 6 a 9 entradas: fr = la palabra o expresión EXACTAMENTE como aparece en el texto, es = su traducción o explicación breve en castellano); " +
+            "imagen (dos o tres palabras en francés para buscar una foto ilustrativa en Wikipedia, como «croissant» o «Tour Eiffel»; vacía si no tiene sentido); " +
+            "preguntas (2 o 3 preguntas abiertas, de comprensión con trampa o de opinión con humor, que se contesten en 1-3 frases); " +
+            "huecos (4 frases NUEVAS, no copiadas del texto, con «___» donde falta una palabra o expresión del texto o del glosario; solucion = lo que falta; pista = una pista breve en castellano); " +
+            "vocabulario (3 preguntas tipo test sobre falsos amigos, expresiones o matices; opciones = 3 o 4, divertidas; correcta = índice desde 0; explicacion = en castellano, breve y con gracia); " +
+            "comentario (EN FRANCÉS, una consigna para que Raquel escriba 3-5 líneas, juguetona: «convence a Briska de que…», «escribe la queja oficial de…»); " +
+            "fuente; mensaje (una frase en castellano para Javi sobre la píldora).";
+        return (prompt, EsquemaPildora, "WebSearch,WebFetch", null);
+    }
+
+    async Task AplicarPildora(AppDb db, TareaAgente t, JsonObject f, CancellationToken ct)
+    {
+        var fecha = DateOnly.TryParse(t.Entrada, CultureInfo.InvariantCulture, out var d) ? d : Reloj.Hoy;
+        string S(string k) => f[k] is JsonValue v && v.TryGetValue<string>(out var x) ? x.Trim() : "";
+        var p = new PildoraFrances
+        {
+            Fecha = fecha, Tema = FrancesService.Tema(S("tema") is { Length: > 0 } tm ? tm : (t.Notas ?? "").Split('|')[0]).Clave,
+            Titulo = S("titulo") is { Length: > 0 } ti ? ti : "Petite pilule", Emoji = S("emoji") is { Length: > 0 and <= 8 } em ? em : "🥐",
+            Contenido = f.ToJsonString(JsonOpc),
+        };
+        if (S("imagen") is { Length: > 0 } busca)
+        {
+            var url = await ImagenWikipediaLibre("fr", busca, ct) ?? await ImagenWikipediaLibre("en", busca, ct);
+            if (url != null && Uri.TryCreate(url, UriKind.Absolute, out var uri)) p.ImagenPath = await DescargarImagen(uri, "frances", ct);
+        }
+        db.Pildoras.Add(p);
+        await db.SaveChangesAsync(ct);
+        t.PildoraId = p.Id; t.Aplicada = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+    }
+
+    /// <summary>Foto de la página de Wikipedia más parecida, solo si su licencia es libre.</summary>
+    async Task<string?> ImagenWikipediaLibre(string idioma, string busqueda, CancellationToken ct)
+    {
+        try
+        {
+            var url = $"https://{idioma}.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=800&pilicense=free&generator=search&gsrlimit=1&gsrsearch={Uri.EscapeDataString(busqueda)}";
+            using var doc = JsonDocument.Parse(await Cliente().GetStringAsync(url, ct));
+            if (!doc.RootElement.TryGetProperty("query", out var q) || !q.TryGetProperty("pages", out var pages)) return null;
+            foreach (var pg in pages.EnumerateObject())
+                if (pg.Value.TryGetProperty("thumbnail", out var th) && th.TryGetProperty("source", out var src)) return src.GetString();
+        }
+        catch (Exception e) { log.LogInformation("Wikipedia ({Idioma}) sin imagen para {Busqueda}: {Msg}", idioma, busqueda, e.Message); }
+        return null;
+    }
+
+    async Task<(string, string, string, string?)> PreparaCorreccion(AppDb db, TareaAgente t, CancellationToken ct)
+    {
+        var e = await db.PildoraEntregas.Include(x => x.Pildora).FirstOrDefaultAsync(x => x.Id == t.EntregaId, ct) ?? throw new InvalidOperationException("Entrega no encontrada");
+        var c = FrancesService.Json(e.Pildora.Contenido); var r = FrancesService.Json(e.Respuestas);
+        var preg = FrancesService.Textos(c, "preguntas"); var rp = FrancesService.Textos(r, "preguntas");
+        var huecos = FrancesService.Lista(c, "huecos"); var rh = FrancesService.Textos(r, "huecos");
+        string Resp(List<string> l, int i) => i < l.Count && !string.IsNullOrWhiteSpace(l[i]) ? l[i].Trim() : "(sin responder)";
+        var sb = new System.Text.StringBuilder();
+        sb.Append($"Texto de la píldora «{e.Pildora.Titulo}»:\n{FrancesService.Txt(c, "texto")}\n\nPreguntas y respuestas de Raquel:\n");
+        for (int i = 0; i < preg.Count; i++) sb.Append($"{i + 1}. {preg[i]}\n   Raquel: {Resp(rp, i)}\n");
+        sb.Append("\nFrases con hueco (solución esperada) y lo que puso Raquel:\n");
+        for (int i = 0; i < huecos.Count; i++) sb.Append($"{i + 1}. {FrancesService.Txt(huecos[i], "frase")} (solución: {FrancesService.Txt(huecos[i], "solucion")})\n   Raquel: {Resp(rh, i)}\n");
+        sb.Append($"\nConsigna de escritura: {FrancesService.Txt(c, "comentario")}\nTexto de Raquel:\n{(string.IsNullOrWhiteSpace(FrancesService.Txt(r, "comentario")) ? "(sin escribir)" : FrancesService.Txt(r, "comentario"))}\n");
+        var prompt = $"{ContextoFrances}\n\nCorrige lo que ha hecho Raquel en esta píldora. Corrige con cariño y con humor, como un profesor encantador que se lo pasa bien leyéndola; sé exigente con el francés (nivel C1) pero nunca pedante, y celebra los aciertos y las frases ingeniosas.\n\n{sb}\n" +
+            $"Campos: titular (en francés, 2-6 palabras con gracia, tipo «Magnifique, madame !»); resumen (en castellano, 2-3 frases cariñosas y divertidas sobre cómo lo ha hecho); " +
+            $"preguntas (exactamente {preg.Count} elementos, en orden: nivel = bien, casi o mal; comentario = en castellano, breve; si hay errores de francés, cita la forma correcta); " +
+            $"huecos (exactamente {huecos.Count} elementos, en orden: nivel; comentario breve en castellano; acepta sinónimos o formas válidas aunque no sean la solución esperada); " +
+            "escritura (corregido = su texto con los errores corregidos, igual si está perfecto, vacío si no escribió nada; explicacion = los fallos explicados en castellano, uno por línea empezando por «• », vacía si no hay); " +
+            "consejo (un truco o una expresión para la próxima vez, en francés con la traducción entre paréntesis); mensaje (una frase para Javi).";
+        return (prompt, EsquemaCorreccion, "", null);
+    }
+
+    async Task AplicarCorreccion(AppDb db, TareaAgente t, JsonObject f, CancellationToken ct)
+    {
+        var e = await db.PildoraEntregas.FindAsync([t.EntregaId ?? 0], ct);
+        if (e == null) return;
+        e.Correccion = f.ToJsonString(JsonOpc); e.Estado = EstadoEntrega.Corregida; e.CorregidaEl = DateTime.UtcNow;
+        t.Aplicada = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+    }
+
+    public const string EsquemaPildora = """
+        {"type":"object","additionalProperties":false,
+         "properties":{"titulo":{"type":"string"},"emoji":{"type":"string"},"tema":{"type":"string"},"entradilla":{"type":"string"},"texto":{"type":"string"},
+                       "glosario":{"type":"array","items":{"type":"object","additionalProperties":false,"properties":{"fr":{"type":"string"},"es":{"type":"string"}},"required":["fr","es"]}},
+                       "imagen":{"type":"string"},"preguntas":{"type":"array","items":{"type":"string"}},
+                       "huecos":{"type":"array","items":{"type":"object","additionalProperties":false,"properties":{"frase":{"type":"string"},"solucion":{"type":"string"},"pista":{"type":"string"}},"required":["frase","solucion","pista"]}},
+                       "vocabulario":{"type":"array","items":{"type":"object","additionalProperties":false,"properties":{"pregunta":{"type":"string"},"opciones":{"type":"array","items":{"type":"string"}},"correcta":{"type":"integer"},"explicacion":{"type":"string"}},"required":["pregunta","opciones","correcta","explicacion"]}},
+                       "comentario":{"type":"string"},"fuente":{"type":"string"},"mensaje":{"type":"string"}},
+         "required":["titulo","emoji","tema","entradilla","texto","glosario","imagen","preguntas","huecos","vocabulario","comentario","fuente","mensaje"]}
+        """;
+
+    public const string EsquemaCorreccion = """
+        {"type":"object","additionalProperties":false,
+         "properties":{"titular":{"type":"string"},"resumen":{"type":"string"},
+                       "preguntas":{"type":"array","items":{"type":"object","additionalProperties":false,"properties":{"nivel":{"type":"string","enum":["bien","casi","mal"]},"comentario":{"type":"string"}},"required":["nivel","comentario"]}},
+                       "huecos":{"type":"array","items":{"type":"object","additionalProperties":false,"properties":{"nivel":{"type":"string","enum":["bien","casi","mal"]},"comentario":{"type":"string"}},"required":["nivel","comentario"]}},
+                       "escritura":{"type":"object","additionalProperties":false,"properties":{"corregido":{"type":"string"},"explicacion":{"type":"string"}},"required":["corregido","explicacion"]},
+                       "consejo":{"type":"string"},"mensaje":{"type":"string"}},
+         "required":["titular","resumen","preguntas","huecos","escritura","consejo","mensaje"]}
+        """;
+
     // ---------- Ejecución de claude -p ----------
     public record Resultado(JsonObject? Salida, decimal Coste, string? Error);
 
-    async Task<Resultado> Ejecutar(string prompt, string esquema, string herramientas, string? dirExtra, CancellationToken ct)
+    async Task<Resultado> Ejecutar(string prompt, string esquema, string herramientas, string? dirExtra, CancellationToken ct, int timeoutSeg)
     {
         var psi = new ProcessStartInfo(RutaClaude!)
         {
@@ -281,12 +405,12 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
         var salida = proc.StandardOutput.ReadToEndAsync(ct);
         var error = proc.StandardError.ReadToEndAsync(ct);
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-        cts.CancelAfter(TimeSpan.FromSeconds(TimeoutSeg));
+        cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeg));
         try { await proc.WaitForExitAsync(cts.Token); }
         catch (OperationCanceledException)
         {
             try { proc.Kill(true); } catch { }
-            return new(null, 0, ct.IsCancellationRequested ? "Cancelado" : $"El agente tardó más de {TimeoutSeg} s y se canceló.");
+            return new(null, 0, ct.IsCancellationRequested ? "Cancelado" : $"El agente tardó más de {timeoutSeg} s y se canceló.");
         }
         var txt = await salida; var err = await error;
         if (string.IsNullOrWhiteSpace(txt))

@@ -348,3 +348,14 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   acaba la ronda. "Nueva partida" (cualquiera de los dos) lanza otra sin volver a retar. Durante la ronda solo
   se ve lo cerca que va el otro. Consulta cada ~1 s (sin websockets: nginx no los pasa). Las rondas
   terminadas se guardan en `DueloRondas` (marcador histórico); si se reinicia el servidor se pierde la sala.
+
+## Français (píldoras de francés)
+- Javier, 2026-11-17. Sección propia `/Frances` (enlace "🥐 Français" en Para ti y aviso de la píldora nueva de la última semana).
+- **Lo primero es que sean divertidas**: ironía amable, finales con giro, algún guiño a la casa (niños, Briska, la compra); nada escolar.
+- Salen **lunes, miércoles y viernes** (`FrancesService.Dias`); el programador (`FrancesProgramador`, cada hora) las encarga al agente
+  un día antes. La primera sale el mismo día del despliegue. Temas en turno: texto, receta, noticia (con WebSearch), curiosidad, expresión.
+- Cada píldora: lectura de 180-280 palabras con glosario (palabras subrayadas, al tocar se ve la traducción), 2-3 preguntas,
+  4 huecos, 3 preguntas de vocabulario tipo test y una consigna para escribir. Foto de Wikipedia solo con licencia libre.
+- Raquel entrega una vez (borrador guardado en el móvil); **♥ +1 al entregar**, sin depender de la nota (suma en `VinetaService.Corazones`).
+  El vocabulario se corrige al momento; el resto lo corrige el agente (`TipoTareaAgente.PildoraCorreccion`) con humor y explicando los fallos.
+- Javi (admin) ve las copias de Raquel con su corrección, puede encargar una a mano (sale hoy, con tema e idea), borrar las futuras y reintentar fallos.

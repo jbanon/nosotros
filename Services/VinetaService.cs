@@ -108,7 +108,9 @@ public class VinetaService(AppDb db, ConfigService config, FileStorage files, IW
         return viables[rnd.Next(viables.Count)];
     }
 
-    public Task<int> Corazones() => db.VinetaDias.SumAsync(d => d.Corazones);
+    /// <summary>Corazones de Raquel: 1 por juego de viñeta resuelto y 1 por píldora de francés entregada.</summary>
+    public async Task<int> Corazones() => await db.VinetaDias.SumAsync(d => d.Corazones)
+        + await db.PildoraEntregas.CountAsync(e => db.Usuarios.Any(u => u.Id == e.UsuarioId && u.Rol == Rol.Raquel));
 
     /// <summary>
     /// Asigna las viñetas de los días pasados que quedaron sin abrir (desde la primera asignación hasta hoy),

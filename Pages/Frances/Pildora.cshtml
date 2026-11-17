@@ -1,0 +1,115 @@
+@page "{id:int}"
+@model Love.Pages.Frances.PildoraModel
+@{
+    var p = Model.P; var c = Model.C;
+    ViewData["Title"] = p.Titulo;
+    ViewData["SinNav"] = true;
+    var glosario = FrancesService.Lista(c, "glosario").Select(g => (fr: FrancesService.Txt(g, "fr"), es: FrancesService.Txt(g, "es"))).Where(g => g.fr != "").ToList();
+    var preg = FrancesService.Textos(c, "preguntas");
+    var huecos = FrancesService.Lista(c, "huecos");
+    var voc = FrancesService.Lista(c, "vocabulario");
+    var tema = FrancesService.Tema(p.Tema);
+    var fuente = FrancesService.Txt(c, "fuente");
+}
+<div class="lector-cab">
+    <a class="volver" href="/Frances" aria-label="Volver">‹</a>
+    <span class="titulo-corto">@p.Emoji @p.Titulo</span>
+</div>
+<article class="lector fr-pildora">
+    <header class="cabecera">
+        @if (p.ImagenPath != null) { <img class="fr-foto" src="/Frances/Imagen/@p.Id" alt="" /> }
+        <h1>@p.Emoji @p.Titulo</h1>
+        <div class="meta">@tema.Emoji @tema.Nombre · @p.Fecha.ToString("dddd d 'de' MMMM")@(fuente != "" ? " · " + fuente : "")</div>
+        @if (FrancesService.Txt(c, "entradilla") is { Length: > 0 } ent) { <p class="fr-entradilla">@ent</p> }
+    </header>
+    @if (Model.Corazon) { <div class="fr-corazon">♥ +1 · ¡Copia entregada!</div> }
+    <div class="cuerpo">@Html.Raw(FrancesService.Html(FrancesService.Txt(c, "texto"), glosario))</div>
+    @if (glosario.Any())
+    {
+        <details class="fr-lexique">
+            <summary>📒 Petit lexique <span class="suave">(o toca las palabras subrayadas)</span></summary>
+            <dl>@foreach (var g in glosario) { <dt>@g.fr</dt><dd>@g.es</dd> }</dl>
+        </details>
+    }
+
+    @if (Model.Mia == null)
+    {
+        <form method="post" asp-page-handler="Entregar" asp-route-id="@p.Id" class="fr-form" id="fr-form">
+            @if (preg.Any())
+            {
+                <h2 class="fr-sec">❓ Questions</h2>
+                @for (int i = 0; i < preg.Count; i++)
+                {
+                    <label class="fr-campo"><span>@preg[i]</span><textarea name="preguntas" rows="2" autocapitalize="sentences" lang="fr"></textarea></label>
+                }
+            }
+            @if (huecos.Any())
+            {
+                <h2 class="fr-sec">🕳️ Trous</h2>
+                @for (int i = 0; i < huecos.Count; i++)
+                {
+                    var partes = FrancesService.Txt(huecos[i], "frase").Split("___", 2);
+                    <div class="fr-campo">
+                        <span class="fr-frase">@partes[0]<input type="text" name="huecos" class="fr-hueco" autocomplete="off" autocapitalize="off" lang="fr" />@(partes.Length > 1 ? partes[1] : "")</span>
+                        @if (FrancesService.Txt(huecos[i], "pista") is { Length: > 0 } pi) { <details class="fr-pista"><summary>pista</summary>@pi</details> }
+                    </div>
+                }
+            }
+            @if (voc.Any())
+            {
+                <h2 class="fr-sec">🔤 Vocabulaire</h2>
+                @for (int i = 0; i < voc.Count; i++)
+                {
+                    var ops = FrancesService.Textos(voc[i], "opciones");
+                    <fieldset class="fr-campo"><legend>@FrancesService.Txt(voc[i], "pregunta")</legend>
+                        <div class="chips">@for (int j = 0; j < ops.Count; j++) { <label class="chip"><input type="radio" name="voc@(i)" value="@j" /> @ops[j]</label> }</div>
+                    </fieldset>
+                }
+            }
+            <h2 class="fr-sec">✒️ À toi d'écrire</h2>
+            <label class="fr-campo"><span>@FrancesService.Txt(c, "comentario")</span><textarea name="comentario" rows="5" autocapitalize="sentences" lang="fr"></textarea></label>
+            <button class="btn primario ancho">Rendre la copie ♥</button>
+            <p class="suave peq centrado">Lo que escribas se guarda en el móvil hasta que lo entregues.</p>
+        </form>
+    }
+    else
+    {
+        <partial name="_Entrega" model="@((c, Model.Mia, (string?)null))" />
+    }
+    @foreach (var o in Model.Otras)
+    {
+        <partial name="_Entrega" model="@((c, o.E, (string?)o.Nombre))" />
+    }
+</article>
+<div class="fr-burbuja" id="fr-burbuja" hidden></div>
+@section Scripts {
+<script>
+(() => {
+  // Glosario: al tocar una palabra subrayada, su traducción en un bocadillo
+  const b = document.getElementById('fr-burbuja');
+  document.addEventListener('click', e => {
+    const g = e.target.closest('.fr-glosa');
+    if (!g) { b.hidden = true; return; }
+    b.textContent = g.dataset.es; b.hidden = false;
+    const r = g.getBoundingClientRect(), w = Math.min(280, innerWidth - 24);
+    b.style.maxWidth = w + 'px';
+    b.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width / 2 - w / 2)) + 'px';
+    b.style.top = (r.bottom + scrollY + 6) + 'px';
+  });
+  // Borrador en el móvil hasta entregar
+  const f = document.getElementById('fr-form'), k = 'pildora-@p.Id';
+  if (f) {
+    const campos = () => [...f.querySelectorAll('textarea, input[type=text]')];
+    try {
+      const d = JSON.parse(localStorage.getItem(k) || 'null');
+      if (d) { campos().forEach((c, i) => { if (d.t && d.t[i]) c.value = d.t[i]; });
+               (d.r || []).forEach(n => { const x = f.querySelector(`input[type=radio][name="${n[0]}"][value="${n[1]}"]`); if (x) x.checked = true; }); }
+    } catch (e) {}
+    const guarda = () => { try { localStorage.setItem(k, JSON.stringify({ t: campos().map(c => c.value), r: [...f.querySelectorAll('input[type=radio]:checked')].map(x => [x.name, x.value]) })); } catch (e) {} };
+    f.addEventListener('input', guarda); f.addEventListener('change', guarda);
+    f.addEventListener('submit', () => { try { localStorage.removeItem(k); } catch (e) {} });
+  }
+  @if (Model.Esperando) { <text>setTimeout(() => location.reload(), 8000);</text> }
+})();
+</script>
+}

@@ -121,11 +121,20 @@
             <span class="flecha">›</span>
         </a>
     }
+    @if (Model.PildoraNueva != null)
+    {
+        <a class="lectura-aviso" href="/Frances/Pildora/@Model.PildoraNueva.Id">
+            <span class="ico">🥐</span>
+            <span class="crece"><b>Píldora de francés: @Model.PildoraNueva.Titulo</b><br /><span>@Model.PildoraNueva.Emoji @FrancesService.Tema(Model.PildoraNueva.Tema).Nombre · cinco minutos y ♥ +1</span></span>
+            <span class="flecha">›</span>
+        </a>
+    }
     @{
         var enlaces = new List<(string url, string txt)>();
         if (Model.NumLecturas > 0 && Model.LecturaNueva == null) enlaces.Add(("/Lecturas", "📖 Lecturas"));
         if (Model.VinetasDescubiertas > 0) enlaces.Add(("/Vinetas", "💌 Álbum"));
         if (Model.ObrasPublicadas > 0) enlaces.Add(("/Arte", "🎨 Arte"));
+        if (Model.NumPildoras > 0 || User.EsAdmin()) enlaces.Add(("/Frances", "🥐 Français"));
         enlaces.Add(("/Juegos", "🎲 Juegos"));
     }
     <p class="lectura-enlace">@for (int i = 0; i < enlaces.Count; i++) { if (i > 0) { <text> · </text> } <a href="@enlaces[i].url">@enlaces[i].txt</a> }</p>

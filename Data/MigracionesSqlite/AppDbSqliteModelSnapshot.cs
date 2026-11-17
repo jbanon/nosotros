@@ -764,6 +764,80 @@ namespace Love.Data.MigracionesSqlite
                     b.ToTable("Peliculas");
                 });
 
+            modelBuilder.Entity("Love.Models.PildoraEntrega", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Correccion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CorregidaEl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PildoraId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Respuestas")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PildoraId", "UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("PildoraEntregas");
+                });
+
+            modelBuilder.Entity("Love.Models.PildoraFrances", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImagenPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tema")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Fecha");
+
+                    b.ToTable("Pildoras");
+                });
+
             modelBuilder.Entity("Love.Models.Receta", b =>
                 {
                     b.Property<int>("Id")
@@ -903,6 +977,9 @@ namespace Love.Data.MigracionesSqlite
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("EntregaId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Error")
                         .HasColumnType("TEXT");
 
@@ -920,6 +997,9 @@ namespace Love.Data.MigracionesSqlite
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("PeliculaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PildoraId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Propuesta")
@@ -1170,6 +1250,17 @@ namespace Love.Data.MigracionesSqlite
                     b.Navigation("Obra");
                 });
 
+            modelBuilder.Entity("Love.Models.PildoraEntrega", b =>
+                {
+                    b.HasOne("Love.Models.PildoraFrances", "Pildora")
+                        .WithMany("Entregas")
+                        .HasForeignKey("PildoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pildora");
+                });
+
             modelBuilder.Entity("Love.Models.RecetaIngrediente", b =>
                 {
                     b.HasOne("Love.Models.Ingrediente", "Ingrediente")
@@ -1253,6 +1344,11 @@ namespace Love.Data.MigracionesSqlite
             modelBuilder.Entity("Love.Models.Obra", b =>
                 {
                     b.Navigation("Paradas");
+                });
+
+            modelBuilder.Entity("Love.Models.PildoraFrances", b =>
+                {
+                    b.Navigation("Entregas");
                 });
 
             modelBuilder.Entity("Love.Models.Receta", b =>

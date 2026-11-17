@@ -59,15 +59,6 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
   - **Guardar:** pasa a Recetas, marcada "de Julia", para no generarla otra vez.
   - **Realizar:** mete los ingredientes en la lista de la compra de la semana (zona automática) y abre un modo
     cocina con fichas paso a paso con humor, temporizadores y pantalla encendida.
-- **Clases de francés divertidas, nivel B2-C1** (Javier, 2026-11-15: "le gusta"). Píldoras cortas:
-  - **Formato:** una lectura breve en tono distendido con toques cómicos, a veces con imagen.
-  - **Temas:** textos, recetas, noticias, curiosidades.
-  - **Después de leer:** preguntas o un comentario libre, y ejercicios de rellenar frases o de vocabulario
-    (expresiones, falsos amigos).
-  - **Corrección:** las respuestas de Raquel pasan al agente (`claude -p`, cola de tareas como las viñetas),
-    que corrige con cariño y explica los fallos. Javier puede ver las respuestas y las correcciones.
-  - **Sin decidir:** frecuencia, si cuenta para los corazones y dónde vive (¿Lecturas, Juegos o una sección
-    propia?).
 
 ## Resueltas
 | Fecha | Tarea | Commit |
@@ -135,3 +126,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Adviento: mini comecocos del súper en el día 18 (carrito por los pasillos, ticket/oferta/piña persiguiendo, cafés, control por deslizar; Briskanguro dando saltitos con música boing-boing suelta las palabras; final como Arkanoid). `S.boing` en el kit común | 51ea44b |
 | 2026-11-17 | Comecocos: estética de laberinto arcade (fondo negro, paredes de neón azul, bolas grandes con la taza de café), solo 2 perseguidores (ticket y oferta, algo más rápidos) y Briskanguro un 23 % más pequeña | badb4db |
 | 2026-11-17 | Comecocos: el carrito va siempre un 10% más rápido que los perseguidores | 82dcc29 |
+| 2026-11-17 | Français: píldoras de francés divertidas (B2-C1) que escribe el agente los lunes, miércoles y viernes; Raquel responde, ♥ +1 al entregar y el agente corrige con cariño; Javi ve sus copias y puede encargar una a mano | (este) |

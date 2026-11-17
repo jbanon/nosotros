@@ -1,0 +1,90 @@
+@model (System.Text.Json.Nodes.JsonObject C, PildoraEntrega E, string? Nombre)
+@{
+    var c = Model.C; var e = Model.E;
+    var r = FrancesService.Json(e.Respuestas); var k = FrancesService.Json(e.Correccion);
+    var preg = FrancesService.Textos(c, "preguntas"); var rp = FrancesService.Textos(r, "preguntas"); var kp = FrancesService.Lista(k, "preguntas");
+    var huecos = FrancesService.Lista(c, "huecos"); var rh = FrancesService.Textos(r, "huecos"); var kh = FrancesService.Lista(k, "huecos");
+    var voc = FrancesService.Lista(c, "vocabulario"); var rv = r["vocabulario"] as System.Text.Json.Nodes.JsonArray;
+    var corregida = e.Estado == EstadoEntrega.Corregida;
+    string Nivel(System.Text.Json.Nodes.JsonNode? n) => FrancesService.Txt(n, "nivel") switch { "bien" => "✅", "casi" => "🟡", "mal" => "❌", _ => "" };
+    string R(List<string> l, int i) => i < l.Count && l[i] != "" ? l[i] : "—";
+    int okVoc = 0;
+}
+<section class="fr-entrega">
+    @if (Model.Nombre != null) { <h2 class="fr-sec">📮 La copia de @Model.Nombre</h2> }
+    @if (e.Estado == EstadoEntrega.Corrigiendo)
+    {
+        <div class="aviso mb">✍️ El profe está corrigiendo con su boli rojo… (tarda un minuto; la página se actualiza sola)</div>
+    }
+    else if (e.Estado == EstadoEntrega.Error)
+    {
+        <div class="aviso mb fila"><span class="crece">⚠️ Al profe se le ha caído el boli: la corrección no ha salido.</span>
+            <form method="post" asp-page-handler="Reintentar" asp-route-id="@e.PildoraId" asp-route-entrega="@e.Id"><button class="btn pequeno">Reintentar</button></form></div>
+    }
+    else
+    {
+        <div class="fr-nota">
+            <div class="fr-titular">@FrancesService.Txt(k, "titular")</div>
+            <p>@FrancesService.Txt(k, "resumen")</p>
+        </div>
+    }
+
+    @if (preg.Any())
+    {
+        <h3 class="fr-sub">Questions</h3>
+        @for (int i = 0; i < preg.Count; i++)
+        {
+            var kk = i < kp.Count ? kp[i] : null;
+            <div class="fr-res">
+                <div class="fr-q">@preg[i]</div>
+                <div class="fr-suya">@(corregida ? Nivel(kk) + " " : "")@R(rp, i)</div>
+                @if (kk != null && FrancesService.Txt(kk, "comentario") is { Length: > 0 } com) { <div class="fr-com">@com</div> }
+            </div>
+        }
+    }
+    @if (huecos.Any())
+    {
+        <h3 class="fr-sub">Trous</h3>
+        @for (int i = 0; i < huecos.Count; i++)
+        {
+            var h = huecos[i]; var kk = i < kh.Count ? kh[i] : null; var sol = FrancesService.Txt(h, "solucion"); var suya = R(rh, i);
+            var partes = FrancesService.Txt(h, "frase").Split("___", 2);
+            <div class="fr-res">
+                <div class="fr-q">@(corregida ? Nivel(kk) + " " : "")@partes[0]<b class="fr-hueco-res">@suya</b>@(partes.Length > 1 ? partes[1] : "")</div>
+                @if (!FrancesService.Igual(suya, sol)) { <div class="fr-com">Solución: <b>@sol</b></div> }
+                @if (kk != null && FrancesService.Txt(kk, "comentario") is { Length: > 0 } com) { <div class="fr-com">@com</div> }
+            </div>
+        }
+    }
+    @if (voc.Any())
+    {
+        <h3 class="fr-sub">Vocabulaire</h3>
+        @for (int i = 0; i < voc.Count; i++)
+        {
+            var v = voc[i]; var ops = FrancesService.Textos(v, "opciones"); var bien = FrancesService.Int(v, "correcta", 0);
+            var elegida = rv != null && i < rv.Count && rv[i] is System.Text.Json.Nodes.JsonValue jv && jv.TryGetValue<int>(out var x) ? x : -1;
+            if (elegida == bien) okVoc++;
+            <div class="fr-res">
+                <div class="fr-q">@(elegida == bien ? "✅" : "❌") @FrancesService.Txt(v, "pregunta")</div>
+                <div class="fr-suya">@(elegida >= 0 && elegida < ops.Count ? ops[elegida] : "—")@if (elegida != bien && bien < ops.Count) { <text> → <b>@ops[bien]</b></text> }</div>
+                <div class="fr-com">@FrancesService.Txt(v, "explicacion")</div>
+            </div>
+        }
+    }
+    <h3 class="fr-sub">À toi d'écrire</h3>
+    <div class="fr-res">
+        <div class="fr-suya" style="white-space:pre-line">@(FrancesService.Txt(r, "comentario") is { Length: > 0 } t ? t : "—")</div>
+        @if (corregida && k["escritura"] is { } es)
+        {
+            if (FrancesService.Txt(es, "corregido") is { Length: > 0 } cor && cor.Trim() != FrancesService.Txt(r, "comentario").Trim())
+            {
+                <div class="fr-corregido"><span class="suave peq">Corregido:</span><br />@cor</div>
+            }
+            if (FrancesService.Txt(es, "explicacion") is { Length: > 0 } ex) { <div class="fr-com" style="white-space:pre-line">@ex</div> }
+        }
+    </div>
+    @if (corregida && FrancesService.Txt(k, "consejo") is { Length: > 0 } cons)
+    {
+        <div class="fr-consejo">💡 @cons</div>
+    }
+</section>
