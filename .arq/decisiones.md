@@ -108,7 +108,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   mejor MP4 grabado en 1080p y sin HEVC; los .mov se sirven como video/mp4.
 - Juego de los globos (`TipoCasilla.Globos`, día 6 en lugar de su criptofrase; `js/globos.js`, canvas
   a pantalla completa). Se explotan tocándolos y la dificultad sube con cada palabra (intervalo, velocidad,
-  tamaño, zigzag). Si se escapan 10 globos normales, se pierde y vuelve a empezar.
+  tamaño, zigzag; ~9 globos entre palabra y palabra). Si se escapan 10 globos normales, se pierde y vuelve a empezar.
   - **Palabras:** cada ~8 globos sale un corazón dorado entre un racimo de globos; dura poco y lleva una
     palabra de `datos.frase` ("Eres el amor de mi vida, no puedo vivir sin ti"). Salen desordenadas: primero la
     mitad fácil y luego la otra.
@@ -117,6 +117,15 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     3º, además, la inicial; desde ahí regala una palabra por fallo. Puede volver a jugar para cazar más.
   - Sin tildes, mayúsculas ni comas; la comprobación final la hace el servidor, que da la letra "I".
   - Todos los ajustes, en la constante `AJ` de `globos.js`.
+  - **BriskaBird** (`wwwroot/img/briskabird.png`, recortada de la imagen de Javier) sale 3 veces, al 25 %, 50 % y
+    80 % de las palabras. Cada vez hay una entradilla con su imagen y una frase graciosa; los globos se paran y
+    salen atenuados. Hace uno de tres números, en orden al azar: cruza volando de lado a lado (3 pasadas
+    rápidas), aparece 0,5 s en sitios distintos moviéndose (5 veces) o asoma por los bordes (4 veces).
+    Cazarla da 3 globos más de margen, que salen en dorado en el marcador.
+  - Ladridos y gemidos sintetizados con WebAudio, sin ficheros de sonido. El audio arranca con el toque de
+    "Empezar".
+  - Al acabar, las palabras cazadas se ven 2,5 s y luego se esfuma una cada segundo; ya no vuelven a salir
+    (`estado.ocultas`). Si vuelve a jugar para cazar más, se enseñan de nuevo y se esfuman otra vez.
   - Rendimiento en el móvil: cada globo se dibuja una vez en un canvas aparte y luego solo se copia; como mucho
     12 globos a la vez. El toque elige el globo más cercano y cuenta también dónde estaba hace 150 ms.
 

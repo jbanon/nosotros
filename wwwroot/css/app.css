@@ -1054,3 +1054,12 @@ body.gl-jugando { overflow: hidden; }
 @keyframes gl-sacude { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 @keyframes gl-entra { from { transform: scale(.3); opacity: 0; } }
 @keyframes gl-latido { 50% { transform: scale(1.12); } }
+.gl-regla-bb { list-style: none; margin-left: -20px; display: flex; gap: 10px; align-items: center; }
+.gl-regla-bb img { width: 54px; height: auto; flex: none; animation: gl-flota 2s ease-in-out infinite; }
+.gl-bb-img { width: 46%; max-width: 170px; margin: -70px auto 4px; display: block; filter: drop-shadow(0 8px 18px rgba(0,0,0,.4)); animation: gl-bb-entra .6s cubic-bezier(.3,1.6,.5,1); }
+.gl-bb-premio { font-weight: 800; color: #ffd45e; margin: 8px 0 0; }
+.gl-fallos i.extra { background: #ffd45e; }
+.gl-fallos i.extra.fuera { background: rgba(255,255,255,.18); }
+.gl-chip.esfuma { animation: gl-esfuma .5s forwards; }
+@keyframes gl-bb-entra { from { transform: scale(.2) rotate(-25deg); opacity: 0; } }
+@keyframes gl-esfuma { to { opacity: 0; transform: translateY(-14px) scale(.6); filter: blur(4px); } }

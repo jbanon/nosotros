@@ -7,20 +7,59 @@
   // ---------- Ajustes (afinar probando en el móvil) ----------
   const AJ = {
     fallosMax: 10,           // globos normales que pueden escaparse antes de perder
-    globosPorPalabra: 8,     // globos normales entre corazón y corazón (± 2)
+    premioBriska: 3,         // globos de margen extra por cazar a BriskaBird
+    globosPorPalabra: 9,     // globos normales entre corazón y corazón (± 2)
     globosFinales: 6,        // globos de propina tras el último corazón
-    perdidasObjetivo: 3.5,
-    maxGlobos: 12,           // tope de globos a la vez en pantalla (si hay más, espera para soltar otro)   // palabras que debería perder de media: la vida del corazón se adapta a esto
+    perdidasObjetivo: 3.5,   // palabras que debería perder de media: la vida del corazón se adapta a esto
+    maxGlobos: 12,           // tope de globos a la vez en pantalla (si hay más, espera para soltar otro)
+    briskaEn: [0.25, 0.5, 0.8], // en qué punto de la frase sale BriskaBird (fracción de palabras ya salidas)
+    entradilla: 2300,        // ms que dura la presentación de BriskaBird
     // De la primera palabra (0) a la última (último tramo); se interpola entre tramos.
     // intervalo ms entre globos · vel en alturas de pantalla por segundo · radio en fracción del ancho (máx. 480)
     // zigzag px · vidaPalabra ms que dura un corazón en pantalla
     niveles: [
-      { intervalo: 900, vel: 0.20, radio: 0.11, zigzag: 0, vidaPalabra: 2000 },
-      { intervalo: 680, vel: 0.27, radio: 0.095, zigzag: 14, vidaPalabra: 1600 },
-      { intervalo: 520, vel: 0.34, radio: 0.085, zigzag: 24, vidaPalabra: 1300 },
-      { intervalo: 420, vel: 0.42, radio: 0.075, zigzag: 34, vidaPalabra: 1050 },
+      { intervalo: 800, vel: 0.23, radio: 0.105, zigzag: 6, vidaPalabra: 1800 },
+      { intervalo: 600, vel: 0.31, radio: 0.09, zigzag: 18, vidaPalabra: 1450 },
+      { intervalo: 460, vel: 0.39, radio: 0.08, zigzag: 28, vidaPalabra: 1150 },
+      { intervalo: 360, vel: 0.48, radio: 0.07, zigzag: 38, vidaPalabra: 900 },
     ],
   };
+  const BRISKA = [
+    { titulo: '¡Ha llegado BriskaBird!', frase: 'Mitad labrador, mitad pájaro y cien por cien hambre.' },
+    { titulo: '¡BriskaBird otra vez!', frase: 'Ha olido una croqueta en la nube de al lado y va lanzada.' },
+    { titulo: 'Última visita de BriskaBird', frase: 'Dice que será perra guía. De momento solo guía globos hacia el cielo.' },
+  ];
+  const ADIOS = ['Se fue a por croquetas 🐾', '¡Guau! Se te escapó', 'Ni rastro de BriskaBird'];
+  const bbImg = new Image(); bbImg.src = '/img/briskabird.png';
+
+  // ---------- Sonidos de perro (sintetizados, sin ficheros) ----------
+  let AC = null;
+  const audio = () => { try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch { AC = null; } };
+  function guau(retraso = 0, tono = 1) {
+    if (!AC) return;
+    const c = AC, t = c.currentTime + retraso;
+    const o = c.createOscillator(), f = c.createBiquadFilter(), g = c.createGain();
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(520 * tono, t); o.frequency.exponentialRampToValueAtTime(190 * tono, t + 0.14);
+    f.type = 'lowpass'; f.frequency.value = 1800; f.Q.value = 6;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.5, t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+    o.connect(f); f.connect(g); g.connect(c.destination); o.start(t); o.stop(t + 0.2);
+    const b = c.createBuffer(1, Math.floor(c.sampleRate * 0.12), c.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const s = c.createBufferSource(), bp = c.createBiquadFilter(), gn = c.createGain();
+    s.buffer = b; bp.type = 'bandpass'; bp.frequency.value = 900 * tono; bp.Q.value = 1.2; gn.gain.value = 0.35;
+    s.connect(bp); bp.connect(gn); gn.connect(c.destination); s.start(t);
+  }
+  function gemido(retraso = 0, sube = true) {
+    if (!AC) return;
+    const c = AC, t = c.currentTime + retraso;
+    const o = c.createOscillator(), g = c.createGain(), lfo = c.createOscillator(), lg = c.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(sube ? 650 : 1100, t); o.frequency.linearRampToValueAtTime(sube ? 1150 : 1250, t + 0.25); o.frequency.linearRampToValueAtTime(sube ? 900 : 480, t + 0.65);
+    lfo.frequency.value = 9; lg.gain.value = 35; lfo.connect(lg); lg.connect(o.frequency);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.25, t + 0.05); g.gain.setValueAtTime(0.25, t + 0.5); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
+    o.connect(g); g.connect(c.destination); o.start(t); lfo.start(t); o.stop(t + 0.72); lfo.stop(t + 0.72);
+  }
+
   const COLORES = ['#ff5d73', '#4d96ff', '#6bcb77', '#ffb84d', '#b07cff', '#ff8fab', '#38c6d9'];
 
   // ---------- Frase ----------
@@ -58,7 +97,9 @@
   function nueva() {
     const mitad = Math.ceil(n / 2);
     const orden = baraja([...Array(mitad).keys()]).concat(baraja([...Array(n - mitad).keys()].map(i => i + mitad)));
-    P = { t: 0, globos: [], efectos: [], orden, salidas: 0, cazadas: [], perdidas: 0, fallos: 0, factor: 1,
+    const tipos = baraja(['vuelo', 'salto', 'asoma']);
+    const bbPend = AJ.briskaEn.map((f, k) => ({ en: Math.max(1, Math.round(n * f)), tipo: tipos[k % 3], k }));
+    P = { t: 0, real: 0, maxF: AJ.fallosMax, bb: null, bbPend, globos: [], efectos: [], orden, salidas: 0, cazadas: [], perdidas: 0, fallos: 0, factor: 1,
           proximo: 600, hastaPalabra: AJ.globosPorPalabra, finales: AJ.globosFinales, fin: false, cuenta: 3.2 };
     bandeja.innerHTML = ''; pintaHud();
   }
@@ -98,7 +139,7 @@
     const m = P.efectos.length > 60 ? 4 : 8;
     for (let i = 0; i < m; i++) {
       const a = Math.random() * 6.3, v = 80 + Math.random() * 160;
-      P.efectos.push({ tipo: 'trozo', x: g.x, y: g.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, col: g.tipo === 'p' ? '#ffd45e' : g.col, t0: P.t, dur: 500 });
+      P.efectos.push({ tipo: 'trozo', x: g.x, y: g.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, col: g.tipo === 'p' ? '#ffd45e' : g.col, t0: P.real, dur: 500 });
     }
     if (navigator.vibrate) navigator.vibrate(g.tipo === 'p' ? 25 : 8);
   }
@@ -107,6 +148,7 @@
     if (!P || P.fin || P.cuenta > 0) return;
     e.preventDefault();
     const rc = cv.getBoundingClientRect(), x = e.clientX - rc.left, y = e.clientY - rc.top;
+    if (P.bb) { if (P.bb.fase === 'patron') tocaBriska(x, y); return; }
     // El globo más cercano al dedo. Se mira también dónde estaba hace 150 ms: el toque llega con retraso
     // y a velocidad alta el globo ya se ha movido.
     let g = null, mejor = Infinity;
@@ -121,7 +163,7 @@
     explota(g);
     if (g.tipo === 'p') {
       P.cazadas.push(g.idx); adaptar();
-      P.efectos.push({ tipo: 'palabra', x: g.x, y: g.y, texto: visibles[g.idx], t0: P.t, dur: 1300 });
+      P.efectos.push({ tipo: 'palabra', x: g.x, y: g.y, texto: visibles[g.idx], t0: P.real, dur: 1300 });
       const ch = document.createElement('span'); ch.className = 'gl-chip'; ch.textContent = visibles[g.idx]; bandeja.appendChild(ch);
       pintaHud();
     }
@@ -129,7 +171,7 @@
 
   function pintaHud() {
     hudFallos.innerHTML = '';
-    for (let i = 0; i < AJ.fallosMax; i++) { const s = document.createElement('i'); if (i < P.fallos) s.className = 'fuera'; hudFallos.appendChild(s); }
+    for (let i = 0; i < P.maxF; i++) { const s = document.createElement('i'); s.className = (i >= AJ.fallosMax ? 'extra ' : '') + (i < P.fallos ? 'fuera' : ''); hudFallos.appendChild(s); }
     hudPal.textContent = `💛 ${P.cazadas.length}/${n}`;
   }
 
@@ -142,8 +184,10 @@
   }
 
   function paso(ahora) {
-    const dt = Math.min(50, ahora - (ultimo || ahora)); ultimo = ahora;
+    const dt = Math.min(50, ahora - (ultimo || ahora)); ultimo = ahora; P.real += dt;
     if (P.cuenta > 0) { P.cuenta -= dt / 1000; if (P.cuenta <= 0) avisoEl.hidden = true; else avisoEl.innerHTML = `<b class="gl-num">${Math.ceil(P.cuenta - 0.2) || '¡Ya!'}</b>`; }
+    else if (!P.fin && P.bb) pasoBriska(dt);
+    else if (!P.fin && P.bbPend.length && P.salidas >= P.bbPend[0].en && !P.globos.some(g => g.tipo === 'p')) empiezaBriska(P.bbPend.shift());
     else if (!P.fin) {
       P.t += dt;
       if (P.t >= P.proximo) { if (P.globos.length < AJ.maxGlobos) soltar(); else P.proximo = P.t + 120; }
@@ -155,16 +199,81 @@
         if (g.tipo === 'n' && g.y + g.r * 2.2 < 0) {
           P.globos.splice(i, 1); P.fallos++; pintaHud();
           hudFallos.classList.remove('sacude'); void hudFallos.offsetWidth; hudFallos.classList.add('sacude');
-          if (P.fallos >= AJ.fallosMax) { perder(); break; }
+          if (P.fallos >= P.maxF) { perder(); break; }
         } else if (g.tipo === 'p' && (P.t - g.nace > g.vida || g.y + g.r < 0)) {
           P.globos.splice(i, 1); P.perdidas++; adaptar();
-          P.efectos.push({ tipo: 'puf', x: g.x, y: g.y, r: g.r, t0: P.t, dur: 450 });
+          P.efectos.push({ tipo: 'puf', x: g.x, y: g.y, r: g.r, t0: P.real, dur: 450 });
         }
       }
       if (!P.fin && P.salidas >= n && P.finales <= 0 && !P.globos.some(g => g.tipo === 'n' || g.tipo === 'p')) ganar();
     }
     dibujar();
     raf = requestAnimationFrame(paso);
+  }
+
+  // ---------- BriskaBird: 3 apariciones; mientras está, los globos se paran ----------
+  const tamBB = () => Math.min(W, 480) * 0.28;
+  const azar = (a, b) => a + Math.random() * (b - a);
+  function empiezaBriska(p) {
+    const S = tamBB(), segs = [];
+    if (p.tipo === 'vuelo') for (let i = 0; i < 3; i++) segs.push({ dir: i % 2 ? -1 : 1, y: H * azar(0.2, 0.7) });
+    if (p.tipo === 'salto') for (let i = 0; i < 5; i++) segs.push({ x: azar(S * 0.6, W - S * 0.6), y: azar(H * 0.15, H * 0.75), vx: azar(-1, 1) * S * 0.8, vy: azar(-1, 1) * S * 0.8 });
+    if (p.tipo === 'asoma') for (let i = 0; i < 4; i++) segs.push({ borde: ['izq', 'der', 'abajo'][Math.floor(Math.random() * 3)], pos: azar(0.25, 0.75) });
+    P.bb = { ...p, segs, fase: 'entrada', t: 0, sonado: -1 };
+    const b = BRISKA[p.k % BRISKA.length];
+    avisar(`<img class="gl-bb-img" src="${bbImg.src}" alt="" /><p class="gl-titulo">${b.titulo}</p><p>${b.frase}</p><p class="gl-bb-premio">Cázala y podrás dejar escapar ${AJ.premioBriska} globos más</p>`);
+    guau(0); guau(0.22, 0.95);
+  }
+  // Dónde está en el instante t de su número (null si ya terminó)
+  function posBriska(B, t) {
+    const S = tamBB();
+    if (B.tipo === 'vuelo') {
+      const dur = 950, per = 1150, i = Math.floor(t / per); if (t < 0 || i >= B.segs.length) return null;
+      const lt = t - i * per, s = B.segs[i]; if (lt > dur) return { visible: false, seg: i };
+      const p = lt / dur, rec = p * (W + 2 * S);
+      return { visible: true, seg: i, x: s.dir > 0 ? -S + rec : W + S - rec, y: s.y + Math.sin(p * Math.PI * 4) * S * 0.35, flip: s.dir < 0, rot: Math.sin(p * Math.PI * 8) * 0.12, esc: 1 };
+    }
+    if (B.tipo === 'salto') {
+      const vis = 500, per = 680, i = Math.floor(t / per); if (t < 0 || i >= B.segs.length) return null;
+      const lt = t - i * per, s = B.segs[i]; if (lt > vis) return { visible: false, seg: i };
+      return { visible: true, seg: i, x: s.x + s.vx * lt / 1000, y: s.y + s.vy * lt / 1000, flip: s.vx < 0, rot: Math.sin(lt / 40) * 0.15, esc: Math.min(1, lt / 80) };
+    }
+    const per = 1000, i = Math.floor(t / per); if (t < 0 || i >= B.segs.length) return null;
+    const lt = t - i * per, s = B.segs[i];
+    const k = lt < 250 ? lt / 250 : lt < 600 ? 1 : lt < 850 ? 1 - (lt - 600) / 250 : 0;
+    if (k <= 0) return { visible: false, seg: i };
+    if (s.borde === 'izq') return { visible: true, seg: i, x: -S * 0.5 + k * S * 0.85, y: H * s.pos, flip: false, rot: 0.25, esc: 1 };
+    if (s.borde === 'der') return { visible: true, seg: i, x: W + S * 0.5 - k * S * 0.85, y: H * s.pos, flip: true, rot: -0.25, esc: 1 };
+    return { visible: true, seg: i, x: W * s.pos, y: H + S * 0.55 - k * S * 0.95, flip: s.pos > 0.5, rot: 0, esc: 1 };
+  }
+  function pasoBriska(dt) {
+    const B = P.bb; B.t += dt;
+    if (B.fase === 'entrada') { if (B.t >= AJ.entradilla) { avisoEl.hidden = true; B.fase = 'patron'; B.t = 0; } return; }
+    const p = posBriska(B, B.t);
+    if (!p) { P.bb = null; gemido(0, false); P.efectos.push({ tipo: 'palabra', x: W / 2, y: H * 0.45, texto: ADIOS[B.k % ADIOS.length], t0: P.real, dur: 1600, peq: true }); return; }
+    if (p.visible && p.seg !== B.sonado) {
+      B.sonado = p.seg;
+      if (B.tipo === 'vuelo') guau(0, 1.1); else if (B.tipo === 'salto') guau(0, 1.35); else gemido(0, true);
+    }
+  }
+  function tocaBriska(x, y) {
+    const B = P.bb, S = tamBB();
+    for (const atras of [0, 120]) {
+      const p = posBriska(B, B.t - atras);
+      if (!p || !p.visible || Math.hypot(p.x - x, p.y - y) > S * 0.55) continue;
+      P.bb = null; P.maxF += AJ.premioBriska; pintaHud();
+      guau(0, 1.3); guau(0.15, 1.45); guau(0.3, 1.6);
+      if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
+      P.efectos.push({ tipo: 'bbfuera', x: p.x, y: p.y, flip: p.flip, t0: P.real, dur: 700 });
+      P.efectos.push({ tipo: 'palabra', x: p.x, y: p.y - S * 0.4, texto: `+${AJ.premioBriska} 🎈`, t0: P.real, dur: 1300 });
+      return;
+    }
+  }
+  function dibujaBriska(p, extraRot = 0, extraEsc = 1, alfa = 1) {
+    if (!bbImg.complete || !bbImg.naturalWidth) return;
+    const S = tamBB() * p.esc * extraEsc, al = S * bbImg.naturalHeight / bbImg.naturalWidth;
+    ctx.save(); ctx.globalAlpha = alfa; ctx.translate(p.x, p.y); ctx.rotate(p.rot + extraRot); if (p.flip) ctx.scale(-1, 1);
+    ctx.drawImage(bbImg, -S / 2, -al / 2, S, al); ctx.restore();
   }
 
   // ---------- Dibujo ----------
@@ -220,19 +329,24 @@
   }
   function dibujar() {
     ctx.clearRect(0, 0, W, H);
+    if (P.bb) ctx.globalAlpha = 0.3;
     for (const g of P.globos) g.tipo === 'p' ? dibujaCorazon(g) : dibujaGlobo(g);
+    ctx.globalAlpha = 1;
+    if (P.bb && P.bb.fase === 'patron') { const p = posBriska(P.bb, P.bb.t); if (p && p.visible) dibujaBriska(p); }
     for (let i = P.efectos.length - 1; i >= 0; i--) {
-      const e = P.efectos[i], f = (P.t - e.t0) / e.dur;
+      const e = P.efectos[i], f = (P.real - e.t0) / e.dur;
       if (f >= 1) { P.efectos.splice(i, 1); continue; }
       ctx.save(); ctx.globalAlpha = 1 - f;
       if (e.tipo === 'trozo') {
-        const s = (P.t - e.t0) / 1000;
+        const s = (P.real - e.t0) / 1000;
         ctx.fillStyle = e.col; ctx.fillRect(e.x + e.vx * s - 3, e.y + e.vy * s + 300 * s * s - 3, 6, 6);
       } else if (e.tipo === 'puf') {
         ctx.strokeStyle = 'rgba(255,220,120,.8)'; ctx.lineWidth = 2;
         ctx.beginPath(); ctx.arc(e.x, e.y, e.r * (0.6 + f * 0.8), 0, 6.2832); ctx.stroke();
+      } else if (e.tipo === 'bbfuera') {
+        ctx.restore(); dibujaBriska({ x: e.x, y: e.y - f * 80, flip: e.flip, rot: 0, esc: 1 }, f * 9, 1 - f * 0.8, 1 - f); continue;
       } else if (e.tipo === 'palabra') {
-        const tam = Math.round(Math.min(W, 480) * 0.11);
+        const tam = Math.round(Math.min(W, 480) * (e.peq ? 0.07 : 0.11));
         ctx.font = `800 ${tam}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.shadowColor = 'rgba(255,190,40,.95)'; ctx.shadowBlur = 16; ctx.fillStyle = '#fff';
         const x = Math.max(tam * 1.5, Math.min(W - tam * 1.5, e.x));
@@ -245,7 +359,7 @@
   // ---------- Pantalla ----------
   let alAcabar = null;
   function jugar(fn) {
-    alAcabar = fn;
+    alAcabar = fn; audio();
     pantalla.hidden = false; document.body.classList.add('gl-jugando');
     medir(); nueva();
     avisoEl.hidden = false; avisoEl.innerHTML = '<b class="gl-num">3</b>';
@@ -257,7 +371,7 @@
   }
   function perder() {
     P.fin = true;
-    avisar(`<p class="gl-titulo">¡Uy! Se han escapado ${AJ.fallosMax} globos</p><p>Has cazado ${P.cazadas.length} de ${n} palabras, pero hay que llegar al final.</p>`,
+    avisar(`<p class="gl-titulo">¡Uy! Se han escapado ${P.fallos} globos</p><p>Has cazado ${P.cazadas.length} de ${n} palabras, pero hay que llegar al final.</p>`,
       [['Otra vez', () => jugar(alAcabar), 'primario'], ['Salir', cerrar]]);
   }
   function ganar() {
@@ -283,11 +397,13 @@
   }
   function pintaEscribir() {
     inicio.hidden = true; escribir.hidden = false;
-    const chips = baraja(E.palabras.slice()).map(i => `<span class="gl-chip">${visibles[i]}</span>`).join('');
+    const ver = !E.ocultas;   // las palabras se ven una sola vez y se van esfumando
+    const chips = ver ? baraja(E.palabras.slice()).map(i => `<span class="gl-chip">${visibles[i]}</span>`).join('') : '';
     const perdidas = n - E.palabras.length;
+    const sinChips = ver ? '<span class="suave2">Ninguna… ¡tendrás que imaginarla!</span>' : `<span class="suave2">Tus ${E.palabras.length} palabras se esfumaron. Tira de memoria 🐾</span>`;
     escribir.innerHTML = `
-      <p class="adv-sobre">Tus palabras${perdidas ? ` · se te escaparon ${perdidas}` : ''}</p>
-      <div class="gl-chips">${chips || '<span class="suave2">Ninguna… ¡tendrás que imaginarla!</span>'}</div>
+      <p class="adv-sobre">Tus palabras${perdidas ? ` · se te escaparon ${perdidas}` : ''}${ver && chips ? ' · ¡memorízalas!' : ''}</p>
+      <div class="gl-chips" id="gl-chips">${chips || sinChips}</div>
       ${E.intentos > 0 ? `<div class="gl-plantilla">${objetivo.map((_, i) => huecos(i)).join('')}</div>` : ''}
       <p class="gl-ayuda">${ayuda()}</p>
       <textarea id="gl-frase" rows="2" autocomplete="off" autocapitalize="sentences" placeholder="Escribe la frase completa…"></textarea>
@@ -296,7 +412,20 @@
     const ta = $('gl-frase'); ta.value = E.texto || '';
     $('gl-comprobar').addEventListener('click', comprobar);
     ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); comprobar(); } });
-    $('gl-otra').addEventListener('click', () => jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; guardarE(); pintaEscribir(); }));
+    $('gl-otra').addEventListener('click', () => jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
+    if (ver && chips) { E.ocultas = true; guardarE(); esfumar(); }
+  }
+  // Tras 2,5 s, una palabra menos cada segundo
+  let esfumando = 0;
+  function esfumar() {
+    clearTimeout(esfumando);
+    const quita = () => {
+      const caja = $('gl-chips'), vivos = caja ? [...caja.querySelectorAll('.gl-chip:not(.esfuma)')] : [];
+      if (!vivos.length) { if (caja) caja.innerHTML = `<span class="suave2">Tus ${E.palabras.length} palabras se esfumaron. Tira de memoria 🐾</span>`; return; }
+      const c = vivos[Math.floor(Math.random() * vivos.length)]; c.classList.add('esfuma');
+      esfumando = setTimeout(quita, 1000);
+    };
+    esfumando = setTimeout(quita, 2500);
   }
   function ayuda() {
     if (E.intentos === 0) return 'Ordénalas y completa lo que falte. Sin preocuparte de tildes ni comas.';
