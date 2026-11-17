@@ -128,4 +128,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Comecocos: el carrito va siempre un 10% más rápido que los perseguidores | 82dcc29 |
 | 2026-11-17 | Français: píldoras de francés divertidas (B2-C1) que escribe el agente los lunes, miércoles y viernes; Raquel responde, ♥ +1 al entregar y el agente corrige con cariño; Javi ve sus copias y puede encargar una a mano | 8d009b5 |
 | 2026-11-17 | Juegos con frase: palabras en orden durante la partida (desordenadas al escribir) y botón de ayuda visible y bloqueado hasta el 3.er intento | 685b655 |
-| 2026-11-17 | Criptofrase: cada casilla se rellena a mano, sin autocompletar las del mismo número | (este) |
+| 2026-11-17 | Criptofrase: cada casilla se rellena a mano, sin autocompletar las del mismo número | 5e4e233 |
