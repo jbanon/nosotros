@@ -200,6 +200,9 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
     const string GlobosTitulo = "Explota los globos";
     const string GlobosIntro = "Hoy toca ser rápida. Explota los globos antes de que se escapen; si se te escapan demasiados, vuelta a empezar.\nAlgunos son corazones dorados y esconden una palabra: duran poquísimo, así que estate atenta. Al final tendrás que escribir la frase que forman.";
 
+    const string ArkanoidTitulo = "Tira los bloques";
+    const string ArkanoidIntro = "Hoy toca pulso firme. Mueve la pala con el dedo y no dejes caer la pelota: hay que tirar todos los bloques.\nBriskaBird andará revoloteando por ahí; si le das con la pelota, suelta una palabra. Al final tendrás que escribir la frase que forman.";
+
     /// <summary>Cambios en casillas del adviento ya creadas (la carga solo ocurre una vez). Cada cambio se aplica
     /// únicamente si la casilla conserva el texto original, para no pisar lo que Javier haya editado en Admin.</summary>
     async Task CorregirAdviento()
@@ -248,6 +251,15 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             vieja.Titulo = nueva.Titulo; vieja.Intro = nueva.Intro; vieja.Datos = nueva.Datos; vieja.Estado = null; vieja.Pistas = 0;
             await db.SaveChangesAsync();
             log.LogInformation("Adviento: día {Dia} actualizado con el contenido nuevo del seed", dia);
+        }
+        // 2026-11-17: el mini Arkanoid va en el día 13 (en lugar de su crucigrama "Junto al fuego"); conserva la letra.
+        var a = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 13 && x.Tipo == TipoCasilla.Crucigrama && x.Datos.Contains("CARICIA"));
+        if (a != null)
+        {
+            a.Tipo = TipoCasilla.Arkanoid; a.Titulo = ArkanoidTitulo; a.Intro = ArkanoidIntro; a.Estado = null; a.Pistas = 0;
+            a.Datos = AdvientoService.Serializar(new { frase = AdvientoService.FraseArkanoidDefecto });
+            await db.SaveChangesAsync();
+            log.LogInformation("Adviento: día 13 pasa a ser el mini Arkanoid");
         }
     }
 

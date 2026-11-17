@@ -1064,3 +1064,44 @@ body.gl-jugando { overflow: hidden; }
 .gl-chip.esfuma { animation: gl-esfuma .45s forwards; }
 @keyframes gl-bb-entra { from { transform: scale(.2) rotate(-25deg); opacity: 0; } }
 @keyframes gl-esfuma { to { opacity: 0; transform: translateY(-14px) scale(.6); filter: blur(4px); } }
+
+/* ---------- Adviento · mini Arkanoid (reutiliza gl-pantalla, gl-hud, gl-aviso y la fase de escribir) ---------- */
+.ak-pantalla { background: radial-gradient(120% 80% at 50% 0%, #4a2c7a 0%, #241a4a 45%, #0e0b22 100%); }
+.ak-vidas { display: flex; gap: 5px; flex: 1; font-size: 1.25rem; line-height: 1; color: #ff6b8a; text-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.ak-vidas i { font-style: normal; } .ak-vidas i.fuera { opacity: .25; }
+.ak-vidas.sacude { animation: gl-sacude .35s; }
+.ak-ico { display: flex; align-items: center; justify-content: center; gap: 12px; letter-spacing: 0; }
+.ak-ico-bloques { display: inline-grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.ak-ico-bloques i { width: 22px; height: 11px; border-radius: 3px; background: #ff5d73; }
+.ak-ico-bloques i:nth-child(2) { background: #ffb84d; } .ak-ico-bloques i:nth-child(3) { background: #6bcb77; } .ak-ico-bloques i:nth-child(4) { background: #4d96ff; }
+
+/* ---------- Briska asomando por el calendario (js/briska.js; imágenes en img/briska) ---------- */
+.briska { position: fixed; inset: 0; z-index: 25; pointer-events: none; overflow: hidden; }
+.briska[hidden], .briska.escondida, body.gl-jugando .briska { display: none; }
+/* El botón queda justo encima de la barra de navegación y recorta a Briska: así nunca tapa la barra */
+.briska-rincon { position: absolute; right: 6px; bottom: calc(var(--nav-alto) + env(safe-area-inset-bottom) + 2px); width: 74px; height: 74px; border: 0; background: none; padding: 0; margin: 0;
+  overflow: hidden; pointer-events: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+body.sin-nav .briska-rincon { bottom: calc(env(safe-area-inset-bottom) + 6px); }
+.briska-rincon.asoma { pointer-events: auto; }
+.briska-rincon img { width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block; transform: translateY(110%); transition: transform .9s cubic-bezier(.3,1.4,.5,1); filter: drop-shadow(0 4px 10px rgba(0,0,0,.35)); }
+.briska-rincon.asoma img { transform: translateY(24%); }
+.briska-rincon.asoma.bota img { animation: briska-bota .55s ease-out; }
+@keyframes briska-bota { 30% { transform: translateY(-4%) rotate(-7deg); } 60% { transform: translateY(14%) rotate(5deg); } 100% { transform: translateY(24%); } }
+.briska-bocadillo { position: absolute; right: 16px; bottom: calc(var(--nav-alto) + env(safe-area-inset-bottom) + 62px); max-width: min(64vw, 270px); background: #fff; color: #2a1b10;
+  font-size: .88rem; font-weight: 700; line-height: 1.3; padding: 8px 12px; border-radius: 14px 14px 4px 14px; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  opacity: 0; transform: translateY(8px) scale(.9); transform-origin: bottom right; transition: opacity .3s, transform .3s; }
+body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px); }
+.briska-bocadillo::after { content: ""; position: absolute; right: 14px; bottom: -8px; border: 8px solid transparent; border-top-color: #fff; border-bottom: 0; }
+.briska-bocadillo.visible { opacity: 1; transform: none; }
+.briska-suelta { position: absolute; left: 0; top: 30vh; width: 88px; height: auto; pointer-events: auto; cursor: pointer; filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
+  animation-timing-function: linear; animation-fill-mode: both; }
+.briska-suelta[hidden] { display: none; }
+.briska-suelta.cruza { animation-name: briska-cruza; }
+.briska-suelta.cruza.der { animation-name: briska-cruza-der; }
+.briska-suelta.asoma { animation-name: briska-asoma-izq; animation-timing-function: ease-in-out; }
+.briska-suelta.asoma.der { left: auto; right: 0; animation-name: briska-asoma-der; }
+@keyframes briska-cruza { from { transform: translateX(-100px) translateY(0) rotate(-5deg); } 25% { transform: translateX(25vw) translateY(-22px) rotate(6deg); } 50% { transform: translateX(50vw) translateY(0) rotate(-5deg); } 75% { transform: translateX(75vw) translateY(-22px) rotate(6deg); } to { transform: translateX(100vw) translateY(0) rotate(-5deg); } }
+@keyframes briska-cruza-der { from { transform: translateX(100vw) translateY(0) scaleX(-1) rotate(5deg); } 25% { transform: translateX(75vw) translateY(-22px) scaleX(-1) rotate(-6deg); } 50% { transform: translateX(50vw) translateY(0) scaleX(-1) rotate(5deg); } 75% { transform: translateX(25vw) translateY(-22px) scaleX(-1) rotate(-6deg); } to { transform: translateX(-100px) translateY(0) scaleX(-1) rotate(5deg); } }
+@keyframes briska-asoma-izq { 0%, 100% { transform: translateX(-105%); } 30%, 70% { transform: translateX(-28%) rotate(12deg); } }
+@keyframes briska-asoma-der { 0%, 100% { transform: translateX(105%) scaleX(-1); } 30%, 70% { transform: translateX(28%) scaleX(-1) rotate(12deg); } }
+@media (prefers-reduced-motion: reduce) { .briska-rincon img, .briska-bocadillo { transition: none; } .briska-rincon.asoma.bota img { animation: none; } .briska-suelta { display: none !important; } }

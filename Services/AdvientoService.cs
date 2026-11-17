@@ -149,6 +149,11 @@ public class AdvientoService(AppDb db)
     public static string FraseGlobos(AdvientoCasilla c) => Json(c)["frase"]?.GetValue<string>() is { Length: > 0 } f ? f : FraseGlobosDefecto;
     public bool ComprobarGlobos(AdvientoCasilla c, string respuesta) => Coincide(FraseGlobos(c), respuesta);
 
+    // ---------- Arkanoid (misma mecánica de frase que los globos) ----------
+    public const string FraseArkanoidDefecto = "Quien fuera tu ombligo para estar a la sombra de tus tetas";
+    public static string FraseArkanoid(AdvientoCasilla c) => Json(c)["frase"]?.GetValue<string>() is { Length: > 0 } f ? f : FraseArkanoidDefecto;
+    public bool ComprobarArkanoid(AdvientoCasilla c, string respuesta) => Coincide(FraseArkanoid(c), respuesta);
+
     // ---------- Frase final ----------
     /// <summary>Palabras de la frase final con sus letras: las ganadas en su sitio y huecos en las demás.</summary>
     public static List<List<(string? letra, int dia)>> FraseFinal(string frase, List<AdvientoCasilla> casillas)

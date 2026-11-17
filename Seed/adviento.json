@@ -106,17 +106,9 @@
         "explicacion": "Marcos no tenía ni la pelota ni el móvil: tenía las galletas, y como con galletas no se va por el pasillo, estaba en el sofá o en la cocina. Elsa no tenía el móvil, así que tenía la pelota, que no podía estar en la cocina; y Miranda, el móvil. Miranda no estaba en la cocina, luego en la cocina estaba Marcos, con las galletas. Elsa no estaba sentada, así que estaba en el pasillo botando la pelota de su hermano, y Miranda en el sofá, grabando un baile con el móvil… sentada encima del mando. Dice que fue sin querer, pero se le escapa la risa."
       } },
 
-    { "dia": 13, "tipo": "Crucigrama", "letra": "U", "titulo": "Junto al fuego",
-      "datos": {
-        "palabras": [
-          { "palabra": "CARICIA", "dir": "H", "fila": 1, "col": 1, "pista": "Lo que más me gusta recibir de ti" },
-          { "palabra": "FUEGO", "dir": "H", "fila": 4, "col": 0, "pista": "Junto a él te gusta leer" },
-          { "palabra": "LIBRO", "dir": "V", "fila": 0, "col": 4, "pista": "Lo que tienes entre las manos junto al fuego" },
-          { "palabra": "NIEVE", "dir": "V", "fila": 0, "col": 6, "pista": "Cae en el norte, y ojalá en Finlandia" },
-          { "palabra": "SOFA", "dir": "V", "fila": 2, "col": 0, "pista": "Donde acabamos los siete (y Briska) en invierno" }
-        ],
-        "letra": { "fila": 4, "col": 1 }
-      } },
+    { "dia": 13, "tipo": "Arkanoid", "letra": "U", "titulo": "Tira los bloques",
+      "intro": "Hoy toca pulso firme. Mueve la pala con el dedo y no dejes caer la pelota: hay que tirar todos los bloques.\nBriskaBird andará revoloteando por ahí; si le das con la pelota, suelta una palabra. Al final tendrás que escribir la frase que forman.",
+      "datos": { "frase": "Quien fuera tu ombligo para estar a la sombra de tus tetas" } },
 
     { "dia": 14, "tipo": "Criptofrase", "letra": "E", "titulo": "Criptofrase",
       "datos": { "frase": "Siete en casa, una perra y la luz del baño siempre encendida", "pista": "Nuestra familia, retrato fiel" } },

@@ -1,0 +1,8 @@
+@model string
+@* Briska asomando por una esquina del calendario de adviento (js/briska.js). El modelo es el JSON con las rutas de wwwroot/img/briska. *@
+<div class="briska" id="briska" hidden>
+    <script id="briska-imgs" type="application/json">@Html.Raw(Model)</script>
+    <div class="briska-bocadillo" id="briska-bocadillo" role="status" aria-live="polite"></div>
+    <button type="button" class="briska-rincon" id="briska-rincon" aria-label="Briska"><img alt="" /></button>
+    <img class="briska-suelta" id="briska-suelta" alt="" hidden />
+</div>

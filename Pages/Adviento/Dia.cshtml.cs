@@ -20,7 +20,7 @@ public class PeticionJuego
     public int Porcentaje { get; set; }
 }
 
-public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : PageModel
+public class DiaModel(AdvientoService adv, AppDb db, ConfigService config, BriskaImagenes briska) : PageModel
 {
     public AdvientoCasilla Casilla { get; set; } = null!;
     public List<AdvientoCasilla> Todas { get; set; } = new();
@@ -38,6 +38,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
     public Vineta? VinetaRegalo { get; set; }
     /// <summary>El admin pulsó "Canjear": se le enseña el vale canjeado sin guardar nada.</summary>
     public bool CanjeSimulado { get; set; }
+    public string BriskaJson => briska.Json();
     bool EsAdmin => User.EsAdmin();
 
     async Task<bool> Cargar(int dia, DateOnly? fecha)
@@ -96,6 +97,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             TipoCasilla.Murdoku => adv.VistaMurdoku(c),
             TipoCasilla.Foto => new { pregunta = c.Pregunta },
             TipoCasilla.Globos => new { frase = AdvientoService.FraseGlobos(c) },
+            TipoCasilla.Arkanoid => new { frase = AdvientoService.FraseArkanoid(c) },
             _ => new { }
         };
         object? solucion = !c.Resuelta ? null : c.Tipo switch
@@ -105,6 +107,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             TipoCasilla.Murdoku => new { eleccion = AdvientoService.Json(c)["solucion"], explicacion = adv.ExplicacionMurdoku(c) },
             TipoCasilla.Foto => c.Respuesta,
             TipoCasilla.Globos => AdvientoService.FraseGlobos(c),
+            TipoCasilla.Arkanoid => AdvientoService.FraseArkanoid(c),
             _ => null
         };
         DatosJson = AdvientoService.Serializar(new
@@ -126,6 +129,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             TipoCasilla.Murdoku => adv.ComprobarMurdoku(c, p.Eleccion ?? []),
             TipoCasilla.Foto => adv.ComprobarFoto(c, p.Respuesta ?? ""),
             TipoCasilla.Globos => adv.ComprobarGlobos(c, p.Respuesta ?? ""),
+            TipoCasilla.Arkanoid => adv.ComprobarArkanoid(c, p.Respuesta ?? ""),
             _ => false
         };
         if (!ok) return new JsonResult(new { ok = false, mensaje = MensajeFallo(c) });
@@ -144,6 +148,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             TipoCasilla.Murdoku => new { eleccion = AdvientoService.Json(c)["solucion"], explicacion = adv.ExplicacionMurdoku(c) },
             TipoCasilla.Foto => c.Respuesta,
             TipoCasilla.Globos => AdvientoService.FraseGlobos(c),
+            TipoCasilla.Arkanoid => AdvientoService.FraseArkanoid(c),
             _ => null
         };
         return new JsonResult(new { ok = true, letra = c.Letra, posicion = Posicion, letras = Letras, total = Total, solucion });

@@ -85,7 +85,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   próxima vez. Viaje y Camping se crean una sola vez (`Config.ListasSembradas`); si se borran no vuelven.
 
 ## Calendario de adviento
-- 24 casillas del 1 al 24 de diciembre (año en `AdvientoCasilla.Anio`; en enero sigue valiendo el de diciembre). Una casilla se abre cuando llega su día (hora de Madrid); las pasadas siguen abiertas; las futuras muestran un mensaje gracioso. Reparto: 5 criptofrases, 5 murdokus, 5 crucigramas, 5 fotos, 1 juego de globos, 2 vales y la carta final del 24.
+- 24 casillas del 1 al 24 de diciembre (año en `AdvientoCasilla.Anio`; en enero sigue valiendo el de diciembre). Una casilla se abre cuando llega su día (hora de Madrid); las pasadas siguen abiertas; las futuras muestran un mensaje gracioso. Reparto: 5 criptofrases, 5 murdokus, 4 crucigramas, 5 fotos, 1 juego de globos (día 6), 1 mini Arkanoid (día 13), 2 vales y la carta final del 24.
 - Cada enigma (y cada foto) da una letra; las 21 letras en orden de día forman la frase final (`Config.AdvientoFrase`, "Gracias por quererme así"). Admin avisa si letras y frase no coinciden.
 - Fotos: con pregunta → borrosa hasta acertar (la letra se gana al acertar); sin pregunta → se ve directa y la letra se gana al abrir. Fotos en `App_Data/adjuntos/adviento`, fuera del repo. Cualquier casilla con foto sale en el collage del 24.
 - El contenido inicial vive en `Seed/adviento.json` (se carga una vez por año si no hay casillas); después se edita en Admin → Calendario de adviento (JSON del pasatiempo plegado). Las comprobaciones se hacen en el servidor (handlers JSON `Resolver`, `Pista`, `Estado`, `Canjear`); el admin puede jugar en vista previa sin que se guarde nada.
@@ -126,7 +126,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     3º, además, la inicial; desde ahí regala una palabra por fallo. Puede volver a jugar para cazar más.
   - Sin tildes, mayúsculas ni comas; la comprobación final la hace el servidor, que da la letra "I".
   - Todos los ajustes, en la constante `AJ` de `globos.js`.
-  - **BriskaBird** (`wwwroot/img/briskabird.png`, recortada de la imagen de Javier) sale **10 veces**
+  - **BriskaBird** (`wwwroot/img/briska/briskabird.png`, recortada de la imagen de Javier) sale **10 veces**
     (Javier, 2026-11-17), repartidas según las palabras cazadas (con 11: al llevar 0, 1, 2, 3, 4, 6, 7, 8, 9 y 10;
     mínimo 2,5 s entre visitas). Se presenta **una sola vez, al empezar la partida** (3,2 s, un toque la salta);
     después sale sin aviso y sin parar los globos. Hace uno de tres números: cruza volando de lado a lado (3
@@ -142,6 +142,36 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     (`estado.ocultas`). Si vuelve a jugar para cazar más, se enseñan de nuevo y se esfuman otra vez.
   - Rendimiento en el móvil: cada globo se dibuja una vez en un canvas aparte y luego solo se copia; como mucho
     12 globos a la vez. El toque elige el globo más cercano y cuenta también dónde estaba hace 150 ms.
+  - Lo común con el Arkanoid vive en `js/adv-juego.js` (`window.advJuego`): el kit de sonido (`sonido()`: ladridos,
+    aullidos, explosiones, tics, botón 🔊/🔇 con `localStorage['gl-mudo']`) y la fase de escribir la frase (`frase()`:
+    chips que se esfuman, intentos con pistas, `Resolver`). La música de «Jingle Bells» sigue siendo solo de globos.
+- Mini Arkanoid (`TipoCasilla.Arkanoid`, día 13 en lugar de su crucigrama "Junto al fuego", misma letra U; `js/arkanoid.js`,
+  canvas a pantalla completa como los globos; Javier, 2026-11-17). Pala que se arrastra con el dedo (soltar con la pelota
+  pegada la lanza), pelota que acelera un poco con cada bloque, 42 bloques de colores (6 × 7), 3 vidas; sin vidas, vuelta
+  a empezar (también se pierden las palabras cazadas, como en globos).
+  - **BriskaBird** revolotea en pasadas de lado a lado (2 por visita) por debajo de los bloques al principio y entre
+    ellos según van cayendo; hasta 14 visitas para 11 palabras (que se escape alguna es normal; la palabra que se escapa
+    vuelve a la cola). Una visita sale cuando se han tirado bloques suficientes o han pasado 8 s desde la anterior, con
+    1,8 s mínimo entre visitas. Si la pelota le da: ladridos, rebote redondo y la **palabra en grande** con brillo.
+    Las palabras salen desordenadas (primero la mitad fácil), como en globos.
+  - Frase (`datos.frase`): "Quien fuera tu ombligo para estar a la sombra de tus tetas". El juego acaba al tirar el último
+    bloque (si Briska está en pantalla, espera a que se vaya o a que le den); después las palabras cazadas se enseñan y se
+    esfuman **al mismo ritmo que en globos** (1,25 s de espera, una cada 0,91 s) y toca escribir la frase con el mismo
+    sistema de intentos y pistas. La comprobación final la hace el servidor (`ComprobarArkanoid`), sin tildes ni comas.
+  - Todos los ajustes en la constante `AJ` de `arkanoid.js` (vidas, rejilla, pala, velocidades, visitas de Briska).
+- **Briska por el calendario** (Javier, 2026-11-17: que BriskaBird y las demás Briskas tengan protagonismo). En `/Adviento`
+  y en cada casilla sale una Briska asomando por la esquina inferior derecha con un bocadillo de frase graciosa que cambia
+  cada 16-30 s; tocarla: ladra (Web Audio), bota y suelta otra frase. De vez en cuando (18-45 s) otra cruza la pantalla
+  volando o asoma por un lado y se esconde; tocarla también ladra. Se esconde mientras hay un campo con el foco (teclado del
+  móvil en criptofrase, crucigrama, fotos…) y con los juegos a pantalla completa; con `prefers-reduced-motion` solo queda
+  la del rincón, sin animaciones. Todo en `Pages/Shared/_Briska.cshtml`, `js/briska.js` y CSS `.briska-*`; las frases, en
+  el JS.
+  - **Imágenes en `wwwroot/img/briska/*.png`**: el servidor (`BriskaImagenes`, singleton, relee la carpeta cada minuto)
+    las lista sin base de datos y las manda a la página en el JSON `#briska-imgs`; cada aparición elige una al azar. Para
+    añadir una Briska nueva basta con copiar ahí un PNG **recortado y con fondo transparente** (unos 300 px de alto
+    sobran) y desplegar. Recorte: en la sesión anterior se hizo con un programita .NET + ImageSharp que hace flood fill
+    desde los bordes (los píxeles conectados al borde y parecidos al color de fondo pasan a transparentes) y recorta al
+    rectángulo con contenido; cualquier editor que exporte PNG con transparencia vale igual.
 
 ## Base de datos
 - PostgreSQL desde 2026-11-13 (Javier quita SQL Server del servidor y quiere Postgres; la app venía de SQLite).
