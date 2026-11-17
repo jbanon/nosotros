@@ -144,6 +144,11 @@ public class AdvientoService(AppDb db)
         return r.Length == 0 ? null : new { texto = $"Empieza por {r[0]} y tiene {r.Length} letras" };
     }
 
+    // ---------- Globos ----------
+    public const string FraseGlobosDefecto = "Eres el amor de mi vida, no puedo vivir sin ti";
+    public static string FraseGlobos(AdvientoCasilla c) => Json(c)["frase"]?.GetValue<string>() is { Length: > 0 } f ? f : FraseGlobosDefecto;
+    public bool ComprobarGlobos(AdvientoCasilla c, string respuesta) => Coincide(FraseGlobos(c), respuesta);
+
     // ---------- Frase final ----------
     /// <summary>Palabras de la frase final con sus letras: las ganadas en su sitio y huecos en las demás.</summary>
     public static List<List<(string? letra, int dia)>> FraseFinal(string frase, List<AdvientoCasilla> casillas)

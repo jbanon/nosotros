@@ -50,6 +50,9 @@
     } catch { aviso('No se pudo pedir la pista', true); return null; }
   };
 
+  // Para juegos en su propio fichero (globos.js)
+  window.adv = { datos, post, ganado, aviso, norm, celebrar, estado: () => estado, guardarEstado: e => { estado = e; guardar(); } };
+
   // ------------------------------------------------------------ Criptofrase
   if (datos.tipo === 'Criptofrase') {
     const v = datos.vista; estado.letras = estado.letras || {};

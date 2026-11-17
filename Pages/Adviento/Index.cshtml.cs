@@ -38,6 +38,6 @@ public class IndexModel(AdvientoService adv, ConfigService config) : PageModel
     public static string Icono(AdvientoCasilla c) => c.Tipo switch
     {
         TipoCasilla.Foto => c.VideoPath != null ? "🎬" : "📷", TipoCasilla.Criptofrase => "🔡", TipoCasilla.Murdoku => "🔍",
-        TipoCasilla.Crucigrama => "✏️", TipoCasilla.Vale => "🎟️", _ => "💌"
+        TipoCasilla.Crucigrama => "✏️", TipoCasilla.Vale => "🎟️", TipoCasilla.Globos => "🎈", _ => "💌"
     };
 }

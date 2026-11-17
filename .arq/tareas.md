@@ -32,7 +32,10 @@
 - **Adviento día 1: Javier sube el vídeo del villancico (Admin → Calendario de adviento → casilla 1 → Vídeo) y
   cambia en el texto "Hoy, para empezar, una foto."** Probar en su móvil con Vista previa (pantalla completa,
   sonido, botón Atrás); el reproductor solo se ha visto en Chromium sin interfaz con un WebM de prueba.
-- **Adviento: Javier debe subir las fotos (días 1, 7, 11, 16, 20) y revisar textos desde Admin → Calendario de adviento antes del 1 de diciembre.** Opcional: pregunta/respuesta por foto (si no, la foto se ve directa y la letra se gana al abrir). Pendiente ver capturas en el móvil (diseño validado a ciegas) y confirmar que el teclado se abre bien en criptofrase y crucigrama (input oculto `.teclado-oculto`).
+- **Adviento día 7 (globos): Javier lo prueba en el móvil con Vista previa y ajusta la dificultad** (`AJ` en
+  `wwwroot/js/globos.js`: fallos permitidos, velocidades, vida de los corazones). El JS no se ha podido
+  ejecutar aquí; el servidor (vista y comprobación de la frase) sí se ha probado con curl.
+- **Adviento: Javier debe subir las fotos (días 1, 11, 16, 20; el 7 ya es el juego de los globos) y revisar textos desde Admin → Calendario de adviento antes del 1 de diciembre.** Opcional: pregunta/respuesta por foto (si no, la foto se ve directa y la letra se gana al abrir). Pendiente ver capturas en el móvil (diseño validado a ciegas) y confirmar que el teclado se abre bien en criptofrase y crucigrama (input oculto `.teclado-oculto`).
 - **Lista de la compra: "elementos abajo que no se ven"** (captura en modo oscuro,
   2026-11-08). Se aumentó el relleno inferior y se versionó el CSS; Javier debe confirmar tras
   desplegar. Si sigue, pedir captura.
@@ -42,17 +45,6 @@
 ## Ideas apuntadas (sin empezar, 2026-11-10)
 Javier las dejó apuntadas para hacer más adelante; también pueden entrar como casillas del adviento.
 - **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
-- **Globos (adviento)** (Javier, 2026-11-17). Juego de velocidad en el móvil, solo JS:
-  - **Globos:** suben y se explotan tocándolos; la dificultad sube (más, más rápidos, más pequeños, zigzag).
-  - **Palabras:** algunos globos llevan una palabra de la frase "eres el amor de mi vida, no puedo vivir sin ti".
-    Duran poco en pantalla, se mezclan con otros globos y salen desordenadas. Si se escapa, la palabra se pierde.
-  - **Perder:** se acaba la partida si se escapan N globos normales (reintento libre).
-  - **Al terminar:** escribe la frase. El objetivo es que acierte a la 2ª o 3ª: en el 2º intento las palabras
-    bien colocadas salen en verde y los huecos con sus letras; en el 3º, además, la inicial. Sin contar
-    tildes, mayúsculas ni comas.
-  - **Dificultad:** adaptable, perdiendo unas 3-4 palabras de 11; las fáciles al principio. Con constantes
-    para que Javier la ajuste probando.
-  - **Sin decidir:** qué casilla del adviento sustituye (las 24 están ocupadas).
 - **La cocina de Julia** (Javier, 2026-11-15). Sección con unos 40 clásicos franceses propuestos y buscador por
   nombre o ingrediente principal.
   - **Generar:** al elegir una, el agente (reutilizando `TipoTareaAgente.Receta`) la escribe AL ESTILO de Julia
@@ -122,3 +114,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-16 | Gastos: la compra que pasa del objetivo se descuenta de la hipoteca del mes siguiente | c2f9eb1 |
 | 2026-11-16 | Arte: tour general de Japón (texto ~420 palabras, 3 paseos: La gran ola, Dioses del viento y del trueno, Takiyasha; 4 reseñas: Kōrin, Jakuchū, Hiroshige, Kiyochika). Imágenes en `App_Data/entrada/arte/japon/` (Met Open Access y Commons, dominio público) | 5db4c10 |
 | 2026-11-16 | Arte: el índice del capítulo se tragaba el texto si un `## ` no llevaba línea en blanco detrás (ahora el título ocupa solo su línea) | 1a0f705 |
+| 2026-11-17 | Adviento: juego de los globos en el día 7 (corazones dorados con las palabras de la frase, dificultad adaptable, intentos con pistas) | (este) |

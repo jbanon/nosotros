@@ -192,6 +192,9 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
         await db.SaveChangesAsync();
     }
 
+    const string GlobosTitulo = "Explota los globos";
+    const string GlobosIntro = "Hoy toca ser rápida. Explota los globos antes de que se escapen; si se te escapan demasiados, vuelta a empezar.\nAlgunos son corazones dorados y esconden una palabra: duran poquísimo, así que estate atenta. Al final tendrás que escribir la frase que forman.";
+
     async Task CorregirAdviento()
     {
         // 2026-11-11: en el murdoku del día 3 la sospechosa es Aroa, no Miranda.
@@ -201,6 +204,15 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             c.Datos = c.Datos.Replace("Miranda", "Aroa");
             await db.SaveChangesAsync();
             log.LogInformation("Adviento: día 3 con Aroa en lugar de Miranda");
+        }
+        // 2026-11-17: el día 7 (foto "¿Te acuerdas?") pasa a ser el juego de los globos. Solo si sigue sin foto.
+        var g = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 7 && x.Tipo == TipoCasilla.Foto && x.FotoPath == null && x.Titulo == "¿Te acuerdas?");
+        if (g != null)
+        {
+            g.Tipo = TipoCasilla.Globos; g.Titulo = GlobosTitulo; g.Intro = GlobosIntro; g.Pregunta = null; g.Respuesta = null;
+            g.Datos = AdvientoService.Serializar(new { frase = AdvientoService.FraseGlobosDefecto });
+            await db.SaveChangesAsync();
+            log.LogInformation("Adviento: día 7 pasa a ser el juego de los globos");
         }
     }
 

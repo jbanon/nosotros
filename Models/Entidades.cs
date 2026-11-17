@@ -254,7 +254,7 @@ public static class ConfigClaves
     public const string LogroValeCanjeado = "LogroValeCanjeado";
 }
 
-public enum TipoCasilla { Foto, Criptofrase, Murdoku, Crucigrama, Vale, Final }
+public enum TipoCasilla { Foto, Criptofrase, Murdoku, Crucigrama, Vale, Final, Globos }
 
 /// <summary>Una casilla del calendario de adviento (1..24 de diciembre de un año).</summary>
 public class AdvientoCasilla

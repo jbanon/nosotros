@@ -95,6 +95,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             TipoCasilla.Crucigrama => adv.VistaCruci(c),
             TipoCasilla.Murdoku => adv.VistaMurdoku(c),
             TipoCasilla.Foto => new { pregunta = c.Pregunta },
+            TipoCasilla.Globos => new { frase = AdvientoService.FraseGlobos(c) },
             _ => new { }
         };
         object? solucion = !c.Resuelta ? null : c.Tipo switch
@@ -103,6 +104,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             TipoCasilla.Crucigrama => adv.SolucionCruci(c),
             TipoCasilla.Murdoku => new { eleccion = AdvientoService.Json(c)["solucion"], explicacion = adv.ExplicacionMurdoku(c) },
             TipoCasilla.Foto => c.Respuesta,
+            TipoCasilla.Globos => AdvientoService.FraseGlobos(c),
             _ => null
         };
         DatosJson = AdvientoService.Serializar(new
@@ -123,6 +125,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             TipoCasilla.Crucigrama => adv.ComprobarCruci(c, p.Celdas ?? new()),
             TipoCasilla.Murdoku => adv.ComprobarMurdoku(c, p.Eleccion ?? []),
             TipoCasilla.Foto => adv.ComprobarFoto(c, p.Respuesta ?? ""),
+            TipoCasilla.Globos => adv.ComprobarGlobos(c, p.Respuesta ?? ""),
             _ => false
         };
         if (!ok) return new JsonResult(new { ok = false, mensaje = MensajeFallo(c) });
@@ -140,6 +143,7 @@ public class DiaModel(AdvientoService adv, AppDb db, ConfigService config) : Pag
             TipoCasilla.Crucigrama => adv.SolucionCruci(c),
             TipoCasilla.Murdoku => new { eleccion = AdvientoService.Json(c)["solucion"], explicacion = adv.ExplicacionMurdoku(c) },
             TipoCasilla.Foto => c.Respuesta,
+            TipoCasilla.Globos => AdvientoService.FraseGlobos(c),
             _ => null
         };
         return new JsonResult(new { ok = true, letra = c.Letra, posicion = Posicion, letras = Letras, total = Total, solucion });

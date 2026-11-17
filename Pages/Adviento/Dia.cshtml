@@ -5,7 +5,7 @@
     ViewData["Title"] = $"Casilla {c.Dia}";
     var volver = "/Adviento" + (Model.Preview ? $"?fecha={Model.Hoy:yyyy-MM-dd}" : "");
     var conVideo = c.Tipo == TipoCasilla.Foto && c.VideoPath != null;
-    string tipoNombre = c.Tipo switch { TipoCasilla.Foto => conVideo ? "Vídeo" : "Foto", TipoCasilla.Criptofrase => "Criptofrase", TipoCasilla.Murdoku => "Murdoku", TipoCasilla.Crucigrama => "Crucigrama", TipoCasilla.Vale => "Vale", _ => "Nochebuena" };
+    string tipoNombre = c.Tipo switch { TipoCasilla.Foto => conVideo ? "Vídeo" : "Foto", TipoCasilla.Criptofrase => "Criptofrase", TipoCasilla.Murdoku => "Murdoku", TipoCasilla.Crucigrama => "Crucigrama", TipoCasilla.Vale => "Vale", TipoCasilla.Globos => "Juego", _ => "Nochebuena" };
 }
 <div class="adviento dia" data-particulas="nieve">
     <div class="cielo"></div>
@@ -75,6 +75,30 @@
                     </div>
                 }
             </section>
+        }
+        else if (c.Tipo == TipoCasilla.Globos)
+        {
+            <section class="adv-tarjeta globos-caja" id="juego">
+                <div id="gl-inicio" class="gl-inicio">
+                    <div class="gl-ico" aria-hidden="true">🎈<span>💛</span>🎈</div>
+                    @if (c.Resuelta)
+                    {
+                        <p class="adv-sobre centrado">La frase</p>
+                        <p class="gl-frase-ok">@AdvientoService.FraseGlobos(c)</p>
+                    }
+                    else
+                    {
+                        <ul class="gl-reglas">
+                            <li>Toca los globos para explotarlos. Cada vez van más rápido.</li>
+                            <li>Los <b>corazones dorados</b> esconden una palabra y desaparecen enseguida.</li>
+                            <li>Si se te escapan <b><span id="gl-max">10</span> globos</b>, vuelta a empezar.</li>
+                        </ul>
+                    }
+                    <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(c.Resuelta ? "Jugar otra vez" : "¡Empezar!")</button>
+                </div>
+                <div id="gl-escribir" class="gl-escribir" hidden></div>
+            </section>
+            <p class="adv-msg" id="msg"></p>
         }
         else if (c.Tipo == TipoCasilla.Vale)
         {
@@ -195,6 +219,19 @@
         </svg>
     </div>
 }
+@if (!Model.Cerrada && c.Tipo == TipoCasilla.Globos)
+{
+    <div class="gl-pantalla" id="gl-pantalla" hidden>
+        <canvas id="gl-canvas"></canvas>
+        <div class="gl-hud">
+            <div class="gl-fallos" id="gl-fallos" aria-label="Globos escapados"></div>
+            <div class="gl-cuenta-pal" id="gl-npal"></div>
+            <button type="button" class="gl-salir" id="gl-salir" aria-label="Salir">×</button>
+        </div>
+        <div class="gl-bandeja" id="gl-bandeja"></div>
+        <div class="gl-aviso" id="gl-aviso" hidden></div>
+    </div>
+}
 @Html.AntiForgeryToken()
 @section Scripts {
     @if (!Model.Cerrada)
@@ -202,5 +239,6 @@
         <script id="datos" type="application/json">@Html.Raw(Model.DatosJson)</script>
         <script src="/js/adviento.js" asp-append-version="true"></script>
         @if (conVideo) { <script src="/js/cine.js" asp-append-version="true"></script> }
+        @if (c.Tipo == TipoCasilla.Globos) { <script src="/js/globos.js" asp-append-version="true"></script> }
     }
 }
