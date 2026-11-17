@@ -90,9 +90,9 @@
                     {
                         <ul class="gl-reglas">
                             <li>Toca los globos para explotarlos. Cada vez van más rápido.</li>
-                            <li>Los <b>corazones dorados</b> esconden una palabra y desaparecen enseguida.</li>
-                            <li>Si se te escapan <b><span id="gl-max">10</span> globos</b>, vuelta a empezar.</li>
-                            <li class="gl-regla-bb"><img src="/img/briskabird.png" alt="" /><span>Cuidado con <b>BriskaBird</b>: sale 3 veces. Si la cazas, puedes dejar escapar 3 globos más.</span></li>
+                            <li>Los <b>corazones dorados</b> esconden una palabra y desaparecen enseguida. La que se te escape volverá a salir: hay que cazarlas <b>todas</b>.</li>
+                            <li>Si se te escapan <b><span id="gl-max">12</span> globos</b>, vuelta a empezar.</li>
+                            <li class="gl-regla-bb"><img src="/img/briskabird.png" alt="" /><span>Cuidado con <b>BriskaBird</b>: sale 10 veces, sin avisar. Cada vez que la caces, puedes dejar escapar 1 globo más.</span></li>
                             <li>Memoriza las palabras: al acabar se esfuman.</li>
                         </ul>
                     }
@@ -228,6 +228,7 @@
         <div class="gl-hud">
             <div class="gl-fallos" id="gl-fallos" aria-label="Globos escapados"></div>
             <div class="gl-cuenta-pal" id="gl-npal"></div>
+            <button type="button" class="gl-salir gl-mudo" id="gl-mudo" aria-label="Silenciar">🔊</button>
             <button type="button" class="gl-salir" id="gl-salir" aria-label="Salir">×</button>
         </div>
         <div class="gl-bandeja" id="gl-bandeja"></div>

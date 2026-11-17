@@ -33,8 +33,9 @@
   cambia en el texto "Hoy, para empezar, una foto."** Probar en su móvil con Vista previa (pantalla completa,
   sonido, botón Atrás); el reproductor solo se ha visto en Chromium sin interfaz con un WebM de prueba.
 - **Adviento día 6 (globos): Javier lo prueba en el móvil con Vista previa y ajusta la dificultad** (`AJ` en
-  `wwwroot/js/globos.js`: fallos permitidos, velocidades, vida de los corazones). El JS no se ha podido
-  ejecutar aquí; el servidor (vista y comprobación de la frase) sí se ha probado con curl.
+  `wwwroot/js/globos.js`: fallos permitidos, velocidades, vida de los corazones, volumen y tempo de la música).
+  Falta oír el sonido en el móvil (música de ladridos, explosiones, botón de silenciar). El JS solo se ha
+  simulado con node y un DOM de pega; el servidor (vista y comprobación de la frase) sí se ha probado con curl.
 - **Adviento: Javier debe subir las fotos (días 1, 7, 11, 16, 20) y revisar textos desde Admin → Calendario de adviento antes del 1 de diciembre.** Opcional: pregunta/respuesta por foto (si no, la foto se ve directa y la letra se gana al abrir). Pendiente ver capturas en el móvil (diseño validado a ciegas) y confirmar que el teclado se abre bien en criptofrase y crucigrama (input oculto `.teclado-oculto`).
 - **Lista de la compra: "elementos abajo que no se ven"** (captura en modo oscuro,
   2026-11-08). Se aumentó el relleno inferior y se versionó el CSS; Javier debe confirmar tras
@@ -118,3 +119,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Adviento: los globos pasan al día 6 (en lugar de su criptofrase); el día 7 vuelve a ser foto | dade167 |
 | 2026-11-17 | Globos: con muchos en pantalla no se explotaban (globos dibujados una vez y copiados, tope de 12, toque al más cercano y con margen por el retraso) | b93bf6f |
 | 2026-11-17 | Globos: más difícil y largo, BriskaBird (3 apariciones con entradilla, ladridos y +3 de margen si la caza) y palabras que se esfuman al acabar | 7134b5d |
+| 2026-11-17 | Globos: música de ladridos y explosiones (Web Audio) con botón de silenciar; BriskaBird se presenta una vez y sale 10 veces sin pausa (+1 globo); hay que cazar todas las palabras (las perdidas vuelven a salir) | (este commit) |

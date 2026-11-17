@@ -108,22 +108,30 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   mejor MP4 grabado en 1080p y sin HEVC; los .mov se sirven como video/mp4.
 - Juego de los globos (`TipoCasilla.Globos`, día 6 en lugar de su criptofrase; `js/globos.js`, canvas
   a pantalla completa). Se explotan tocándolos y la dificultad sube con cada palabra (intervalo, velocidad,
-  tamaño, zigzag; ~9 globos entre palabra y palabra). Si se escapan 10 globos normales, se pierde y vuelve a empezar.
-  - **Palabras:** cada ~8 globos sale un corazón dorado entre un racimo de globos; dura poco y lleva una
+  tamaño, zigzag; ~7 globos entre palabra y palabra). Si se escapan 12 globos normales, se pierde y vuelve a empezar.
+  - **Hay que cazar todas las palabras de la frase** (Javier, 2026-11-17; las que tenga `datos.frase`, no un número
+    fijo): la que se escapa vuelve a la cola y sale otra vez, durando un 30 % más cada vez. La partida solo acaba
+    al cazar la última (~75-90 s) o al perder.
+  - **Palabras:** cada ~7 globos sale un corazón dorado entre un racimo de globos; dura poco y lleva una
     palabra de `datos.frase` ("Eres el amor de mi vida, no puedo vivir sin ti"). Salen desordenadas: primero la
     mitad fácil y luego la otra.
-  - **Dificultad adaptable:** la vida del corazón se ajusta para que pierda unas 3-4 de 11.
+  - **Dificultad adaptable:** cada palabra cazada acorta un 7 % la vida de los corazones y cada una perdida la
+    alarga un 20 %. La dificultad sube con las palabras cazadas, no con las que han salido.
   - **Escribir la frase:** en el 2º intento las bien colocadas salen en verde y los huecos con sus letras; en el
     3º, además, la inicial; desde ahí regala una palabra por fallo. Puede volver a jugar para cazar más.
   - Sin tildes, mayúsculas ni comas; la comprobación final la hace el servidor, que da la letra "I".
   - Todos los ajustes, en la constante `AJ` de `globos.js`.
-  - **BriskaBird** (`wwwroot/img/briskabird.png`, recortada de la imagen de Javier) sale 3 veces, al 25 %, 50 % y
-    80 % de las palabras. Cada vez hay una entradilla con su imagen y una frase graciosa; los globos se paran y
-    salen atenuados. Hace uno de tres números, en orden al azar: cruza volando de lado a lado (3 pasadas
-    rápidas), aparece 0,5 s en sitios distintos moviéndose (5 veces) o asoma por los bordes (4 veces).
-    Cazarla da 3 globos más de margen, que salen en dorado en el marcador.
-  - Ladridos y gemidos sintetizados con WebAudio, sin ficheros de sonido. El audio arranca con el toque de
-    "Empezar".
+  - **BriskaBird** (`wwwroot/img/briskabird.png`, recortada de la imagen de Javier) sale **10 veces**
+    (Javier, 2026-11-17), repartidas según las palabras cazadas (con 11: al llevar 0, 1, 2, 3, 4, 6, 7, 8, 9 y 10;
+    mínimo 2,5 s entre visitas). Se presenta **una sola vez, al empezar la partida** (3,2 s, un toque la salta);
+    después sale sin aviso y sin parar los globos. Hace uno de tres números: cruza volando de lado a lado (3
+    pasadas rápidas), aparece 0,5 s en sitios distintos moviéndose (5 veces) o asoma por los bordes (4 veces).
+    Cazarla da **1 globo** más de margen, que sale en dorado en el marcador.
+  - **Sonido**, todo sintetizado con Web Audio (sin ficheros ni CDN); arranca con el toque de "Empezar". Música de
+    fondo: el estribillo de «Jingle Bells» ladrado (notas cortas ladridos, largas aullidos, bajo de ladridos
+    graves), en bucle y acelerando con las palabras cazadas; se para al ganar, perder, salir o esconder la página.
+    Explosión en cada globo (con campanitas en el corazón). Botón 🔊/🔇 junto a la × (se recuerda en
+    `localStorage['gl-mudo']`).
   - Al acabar, las palabras cazadas se ven 2,5 s y luego se esfuma una cada segundo; ya no vuelven a salir
     (`estado.ocultas`). Si vuelve a jugar para cazar más, se enseñan de nuevo y se esfuman otra vez.
   - Rendimiento en el móvil: cada globo se dibuja una vez en un canvas aparte y luego solo se copia; como mucho
