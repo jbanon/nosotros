@@ -9,6 +9,6 @@ hilo abierto) y, si Javier ha fijado un criterio nuevo, `.arq/decisiones.md`. In
 cambios en el mismo commit de la tarea. Sé breve: el detalle vive en el código y en el commit.
 
 Reglas rápidas (detalle en `.arq/`): .NET en `~/.dotnet` (exportar PATH y DOTNET_ROOT); PIN y
-secretos nunca en el repo; no hacer push hasta que Javier lo pida; antes de push, fetch + rebase
+secretos nunca en el repo; push siempre al terminar cada tarea (Javier, 2026-11-17); antes, fetch + rebase
 porque el agente del servidor también hace commits; tras cada push, recordarle el comando de
 despliegue `cd /srv/nosotros && git pull && ./deploy/publicar.sh`.

@@ -78,6 +78,6 @@ dotnet ef migrations add Nombre -o Data/Migrations
   `git rebase origin/main`.
 
 ## Git
-- Repo `git@github.com:jbanon/nosotros.git`, rama `main`. Javier dice "Ok. Push" cuando quiere
-  que suba; no subir sin que lo pida. Mensajes de commit en castellano, descriptivos.
+- Repo `git@github.com:jbanon/nosotros.git`, rama `main`. Push siempre al terminar cada tarea, sin
+  esperar a que lo pida (Javier, 2026-11-17: "Sube siempre de terminar"). Mensajes de commit en castellano, descriptivos.
 - Todo commit termina con las líneas `Co-Authored-By` y `Claude-Session` que indica el entorno.
