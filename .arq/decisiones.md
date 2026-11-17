@@ -176,8 +176,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   recogiendo la compra (71 puntitos + 4 cafés en las esquinas que dan 4,5 s de velocidad). Le persiguen **solo dos**
   (Javier, 2026-11-17; la piña se quita): **el ticket kilométrico** (va a por ti) y **la oferta 3x2** (se te adelanta 3
   casillas); salen del almacén central a los 0,6 y 3,5 s, alternan 9 s de persecución y 2 s de dispersión a su esquina y van
-  más lentos por el túnel. Para compensar que son dos van más rápidos (3,7 casillas/s, hasta igualar al carrito, 4,4, al
-  acabar la compra) y dudan menos. 3 vidas; sin vidas, vuelta a empezar (también se pierden las palabras).
+  más lentos por el túnel. Para compensar que son dos van más rápidos (3,7 casillas/s, hasta 4,4 al
+  acabar la compra; el carrito, siempre un 10 % más) y dudan menos. 3 vidas; sin vidas, vuelta a empezar (también se pierden las palabras).
   - **Estética de laberinto arcade clásico** (Javier, 2026-11-17, con captura de referencia): fondo negro, paredes de neón
     azul con doble contorno y esquinas redondeadas, puntitos amarillentos y bolas grandes en las esquinas, personajes de
     colores vivos. Se toma el estilo del género, **no** el laberinto ni los sprites del juego comercial, y **la temática
@@ -197,6 +197,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     esfuman al ritmo de globos y escribir la frase con el mismo sistema. Comprobación en el servidor (`ComprobarComecocos`).
   - Todos los ajustes en la constante `AJ` de `comecocos.js` (velocidades, salidas, vidas, cafés, visitas y saltos de Briska);
     el laberinto, en la constante `MAPA` del mismo fichero.
+  - El carrito va siempre un 10% más rápido que los perseguidores (`AJ.velJug` = 1.1 × su velocidad del momento, que sube con lo comido) (Javier, 2026-11-17).
 - **Juegos diarios** (Javier, 2026-11-17): globos, bloques (Arkanoid) y comecocos se quedan también en la zona Juegos
   (`/Juegos/Partida/{globos|arkanoid|comecocos}`), igual que en su casilla pero con una **frase del día** distinta por
   juego (lista de 24 en `Services/JuegosDiarios.cs`).

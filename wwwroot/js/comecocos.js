@@ -10,9 +10,9 @@
   // ---------- Ajustes (afinar probando en el móvil) ----------
   const AJ = {
     vidas: 3,                // veces que te pueden pillar; sin vidas, vuelta a empezar
-    velJug: 4.4,             // velocidad del carrito, en casillas por segundo
+    velJug: 1.1,             // el carrito va siempre un 10% más rápido que los perseguidores
     velPers: 3.7,            // velocidad de los perseguidores al empezar
-    velPersSube: 0.19,       // fracción que suben los perseguidores al acabar la compra (lineal con lo comido): acaban igualando al carrito
+    velPersSube: 0.19,       // fracción que suben los perseguidores al acabar la compra (lineal con lo comido)
     velTunel: 0.6,           // los perseguidores van más lentos por el túnel (fuera del laberinto)
     salidas: [600, 3500],   // ms tras el primer deslizamiento en que sale cada perseguidor del almacén
     salidasTrasVida: [600, 2400],   // ms tras perder una vida
@@ -190,7 +190,7 @@
       if (pasado > 0 && pasado < AJ.tolGiro && abierta(cx + DX[e.want], cy + DY[e.want], 'jug')) { e.x = cx; e.y = cy; e.dir = e.want; e.want = -1; }
     }
     const antes = e.dir;
-    avanza(e, AJ.velJug * (P.cafe > 0 ? AJ.cafeVel : 1) * dt / 1000, decideJug);
+    avanza(e, AJ.velJug * velPers() * (P.cafe > 0 ? AJ.cafeVel : 1) * dt / 1000, decideJug);
     if (e.dir === 0) e.cara = 1; else if (e.dir === 2) e.cara = -1;
     if (e.dir >= 0 || antes >= 0) e.rueda += dt;
   }
@@ -217,8 +217,10 @@
     }
     return mejor;
   }
+  // Velocidad actual de los perseguidores (sube con lo comido); el carrito va en proporción
+  function velPers() { return AJ.velPers * (1 + AJ.velPersSube * P.comidos / P.total); }
   function pasoPers(dt) {
-    const v = AJ.velPers * (1 + AJ.velPersSube * P.comidos / P.total);
+    const v = velPers();
     for (const e of P.pers) {
       if (e.estado === 'casa') { if (P.t >= e.sale) { e.estado = 'salir'; e.dir = -1; } else continue; }
       const enTunel = e.y === TUNEL && (e.x < 0.5 || e.x > COLS - 1.5);
