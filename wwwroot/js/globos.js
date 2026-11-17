@@ -9,7 +9,8 @@
     fallosMax: 10,           // globos normales que pueden escaparse antes de perder
     globosPorPalabra: 8,     // globos normales entre corazón y corazón (± 2)
     globosFinales: 6,        // globos de propina tras el último corazón
-    perdidasObjetivo: 3.5,   // palabras que debería perder de media: la vida del corazón se adapta a esto
+    perdidasObjetivo: 3.5,
+    maxGlobos: 12,           // tope de globos a la vez en pantalla (si hay más, espera para soltar otro)   // palabras que debería perder de media: la vida del corazón se adapta a esto
     // De la primera palabra (0) a la última (último tramo); se interpola entre tramos.
     // intervalo ms entre globos · vel en alturas de pantalla por segundo · radio en fracción del ancho (máx. 480)
     // zigzag px · vidaPalabra ms que dura un corazón en pantalla
@@ -35,9 +36,10 @@
   const hudFallos = $('gl-fallos'), hudPal = $('gl-npal'), bandeja = $('gl-bandeja'), avisoEl = $('gl-aviso');
   if ($('gl-max')) $('gl-max').textContent = AJ.fallosMax;
   const ctx = cv.getContext('2d');
-  let W = 0, H = 0;
+  let W = 0, H = 0, DPR = 1;
+  const sprites = new Map();   // dibujos ya hechos de cada globo (pintarlos cada fotograma con degradados es lento en el móvil)
   const medir = () => {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    DPR = Math.min(window.devicePixelRatio || 1, 1.5); const dpr = DPR; sprites.clear();
     W = window.innerWidth; H = window.innerHeight;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     cv.style.width = W + 'px'; cv.style.height = H + 'px';
@@ -93,7 +95,7 @@
   }
 
   function explota(g) {
-    const m = 10 + Math.round(Math.random() * 4);
+    const m = P.efectos.length > 60 ? 4 : 8;
     for (let i = 0; i < m; i++) {
       const a = Math.random() * 6.3, v = 80 + Math.random() * 160;
       P.efectos.push({ tipo: 'trozo', x: g.x, y: g.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, col: g.tipo === 'p' ? '#ffd45e' : g.col, t0: P.t, dur: 500 });
@@ -105,10 +107,15 @@
     if (!P || P.fin || P.cuenta > 0) return;
     e.preventDefault();
     const rc = cv.getBoundingClientRect(), x = e.clientX - rc.left, y = e.clientY - rc.top;
-    const dentro = (g, k) => (g.x - x) ** 2 + (g.y - y) ** 2 <= (g.r * k) ** 2;
-    let g = null;
-    for (let i = P.globos.length - 1; i >= 0 && !g; i--) if (P.globos[i].tipo === 'p' && dentro(P.globos[i], 1.3)) g = P.globos[i];
-    for (let i = P.globos.length - 1; i >= 0 && !g; i--) if (P.globos[i].tipo === 'n' && dentro(P.globos[i], 1.15)) g = P.globos[i];
+    // El globo más cercano al dedo. Se mira también dónde estaba hace 150 ms: el toque llega con retraso
+    // y a velocidad alta el globo ya se ha movido.
+    let g = null, mejor = Infinity;
+    for (const b of P.globos) {
+      const atras = b.vy * 0.15, dy = y < b.y ? b.y - y : y > b.y + atras ? y - b.y - atras : 0;
+      const d = Math.hypot(b.x - x, dy) / b.r - (b.tipo === 'p' ? 0.25 : 0);
+      if (d < mejor) { mejor = d; g = b; }
+    }
+    if (mejor > 1.4) g = null;
     if (!g) return;
     P.globos.splice(P.globos.indexOf(g), 1);
     explota(g);
@@ -139,7 +146,7 @@
     if (P.cuenta > 0) { P.cuenta -= dt / 1000; if (P.cuenta <= 0) avisoEl.hidden = true; else avisoEl.innerHTML = `<b class="gl-num">${Math.ceil(P.cuenta - 0.2) || '¡Ya!'}</b>`; }
     else if (!P.fin) {
       P.t += dt;
-      if (P.t >= P.proximo) soltar();
+      if (P.t >= P.proximo) { if (P.globos.length < AJ.maxGlobos) soltar(); else P.proximo = P.t + 120; }
       const s = dt / 1000;
       for (let i = P.globos.length - 1; i >= 0; i--) {
         const g = P.globos[i];
@@ -169,32 +176,47 @@
     const v = parseInt(hex.slice(1), 16), c = [v >> 16, (v >> 8) & 255, v & 255].map(x => Math.round(x * (1 - k)));
     return `rgb(${c[0]},${c[1]},${c[2]})`;
   }
+  function sprite(clave, ancho, alto, pinta) {
+    let s = sprites.get(clave);
+    if (!s) {
+      s = document.createElement('canvas'); s.width = Math.ceil(ancho * DPR); s.height = Math.ceil(alto * DPR);
+      const c = s.getContext('2d'); c.scale(DPR, DPR); pinta(c); sprites.set(clave, s);
+    }
+    return s;
+  }
   function dibujaGlobo(g) {
-    const { x, y, r } = g;
-    ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.moveTo(x, y + r);
-    ctx.bezierCurveTo(x - r * 0.3, y + r * 1.5, x + r * 0.3, y + r * 1.8, x - r * 0.1, y + r * 2.2); ctx.stroke();
-    const gr = ctx.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.1, x, y, r * 1.1);
-    gr.addColorStop(0, aclara(g.col, 0.55)); gr.addColorStop(0.55, g.col); gr.addColorStop(1, oscurece(g.col, 0.3));
-    ctx.fillStyle = gr;
-    ctx.beginPath(); ctx.ellipse(x, y, r * 0.86, r, 0, 0, 6.2832); ctx.fill();
-    ctx.fillStyle = g.col; ctx.beginPath(); ctx.moveTo(x, y + r * 0.95); ctx.lineTo(x - r * 0.13, y + r * 1.13); ctx.lineTo(x + r * 0.13, y + r * 1.13); ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,.45)'; ctx.beginPath(); ctx.ellipse(x - r * 0.33, y - r * 0.38, r * 0.14, r * 0.26, -0.5, 0, 6.2832); ctx.fill();
+    const r = Math.round(g.r / 2) * 2, an = r * 2 + 4, al = r * 3.4;
+    const s = sprite(g.col + r, an, al, c => {
+      const x = an / 2, y = r + 2;
+      c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 1.2;
+      c.beginPath(); c.moveTo(x, y + r);
+      c.bezierCurveTo(x - r * 0.3, y + r * 1.5, x + r * 0.3, y + r * 1.8, x - r * 0.1, y + r * 2.2); c.stroke();
+      const gr = c.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.1, x, y, r * 1.1);
+      gr.addColorStop(0, aclara(g.col, 0.55)); gr.addColorStop(0.55, g.col); gr.addColorStop(1, oscurece(g.col, 0.3));
+      c.fillStyle = gr; c.beginPath(); c.ellipse(x, y, r * 0.86, r, 0, 0, 6.2832); c.fill();
+      c.fillStyle = g.col; c.beginPath(); c.moveTo(x, y + r * 0.95); c.lineTo(x - r * 0.13, y + r * 1.13); c.lineTo(x + r * 0.13, y + r * 1.13); c.fill();
+      c.fillStyle = 'rgba(255,255,255,.45)'; c.beginPath(); c.ellipse(x - r * 0.33, y - r * 0.38, r * 0.14, r * 0.26, -0.5, 0, 6.2832); c.fill();
+    });
+    ctx.drawImage(s, g.x - an / 2, g.y - r - 2, an, al);
   }
   function dibujaCorazon(g) {
+    const R = 60, lado = R * 3.2;   // se dibuja una vez grande y se escala
+    const s = sprite('corazon', lado, lado, c => {
+      c.translate(lado / 2, lado / 2);
+      c.shadowColor = 'rgba(255,210,90,.9)'; c.shadowBlur = 30;
+      const gr = c.createLinearGradient(0, -R, 0, R);
+      gr.addColorStop(0, '#fff2b0'); gr.addColorStop(0.45, '#ffd04a'); gr.addColorStop(1, '#d99a12');
+      c.fillStyle = gr; c.beginPath(); c.moveTo(0, R * 0.95);
+      c.bezierCurveTo(-R * 1.25, R * 0.1, -R * 1.0, -R * 1.05, 0, -R * 0.45);
+      c.bezierCurveTo(R * 1.0, -R * 1.05, R * 1.25, R * 0.1, 0, R * 0.95); c.fill();
+      c.shadowBlur = 0; c.fillStyle = 'rgba(255,255,255,.6)';
+      c.beginPath(); c.ellipse(-R * 0.45, -R * 0.4, R * 0.12, R * 0.22, -0.6, 0, 6.2832); c.fill();
+    });
     const edad = P.t - g.nace, entra = Math.min(1, edad / 160), queda = g.vida - edad;
-    const s = g.r * (0.6 + 0.4 * entra) * (1 + 0.05 * Math.sin(edad / 70));
-    ctx.save(); ctx.globalAlpha = Math.max(0, Math.min(1, queda / 250)); ctx.translate(g.x, g.y);
-    ctx.shadowColor = 'rgba(255,210,90,.9)'; ctx.shadowBlur = 18;
-    const gr = ctx.createLinearGradient(0, -s, 0, s);
-    gr.addColorStop(0, '#fff2b0'); gr.addColorStop(0.45, '#ffd04a'); gr.addColorStop(1, '#d99a12');
-    ctx.fillStyle = gr;
-    ctx.beginPath(); ctx.moveTo(0, s * 0.95);
-    ctx.bezierCurveTo(-s * 1.25, s * 0.1, -s * 1.0, -s * 1.05, 0, -s * 0.45);
-    ctx.bezierCurveTo(s * 1.0, -s * 1.05, s * 1.25, s * 0.1, 0, s * 0.95); ctx.fill();
-    ctx.shadowBlur = 0; ctx.fillStyle = 'rgba(255,255,255,.6)';
-    ctx.beginPath(); ctx.ellipse(-s * 0.45, -s * 0.4, s * 0.12, s * 0.22, -0.6, 0, 6.2832); ctx.fill();
-    ctx.restore();
+    const k = g.r * (0.6 + 0.4 * entra) * (1 + 0.05 * Math.sin(edad / 70)) / R, l = lado * k;
+    ctx.globalAlpha = Math.max(0, Math.min(1, queda / 250));
+    ctx.drawImage(s, g.x - l / 2, g.y - l / 2, l, l);
+    ctx.globalAlpha = 1;
   }
   function dibujar() {
     ctx.clearRect(0, 0, W, H);
@@ -246,7 +268,7 @@
       [[D.resuelta ? 'Salir' : 'Escribir la frase', () => { cerrar(); alAcabar && alAcabar(cazadas); }, 'primario']]);
   }
   $('gl-salir').addEventListener('click', cerrar);
-  cv.addEventListener('pointerdown', toque);
+  cv.addEventListener('pointerdown', toque, { passive: false });
   window.addEventListener('resize', () => { if (!pantalla.hidden) medir(); });
 
   // ---------- Escribir la frase (intentos con pistas) ----------

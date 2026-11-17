@@ -116,3 +116,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-16 | Arte: el índice del capítulo se tragaba el texto si un `## ` no llevaba línea en blanco detrás (ahora el título ocupa solo su línea) | 1a0f705 |
 | 2026-11-17 | Adviento: juego de los globos en el día 7 (corazones dorados con las palabras de la frase, dificultad adaptable, intentos con pistas) | 526d5ac |
 | 2026-11-17 | Adviento: los globos pasan al día 6 (en lugar de su criptofrase); el día 7 vuelve a ser foto | dade167 |
+| 2026-11-17 | Globos: con muchos en pantalla no se explotaban (globos dibujados una vez y copiados, tope de 12, toque al más cercano y con margen por el retraso) | (este) |

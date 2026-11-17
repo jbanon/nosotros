@@ -117,6 +117,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     3º, además, la inicial; desde ahí regala una palabra por fallo. Puede volver a jugar para cazar más.
   - Sin tildes, mayúsculas ni comas; la comprobación final la hace el servidor, que da la letra "I".
   - Todos los ajustes, en la constante `AJ` de `globos.js`.
+  - Rendimiento en el móvil: cada globo se dibuja una vez en un canvas aparte y luego solo se copia; como mucho
+    12 globos a la vez. El toque elige el globo más cercano y cuenta también dónde estaba hace 150 ms.
 
 ## Base de datos
 - PostgreSQL desde 2026-11-13 (Javier quita SQL Server del servidor y quiere Postgres; la app venía de SQLite).
