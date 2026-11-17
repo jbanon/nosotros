@@ -117,4 +117,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Adviento: juego de los globos en el día 7 (corazones dorados con las palabras de la frase, dificultad adaptable, intentos con pistas) | 526d5ac |
 | 2026-11-17 | Adviento: los globos pasan al día 6 (en lugar de su criptofrase); el día 7 vuelve a ser foto | dade167 |
 | 2026-11-17 | Globos: con muchos en pantalla no se explotaban (globos dibujados una vez y copiados, tope de 12, toque al más cercano y con margen por el retraso) | b93bf6f |
-| 2026-11-17 | Globos: más difícil y largo, BriskaBird (3 apariciones con entradilla, ladridos y +3 de margen si la caza) y palabras que se esfuman al acabar | (este) |
+| 2026-11-17 | Globos: más difícil y largo, BriskaBird (3 apariciones con entradilla, ladridos y +3 de margen si la caza) y palabras que se esfuman al acabar | 7134b5d |
