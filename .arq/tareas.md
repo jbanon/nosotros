@@ -42,6 +42,17 @@
 ## Ideas apuntadas (sin empezar, 2026-11-10)
 Javier las dejó apuntadas para hacer más adelante; también pueden entrar como casillas del adviento.
 - **Arkanoid sencillo**: pala, pelota y ladrillos, pensado para el móvil.
+- **Globos (adviento)** (Javier, 2026-11-17). Juego de velocidad en el móvil, solo JS:
+  - **Globos:** suben y se explotan tocándolos; la dificultad sube (más, más rápidos, más pequeños, zigzag).
+  - **Palabras:** algunos globos llevan una palabra de la frase "eres el amor de mi vida, no puedo vivir sin ti".
+    Duran poco en pantalla, se mezclan con otros globos y salen desordenadas. Si se escapa, la palabra se pierde.
+  - **Perder:** se acaba la partida si se escapan N globos normales (reintento libre).
+  - **Al terminar:** escribe la frase. El objetivo es que acierte a la 2ª o 3ª: en el 2º intento las palabras
+    bien colocadas salen en verde y los huecos con sus letras; en el 3º, además, la inicial. Sin contar
+    tildes, mayúsculas ni comas.
+  - **Dificultad:** adaptable, perdiendo unas 3-4 palabras de 11; las fáciles al principio. Con constantes
+    para que Javier la ajuste probando.
+  - **Sin decidir:** qué casilla del adviento sustituye (las 24 están ocupadas).
 - **La cocina de Julia** (Javier, 2026-11-15). Sección con unos 40 clásicos franceses propuestos y buscador por
   nombre o ingrediente principal.
   - **Generar:** al elegir una, el agente (reutilizando `TipoTareaAgente.Receta`) la escribe AL ESTILO de Julia
