@@ -119,4 +119,5 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Adviento: los globos pasan al día 6 (en lugar de su criptofrase); el día 7 vuelve a ser foto | dade167 |
 | 2026-11-17 | Globos: con muchos en pantalla no se explotaban (globos dibujados una vez y copiados, tope de 12, toque al más cercano y con margen por el retraso) | b93bf6f |
 | 2026-11-17 | Globos: más difícil y largo, BriskaBird (3 apariciones con entradilla, ladridos y +3 de margen si la caza) y palabras que se esfuman al acabar | 7134b5d |
-| 2026-11-17 | Globos: música de ladridos y explosiones (Web Audio) con botón de silenciar; BriskaBird se presenta una vez y sale 10 veces sin pausa (+1 globo); hay que cazar todas las palabras (las perdidas vuelven a salir) | (este commit) |
+| 2026-11-17 | Globos: música de ladridos y explosiones (Web Audio) con botón de silenciar; BriskaBird se presenta una vez y sale 10 veces sin pausa (+1 globo); hay que cazar todas las palabras (las perdidas vuelven a salir) | 1386c4c |
+| 2026-11-17 | Globos: +15 % de dificultad, las palabras cazadas ya no se apuntan abajo durante la partida y al final se esfuman antes (1,25 s) y un 10 % más rápido | (este commit) |

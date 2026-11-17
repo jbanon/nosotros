@@ -6,6 +6,7 @@
 
   // ---------- Ajustes (afinar probando en el móvil) ----------
   const AJ = {
+    dificultad: 1.15,        // multiplicador general sobre los niveles: globos más rápidos y seguidos, corazones más breves
     fallosMax: 12,           // globos normales que pueden escaparse antes de perder
     premioBriska: 1,         // globos de margen extra por cazar a BriskaBird
     briskaVeces: 10,         // apariciones de BriskaBird, repartidas según las palabras ya cazadas
@@ -24,6 +25,8 @@
       { intervalo: 410, vel: 0.44, radio: 0.075, zigzag: 34, vidaPalabra: 1050 },
     ],
     volMusica: 0.22,         // volumen de la musiquita de ladridos (0-1)
+    esfumaEspera: 1250,      // ms que se ven todas las palabras al acabar antes de empezar a esfumarse
+    esfumaCada: 910,         // ms entre palabra y palabra que se esfuma
     pulso: [0.3, 0.23],      // segundos por negra de la música: al empezar y con todas las palabras cazadas
   };
   const bbImg = new Image(); bbImg.src = '/img/briskabird.png';
@@ -175,7 +178,9 @@
   function nivel() {
     const L = AJ.niveles, pos = Math.min(1, P.cazadas.length / Math.max(1, n - 1)) * (L.length - 1);
     const i = Math.min(L.length - 2, Math.floor(pos)), f = pos - i, a = L[i], b = L[i + 1];
-    const r = {}; for (const k in a) r[k] = lerp(a[k], b[k], f); return r;
+    const r = {}; for (const k in a) r[k] = lerp(a[k], b[k], f);
+    r.vel *= AJ.dificultad; r.intervalo /= AJ.dificultad; r.vidaPalabra /= AJ.dificultad;
+    return r;
   }
 
   function nueva() {
@@ -251,7 +256,7 @@
     if (g.tipo === 'p') {
       P.cazadas.push(g.idx); adaptar(true);
       P.efectos.push({ tipo: 'palabra', x: g.x, y: g.y, texto: visibles[g.idx], t0: P.real, dur: 1300 });
-      const ch = document.createElement('span'); ch.className = 'gl-chip'; ch.textContent = visibles[g.idx]; bandeja.appendChild(ch);
+      // La palabra solo se ve un momento al explotar el corazón: no se apunta en pantalla hasta el final
       pintaHud();
     }
   }
@@ -514,7 +519,7 @@
     $('gl-otra').addEventListener('click', () => jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
     if (ver && chips) { E.ocultas = true; guardarE(); esfumar(); }
   }
-  // Tras 2,5 s, una palabra menos cada segundo
+  // Tras la espera, se va esfumando una palabra cada poco (AJ.esfumaEspera y AJ.esfumaCada)
   let esfumando = 0;
   function esfumar() {
     clearTimeout(esfumando);
@@ -522,9 +527,9 @@
       const caja = $('gl-chips'), vivos = caja ? [...caja.querySelectorAll('.gl-chip:not(.esfuma)')] : [];
       if (!vivos.length) { if (caja) caja.innerHTML = `<span class="suave2">Tus ${E.palabras.length} palabras se esfumaron. Tira de memoria 🐾</span>`; return; }
       const c = vivos[Math.floor(Math.random() * vivos.length)]; c.classList.add('esfuma');
-      esfumando = setTimeout(quita, 1000);
+      esfumando = setTimeout(quita, AJ.esfumaCada);
     };
-    esfumando = setTimeout(quita, 2500);
+    esfumando = setTimeout(quita, AJ.esfumaEspera);
   }
   function ayuda() {
     if (E.intentos === 0) return 'Ordénalas y completa lo que falte. Sin preocuparte de tildes ni comas.';

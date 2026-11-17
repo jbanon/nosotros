@@ -115,6 +115,11 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   - **Palabras:** cada ~7 globos sale un corazón dorado entre un racimo de globos; dura poco y lleva una
     palabra de `datos.frase` ("Eres el amor de mi vida, no puedo vivir sin ti"). Salen desordenadas: primero la
     mitad fácil y luego la otra.
+  - **+15 % de dificultad** (Javier, 2026-11-17, tras probarlo): `AJ.dificultad = 1.15` multiplica la velocidad y
+    divide el intervalo entre globos y la vida del corazón en todos los niveles. Tamaño, zigzag y los 12 fallos
+    de margen no cambian.
+  - **Las palabras cazadas no se apuntan abajo durante la partida** (Javier, 2026-11-17): solo se ve la palabra
+    un instante al explotar el corazón y el contador 💛; la lista sale al final, en la fase de escribir.
   - **Dificultad adaptable:** cada palabra cazada acorta un 7 % la vida de los corazones y cada una perdida la
     alarga un 20 %. La dificultad sube con las palabras cazadas, no con las que han salido.
   - **Escribir la frase:** en el 2º intento las bien colocadas salen en verde y los huecos con sus letras; en el
@@ -132,7 +137,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     graves), en bucle y acelerando con las palabras cazadas; se para al ganar, perder, salir o esconder la página.
     Explosión en cada globo (con campanitas en el corazón). Botón 🔊/🔇 junto a la × (se recuerda en
     `localStorage['gl-mudo']`).
-  - Al acabar, las palabras cazadas se ven 2,5 s y luego se esfuma una cada segundo; ya no vuelven a salir
+  - Al acabar, las palabras cazadas se ven 1,25 s y luego se esfuma una cada 0,91 s (antes 2,5 s y 1 s; Javier,
+    2026-11-17: la mitad de espera y un 10 % más rápido); ya no vuelven a salir
     (`estado.ocultas`). Si vuelve a jugar para cazar más, se enseñan de nuevo y se esfuman otra vez.
   - Rendimiento en el móvil: cada globo se dibuja una vez en un canvas aparte y luego solo se copia; como mucho
     12 globos a la vez. El toque elige el globo más cercano y cuenta también dónde estaba hace 150 ms.

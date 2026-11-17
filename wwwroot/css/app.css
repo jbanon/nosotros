@@ -1061,6 +1061,6 @@ body.gl-jugando { overflow: hidden; }
 .gl-bb-premio { font-weight: 800; color: #ffd45e; margin: 8px 0 0; }
 .gl-fallos i.extra { background: #ffd45e; }
 .gl-fallos i.extra.fuera { background: rgba(255,255,255,.18); }
-.gl-chip.esfuma { animation: gl-esfuma .5s forwards; }
+.gl-chip.esfuma { animation: gl-esfuma .45s forwards; }
 @keyframes gl-bb-entra { from { transform: scale(.2) rotate(-25deg); opacity: 0; } }
 @keyframes gl-esfuma { to { opacity: 0; transform: translateY(-14px) scale(.6); filter: blur(4px); } }
