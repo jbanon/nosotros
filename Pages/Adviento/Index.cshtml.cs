@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Love.Pages.Adviento;
 
-public class IndexModel(AdvientoService adv, ConfigService config) : PageModel
+public class IndexModel(AdvientoService adv, ConfigService config, BriskaImagenes briska) : PageModel
 {
     public List<AdvientoCasilla> Casillas { get; set; } = new();
     public DateOnly Hoy { get; set; }
@@ -16,6 +16,7 @@ public class IndexModel(AdvientoService adv, ConfigService config) : PageModel
     public int Total { get; set; }
     public int DiasParaEmpezar { get; set; }
     public string Nombre { get; set; } = "";
+    public string BriskaJson => briska.Json();
 
     public async Task<IActionResult> OnGet(DateOnly? fecha)
     {
@@ -38,6 +39,6 @@ public class IndexModel(AdvientoService adv, ConfigService config) : PageModel
     public static string Icono(AdvientoCasilla c) => c.Tipo switch
     {
         TipoCasilla.Foto => c.VideoPath != null ? "🎬" : "📷", TipoCasilla.Criptofrase => "🔡", TipoCasilla.Murdoku => "🔍",
-        TipoCasilla.Crucigrama => "✏️", TipoCasilla.Vale => "🎟️", TipoCasilla.Globos => "🎈", _ => "💌"
+        TipoCasilla.Crucigrama => "✏️", TipoCasilla.Vale => "🎟️", TipoCasilla.Globos => "🎈", TipoCasilla.Arkanoid => "🧱", _ => "💌"
     };
 }

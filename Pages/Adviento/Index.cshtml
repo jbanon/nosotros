@@ -50,3 +50,7 @@
         <div class="preview-aviso">Vista previa del @Model.Hoy.ToString("d/M/yyyy") · <a href="/Admin/Adviento">gestionar</a></div>
     }
 </div>
+<partial name="_Briska" model="Model.BriskaJson" />
+@section Scripts {
+    <script src="/js/briska.js" asp-append-version="true"></script>
+}
