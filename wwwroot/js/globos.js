@@ -113,8 +113,7 @@
   }
 
   function nueva() {
-    const mitad = Math.ceil(n / 2);
-    const orden = baraja([...Array(mitad).keys()]).concat(baraja([...Array(n - mitad).keys()].map(i => i + mitad)));
+    const orden = [...Array(n).keys()];   // las palabras salen en el orden de la frase (al escribir se ven desordenadas)
     const tipos = baraja(['vuelo', 'salto', 'asoma']);
     // BriskaBird: la aparición k sale cuando ya hay cazadas ⌊(k + ½)·n / veces⌋ palabras (con 11: 0, 1, 2, 3, 4, 6, 7, 8, 9 y 10)
     const bbPend = Array.from({ length: AJ.briskaVeces }, (_, k) => ({ en: Math.floor((k + 0.5) * n / AJ.briskaVeces), tipo: tipos[k % 3], k }));
@@ -225,7 +224,7 @@
           if (P.fallos >= P.maxF) { perder(); break; }
         } else if (g.tipo === 'p' && (P.t - g.nace > g.vida || g.y + g.r < 0)) {
           P.globos.splice(i, 1); P.perdidas++; adaptar(false);
-          P.veces[g.idx] = (P.veces[g.idx] || 0) + 1; P.cola.push(g.idx);   // volverá a salir
+          P.veces[g.idx] = (P.veces[g.idx] || 0) + 1; P.cola.push(g.idx); P.cola.sort((a, b) => a - b);   // volverá a salir
           P.efectos.push({ tipo: 'puf', x: g.x, y: g.y, r: g.r, t0: P.real, dur: 450 });
         }
       }

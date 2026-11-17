@@ -140,6 +140,7 @@
         <p class="gl-ayuda">${ayuda()}</p>
         <textarea id="gl-frase" rows="2" autocomplete="off" autocapitalize="sentences" placeholder="Escribe la frase completa…"></textarea>
         <button class="btn adv-btn primario ancho" id="gl-comprobar" type="button">Comprobar</button>
+        ${E.intentos < 3 ? `<button class="btn adv-btn ancho gl-btn-comodin" type="button" disabled>🔒 ${ayudaDe() === 'comodin' ? '🃏 Comodín' : '🎯 Pista: caza palabras'} · se abre tras ${3 - E.intentos === 1 ? '1 intento más' : (3 - E.intentos) + ' intentos'}</button>` : ''}
         ${E.intentos >= 3 && ayudaDe() === 'comodin' && !E.comodin ? '<button class="btn adv-btn ancho gl-btn-comodin" id="gl-comodin" type="button">🃏 Comodín: ver las palabras en orden</button>' : ''}
         ${E.intentos >= 3 && ayudaDe() === 'caza' && E.sabidas.length < n ? `<button class="btn adv-btn ancho gl-btn-comodin" id="gl-caza" type="button">🎯 Pista: caza palabras (${Math.round(rondaMs() / 1000)} s)</button>` : ''}
         ${D.diario ? '' : '<button class="btn adv-btn fantasma pequeno ancho" id="gl-otra" type="button">Volver a jugar para verlas otra vez</button>'}`;

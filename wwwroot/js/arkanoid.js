@@ -77,8 +77,7 @@
   // ---------- Partida ----------
   let P = null, raf = 0, ultimo = 0;
   function nueva() {
-    const mitad = Math.ceil(n / 2);
-    const orden = baraja([...Array(mitad).keys()]).concat(baraja([...Array(n - mitad).keys()].map(i => i + mitad)));
+    const orden = [...Array(n).keys()];   // las palabras salen en el orden de la frase (al escribir se ven desordenadas)
     const bloques = [];
     for (let f = 0; f < AJ.filas; f++) for (let c = 0; c < AJ.cols; c++) bloques.push({ f, c, col: COLORES[f % COLORES.length] });
     // Visita k de BriskaBird: cuando se han tirado ⌊(k + ½)·bloques / visitas⌋ bloques (o pasado briskaEspera desde la anterior)
@@ -193,7 +192,7 @@
     const B = P.bb; B.t += dt;
     const p = posBriska(B, B.t);
     if (!p) {   // se va sin que le hayan dado: la palabra vuelve a la cola para otra visita
-      P.bb = null; P.bbFin = P.t; P.perdidas++; P.cola.push(B.idx); S.gemido(0, false); return;
+      P.bb = null; P.bbFin = P.t; P.perdidas++; P.cola.push(B.idx); P.cola.sort((a, b) => a - b); S.gemido(0, false); return;
     }
     if (p.seg !== B.sonado) { B.sonado = p.seg; S.guau(0, p.seg ? 1.3 : 1.15); }
     if (B.cuando.length && B.t >= B.cuando[0] && p.x > tamBB() * 0.3 && p.x < W - tamBB() * 0.3) { B.cuando.shift(); caga(p); }

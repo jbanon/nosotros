@@ -349,6 +349,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   se ve lo cerca que va el otro. Consulta cada ~1 s (sin websockets: nginx no los pasa). Las rondas
   terminadas se guardan en `DueloRondas` (marcador histórico); si se reinicia el servidor se pierde la sala.
 
+- **Orden de las palabras en los juegos con frase** (Javier, 2026-11-17): durante la partida salen en el orden de la frase
+  (la que se escapa vuelve a la cola en su sitio y sale la siguiente vez); al escribir se muestran desordenadas.
+  El botón de la ayuda se ve desde el principio, bloqueado («se abre tras N intentos»), para que se sepa que existe.
+
 ## Français (píldoras de francés)
 - Javier, 2026-11-17. Sección propia `/Frances` (enlace "🥐 Français" en Para ti y aviso de la píldora nueva de la última semana).
 - **Lo primero es que sean divertidas**: ironía amable, finales con giro, algún guiño a la casa (niños, Briska, la compra); nada escolar.

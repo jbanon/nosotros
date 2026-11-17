@@ -136,8 +136,7 @@
     ];
   }
   function nueva() {
-    const mitad = Math.ceil(n / 2);
-    const orden = baraja([...Array(mitad).keys()]).concat(baraja([...Array(n - mitad).keys()].map(i => i + mitad)));
+    const orden = [...Array(n).keys()];   // las palabras salen en el orden de la frase (al escribir se ven desordenadas)
     const cosas = new Map();
     let ini = { x: 5, y: ROWS - 2 };
     for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
@@ -283,7 +282,7 @@
       if (p >= 1) { B.fase = 'agachada'; B.t = 0; }
     } else if (B.fase === 'sale') {
       const p = Math.min(1, B.t / 650); B.h = p * p * 7;
-      if (p >= 1) { P.bb = null; P.bbFin = P.t; P.perdidas++; P.cola.push(B.idx); return; }
+      if (p >= 1) { P.bb = null; P.bbFin = P.t; P.perdidas++; P.cola.push(B.idx); P.cola.sort((a, b) => a - b); return; }
     }
     if (B.fase !== 'sale' && B.vida >= AJ.briskaDur) {
       B.fase = 'sale'; B.t = 0;
