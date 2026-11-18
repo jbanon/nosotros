@@ -135,4 +135,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-18 | Juegos con frase: se quita el comodín de enseñar las palabras; solo queda la pista de cazarlas | cb06f05 |
 | 2026-11-18 | Teaser del adviento: vídeo 1 s con «Something's cooking…», cada 3 días hasta el 1 de diciembre | 2721d76 |
 | 2026-11-18 | Teaser del adviento: dura 2 s en vez de 1 | 4c321bc |
-| 2026-11-18 | Teaser del adviento: cada 2 días en vez de 3 | (este) |
+| 2026-11-18 | Teaser del adviento: cada 2 días en vez de 3 | 6ea41bd |
