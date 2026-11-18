@@ -380,3 +380,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   en la lista sale desmarcado; se ignoran cabeceras y botones copiados y todo lo que va tras «Completados».
 - Se añade a la compra de la semana como productos extra (Manual).
 
+
+## Teaser del adviento
+- Javier, 2026-11-18: hasta el 1 de diciembre, a Raquel le sale un gif durante 1 s al entrar en la app, como
+  mucho una vez cada 3 días (localStorage), con «Something's cooking…» debajo.
+- Fichero `wwwroot/img/teaser.gif` (en el repo); sin el fichero no sale nada. Javi lo previsualiza con `?teaser=1`.

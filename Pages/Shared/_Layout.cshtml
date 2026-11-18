@@ -1,10 +1,17 @@
 @using System.Security.Claims
+@inject IWebHostEnvironment WebEnv
 @{
     var esAdmin = User.EsAdmin();
     var path = Context.Request.Path.Value ?? "";
     string act(string p) => path.StartsWith(p, StringComparison.OrdinalIgnoreCase) ? "activo" : "";
     var tema = ViewData["Tema"] as string;
     var sinNav = ViewData["SinNav"] as bool? ?? false;
+    // Teaser del adviento: hasta el 1 de diciembre, 1 s cada 3 días, solo a Raquel (Javi lo ve con ?teaser=1)
+    var hoyT = Love.Services.Reloj.Hoy;
+    var teaser = User.Identity?.IsAuthenticated == true && !sinNav
+        && hoyT < new DateOnly(hoyT.Year, 12, 1) && hoyT.Month >= 11
+        && System.IO.File.Exists(System.IO.Path.Combine(WebEnv.WebRootPath, "img", "teaser.gif"))
+        && (!esAdmin || Context.Request.Query.ContainsKey("teaser"));
 }
 <!DOCTYPE html>
 <html lang="es"@Html.Raw(tema != null ? $" data-tema=\"{tema}\"" : "")>
@@ -45,6 +52,28 @@
                 <a href="/Admin" class="@act("/Admin")"><span class="ico">⚙</span><span>Admin</span></a>
             }
         </nav>
+    }
+    @if (teaser)
+    {
+        <div id="teaser" class="teaser" hidden data-forzar="@(esAdmin ? "1" : "")">
+            <img alt="" />
+            <p>Something's cooking…</p>
+        </div>
+        <script>
+            (() => {
+                const t = document.getElementById('teaser'), k = 'teaser-visto', cada = 3 * 864e5;
+                let ultimo = 0;
+                try { ultimo = +localStorage.getItem(k) || 0; } catch { }
+                if (!t.dataset.forzar && Date.now() - ultimo < cada) return;
+                const img = t.querySelector('img');
+                img.onload = () => {
+                    try { localStorage.setItem(k, Date.now()); } catch { }
+                    t.hidden = false;
+                    setTimeout(() => { t.classList.add('fuera'); setTimeout(() => t.remove(), 400); }, 1000);
+                };
+                img.src = '/img/teaser.gif?v=@DateTime.UtcNow.ToString("yyyyMMdd")';
+            })();
+        </script>
     }
     <script src="/js/app.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
