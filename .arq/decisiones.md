@@ -383,5 +383,5 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 
 ## Teaser del adviento
 - Javier, 2026-11-18: hasta el 1 de diciembre, a Raquel le sale un vídeo durante 2 s (Javier subió de 1 a 2 s) al entrar en la app, como
-  mucho una vez cada 3 días (localStorage), con «Something's cooking…» debajo.
+  mucho una vez cada 2 días (localStorage; antes 3), con «Something's cooking…» debajo.
 - Fichero `wwwroot/img/teaser.mp4` (Javier pasó un vídeo, no un gif), en el repo; sin el fichero no sale nada. Javi lo previsualiza con `?teaser=1`.
