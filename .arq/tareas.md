@@ -130,4 +130,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Juegos con frase: palabras en orden durante la partida (desordenadas al escribir) y botón de ayuda visible y bloqueado hasta el 3.er intento | 685b655 |
 | 2026-11-17 | Criptofrase: cada casilla se rellena a mano, sin autocompletar las del mismo número | 5e4e233 |
 | 2026-11-17 | Adviento día 24: el vale es por una serie (la navideña noruega), no por una película | 5bd282f |
-| 2026-11-18 | Juego Línea del tiempo del arte: 5 obras a ordenar en el tiempo + autor, una partida por semana, presentado por BriskaBird pintora | (este) |
+| 2026-11-18 | Juego Línea del tiempo del arte: 5 obras a ordenar en el tiempo + autor, una partida por semana, presentado por BriskaBird pintora | bcbf2d1 |
