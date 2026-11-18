@@ -1117,9 +1117,8 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .jg-diario .jg-vista { font-size: 2.4rem; display: grid; place-items: center; }
 .jg-diario.bloqueado { opacity: .6; pointer-events: none; }
 .jg-diario.jugada { opacity: .8; }
-/* Comodín de la fase de escribir: palabras en orden a pantalla completa */
+/* Botón de pista de la fase de escribir */
 .gl-btn-comodin { margin-top: 8px; background: linear-gradient(#ffe48a, #f0b72f); color: #4a3200; border: 0; font-weight: 800; }
-  background: radial-gradient(120% 80% at 50% 30%, #3b2a6b, #120b26); color: #fff; animation: gl-entra .3s ease-out; }
 /* Pista "caza palabras" */
 .gl-caza { position: fixed; inset: 0; z-index: 1002; display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top) + 12px) 14px calc(env(safe-area-inset-bottom) + 14px);
   background: radial-gradient(120% 80% at 50% 30%, #1d4f5f, #0b1d26); color: #fff; animation: gl-entra .3s ease-out; touch-action: none; user-select: none; -webkit-user-select: none; }
