@@ -1,0 +1,44 @@
+@page
+@model Love.Pages.Menu.ImportarModel
+@{ ViewData["Title"] = "Importar lista"; }
+<div class="cab"><a class="volver" href="/Menu/Lista">‹</a><h1>Importar lista</h1></div>
+@if (!Model.Lineas.Any())
+{
+    <div class="tarjeta">
+        <h2 class="mb">Desde Alexa 🗣️</h2>
+        <ol class="peq" style="margin:0 0 10px;padding-left:20px;line-height:1.5">
+            <li>Abre la lista de la compra en la app de Alexa (o en amazon.es → Listas de Alexa).</li>
+            <li>Mantén pulsado, <b>selecciona todo y copia</b>. O usa «Compartir» y elige <b>Nosotros</b>.</li>
+            <li>Pégala aquí. Lo de «Completados» se ignora.</li>
+        </ol>
+        <form method="post" asp-page-handler="Revisar">
+            <textarea name="texto" rows="9" class="mb" placeholder="Leche&#10;2 docenas de huevos&#10;Pan de molde&#10;…" style="width:100%;box-sizing:border-box" autofocus>@Model.Texto</textarea>
+            <button class="btn primario ancho">Revisar</button>
+        </form>
+        @if (Model.Texto != "") { <p class="error">No he encontrado productos en el texto.</p> }
+    </div>
+}
+else
+{
+    <p class="suave peq" style="margin-top:0">Se añaden a la compra de esta semana. Lo que ya estaba en la lista va desmarcado. Puedes corregir nombre, cantidad y zona.</p>
+    <form method="post" asp-page-handler="Anadir">
+        <input type="hidden" name="n" value="@Model.Lineas.Count" />
+        @for (int i = 0; i < Model.Lineas.Count; i++)
+        {
+            var l = Model.Lineas[i];
+            <div class="linea-compra imp-linea @(l.YaEsta ? "comprado" : "")">
+                <input type="checkbox" name="s@(i)" checked="@(!l.YaEsta)" class="imp-sel" aria-label="Añadir" />
+                <div class="crece">
+                    <input type="text" name="n@(i)" value="@l.Nombre" class="imp-nombre" autocomplete="off" />
+                    <div class="fila" style="gap:6px;margin-top:4px">
+                        <input type="text" name="c@(i)" value="@l.Cantidad" placeholder="cant." style="width:80px" autocomplete="off" />
+                        <select name="z@(i)" class="crece" aria-label="Zona">@foreach (var z in ZonaInfo.Todas) { <option value="@z" selected="@(z == l.Zona)">@ZonaInfo.Emoji(z) @ZonaInfo.Nombre(z)</option> }</select>
+                    </div>
+                    @if (l.YaEsta) { <div class="para">ya está en la lista</div> }
+                </div>
+            </div>
+        }
+        <button class="btn primario ancho mt">Añadir a la compra</button>
+    </form>
+    <p class="centrado peq mt"><a href="/Menu/Importar">Pegar otra lista</a></p>
+}

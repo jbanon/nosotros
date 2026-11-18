@@ -1203,3 +1203,9 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .la-item.nueva { animation: la-pop .5s ease-out; }
 .la-hueco button { width: 100%; padding: 10px; border: 2px dashed var(--acento); border-radius: 12px; background: var(--acento-claro); color: var(--acento-texto); font-weight: 800; cursor: pointer; font: inherit; font-weight: 800; }
 .la-nota { text-align: center; font-weight: 800; font-size: 1.2rem; margin: 6px 0; } .la-nota span { font-size: 3rem; color: var(--acento-texto); }
+
+/* ---------- Importar lista (Alexa) ---------- */
+.imp-linea { align-items: flex-start; }
+.imp-sel { width: 24px; height: 24px; accent-color: var(--ok); margin-top: 8px; flex: none; }
+.imp-nombre { width: 100%; box-sizing: border-box; font-weight: 700; }
+

@@ -8,6 +8,7 @@
     var pendientes = incluidos.Count(i => !i.Comprado);
 }
 <partial name="_PestanasCompra" model="@("compra")" />
+@if (TempData["Importados"] is int imp) { <p class="aviso mb">📋 Añadido@(imp == 1 ? "" : "s") @imp producto@(imp == 1 ? "" : "s") de la lista importada.</p> }
 <div class="cab">
     <h1>La compra</h1>
     <button type="button" class="btn pequeno" data-share="texto-lista">Compartir ⤴</button>
@@ -86,6 +87,7 @@
         </div>
         <p class="suave peq" id="a-pista" style="margin:8px 0 0">La zona se pone sola al escribir; puedes cambiarla.</p>
     </form>
+    <p class="peq" style="margin:10px 0 0"><a href="/Menu/Importar">📋 Importar una lista (la de Alexa u otra)</a></p>
 </div>
 @{
     var enLista = incluidos.Where(i => !i.Comprado).Select(i => Love.Services.RecurrenteService.Clave(i.Nombre)).Distinct();

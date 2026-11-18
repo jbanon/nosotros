@@ -376,3 +376,10 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   Juego = "linea" y Fecha = lunes). Javi juega sin límite. Enlace en Juegos y en Arte.
 - Presenta **BriskaBird pintora** (`img/briska-pintora.png`: BriskaBird con boina granate y pincel) con frases graciosas y ladridos.
 
+## Importar la lista de Alexa
+- Javier, 2026-11-18. Amazon no deja a apps externas leer las listas de Alexa (desde 2024), así que se **pega** el texto
+  (copiado de la app de Alexa o de amazon.es) en `/Menu/Importar`, o se **comparte** hacia la app (share target del manifest).
+- Antes de añadir se revisa: zona automática (`ZonaAuto`), cantidad leída («2 docenas de…», «x2», «(4)»), lo que ya está
+  en la lista sale desmarcado; se ignoran cabeceras y botones copiados y todo lo que va tras «Completados».
+- Se añade a la compra de la semana como productos extra (Manual).
+
