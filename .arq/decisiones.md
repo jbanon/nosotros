@@ -384,4 +384,4 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 ## Teaser del adviento
 - Javier, 2026-11-18: hasta el 1 de diciembre, a Raquel le sale un gif durante 1 s al entrar en la app, como
   mucho una vez cada 3 días (localStorage), con «Something's cooking…» debajo.
-- Fichero `wwwroot/img/teaser.gif` (en el repo); sin el fichero no sale nada. Javi lo previsualiza con `?teaser=1`.
+- Fichero `wwwroot/img/teaser.gif`, fuera del repo (.gitignore): se copia a mano al servidor; sin el fichero no sale nada. Javi lo previsualiza con `?teaser=1`.
