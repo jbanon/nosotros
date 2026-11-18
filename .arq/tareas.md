@@ -131,4 +131,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-17 | Criptofrase: cada casilla se rellena a mano, sin autocompletar las del mismo número | 5e4e233 |
 | 2026-11-17 | Adviento día 24: el vale es por una serie (la navideña noruega), no por una película | 5bd282f |
 | 2026-11-18 | Juego Línea del tiempo del arte: 5 obras a ordenar en el tiempo + autor, una partida por semana, presentado por BriskaBird pintora | bcbf2d1 |
-| 2026-11-18 | Compra: importar la lista de Alexa (pegar o compartir hacia la app), con revisión previa de zona y cantidad | (este) |
+| 2026-11-18 | Compra: importar la lista de Alexa (pegar o compartir hacia la app), con revisión previa de zona y cantidad | 0bf2f6a |
