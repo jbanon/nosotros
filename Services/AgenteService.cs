@@ -117,12 +117,13 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             TipoTareaAgente.Vineta => await PreparaVineta(db, t, ct),
             TipoTareaAgente.Pildora => await PreparaPildora(db, t, ct),
             TipoTareaAgente.PildoraCorreccion => await PreparaCorreccion(db, t, ct),
+            TipoTareaAgente.Efemerides => (PromptEfemerides(t), EsquemaEfemerides, "WebSearch,WebFetch", (string?)null),
             _ => throw new InvalidOperationException()
         };
 
         var sw = Stopwatch.StartNew();
         // Las píldoras pueden buscar noticias: más margen
-        var res = await Ejecutar(prompt, esquema, herramientas, dirExtra, ct, t.Tipo == TipoTareaAgente.Pildora ? Math.Max(TimeoutSeg, 480) : TimeoutSeg);
+        var res = await Ejecutar(prompt, esquema, herramientas, dirExtra, ct, t.Tipo is TipoTareaAgente.Pildora or TipoTareaAgente.Efemerides ? Math.Max(TimeoutSeg, 480) : TimeoutSeg);
         sw.Stop();
         t.DuracionMs += (int)sw.ElapsedMilliseconds; t.CosteUsd += res.Coste; t.Rondas++;
         if (res.Error != null || res.Salida == null)
@@ -150,6 +151,8 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             await AplicarPildora(db, t, res.Salida, ct);
         if (t.Tipo == TipoTareaAgente.PildoraCorreccion)
             await AplicarCorreccion(db, t, res.Salida, ct);
+        if (t.Tipo == TipoTareaAgente.Efemerides)
+            await AplicarEfemerides(db, t, res.Salida, ct);
         log.LogInformation("Agente: tarea {Id} ({Tipo}) lista en {Ms} ms", t.Id, t.Tipo, sw.ElapsedMilliseconds);
     }
 
@@ -372,6 +375,52 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
                        "escritura":{"type":"object","additionalProperties":false,"properties":{"corregido":{"type":"string"},"explicacion":{"type":"string"}},"required":["corregido","explicacion"]},
                        "consejo":{"type":"string"},"mensaje":{"type":"string"}},
          "required":["titular","resumen","preguntas","huecos","escritura","consejo","mensaje"]}
+        """;
+
+    // ---------- Efemérides del día ----------
+    static readonly string[] MesesEs = { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre" };
+
+    static string PromptEfemerides(TareaAgente t)
+    {
+        var p = t.Entrada.Split('-');
+        var (mes, dia) = (int.Parse(p[0]), int.Parse(p[1]));
+        return $"Escribes la sección «Tal día como hoy» de «Nosotros», la app privada que Javi le ha hecho a su mujer, Raquel " +
+            "(española, cinco hijos, una perra llamada Briska, culta y con mucho sentido del humor). Devuelve únicamente el JSON pedido.\n\n" +
+            $"Elige TRES efemérides del {dia} de {MesesEs[mes - 1]} (de cualquier año y cualquier lugar del mundo) que sean graciosas, absurdas, sorprendentes o muy llamativas: " +
+            "inventos con historia rara, récords disparatados, meteduras de pata históricas, anécdotas de famosos, curiosidades científicas o culturales, primeras veces memorables. " +
+            "Evita las típicas de manual (batallas, tratados, coronaciones) salvo que tengan una anécdota jugosa, y nada de política dura. " +
+            "Varía épocas y temas entre las tres. VERIFICA con WebSearch que cada hecho ocurrió exactamente ese día y mes; si no puedes confirmarlo, elige otro. " +
+            "Tono: con humor e ironía amable siempre que el hecho lo permita; si es un asunto serio o con víctimas, cuéntalo con respeto y sin chistes. Nunca inventes datos. " +
+            "La lectora es Raquel: no hables de ella en tercera persona; si alguna vez haces un guiño a su vida (no siempre), que sea de tú. " +
+            "Campos de cada item: anio (el año, como texto; «a. C.» si hace falta); emoji (uno solo); titular (máximo 8 palabras, con gancho); " +
+            "resumen (una línea de 10 a 18 palabras para la portada); articulo (entre 110 y 170 palabras, en castellano, en 2 o 3 párrafos separados por una línea en blanco, " +
+            "con un remate final ingenioso); fuente (el medio o la web donde lo has comprobado). Y mensaje: una frase para Javi sobre la selección.";
+    }
+
+    async Task AplicarEfemerides(AppDb db, TareaAgente t, JsonObject f, CancellationToken ct)
+    {
+        var p = t.Entrada.Split('-');
+        var (mes, dia) = (int.Parse(p[0]), int.Parse(p[1]));
+        if (f["items"] is not JsonArray a || a.Count == 0)
+        {
+            t.Estado = EstadoTarea.Error; t.Error = "El agente no devolvió ninguna efeméride.";
+            await db.SaveChangesAsync(ct); return;
+        }
+        var e = await db.Efemerides.FirstOrDefaultAsync(x => x.Mes == mes && x.Dia == dia, ct);
+        if (e == null) db.Efemerides.Add(e = new Efemeride { Mes = mes, Dia = dia });
+        e.Contenido = new JsonObject { ["items"] = a.DeepClone() }.ToJsonString(JsonOpc); e.Creada = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+        t.Aplicada = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+    }
+
+    public const string EsquemaEfemerides = """
+        {"type":"object","additionalProperties":false,
+         "properties":{"items":{"type":"array","items":{"type":"object","additionalProperties":false,
+                         "properties":{"anio":{"type":"string"},"emoji":{"type":"string"},"titular":{"type":"string"},"resumen":{"type":"string"},"articulo":{"type":"string"},"fuente":{"type":"string"}},
+                         "required":["anio","emoji","titular","resumen","articulo","fuente"]}},
+                       "mensaje":{"type":"string"}},
+         "required":["items","mensaje"]}
         """;
 
     // ---------- Ejecución de claude -p ----------

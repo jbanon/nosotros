@@ -19,7 +19,7 @@ public class LineaArte(AppDb db, IWebHostEnvironment env, FileStorage files, IHt
     public const int Maximo = Cartas - 1 + Cartas;
     static readonly DateOnly Inicio = new(2026, 11, 16);
 
-    public record Obra(string Titulo, string Autor, int Anio, string Wiki, string Img)
+    public record Obra(string Titulo, string Autor, int Anio, string Wiki, string Img, string? Texto = null, string? WikiEs = null)
     {
         public string Id => Regex.Replace(Wiki.ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
     }
@@ -37,7 +37,9 @@ public class LineaArte(AppDb db, IWebHostEnvironment env, FileStorage files, IHt
             using var doc = JsonDocument.Parse(File.ReadAllText(ruta));
             catalogo = doc.RootElement.GetProperty("obras").EnumerateArray()
                 .Select(o => new Obra(o.GetProperty("titulo").GetString()!, o.GetProperty("autor").GetString()!, o.GetProperty("anio").GetInt32(),
-                                      o.GetProperty("wiki").GetString()!, o.GetProperty("img").GetString()!))
+                                      o.GetProperty("wiki").GetString()!, o.GetProperty("img").GetString()!,
+                                      o.TryGetProperty("texto", out var t) ? t.GetString() : null,
+                                      o.TryGetProperty("wikiEs", out var w) ? w.GetString() : null))
                 .OrderBy(o => o.Anio).ToList();
             return catalogo;
         }
@@ -70,6 +72,21 @@ public class LineaArte(AppDb db, IWebHostEnvironment env, FileStorage files, IHt
             var ops = otros.Append(o.Autor).OrderBy(_ => rnd.Next()).ToArray();
             return new Carta(o.Id, o.Titulo, o.Autor, o.Anio, ops);
         }).ToList();
+    }
+
+    /// <summary>
+    /// Álbum: las obras de las semanas ya jugadas (partida terminada), en orden cronológico.
+    /// Javi (todos) ve también las semanas que ha jugado Raquel.
+    /// </summary>
+    public async Task<List<(Obra Obra, DateOnly Semana)>> Album(int usuario, bool todos)
+    {
+        var semanas = await db.JuegoPartidas.Where(p => p.Juego == Clave && p.Fin != null && (todos || p.UsuarioId == usuario))
+            .Select(p => p.Fecha).Distinct().ToListAsync();
+        var cat = Catalogo().ToDictionary(o => o.Id);
+        return semanas.OrderBy(s => s)
+            .SelectMany(s => Semana(s).Select(c => (Obra: cat[c.Id], Semana: s)))
+            .GroupBy(x => x.Obra.Id).Select(g => g.First())
+            .OrderBy(x => x.Obra.Anio).ToList();
     }
 
     public Task<JuegoPartida?> DeSemana(int usuario, DateOnly lunes) =>

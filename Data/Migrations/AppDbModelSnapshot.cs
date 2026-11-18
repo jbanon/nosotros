@@ -229,6 +229,35 @@ namespace Love.Data.Migrations
                     b.ToTable("DueloRondas");
                 });
 
+            modelBuilder.Entity("Love.Models.Efemeride", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Dia")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Mes")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Mes", "Dia")
+                        .IsUnique();
+
+                    b.ToTable("Efemerides");
+                });
+
             modelBuilder.Entity("Love.Models.FechaEspecial", b =>
                 {
                     b.Property<int>("Id")

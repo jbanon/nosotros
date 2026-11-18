@@ -1,0 +1,49 @@
+@page
+@model Love.Pages.Juegos.LineaAlbumModel
+@{
+    ViewData["Title"] = "Álbum del museo";
+    string Img(string id) => $"/Juegos/Linea?handler=Imagen&id={Uri.EscapeDataString(id)}";
+}
+<div class="cab"><a class="volver" href="/Juegos/Linea">‹</a><h1>Álbum del museo</h1></div>
+<div class="la-presenta">
+    <img src="/img/briska-pintora.png" alt="BriskaBird pintora" class="la-briska" />
+    <div class="la-bocadillo">
+        @if (Model.Obras.Count == 0) { <text>Aún no hay nada colgado. Juega a la Línea del tiempo y cada obra vendrá a parar aquí. ¡Guau!</text> }
+        else { <text>Mi colección: <b>@Model.Obras.Count obra@(Model.Obras.Count == 1 ? "" : "s")</b>, de la más antigua a la más moderna. Toca una para leer su historia.</text> }
+    </div>
+</div>
+<div class="album">
+    @foreach (var (o, _) in Model.Obras)
+    {
+        <button type="button" class="album-item la-album-item" data-id="@o.Id">
+            <img src="@Img(o.Id)" alt="" loading="lazy" />
+            <div class="pie"><span class="fecha">@o.Anio</span><span class="frase">@o.Titulo</span><span class="la-album-autor">@o.Autor</span></div>
+        </button>
+    }
+</div>
+<dialog class="la-ficha" id="la-ficha">
+    @foreach (var (o, _) in Model.Obras)
+    {
+        <article data-id="@o.Id" hidden>
+            <img src="@Img(o.Id)" alt="@o.Titulo" loading="lazy" />
+            <h2>@o.Titulo</h2>
+            <p class="la-ficha-autor">@o.Autor · <b>@o.Anio</b></p>
+            @if (!string.IsNullOrWhiteSpace(o.Texto)) { <p class="la-ficha-texto">@o.Texto</p> }
+            @if (!string.IsNullOrWhiteSpace(o.WikiEs)) { <a class="suave peq" href="https://es.wikipedia.org/wiki/@Uri.EscapeDataString(o.WikiEs.Replace(' ', '_'))" target="_blank" rel="noopener">Seguir leyendo en Wikipedia ›</a> }
+        </article>
+    }
+    <button type="button" class="btn primario ancho" id="la-ficha-cerrar">Cerrar</button>
+</dialog>
+@section Scripts {
+<script>
+    (() => {
+        const d = document.getElementById('la-ficha');
+        document.querySelectorAll('.la-album-item').forEach(b => b.addEventListener('click', () => {
+            d.querySelectorAll('article').forEach(a => a.hidden = a.dataset.id !== b.dataset.id);
+            d.showModal(); d.scrollTop = 0;
+        }));
+        document.getElementById('la-ficha-cerrar').addEventListener('click', () => d.close());
+        d.addEventListener('click', e => { if (e.target === d) d.close(); });
+    })();
+</script>
+}

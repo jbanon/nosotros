@@ -66,8 +66,10 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<AgenteService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<AgenteService>());
 builder.Services.AddScoped<FrancesService>();
+builder.Services.AddScoped<EfemeridesService>();
 builder.Services.AddScoped<LineaArte>();
 builder.Services.AddHostedService<FrancesProgramador>();
+builder.Services.AddHostedService<EfemeridesProgramador>();
 builder.Services.AddAntiforgery(o => o.HeaderName = "RequestVerificationToken");
 
 var app = builder.Build();

@@ -36,6 +36,7 @@ public class AppDb : DbContext
     public DbSet<JuegoPartida> JuegoPartidas => Set<JuegoPartida>();
     public DbSet<PildoraFrances> Pildoras => Set<PildoraFrances>();
     public DbSet<PildoraEntrega> PildoraEntregas => Set<PildoraEntrega>();
+    public DbSet<Efemeride> Efemerides => Set<Efemeride>();
     public DbSet<Lista> Listas => Set<Lista>();
     public DbSet<ListaElemento> ListaElementos => Set<ListaElemento>();
 
@@ -66,6 +67,7 @@ public class AppDb : DbContext
         b.Entity<Obra>().HasOne(o => o.Capitulo).WithMany(c => c.Obras).OnDelete(DeleteBehavior.SetNull);
         b.Entity<Capitulo>().HasIndex(c => c.Origen);
         b.Entity<PildoraFrances>().HasIndex(p => p.Fecha);
+        b.Entity<Efemeride>().HasIndex(e => new { e.Mes, e.Dia }).IsUnique();
         b.Entity<PildoraEntrega>().HasIndex(e => new { e.PildoraId, e.UsuarioId }).IsUnique();
         b.Entity<PildoraEntrega>().HasOne(e => e.Pildora).WithMany(p => p.Entregas).OnDelete(DeleteBehavior.Cascade);
         if (Database.IsSqlite())

@@ -372,6 +372,9 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - **Una partida por semana** (lunes a domingo), las mismas 5 obras para los dos para poder comparar (`JuegoPartida` con
   Juego = "linea" y Fecha = lunes). Javi juega sin límite. Enlace en Juegos y en Arte.
 - Presenta **BriskaBird pintora** (`img/briska-pintora.png`: BriskaBird con boina granate y pincel) con frases graciosas y ladridos.
+- **Álbum del museo** (`/Juegos/LineaAlbum`, Javier 2026-11-18): las obras ya jugadas quedan para verlas después, en orden
+  cronológico, con año, autor y un texto breve. Solo semanas con la partida terminada (Javi ve también las de Raquel).
+  El texto es el resumen de Wikipedia en español, recortado y guardado en el seed (`texto`, `wikiEs`), con enlace a Wikipedia.
 
 ## Importar la lista de Alexa
 - Javier, 2026-11-18. Amazon no deja a apps externas leer las listas de Alexa (desde 2024), así que se **pega** el texto
@@ -385,3 +388,11 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Javier, 2026-11-18: hasta el 1 de diciembre, a Raquel le sale un vídeo durante 2 s (Javier subió de 1 a 2 s) al entrar en la app, como
   mucho una vez cada 2 días (localStorage; antes 3), con «Something's cooking…» debajo.
 - Fichero `wwwroot/img/teaser.mp4` (Javier pasó un vídeo, no un gif), en el repo; sin el fichero no sale nada. Javi lo previsualiza con `?teaser=1`.
+
+## Tal día como hoy (efemérides)
+- Javier, 2026-11-18: cada día, tres efemérides graciosas o muy llamativas. En la portada (/Amor) un esquema
+  (año, emoji y una línea); al entrar (/Efemerides) un artículo breve de cada una, con humor si el hecho lo permite.
+- Las escribe el agente (con WebSearch para verificar la fecha) y se guardan por **mes y día** (`Efemeride`): se
+  reutilizan los años siguientes. `EfemeridesProgramador` cada hora encarga las de hoy y las de mañana si faltan
+  (de una en una; tras un error espera 6 h). Javi puede pedir otras desde la página.
+- Raquel no ve días futuros; puede ir hacia atrás.

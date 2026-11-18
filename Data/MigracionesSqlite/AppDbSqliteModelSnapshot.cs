@@ -216,6 +216,33 @@ namespace Love.Data.MigracionesSqlite
                     b.ToTable("DueloRondas");
                 });
 
+            modelBuilder.Entity("Love.Models.Efemeride", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Creada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Dia")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Mes")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Mes", "Dia")
+                        .IsUnique();
+
+                    b.ToTable("Efemerides");
+                });
+
             modelBuilder.Entity("Love.Models.FechaEspecial", b =>
                 {
                     b.Property<int>("Id")

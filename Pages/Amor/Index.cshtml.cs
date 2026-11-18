@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Love.Pages.Amor;
 
-public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db, AdvientoService adv, VinetaService vinetas, ArteService arte) : PageModel
+public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db, AdvientoService adv, VinetaService vinetas, ArteService arte, EfemeridesService efemerides) : PageModel
 {
     public DateOnly Fecha { get; set; }
     public MensajeDelDia Msg { get; set; } = null!;
@@ -34,6 +34,8 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
     /// <summary>Píldoras de francés publicadas y la última aún sin hacer por quien mira.</summary>
     public int NumPildoras { get; set; }
     public PildoraFrances? PildoraNueva { get; set; }
+    /// <summary>Efemérides del día (tal día como hoy), para el esquema de la portada.</summary>
+    public List<EfemeridesService.Item> Efemerides { get; set; } = new();
 
     public async Task OnGet(DateOnly? fecha)
     {
@@ -49,6 +51,7 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
         NumPildoras = await db.Pildoras.CountAsync(p => p.Fecha <= Fecha);
         PildoraNueva = await db.Pildoras.Where(p => p.Fecha <= Fecha && p.Fecha >= Fecha.AddDays(-7) && !p.Entregas.Any(e => e.UsuarioId == yo))
             .OrderByDescending(p => p.Fecha).ThenByDescending(p => p.Id).FirstOrDefaultAsync();
+        Efemerides = await efemerides.Del(Fecha);
         LecturaNueva = await db.Lecturas.Where(l => l.Publicada && !l.Leida).OrderByDescending(l => l.Creada).FirstOrDefaultAsync();
 
         var aniversario = await db.FechasEspeciales.Where(x => x.AnioOrigen != null && x.Tema == "aniversario").FirstOrDefaultAsync();

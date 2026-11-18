@@ -1,0 +1,41 @@
+@page
+@model Love.Pages.Efemerides.IndexModel
+@{
+    ViewData["Title"] = "Tal día como hoy";
+    var hoy = Love.Services.Reloj.Hoy;
+    string Url(DateOnly d) => d == hoy ? "/Efemerides" : $"/Efemerides?fecha={d:yyyy-MM-dd}";
+    var siguiente = Model.Fecha.AddDays(1);
+}
+<div class="cab"><a class="volver" href="/Amor">‹</a><h1>Tal día como hoy</h1></div>
+<nav class="ef-dias">
+    <a href="@Url(Model.Fecha.AddDays(-1))">‹ @Model.Fecha.AddDays(-1).ToString("d MMM")</a>
+    <b>@Model.Fecha.ToString("d 'de' MMMM")</b>
+    @if (siguiente <= hoy || Model.EsAdmin) { <a href="@Url(siguiente)">@siguiente.ToString("d MMM") ›</a> } else { <span></span> }
+</nav>
+@if (Model.Items.Count == 0)
+{
+    <div class="vacio"><span class="ico">📅</span>@(Model.Preparando ? "Estoy rebuscando en la historia… vuelve en un ratito." : "Este día aún no tiene efemérides.")</div>
+}
+@foreach (var (it, i) in Model.Items.Select((x, i) => (x, i)))
+{
+    <article class="ef-articulo" id="ef-@i">
+        <p class="ef-anio"><span class="ef-emoji">@it.Emoji</span> @it.Anio</p>
+        <h2>@it.Titular</h2>
+        @foreach (var par in it.Articulo.Replace("\r", "").Split("\n\n", StringSplitOptions.RemoveEmptyEntries)) { <p>@par.Trim()</p> }
+        @if (!string.IsNullOrWhiteSpace(it.Fuente)) { <p class="suave peq">Fuente: @it.Fuente</p> }
+    </article>
+}
+@if (Model.EsAdmin)
+{
+    <div class="tarjeta mt">
+        <p class="suave peq">Solo tú: @(Model.Preparando ? "el agente las está escribiendo…" : Model.UltimaTarea?.Estado == Love.Models.EstadoTarea.Error ? $"último intento con error: {Model.UltimaTarea.Error}" : "se guardan para los años siguientes.")</p>
+        @if (!Model.Preparando)
+        {
+            <form method="post" asp-page-handler="Rehacer" onsubmit="return confirm('¿Borrar las de este día y pedir otras?')">
+                <input type="hidden" name="fecha" value="@Model.Fecha.ToString("yyyy-MM-dd")" />
+                <button class="btn ancho">🔄 @(Model.Items.Count > 0 ? "Pedir otras" : "Pedirlas ya")</button>
+            </form>
+        }
+    </div>
+}
+@if (Model.Preparando) { <script>setTimeout(() => location.reload(), 15000);</script> }

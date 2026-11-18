@@ -314,7 +314,7 @@ public class ListaElemento
     public int Orden { get; set; }
 }
 
-public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta, Pildora, PildoraCorreccion }
+public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta, Pildora, PildoraCorreccion, Efemerides }
 public enum EstadoTarea { Pendiente, EnCurso, Lista, Error }
 
 /// <summary>Una petición al agente (claude -p): crear una ficha de película o una receta, con rondas de cambios.</summary>
@@ -531,6 +531,20 @@ public class JuegoPartida
     public bool Gano { get; set; }
     public int Palabras { get; set; }
     public int Total { get; set; }
+}
+
+/// <summary>
+/// Efemérides graciosas o llamativas de un día del año (mes y día, sin año): las escribe el agente una vez
+/// y se reutilizan los años siguientes.
+/// </summary>
+public class Efemeride
+{
+    public int Id { get; set; }
+    public int Mes { get; set; }
+    public int Dia { get; set; }
+    /// <summary>JSON del agente: {"items":[{anio, emoji, titular, resumen, articulo, fuente}]}.</summary>
+    public string Contenido { get; set; } = "{}";
+    public DateTime Creada { get; set; } = DateTime.UtcNow;
 }
 
 /// <summary>Píldora de francés (B2-C1) escrita por el agente: lectura divertida y ejercicios. Visible desde su Fecha.</summary>

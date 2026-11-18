@@ -11,7 +11,7 @@
     };
     string Img(string id) => $"/Juegos/Linea?handler=Imagen&id={Uri.EscapeDataString(id)}";
 }
-<div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Línea del tiempo</h1></div>
+<div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Línea del tiempo</h1><a class="suave peq" href="/Juegos/LineaAlbum" style="margin-left:auto">🖼️ Álbum</a></div>
 @Html.AntiForgeryToken()
 @if (Model.YaJugada)
 {
@@ -28,6 +28,7 @@
             <li class="la-item"><img src="@Img(c.Id)" alt="" loading="lazy" /><span><b>@c.Anio</b> · @c.Titulo<br /><span class="suave peq">@c.Autor</span></span></li>
         }
     </ol>
+    <a class="btn primario ancho mt" href="/Juegos/LineaAlbum">🖼️ Ver el álbum del museo</a>
 }
 else
 {
