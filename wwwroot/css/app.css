@@ -1206,8 +1206,8 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 
 
 /* ---------- Teaser del adviento (1 s) ---------- */
-.teaser { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; background: rgba(20, 12, 8, .88); transition: opacity .4s; pointer-events: none; }
+.teaser { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; background: rgba(20, 12, 8, .88); transition: opacity .3s; pointer-events: none; opacity: 0; }
 .teaser[hidden] { display: none; }
-.teaser.fuera { opacity: 0; }
-.teaser img { max-width: min(80vw, 420px); max-height: 60vh; border-radius: 14px; }
+.teaser.dentro { opacity: 1; }
+.teaser video { max-width: min(80vw, 420px); max-height: 60vh; border-radius: 14px; }
 .teaser p { margin: 0; color: #fbf6f0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.8rem; }

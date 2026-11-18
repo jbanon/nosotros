@@ -10,7 +10,7 @@
     var hoyT = Love.Services.Reloj.Hoy;
     var teaser = User.Identity?.IsAuthenticated == true && !sinNav
         && hoyT < new DateOnly(hoyT.Year, 12, 1) && hoyT.Month >= 11
-        && System.IO.File.Exists(System.IO.Path.Combine(WebEnv.WebRootPath, "img", "teaser.gif"))
+        && System.IO.File.Exists(System.IO.Path.Combine(WebEnv.WebRootPath, "img", "teaser.mp4"))
         && (!esAdmin || Context.Request.Query.ContainsKey("teaser"));
 }
 <!DOCTYPE html>
@@ -56,7 +56,7 @@
     @if (teaser)
     {
         <div id="teaser" class="teaser" hidden data-forzar="@(esAdmin ? "1" : "")">
-            <img alt="" />
+            <video muted playsinline autoplay preload="auto"></video>
             <p>Something's cooking…</p>
         </div>
         <script>
@@ -65,13 +65,19 @@
                 let ultimo = 0;
                 try { ultimo = +localStorage.getItem(k) || 0; } catch { }
                 if (!t.dataset.forzar && Date.now() - ultimo < cada) return;
-                const img = t.querySelector('img');
-                img.onload = () => {
+                const v = t.querySelector('video'), quitar = () => { t.classList.remove('dentro'); setTimeout(() => t.remove(), 400); };
+                let hecho = false;
+                // Visible pero transparente mientras carga (algunos móviles no reproducen vídeos ocultos)
+                t.hidden = false;
+                v.addEventListener('playing', () => {
+                    if (hecho) return; hecho = true;
                     try { localStorage.setItem(k, Date.now()); } catch { }
-                    t.hidden = false;
-                    setTimeout(() => { t.classList.add('fuera'); setTimeout(() => t.remove(), 400); }, 1000);
-                };
-                img.src = '/img/teaser.gif?v=@DateTime.UtcNow.ToString("yyyyMMdd")';
+                    t.classList.add('dentro');
+                    setTimeout(quitar, 1000);
+                });
+                setTimeout(() => { if (!hecho) t.remove(); }, 5000);
+                v.src = '/img/teaser.mp4';
+                v.play().catch(() => t.remove());
             })();
         </script>
     }

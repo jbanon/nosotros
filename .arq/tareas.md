@@ -133,4 +133,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-18 | Juego Línea del tiempo del arte: 5 obras a ordenar en el tiempo + autor, una partida por semana, presentado por BriskaBird pintora | bcbf2d1 |
 | 2026-11-18 | Compra: importar la lista de Alexa (pegar o compartir hacia la app), con revisión previa de zona y cantidad | 0bf2f6a |
 | 2026-11-18 | Juegos con frase: se quita el comodín de enseñar las palabras; solo queda la pista de cazarlas | cb06f05 |
-| 2026-11-18 | Teaser del adviento: gif 1 s con «Something's cooking…», cada 3 días hasta el 1 de diciembre (gif pendiente de subir) | 2721d76 |
+| 2026-11-18 | Teaser del adviento: vídeo 1 s con «Something's cooking…», cada 3 días hasta el 1 de diciembre | 2721d76 |
