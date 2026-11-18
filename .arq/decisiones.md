@@ -123,14 +123,11 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   - **Dificultad adaptable:** cada palabra cazada acorta un 7 % la vida de los corazones y cada una perdida la
     alarga un 20 %. La dificultad sube con las palabras cazadas, no con las que han salido.
   - **Escribir la frase:** en el 2º intento las bien colocadas salen en verde y los huecos con sus letras; en el
-    3º, además, la inicial. Desde el 3º fallo, **comodín** (una vez por partida): enseña las palabras una a una y
-    en orden, a pantalla completa (0,75 s cada una). Solo tras usarlo se regala una palabra por fallo. Vale para
-    todos los juegos con frase (`adv-juego.js`).
-  - **Ayuda al azar por partida** (Javier: "a cada juego uno de los dos aleatorio"): o el comodín de arriba o la
-    **caza de palabras**. En la caza salen palabras un instante (de 0,6 s a 0,4 s) en sitios al azar, mezcladas con
-    trampas (croqueta, manta, sofá…). Tocar una buena la fija en verde en su hueco; tocar una trampa quita 1 s y
-    Briska ladra. Se puede repetir, pero cada ronda dura menos: 15, 10, 7 y 5 s. Las dos ayudas salen desde el
-    3º fallo. Solo después de usarlas (comodín, o 2 rondas de caza) se regala una palabra por fallo. Puede volver a jugar para cazar más.
+    3º, además, la inicial. Desde el 3º fallo, la única ayuda es la **caza de palabras** (el comodín que enseñaba las
+    palabras en orden se quitó: Javier, 2026-11-18). En la caza salen palabras un instante (de 0,6 s a 0,4 s) en sitios
+    al azar, mezcladas con trampas (croqueta, manta, sofá…). Tocar una buena la fija en verde en su hueco; tocar una
+    trampa quita 1 s y Briska ladra. Se puede repetir, pero cada ronda dura menos: 15, 10, 7 y 5 s. Tras 2 rondas de
+    caza se regala una palabra por fallo. Vale para todos los juegos con frase (`adv-juego.js`).
   - Sin tildes, mayúsculas ni comas; la comprobación final la hace el servidor, que da la letra "I".
   - Todos los ajustes, en la constante `AJ` de `globos.js`.
   - **BriskaBird** (`wwwroot/img/briska/briskabird.png`, recortada de la imagen de Javier) sale **10 veces**

@@ -140,13 +140,11 @@
         <p class="gl-ayuda">${ayuda()}</p>
         <textarea id="gl-frase" rows="2" autocomplete="off" autocapitalize="sentences" placeholder="Escribe la frase completa…"></textarea>
         <button class="btn adv-btn primario ancho" id="gl-comprobar" type="button">Comprobar</button>
-        ${E.intentos < 3 ? `<button class="btn adv-btn ancho gl-btn-comodin" type="button" disabled>🔒 ${ayudaDe() === 'comodin' ? '🃏 Comodín' : '🎯 Pista: caza palabras'} · se abre tras ${3 - E.intentos === 1 ? '1 intento más' : (3 - E.intentos) + ' intentos'}</button>` : ''}
-        ${E.intentos >= 3 && ayudaDe() === 'comodin' && !E.comodin ? '<button class="btn adv-btn ancho gl-btn-comodin" id="gl-comodin" type="button">🃏 Comodín: ver las palabras en orden</button>' : ''}
-        ${E.intentos >= 3 && ayudaDe() === 'caza' && E.sabidas.length < n ? `<button class="btn adv-btn ancho gl-btn-comodin" id="gl-caza" type="button">🎯 Pista: caza palabras (${Math.round(rondaMs() / 1000)} s)</button>` : ''}
+        ${E.intentos < 3 ? `<button class="btn adv-btn ancho gl-btn-comodin" type="button" disabled>🔒 Pista: caza palabras · se abre tras ${3 - E.intentos === 1 ? '1 intento más' : (3 - E.intentos) + ' intentos'}</button>` : ''}
+        ${E.intentos >= 3 && E.sabidas.length < n ? `<button class="btn adv-btn ancho gl-btn-comodin" id="gl-caza" type="button">🎯 Pista: caza palabras (${Math.round(rondaMs() / 1000)} s)</button>` : ''}
         ${D.diario ? '' : '<button class="btn adv-btn fantasma pequeno ancho" id="gl-otra" type="button">Volver a jugar para verlas otra vez</button>'}`;
       const ta = $('gl-frase'); ta.value = E.texto || '';
       $('gl-comprobar').addEventListener('click', comprobar);
-      if ($('gl-comodin')) $('gl-comodin').addEventListener('click', comodin);
       if ($('gl-caza')) $('gl-caza').addEventListener('click', caza);
       ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); comprobar(); } });
       if ($('gl-otra')) $('gl-otra').addEventListener('click', () => opc.jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
@@ -168,31 +166,10 @@
       if (E.intentos === 0) return 'Ordénalas y completa lo que falte. Sin preocuparte de tildes ni comas.';
       if (E.intentos === 1) return 'Casi. Las verdes ya están en su sitio; los huecos te dicen cuántas letras tiene cada palabra.';
       if (E.intentos === 2) return 'Te doy la primera letra de cada palabra que falta.';
-      if (ayudaDe() === 'comodin' && !E.comodin) return '¿Atascada? Tienes un comodín: verás las palabras una a una y en orden, solo una vez.';
-      if (ayudaDe() === 'caza' && !E.rondas) return '¿Atascada? Pide pista: las palabras salen un instante y, si las tocas, se quedan fijas. ¡Cuidado con las trampas!';
-      if (ayudaDe() === 'caza') return 'Puedes cazar más palabras, pero cada ronda dura menos.';
-      return 'Te regalo una palabra más. ¡Ya casi!';
+      if (!E.rondas) return '¿Atascada? Pide pista: las palabras salen un instante y, si las tocas, se quedan fijas. ¡Cuidado con las trampas!';
+      if (E.rondas >= 2 && E.intentos >= 4) return 'Te regalo una palabra más. ¡Ya casi!';
+      return 'Puedes cazar más palabras, pero cada ronda dura menos.';
     }
-    // Comodín (una vez por partida): las palabras de la frase, una a una y en orden, a pantalla completa
-    function comodin() {
-      if (E.comodin) return;
-      E.comodin = true; guardarE();
-      const capa = document.createElement('div'); capa.className = 'gl-comodin';
-      capa.innerHTML = '<p class="gl-comodin-num"></p><p class="gl-comodin-pal"></p>';
-      document.body.appendChild(capa);
-      const num = capa.firstChild, pal = capa.lastChild;
-      let i = -1;
-      const sig = () => {
-        i++;
-        if (i >= n) { capa.classList.add('fuera'); setTimeout(() => { capa.remove(); pintaEscribir(); $('gl-frase')?.focus(); }, 350); return; }
-        num.textContent = `${i + 1} / ${n}`; pal.textContent = visibles[i];
-        pal.classList.remove('entra'); void pal.offsetWidth; pal.classList.add('entra');
-        setTimeout(sig, opc.comodinCada || 750);
-      };
-      setTimeout(sig, 400);
-    }
-    // Cada partida tiene al azar una de las dos ayudas (las partidas guardadas de antes, el comodín)
-    const ayudaDe = () => E.ayuda || 'comodin';
     const RONDAS = [15000, 10000, 7000, 5000];
     const rondaMs = () => RONDAS[Math.min(E.rondas || 0, RONDAS.length - 1)];
     const TRAMPAS = ['croqueta', 'manta', 'sofá', 'galleta', 'pijama', 'lunes', 'paraguas', 'calcetín', 'mando', 'siesta', 'churros', 'tortilla', 'Briska', 'ticket', 'piña', 'lluvia'];
@@ -267,14 +244,14 @@
       }
       E.intentos++; E.texto = txt;
       toks.forEach((w, i) => { if (w === objetivo[i] && !E.sabidas.includes(i)) E.sabidas.push(i); });
-      if ((E.comodin || E.rondas >= 2) && E.intentos >= 4) { const f = objetivo.findIndex((_, i) => !E.sabidas.includes(i)); if (f >= 0) E.sabidas.push(f); }
+      if (E.rondas >= 2 && E.intentos >= 4) { const f = objetivo.findIndex((_, i) => !E.sabidas.includes(i)); if (f >= 0) E.sabidas.push(f); }
       guardarE(); pintaEscribir();
       A.aviso('Todavía no…', true);
     }
     // Al ganar la partida: se apuntan las palabras cazadas y empieza la fase de escribir
     function empezar(cazadas) {
       if (D.resuelta) return;
-      E = { fase: 'escribir', palabras: cazadas, intentos: 0, sabidas: [], texto: '', ayuda: Math.random() < 0.5 ? 'comodin' : 'caza', rondas: 0 };
+      E = { fase: 'escribir', palabras: cazadas, intentos: 0, sabidas: [], texto: '', rondas: 0 };
       guardarE(); pintaEscribir();
       opc.escribir.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }

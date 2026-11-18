@@ -1119,12 +1119,7 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .jg-diario.jugada { opacity: .8; }
 /* Comodín de la fase de escribir: palabras en orden a pantalla completa */
 .gl-btn-comodin { margin-top: 8px; background: linear-gradient(#ffe48a, #f0b72f); color: #4a3200; border: 0; font-weight: 800; }
-.gl-comodin { position: fixed; inset: 0; z-index: 1002; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
   background: radial-gradient(120% 80% at 50% 30%, #3b2a6b, #120b26); color: #fff; animation: gl-entra .3s ease-out; }
-.gl-comodin.fuera { opacity: 0; transition: opacity .35s; }
-.gl-comodin-num { opacity: .6; font-weight: 700; margin: 0; }
-.gl-comodin-pal { font-size: clamp(2.6rem, 14vw, 4.5rem); font-weight: 900; margin: 0; text-shadow: 0 4px 24px rgba(255,200,80,.8); }
-.gl-comodin-pal.entra { animation: gl-entra .25s ease-out; }
 /* Pista "caza palabras" */
 .gl-caza { position: fixed; inset: 0; z-index: 1002; display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top) + 12px) 14px calc(env(safe-area-inset-bottom) + 14px);
   background: radial-gradient(120% 80% at 50% 30%, #1d4f5f, #0b1d26); color: #fff; animation: gl-entra .3s ease-out; touch-action: none; user-select: none; -webkit-user-select: none; }
