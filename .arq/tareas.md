@@ -137,5 +137,5 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-18 | Teaser del adviento: dura 2 s en vez de 1 | 4c321bc |
 | 2026-11-18 | Teaser del adviento: cada 2 días en vez de 3 | 6ea41bd |
 | 2026-11-18 | Arreglo: la pista de cazar palabras no se veía (una línea suelta del CSS del comodín anulaba sus estilos) | 2dc3d04 |
-| 2026-11-18 | Línea del tiempo: álbum del museo con las obras jugadas (año, autor, texto breve de Wikipedia) | (este) |
-| 2026-11-18 | Tal día como hoy: tres efemérides graciosas al día (esquema en portada, artículos al entrar), guardadas por mes y día | (este) |
+| 2026-11-18 | Línea del tiempo: álbum del museo con las obras jugadas (año, autor, texto breve de Wikipedia) | c7e33c5 |
+| 2026-11-18 | Tal día como hoy: tres efemérides graciosas al día (esquema en portada, artículos al entrar), guardadas por mes y día | c7e33c5 |
