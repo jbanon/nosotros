@@ -366,3 +366,13 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Raquel entrega una vez (borrador guardado en el móvil); **♥ +1 al entregar**, sin depender de la nota (suma en `VinetaService.Corazones`).
   El vocabulario se corrige al momento; el resto lo corrige el agente (`TipoTareaAgente.PildoraCorreccion`) con humor y explicando los fallos.
 - Javi (admin) ve las copias de Raquel con su corrección, puede encargar una a mano (sale hoy, con tema e idea), borrar las futuras y reintentar fallos.
+
+## Línea del tiempo del arte (juego)
+- Javier, 2026-11-18. Cinco obras famosas que se colocan **una a una** en la línea del tiempo (la primera se cuelga sola);
+  acertar el autor entre 4 da +1. Máximo 9 puntos (4 colocaciones + 5 autores). Al fallar, la obra se coloca en su sitio igualmente.
+- **Catálogo propio** `Seed/linea-arte.json` (86 obras de dominio público, s. XV-XX, imagen de Wikipedia con licencia libre),
+  separado de las obras de los domingos. Imágenes bajadas y guardadas en `adjuntos/linea` la primera vez.
+- **Una partida por semana** (lunes a domingo), las mismas 5 obras para los dos para poder comparar (`JuegoPartida` con
+  Juego = "linea" y Fecha = lunes). Javi juega sin límite. Enlace en Juegos y en Arte.
+- Presenta **BriskaBird pintora** (`img/briska-pintora.png`: BriskaBird con boina granate y pincel) con frases graciosas y ladridos.
+

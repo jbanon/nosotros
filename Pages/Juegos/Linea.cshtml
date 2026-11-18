@@ -1,0 +1,47 @@
+@page
+@model Love.Pages.Juegos.LineaModel
+@{
+    ViewData["Title"] = "Línea del tiempo del arte";
+    var datos = new
+    {
+        cartas = Model.Cartas.Select(c => new { id = c.Id, titulo = c.Titulo, autor = c.Autor, anio = c.Anio, autores = c.Autores }),
+        maximo = LineaArte.Maximo,
+        admin = Model.EsAdmin,
+        otros = Model.Otros.Select(o => new { nombre = o.Nombre, puntos = o.Puntos }),
+    };
+    string Img(string id) => $"/Juegos/Linea?handler=Imagen&id={Uri.EscapeDataString(id)}";
+}
+<div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Línea del tiempo</h1></div>
+@Html.AntiForgeryToken()
+@if (Model.YaJugada)
+{
+    var p = Model.Mia!;
+    <div class="la-presenta">
+        <img src="/img/briska-pintora.png" alt="BriskaBird pintora" class="la-briska" />
+        <div class="la-bocadillo">Esta semana ya has pasado por mi museo: <b>@p.Palabras de @LineaArte.Maximo</b> puntos. El lunes cuelgo obras nuevas. ¡Guau!</div>
+    </div>
+    @foreach (var o in Model.Otros) { <p class="centrado"><b>@o.Nombre</b>: @o.Puntos de @LineaArte.Maximo puntos</p> }
+    <h2 class="jg-seccion">Las obras de esta semana</h2>
+    <ol class="la-linea">
+        @foreach (var c in Model.Cartas.OrderBy(c => c.Anio))
+        {
+            <li class="la-item"><img src="@Img(c.Id)" alt="" loading="lazy" /><span><b>@c.Anio</b> · @c.Titulo<br /><span class="suave peq">@c.Autor</span></span></li>
+        }
+    </ol>
+}
+else
+{
+    <div id="la-juego" class="la-juego">
+        <div class="la-presenta">
+            <img src="/img/briska-pintora.png" alt="BriskaBird pintora" class="la-briska" id="la-briska" />
+            <div class="la-bocadillo" id="la-dice">…</div>
+        </div>
+        <div id="la-escena"></div>
+        <ol class="la-linea" id="la-linea"></ol>
+    </div>
+    @foreach (var c in Model.Cartas) { <link rel="prefetch" href="@Img(c.Id)" /> }
+}
+<script type="application/json" id="la-datos">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(datos).Replace("</", "<\\/"))</script>
+@section Scripts {
+@if (!Model.YaJugada) { <script src="/js/linea-arte.js" asp-append-version="true"></script> }
+}

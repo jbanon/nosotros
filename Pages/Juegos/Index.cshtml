@@ -1,10 +1,13 @@
 @page
 @inject Love.Services.DueloCifras Duelo
 @inject Love.Services.JuegosDiarios Diarios
+@inject Love.Services.LineaArte Linea
 @{
     ViewData["Title"] = "Juegos";
     var yo = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value);
     var reto = Duelo.RetoPara(yo);
+    var lineaMia = await Linea.DeSemana(yo, LineaArte.Lunes(Reloj.Hoy));
+    var lineaJugada = lineaMia?.Fin != null && !User.EsAdmin();
     var diarios = new List<(JuegosDiarios.Juego j, DateOnly? bloq, Love.Models.JuegoPartida? hoy)>();
     foreach (var j in JuegosDiarios.Todos)
     {
@@ -46,6 +49,15 @@
         <h2>Crucigrama del día</h2>
         <p>Uno nuevo cada día, compartido: lo que escribe uno le sale al otro al momento. Con definiciones con guasa.</p>
         <p class="jg-stats" data-stats="cruci"></p>
+    </div>
+</a>
+<h2 class="jg-seccion">Una partida a la semana <span class="suave peq" style="font-weight:600">· obras nuevas cada lunes</span></h2>
+<a class="jg-tarjeta jg-diario @(lineaJugada ? "jugada" : "")" href="/Juegos/Linea">
+    <div class="jg-vista" aria-hidden="true"><img src="/img/briska-pintora.png" alt="" style="width:64px" /></div>
+    <div class="jg-texto">
+        <h2>Línea del tiempo @if (!lineaJugada) { <span class="jg-badge">esta semana</span> }</h2>
+        <p>BriskaBird, con boina de pintora, te enseña cinco cuadros famosos: ordénalos en el tiempo y adivina quién los pintó.</p>
+        @if (lineaJugada) { <p class="jg-stats">Esta semana: @lineaMia!.Palabras de @LineaArte.Maximo puntos · el lunes, más</p> }
     </div>
 </a>
 @if (diarios.Count > 0)

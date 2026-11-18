@@ -48,6 +48,12 @@ else if (!hayAlgo)
     <div class="vacio"><span class="ico">🎨</span>La primera obra llega el domingo @(Model.Proxima?.ToString("d 'de' MMMM") ?? "").</div>
 }
 
+<a class="lectura-aviso mt" href="/Juegos/Linea">
+    <img src="/img/briska-pintora.png" alt="" style="width:44px;flex:none" />
+    <span class="crece"><b>Línea del tiempo</b><br /><span>BriskaBird te enseña cinco cuadros: ordénalos en el tiempo y adivina el autor · uno por semana</span></span>
+    <span class="flecha">›</span>
+</a>
+
 @if (album.Any())
 {
     <h2 class="mb mt">Las anteriores <span class="suave peq" style="font-weight:600">· siguen aquí@(Model.Favoritas > 0 ? $" · {Model.Favoritas} favorita{(Model.Favoritas == 1 ? "" : "s")}" : "")</span></h2>
