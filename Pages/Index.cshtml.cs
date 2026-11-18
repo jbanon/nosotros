@@ -6,5 +6,5 @@ namespace Love.Pages;
 
 public class IndexModel : PageModel
 {
-    public IActionResult OnGet() => Redirect(User.EsAdmin() ? "/Gastos" : "/Amor");
+    public IActionResult OnGet() => Redirect((User.EsAdmin() ? "/Gastos" : "/Amor") + Request.QueryString);
 }
