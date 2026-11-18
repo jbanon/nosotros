@@ -6,7 +6,7 @@
     string act(string p) => path.StartsWith(p, StringComparison.OrdinalIgnoreCase) ? "activo" : "";
     var tema = ViewData["Tema"] as string;
     var sinNav = ViewData["SinNav"] as bool? ?? false;
-    // Teaser del adviento: hasta el 1 de diciembre, 1 s cada 3 días, solo a Raquel (Javi lo ve con ?teaser=1)
+    // Teaser del adviento: hasta el 1 de diciembre, 2 s cada 3 días, solo a Raquel (Javi lo ve con ?teaser=1)
     var hoyT = Love.Services.Reloj.Hoy;
     var teaser = User.Identity?.IsAuthenticated == true && !sinNav
         && hoyT < new DateOnly(hoyT.Year, 12, 1) && hoyT.Month >= 11
@@ -73,7 +73,7 @@
                     if (hecho) return; hecho = true;
                     try { localStorage.setItem(k, Date.now()); } catch { }
                     t.classList.add('dentro');
-                    setTimeout(quitar, 1000);
+                    setTimeout(quitar, 2000);
                 });
                 setTimeout(() => { if (!hecho) t.remove(); }, 5000);
                 v.src = '/img/teaser.mp4';
