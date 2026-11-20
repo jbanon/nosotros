@@ -29,6 +29,7 @@
 </div>
 
 <div class="tarjeta">
+    @if (Model.Prevision) { <p class="peq suave" style="margin:0 0 6px">🔮 Previsión: los fijos se apuntan el 1 de @Model.Inicio.ToString("MMMM"). La hipoteca ya lleva descontado lo que va de más en la compra de @ant.ToString("MMMM") y se actualiza con cada compra.</p> }
     <div class="totales">
         <div><span class="peq suave">Veva</span><b>@Model.Veva.ToString("N0") €</b></div>
         <div><span class="peq suave">Hipoteca</span><b>@Model.Hipoteca.ToString("N0") €</b>@if (Model.DescuentoHipoteca > 0) { <span class="peq suave" style="display:block">−@Model.DescuentoHipoteca.ToString("N2") de la compra de @ant.ToString("MMMM")</span> }</div>
@@ -37,7 +38,7 @@
 </div>
 
 <p class="suave peq" style="margin:0 0 4px">Movimientos del mes · toca uno para <b>editarlo</b>; para una compra nueva usa el botón de arriba.</p>
-@if (!Model.Lista.Any()) { <div class="vacio"><span class="ico">🧾</span>Sin movimientos este mes.</div> }
+@if (!Model.Lista.Any() && !Model.Prevision) { <div class="vacio"><span class="ico">🧾</span>Sin movimientos este mes.</div> }
 @foreach (var dia in Model.Lista.GroupBy(g => g.Fecha))
 {
     <div class="dia-cab">@dia.Key.ToString("dddd d")</div>

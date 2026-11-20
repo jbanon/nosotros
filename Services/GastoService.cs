@@ -52,6 +52,18 @@ public class GastoService(AppDb db, ConfigService config)
         await db.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Previsión de los fijos de un mes que aún no ha empezado (no se guarda): Veva, hipoteca ya descontada
+    /// con el exceso de compra del mes anterior, y ese exceso.
+    /// </summary>
+    public async Task<(decimal Veva, decimal Hipoteca, decimal Exceso)> PrevisionFijos(int anio, int mes)
+    {
+        var ant = new DateOnly(anio, mes, 1).AddMonths(-1);
+        var exceso = await ExcesoCompra(ant.Year, ant.Month);
+        var hipo = await config.GetDecimal(ConfigClaves.ImporteHipoteca, 900);
+        return (await config.GetDecimal(ConfigClaves.ImporteVeva, 300), Math.Max(0, hipo - exceso), exceso);
+    }
+
     async Task CrearFijos(int anio, int mes)
     {
         var veva = await config.GetDecimal(ConfigClaves.ImporteVeva, 300);

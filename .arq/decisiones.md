@@ -28,6 +28,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   el exceso se descuenta de la hipoteca del mes siguiente (540 de compra → 900 − 190 = 710). Nunca baja de 0.
   `GastoService.AjustarHipoteca` lo recalcula cada vez que se abre Gastos o el Histórico (un ticket tardío
   también cuenta); por eso, si se edita a mano el importe del fijo de hipoteca, se sobrescribe.
+- El mes siguiente (aún sin fijos) se ve como **previsión**: Veva y hipoteca ya descontada con el exceso de
+  compra que lleva el mes actual; no se guarda nada hasta el día 1 (Javier, 2026-11-20).
 
 ## Comida
 - La lista de la compra es SIEMPRE para 12 raciones ("somos una gran familia"), configurable en
