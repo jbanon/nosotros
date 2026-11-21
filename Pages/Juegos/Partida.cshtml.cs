@@ -26,7 +26,7 @@ public class PartidaModel(JuegosDiarios juegos, AppDb db) : PageModel
         var j = JuegosDiarios.Buscar(juego);
         if (j == null || !Enum.TryParse<TipoCasilla>(j.Tipo, out var tipo)) return false;
         Juego = j; Tipo = tipo;
-        Frase = JuegosDiarios.Frase(j, Reloj.Hoy);
+        Frase = await juegos.FraseDe(j, Reloj.Hoy);
         Bloqueado = EsAdmin ? null : await juegos.BloqueadoHasta(j, Reloj.Hoy);
         Hoy = await juegos.DeHoy(Yo, j, Reloj.Hoy);
         return true;

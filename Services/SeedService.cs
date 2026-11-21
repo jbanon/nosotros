@@ -210,6 +210,12 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
     /// únicamente si la casilla conserva el texto original, para no pisar lo que Javier haya editado en Admin.</summary>
     async Task CorregirAdviento()
     {
+        // 2026-11-21: frase de hoy de Bloques puesta por Javier (solo si aún no hay una suya para ese día)
+        if (Reloj.Hoy <= new DateOnly(2026, 11, 21) && await db.Configs.FindAsync("frase-juego:arkanoid:2026-11-21") == null)
+        {
+            db.Configs.Add(new Config { Clave = "frase-juego:arkanoid:2026-11-21", Valor = "No es por tu culo ni tu alegría. Es porque pensar en ti siempre me alegra el día" });
+            await db.SaveChangesAsync();
+        }
         // 2026-11-11: en el murdoku del día 3 la sospechosa es Aroa, no Miranda.
         var c = await db.Adviento.FirstOrDefaultAsync(x => x.Anio == 2026 && x.Dia == 3 && x.Tipo == TipoCasilla.Murdoku);
         if (c != null && c.Datos.Contains("\"Marcos\", \"Miranda\", \"Briska\""))

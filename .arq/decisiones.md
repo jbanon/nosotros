@@ -406,3 +406,5 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Javier, 2026-11-21: el Arkanoid («Bloques») se abre ya en Juegos (`JuegosDiarios.Activos`), sin esperar a su
   casilla. En la portada, tarjeta de estreno hasta que empiece el adviento (todo noviembre). Para la casilla del
   día 13 se inventará otro juego.
+- Frases del día de los juegos editables por Javi (`/Juegos/Frases`, de hoy a 14 días): se guardan en Config
+  (`frase-juego:{juego}:{fecha}`); vacía o igual a la de la lista = la de la lista (Javier, 2026-11-21).

@@ -143,3 +143,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-20 | Gastos: el mes siguiente muestra la previsión de fijos con la hipoteca ya descontada por la compra de más | 202f970 |
 | 2026-11-21 | Tema Navidad desde el 21 de noviembre (antes el 25) | 12c0acf |
 | 2026-11-21 | Navidad: Papá Noel que se asoma, guirnalda con bastones de caramelo y «Merry Christmas»; Bloques (Arkanoid) abierto en Juegos con tarjeta de estreno en la portada | 7171903 |
+| 2026-11-21 | Juegos: Javi puede editar las frases del día (/Juegos/Frases); la de Bloques de hoy, la suya | (este) |

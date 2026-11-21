@@ -51,10 +51,30 @@ public class JuegosDiarios(AppDb db)
         "Me haces reír hasta cuando me robas las patatas",
     ];
 
+    /// <summary>Frase por defecto (de la lista fija).</summary>
     public static string Frase(Juego j, DateOnly dia)
     {
         var k = Array.IndexOf(Todos, j);
         return Frases[(dia.DayNumber + k * 8) % Frases.Length];
+    }
+
+    static string ClaveFrase(Juego j, DateOnly dia) => $"frase-juego:{j.Clave}:{dia:yyyy-MM-dd}";
+
+    /// <summary>La frase del día: la que haya escrito Javi para ese juego y día o, si no, la de la lista.</summary>
+    public async Task<string> FraseDe(Juego j, DateOnly dia) =>
+        (await db.Configs.FindAsync(ClaveFrase(j, dia)))?.Valor is { Length: > 0 } f ? f : Frase(j, dia);
+
+    public async Task<bool> EsPropia(Juego j, DateOnly dia) => await db.Configs.FindAsync(ClaveFrase(j, dia)) != null;
+
+    /// <summary>Guarda la frase de Javi para ese día (vacía o igual a la de la lista: vuelve a la de la lista).</summary>
+    public async Task GuardarFrase(Juego j, DateOnly dia, string? texto)
+    {
+        texto = System.Text.RegularExpressions.Regex.Replace(texto ?? "", @"\s+", " ").Trim();
+        var c = await db.Configs.FindAsync(ClaveFrase(j, dia));
+        if (texto == "" || texto == Frase(j, dia)) { if (c != null) db.Configs.Remove(c); }
+        else if (c == null) db.Configs.Add(new Config { Clave = ClaveFrase(j, dia), Valor = texto });
+        else c.Valor = texto;
+        await db.SaveChangesAsync();
     }
 
     /// <summary>null si se puede jugar; si no, desde cuándo (o "pronto" si el juego aún no existe).</summary>

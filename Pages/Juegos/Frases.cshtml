@@ -1,0 +1,23 @@
+@page
+@model Love.Pages.Juegos.FrasesModel
+@{ ViewData["Title"] = "Frases de los juegos"; }
+<div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Frases de los juegos</h1></div>
+<p class="suave peq">Solo tú. Cada juego tiene una frase al día; escribe la tuya o déjala vacía para volver a la de la lista. Si Raquel ya está jugando la de hoy, cámbiala antes de que empiece.</p>
+@if (TempData["Ok"] is string ok) { <div class="aviso mb">@ok</div> }
+@foreach (var dia in Model.Filas.GroupBy(f => f.Dia))
+{
+    <div class="dia-cab">@(dia.Key == Love.Services.Reloj.Hoy ? "Hoy, " : "")@dia.Key.ToString("dddd d 'de' MMMM")</div>
+    @foreach (var f in dia)
+    {
+        <form method="post" class="tarjeta fj-frase @(f.Propia ? "propia" : "")" id="f-@f.Juego.Clave-@f.Dia.ToString("yyyyMMdd")">
+            <input type="hidden" name="juego" value="@f.Juego.Clave" />
+            <input type="hidden" name="dia" value="@f.Dia.ToString("yyyy-MM-dd")" />
+            <label class="etiqueta">@f.Juego.Emoji @f.Juego.Nombre @if (f.Propia) { <span class="suave peq">· tuya</span> }</label>
+            <textarea name="frase" rows="2" placeholder="@f.PorDefecto">@(f.Propia ? f.Frase : "")</textarea>
+            <div class="fila">
+                <span class="suave peq crece">@(f.Propia ? "" : "Ahora: la de la lista")</span>
+                <button class="btn pequeno">Guardar</button>
+            </div>
+        </form>
+    }
+}

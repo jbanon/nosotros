@@ -16,7 +16,7 @@
         diarios.Add((j, bloq, await Diarios.DeHoy(yo, j, Reloj.Hoy)));
     }
 }
-<div class="cab"><h1>Juegos</h1></div>
+<div class="cab"><h1>Juegos</h1>@if (User.EsAdmin()) { <a class="accion" href="/Juegos/Frases">✏️ Frases</a> }</div>
 <p class="suave peq" style="margin-top:0">Un ratito para pensar. Sin prisas… salvo en Cifras.</p>
 <a class="jg-tarjeta jg-cifras" href="/Juegos/Cifras">
     <div class="jg-vista" aria-hidden="true">
