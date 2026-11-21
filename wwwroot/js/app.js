@@ -63,7 +63,7 @@
     // Papá Noel: se asoma de vez en cuando por abajo o por un lado, saluda y, si lo tocas, suelta regalos
     function papaNoel() {
       const FRASES = ['¡Jo, jo, jo!', '¿Te has portado bien este año? 😏', 'Briska ya está en la lista de las buenas 🐾', 'Merry Christmas! 🎁',
-        'Javi me ha encargado algo para ti… 🤫', 'Shhh… no le digas a nadie que me has visto', '¡Este año me paso por tu casa el primero!', 'He traído caramelos 🍬'];
+        document.body.dataset.quien === 'miranda' ? 'Papá me ha encargado algo para ti… 🤫' : 'Javi me ha encargado algo para ti… 🤫', 'Shhh… no le digas a nadie que me has visto', '¡Este año me paso por tu casa el primero!', 'He traído caramelos 🍬'];
       let svg = null, fuera = true, visto = 0;
       fetch('/img/papanoel.svg').then(x => x.text()).then(t => { svg = t; setTimeout(sale, r(3000, 6000)); }).catch(() => { });
       function sale() {

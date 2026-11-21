@@ -2,6 +2,7 @@
 @inject IWebHostEnvironment WebEnv
 @{
     var esAdmin = User.EsAdmin();
+    var esMiranda = User.EsMiranda();
     var path = Context.Request.Path.Value ?? "";
     string act(string p) => path.StartsWith(p, StringComparison.OrdinalIgnoreCase) ? "activo" : "";
     var tema = ViewData["Tema"] as string;
@@ -11,7 +12,7 @@
     var teaser = User.Identity?.IsAuthenticated == true && !sinNav
         && hoyT < new DateOnly(hoyT.Year, 12, 1) && hoyT.Month >= 11
         && System.IO.File.Exists(System.IO.Path.Combine(WebEnv.WebRootPath, "img", "teaser.mp4"))
-        && (!esAdmin || Context.Request.Query.ContainsKey("teaser"));
+        && !esMiranda && (!esAdmin || Context.Request.Query.ContainsKey("teaser"));
 }
 <!DOCTYPE html>
 <html lang="es"@Html.Raw(tema != null ? $" data-tema=\"{tema}\"" : "")>
@@ -31,11 +32,18 @@
     <link rel="stylesheet" href="/css/app.css" asp-append-version="true" />
     @await RenderSectionAsync("Head", required: false)
 </head>
-<body class="@(sinNav ? "sin-nav" : "")">
+<body class="@(sinNav ? "sin-nav" : "")" data-quien="@(esMiranda ? "miranda" : null)">
     <main class="contenido">
         @RenderBody()
     </main>
-    @if (!sinNav && User.Identity?.IsAuthenticated == true)
+    @if (!sinNav && esMiranda)
+    {
+        <nav class="barra">
+            <a href="/Miranda" class="@act("/Miranda")"><span class="ico">⭐</span><span>Para ti</span></a>
+            <a href="/Juegos" class="@act("/Juegos")"><span class="ico">🎲</span><span>Juegos</span></a>
+        </nav>
+    }
+    else if (!sinNav && User.Identity?.IsAuthenticated == true)
     {
         <nav class="barra">
             <a href="/Amor" class="@act("/Amor")"><span class="ico">♥</span><span>@(esAdmin ? "Raquel" : "Para ti")</span></a>

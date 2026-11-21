@@ -42,6 +42,10 @@ public class PinAuth(AppDb db)
             new AuthenticationProperties { IsPersistent = true, ExpiresUtc = DateTimeOffset.UtcNow.AddDays(90) });
     }
 
+    /// <summary>¿Ese PIN ya es de otra persona? (el PIN es lo único que distingue a quién entra)</summary>
+    public async Task<bool> EnUso(Rol rol, string pin) =>
+        (await db.Usuarios.Where(x => x.Rol != rol).ToListAsync()).Any(x => BCrypt.Net.BCrypt.Verify(pin, x.PinHash));
+
     public async Task CambiarPin(Rol rol, string nuevoPin)
     {
         var u = await db.Usuarios.FirstAsync(x => x.Rol == rol);
@@ -53,4 +57,11 @@ public class PinAuth(AppDb db)
 public static class UserExt
 {
     public static bool EsAdmin(this ClaimsPrincipal u) => u.IsInRole("Admin");
+    public static bool EsMiranda(this ClaimsPrincipal u) => u.IsInRole(nameof(Rol.Miranda));
+    /// <summary>Página de inicio de cada uno.</summary>
+    public static string Inicio(this ClaimsPrincipal u) => u.EsAdmin() ? "/Gastos" : u.EsMiranda() ? "/Miranda" : "/Amor";
+    /// <summary>Lo único que puede abrir Miranda (además de los ficheros estáticos).</summary>
+    public static bool PermitidoMiranda(string ruta) =>
+        !ruta.StartsWith("/Juegos/Duelo", StringComparison.OrdinalIgnoreCase) &&
+        (ruta == "/" || new[] { "/Miranda", "/Juegos", "/Login" }.Any(p => ruta.Equals(p, StringComparison.OrdinalIgnoreCase) || ruta.StartsWith(p + "/", StringComparison.OrdinalIgnoreCase)));
 }

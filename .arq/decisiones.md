@@ -412,3 +412,15 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   (`frase-juego:{juego}:{fecha}`); vacía o igual a la de la lista = la de la lista (Javier, 2026-11-21).
 - Si la frase del día es de Javi y Raquel ya la ha jugado, ese día puede seguir jugando ese juego sin límite con
   **frases sorpresa** de la lista (una distinta por partida; `JuegosDiarios.FraseSorpresa`) (Javier, 2026-11-21).
+
+## Miranda (versión para la hija de Javi)
+- Javier, 2026-11-21: Miranda (nacida el 10/03/2015; alta, delgada, rubia y rizada; le gustan el baile, el
+  maquillaje, los muñecos y YouTube; muy graciosa) tiene su propio PIN y solo ve su página (`/Miranda`: frase del
+  día firmada «Papá» y acceso a los juegos) y `/Juegos`. Nada de lo de Raquel; sin Duelo ni teaser.
+- Frase del día: la escribe el agente de 14 en 14 (`MirandaService`, `TipoTareaAgente.FrasesMiranda`, en Config
+  `miranda-frase:yyyy-MM-dd`); divertidas y **no obvias** (nada cursi ni moralina). Si falta, una de reserva.
+  Javi la ve y la cambia en `/Miranda?fecha=`. El 10 de marzo, tarjeta de cumpleaños.
+- Juegos: Cifras fácil (objetivo de dos cifras que siempre sale exacto, sin reloj, botón de rendirse);
+  crucigrama propio (banco `Seed/crucigrama-miranda.json`, semillas aparte, no compartido); Bloques/Globos/
+  Comecocos con sus frases (`FrasesMiranda` en `JuegosDiarios`; las de Javi son solo para Raquel).
+- PIN: nunca en el repo. `Pins:Miranda` si está al crear el usuario; si no, Javi lo pone en Admin › Config.

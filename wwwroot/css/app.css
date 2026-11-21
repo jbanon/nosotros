@@ -938,6 +938,9 @@ html.con-cine, html.con-cine body { overflow: hidden; }
 .cf-pasos li, .cf-sol li { background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 99px; padding: 4px 12px; font-weight: 700; font-size: .92rem; font-variant-numeric: tabular-nums; }
 .cf-pasos li b, .cf-sol li b { color: var(--acento-texto); }
 .cf-acciones .btn { min-height: 44px; font-size: .9rem; }
+.cf.facil .cf-reloj, .cf.facil .cf-seg { display: none; }
+.cf-rindo { display: none; margin-top: 10px; }
+.jugando .cf-rindo { display: block; }
 .cf-inicio { background: var(--tarjeta); border-radius: var(--radio); box-shadow: var(--sombra); padding: 18px 16px; text-align: center; }
 .cf-inicio p { margin: 0 0 14px; color: var(--suave); }
 .cf-final { margin-top: 16px; }
@@ -1288,3 +1291,12 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .fj-frase { padding: 10px 12px; margin-bottom: 8px; }
 .fj-frase textarea { width: 100%; margin: 4px 0 6px; }
 .fj-frase.propia { border-color: var(--acento); }
+
+/* ---------- Miranda ---------- */
+.mi-juegos { position: relative; z-index: 2; display: block; color: var(--texto-amor); text-decoration: none; background: var(--tarjeta-amor); border: 1px solid rgba(255,255,255,.25);
+  border-radius: 18px; padding: 14px 16px; margin: 16px 0 0; box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+.mi-juegos-cab { display: flex; justify-content: space-between; align-items: baseline; font-weight: 800; font-size: 1.1rem; margin-bottom: 8px; color: var(--acento-amor); }
+.mi-juegos-cab span { font-weight: 600; font-size: .8rem; color: var(--texto-amor); opacity: .75; }
+.mi-juegos ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: .95rem; }
+.mi-admin { position: relative; z-index: 2; }
+.mi-admin textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 8px; border-radius: 10px; border: 1px solid var(--linea); }

@@ -31,10 +31,10 @@ public class PartidaModel(JuegosDiarios juegos, AppDb db) : PageModel
         var j = JuegosDiarios.Buscar(juego);
         if (j == null || !Enum.TryParse<TipoCasilla>(j.Tipo, out var tipo)) return false;
         Juego = j; Tipo = tipo;
-        Frase = await juegos.FraseDe(j, Reloj.Hoy);
+        Frase = await juegos.FraseDe(j, Reloj.Hoy, User.EsMiranda());
         Bloqueado = EsAdmin ? null : await juegos.BloqueadoHasta(j, Reloj.Hoy);
         Hoy = await juegos.DeHoy(Yo, j, Reloj.Hoy);
-        Propia = await juegos.EsPropia(j, Reloj.Hoy);
+        Propia = await juegos.EsPropia(j, Reloj.Hoy, User.EsMiranda());
         if (Hoy != null && !EsAdmin && Propia)
         {
             Libre = true;

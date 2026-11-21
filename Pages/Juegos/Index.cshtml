@@ -8,6 +8,7 @@
     var reto = Duelo.RetoPara(yo);
     var lineaMia = await Linea.DeSemana(yo, LineaArte.Lunes(Reloj.Hoy));
     var lineaJugada = lineaMia?.Fin != null && !User.EsAdmin();
+    var miranda = User.EsMiranda();
     var diarios = new List<(JuegosDiarios.Juego j, DateOnly? bloq, Love.Models.JuegoPartida? hoy)>();
     foreach (var j in JuegosDiarios.Todos)
     {
@@ -17,7 +18,7 @@
     }
 }
 <div class="cab"><h1>Juegos</h1>@if (User.EsAdmin()) { <a class="accion" href="/Juegos/Frases">✏️ Frases</a> }</div>
-<p class="suave peq" style="margin-top:0">Un ratito para pensar. Sin prisas… salvo en Cifras.</p>
+<p class="suave peq" style="margin-top:0">@(miranda ? "Un ratito para pensar y reírse. Sin prisas." : "Un ratito para pensar. Sin prisas… salvo en Cifras.")</p>
 <a class="jg-tarjeta jg-cifras" href="/Juegos/Cifras">
     <div class="jg-vista" aria-hidden="true">
         <div class="cf-marcador mini"><span>7</span><span>4</span><span>2</span></div>
@@ -25,10 +26,11 @@
     </div>
     <div class="jg-texto">
         <h2>Cifras</h2>
-        <p>Seis números, un objetivo y 45 segundos. Suma, resta, multiplica y divide hasta clavarlo.</p>
+        <p>@(miranda ? "Seis números y un objetivo, sin reloj. Suma, resta, multiplica y divide hasta clavarlo." : "Seis números, un objetivo y 45 segundos. Suma, resta, multiplica y divide hasta clavarlo.")</p>
         <p class="jg-stats" data-stats="cifras"></p>
     </div>
 </a>
+@if (!miranda) {
 <a class="jg-tarjeta jg-duelo" href="/Juegos/Duelo">
     <div class="jg-vista" aria-hidden="true">⚔️</div>
     <div class="jg-texto">
@@ -36,6 +38,7 @@
         <p>@(reto != null ? $"{reto} te ha retado. Mismos números, a la vez: ¿quién se acerca más?" : "Los dos a la vez con los mismos números. Gana quien más se acerque.")</p>
     </div>
 </a>
+}
 <a class="jg-tarjeta jg-cruci" href="/Juegos/Crucigrama">
     <div class="jg-vista" aria-hidden="true">
         <div class="jg-mini-cruci">
@@ -47,7 +50,7 @@
     </div>
     <div class="jg-texto">
         <h2>Crucigrama del día</h2>
-        <p>Uno nuevo cada día, compartido: lo que escribe uno le sale al otro al momento. Con definiciones con guasa.</p>
+        <p>@(miranda ? "Uno nuevo cada día, con definiciones de risa. Si te atascas, pide una letra." : "Uno nuevo cada día, compartido: lo que escribe uno le sale al otro al momento. Con definiciones con guasa.")</p>
         <p class="jg-stats" data-stats="cruci"></p>
     </div>
 </a>

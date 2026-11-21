@@ -54,6 +54,7 @@ public class ConfigModel(ConfigService config, PinAuth auth, FileStorage files, 
     {
         await Cargar();
         if (pin1 != pin2 || pin1.Length < 4 || !pin1.All(char.IsDigit)) { Mensaje = "Los PIN no coinciden o son demasiado cortos"; return Page(); }
+        if (await auth.EnUso(Enum.Parse<Rol>(rol), pin1)) { Mensaje = "Ese PIN ya lo usa otra persona"; return Page(); }
         await auth.CambiarPin(Enum.Parse<Rol>(rol), pin1);
         Mensaje = $"PIN de {rol} cambiado";
         return Page();

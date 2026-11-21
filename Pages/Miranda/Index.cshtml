@@ -1,0 +1,51 @@
+@page
+@model Love.Pages.Miranda.IndexModel
+@{
+    ViewData["Title"] = "Para Miranda";
+}
+<div class="amor mi-pagina" data-particulas="@Model.Tema.Particulas">
+    <div class="cielo"></div>
+    <div class="particulas" id="particulas"></div>
+
+    <header class="amor-cab">
+        <p class="saludo">@Model.Saludo, Miranda</p>
+        <p class="fecha">@Model.Fecha.ToString("dddd d 'de' MMMM")</p>
+    </header>
+
+    <article class="tarjeta-amor frase @(Model.Cumple != null ? "especial" : "")">
+        @if (Model.Cumple != null)
+        {
+            <div class="especial-cab"><span class="emoji">🎂</span><span class="nombre">¡Feliz cumpleaños!</span><span class="contador">@Model.Cumple años</span></div>
+        }
+        else
+        {
+            <p class="titulo">La frase del día</p>
+        }
+        <div class="texto"><p>@Model.Frase</p></div>
+        <p class="firma">— Papá</p>
+    </article>
+
+    <a class="mi-juegos" href="/Juegos">
+        <div class="mi-juegos-cab">🎲 A jugar <span>ver todos ›</span></div>
+        <ul>
+            <li>🔢 <b>Cifras</b> · sin reloj</li>
+            <li>✏️ <b>Crucigrama</b> · uno nuevo cada día</li>
+            @foreach (var (j, jugado) in Model.Diarios) { <li>@j.Emoji <b>@j.Nombre</b> · @(jugado ? "hoy ya jugado ✓" : "¡te toca hoy!")</li> }
+            <li>🖼️ <b>Línea del tiempo</b> · cuadros nuevos cada lunes</li>
+        </ul>
+    </a>
+
+    @if (Model.EsAdmin)
+    {
+        <form method="post" asp-page-handler="Guardar" class="tarjeta mt mi-admin">
+            <p class="suave peq">Solo tú: la frase de Miranda para el @Model.Fecha.ToString("d 'de' MMMM")@(Model.Preparando ? " · el agente está escribiendo la próxima tanda…" : "").</p>
+            <input type="hidden" name="fecha" value="@Model.Fecha.ToString("yyyy-MM-dd")" />
+            <textarea name="frase" rows="3">@Model.Frase</textarea>
+            <div class="fila mt">
+                <a class="btn crece" href="/Miranda?fecha=@Model.Fecha.AddDays(-1).ToString("yyyy-MM-dd")">‹ Anterior</a>
+                <button class="btn primario crece">Guardar</button>
+                <a class="btn crece" href="/Miranda?fecha=@Model.Fecha.AddDays(1).ToString("yyyy-MM-dd")">Siguiente ›</a>
+            </div>
+        </form>
+    }
+</div>

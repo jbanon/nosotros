@@ -14,13 +14,20 @@ public class CrucigramaGenerador(IWebHostEnvironment env)
     public record Def(int Num, string Dir, int Fila, int Col, int Largo, string Pista, string Palabra);
     public record Rejilla(int Filas, int Cols, List<Def> Defs);
 
-    List<(string palabra, string pista)>? banco;
+    /// <summary>Las semillas de Miranda van aparte (su banco, para 11 años, y su propia partida, no compartida).</summary>
+    public const int OffsetMiranda = 1_000_000_000;
 
-    List<(string palabra, string pista)> Banco() => banco ??= JsonSerializer
-        .Deserialize<List<string[]>>(File.ReadAllText(Path.Combine(env.ContentRootPath, "Seed", "crucigrama.json")))!
+    List<(string palabra, string pista)>? banco, bancoMiranda;
+
+    List<(string palabra, string pista)> Banco(bool miranda) => miranda
+        ? bancoMiranda ??= Leer("crucigrama-miranda.json")
+        : banco ??= Leer("crucigrama.json");
+
+    List<(string palabra, string pista)> Leer(string fichero) => JsonSerializer
+        .Deserialize<List<string[]>>(File.ReadAllText(Path.Combine(env.ContentRootPath, "Seed", fichero)))!
         .Select(x => (Criptofrase.SoloLetras(x[0]), x[1])).Where(x => x.Item1.Length >= 3 && x.Item1.Length <= Max).ToList();
 
-    public static int Semilla(DateOnly dia, int n) => dia.DayNumber * 31 + n * 7919;
+    public static int Semilla(DateOnly dia, int n, bool miranda = false) => dia.DayNumber * 31 + n * 7919 + (miranda ? OffsetMiranda : 0);
 
     readonly System.Collections.Concurrent.ConcurrentDictionary<int, Rejilla> cache = new();
 
@@ -39,7 +46,7 @@ public class CrucigramaGenerador(IWebHostEnvironment env)
     {
         var rnd = new Random(semilla);
         // Una pista por palabra (si hay varias, al azar)
-        var palabras = Banco().GroupBy(x => x.palabra).Select(g => g.ElementAt(rnd.Next(g.Count()))).ToList();
+        var palabras = Banco(semilla >= OffsetMiranda).GroupBy(x => x.palabra).Select(g => g.ElementAt(rnd.Next(g.Count()))).ToList();
         Rejilla? mejor = null; double puntos = -1;
         for (int intento = 0; intento < 40; intento++)
         {

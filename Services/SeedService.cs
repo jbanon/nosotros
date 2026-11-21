@@ -26,6 +26,14 @@ public class SeedService(AppDb db, IWebHostEnvironment env, IConfiguration cfg, 
             db.Usuarios.Add(new Usuario { Nombre = "Raquel", Rol = Rol.Raquel, PinHash = BCrypt.Net.BCrypt.HashPassword(pinRaquel) });
         }
 
+        // Miranda (2026-11-21): su PIN de Pins:Miranda si está; si no, uno imposible hasta que Javi lo ponga en Admin › Config.
+        if (await db.Usuarios.AnyAsync() && !await db.Usuarios.AnyAsync(u => u.Rol == Rol.Miranda))
+        {
+            var pin = cfg["Pins:Miranda"];
+            db.Usuarios.Add(new Usuario { Nombre = "Miranda", Rol = Rol.Miranda,
+                PinHash = BCrypt.Net.BCrypt.HashPassword(string.IsNullOrWhiteSpace(pin) ? Guid.NewGuid().ToString() : pin) });
+        }
+
         // El usuario administrador se llama Javi (antes "Admin"); renombra en bases ya creadas.
         var adminViejo = await db.Usuarios.FirstOrDefaultAsync(u => u.Rol == Rol.Admin && u.Nombre == "Admin");
         if (adminViejo != null) adminViejo.Nombre = "Javi";

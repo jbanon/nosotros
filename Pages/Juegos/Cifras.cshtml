@@ -1,12 +1,24 @@
 @page
-@{ ViewData["Title"] = "Cifras"; }
+@{
+    ViewData["Title"] = "Cifras";
+    // Miranda: números fáciles (objetivo de dos cifras que siempre se puede clavar) y sin reloj
+    var facil = User.EsMiranda();
+}
 <div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Cifras</h1><span class="jg-record suave peq" id="cf-record"></span></div>
-<a class="cf-retar" href="/Juegos/Duelo">⚔️ Duelo a dos: retar al otro</a>
-<div class="cf" id="cf">
+@if (!facil) { <a class="cf-retar" href="/Juegos/Duelo">⚔️ Duelo a dos: retar al otro</a> }
+<div class="cf @(facil ? "facil" : "")" id="cf" data-facil="@(facil ? "1" : "")">
     <partial name="_CifrasTablero" />
     <div class="cf-inicio" id="cf-inicio">
-        <p>Seis números y un objetivo de tres cifras.<br />Combínalos con + − × ÷ (cada número, una vez) y acércate todo lo que puedas.</p>
-        <button type="button" class="btn primario ancho" id="cf-empezar">¡Vamos! · 45 s</button>
+        @if (facil)
+        {
+            <p>Seis números y un objetivo.<br />Combínalos con + − × ÷ (cada número, una vez) hasta clavarlo. Sin reloj: piensa todo lo que quieras.</p>
+            <button type="button" class="btn primario ancho" id="cf-empezar">¡Vamos!</button>
+        }
+        else
+        {
+            <p>Seis números y un objetivo de tres cifras.<br />Combínalos con + − × ÷ (cada número, una vez) y acércate todo lo que puedas.</p>
+            <button type="button" class="btn primario ancho" id="cf-empezar">¡Vamos! · 45 s</button>
+        }
     </div>
 </div>
 @section Scripts { <script src="/js/cifras.js" asp-append-version="true"></script> }

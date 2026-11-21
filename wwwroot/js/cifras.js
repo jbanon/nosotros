@@ -5,6 +5,8 @@
   const SEG = 45, OPS = { '+': '+', '-': '−', '*': '×', '/': '÷' };
   const elObj = $('cf-objetivo'), elFichas = $('cf-fichas'), elPasos = $('cf-pasos'), elFinal = $('cf-final'),
         elBarra = $('cf-barra'), elSeg = $('cf-seg'), elInicio = $('cf-inicio'), raiz = $('cf');
+  // Modo fácil (Miranda): objetivo de dos cifras que siempre se puede clavar, sin reloj y con botón de rendirse
+  const FACIL = raiz.dataset.facil === '1';
   const lee = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || 'null') ?? d; } catch { return d; } };
   const guarda = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { } };
   const zumba = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch { } };
@@ -16,10 +18,16 @@
       objetivo = r.objetivo; fichas = r.nums.map((v, i) => ({ v, usado: false, k: i }));
       vistos = new Set(r.nums); pasos = []; sel = null; op = null; fin = false; agotado = false; return;
     }
-    const bolsa = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100];
-    const nums = [];
-    for (let i = 0; i < 6; i++) nums.push(bolsa.splice(Math.floor(Math.random() * bolsa.length), 1)[0]);
-    objetivo = 101 + Math.floor(Math.random() * 899);
+    let nums;
+    for (let intento = 0; ; intento++) {
+      const bolsa = FACIL ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50]
+                          : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100];
+      nums = [];
+      for (let i = 0; i < 6; i++) nums.push(bolsa.splice(Math.floor(Math.random() * bolsa.length), 1)[0]);
+      if (!FACIL) { objetivo = 101 + Math.floor(Math.random() * 899); break; }
+      objetivo = 11 + Math.floor(Math.random() * 89);
+      if (intento > 30 || (!nums.includes(objetivo) && resolver(nums, objetivo).d === 0)) break;
+    }
     fichas = nums.map((v, i) => ({ v, usado: false, k: i }));
     vistos = new Set(nums); pasos = []; sel = null; op = null; fin = false; agotado = false;
   }
@@ -30,7 +38,7 @@
     raiz.classList.add('rodando');
     let n = 0;
     const t = setInterval(() => {
-      pintaObjetivo(String(101 + Math.floor(Math.random() * 899)));
+      pintaObjetivo(String(FACIL ? 11 + Math.floor(Math.random() * 89) : 101 + Math.floor(Math.random() * 899)));
       if (++n > 12) { clearInterval(t); pintaObjetivo(objetivo); raiz.classList.remove('rodando'); elObj.classList.add('fijado'); cb(); }
     }, 55);
   }
@@ -49,6 +57,7 @@
     elPasos.innerHTML = pasos.map(p => `<li>${p.a} ${OPS[p.op]} ${p.b} = <b>${p.r}</b></li>`).join('');
     $('cf-deshacer').disabled = fin || !pasos.length;
     $('cf-reiniciar').disabled = fin || !pasos.length;
+    if ($('cf-rindo')) $('cf-rindo').disabled = fin;
   }
 
   function sacude(i, msg) {
@@ -201,12 +210,18 @@
     elBarra.style.transform = 'scaleX(1)'; elSeg.textContent = SEG;
     fin = true; pinta(); fin = false;
     raiz.classList.add('repartiendo');
-    const arranca = () => { raiz.classList.remove('repartiendo'); raiz.classList.add('reparte'); setTimeout(() => raiz.classList.remove('reparte'), 900); pinta(); inicio = r ? r.inicio : performance.now(); tick = requestAnimationFrame(reloj); };
+    const arranca = () => { raiz.classList.remove('repartiendo'); raiz.classList.add('reparte'); setTimeout(() => raiz.classList.remove('reparte'), 900); pinta(); inicio = r ? r.inicio : performance.now(); if (!FACIL) tick = requestAnimationFrame(reloj); };
     rodar(() => setTimeout(arranca, r ? Math.max(0, r.inicio - performance.now()) : 0));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  pintaObjetivo('???'); pintaRecord();
+  if (FACIL) {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'btn fantasma ancho cf-rindo'; b.id = 'cf-rindo';
+    b.textContent = '🏳️ Me rindo: ver la solución';
+    b.addEventListener('click', terminar);
+    document.querySelector('.cf-acciones').after(b);
+  }
+  pintaObjetivo(FACIL ? '??' : '???'); pintaRecord();
   if (D) window.cifras = { empezar, parar, resolver, confeti, valores: () => [...vistos] };
   else $('cf-empezar').addEventListener('click', () => empezar());
 })();

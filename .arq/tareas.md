@@ -147,3 +147,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-21 | Juegos: tras jugar la frase de Javi, partidas extra con frases sorpresa | 299773f |
 | 2026-11-21 | Juegos: al acabar, las palabras se esfuman una cada 3 s (antes 0,91 s) en globos, comecocos y bloques | 3e27a93 |
 | 2026-11-21 | Efemérides: cada día, una cuarta de 1980 con la etiqueta «🎂 El año que naciste»; las ya guardadas sin ella se rehacen una vez al tocarles | 1d7086d |
+| 2026-11-21 | Miranda: usuario propio con su frase del día (agente), Cifras fácil sin reloj, crucigrama infantil y frases de juegos para su edad | (este) |
