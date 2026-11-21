@@ -146,7 +146,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     graves), en bucle y acelerando con las palabras cazadas; se para al ganar, perder, salir o esconder la página.
     Explosión en cada globo (con campanitas en el corazón). Botón 🔊/🔇 junto a la × (se recuerda en
     `localStorage['gl-mudo']`).
-  - Al acabar, las palabras cazadas se ven 1,25 s y luego se esfuma una cada 0,91 s (antes 2,5 s y 1 s; Javier,
+  - Al acabar, las palabras cazadas se ven 1,25 s y luego se esfuma una cada 3 s (2026-11-21, en todos los juegos; antes 0,91 s, y antes 2,5 s y 1 s; Javier,
     2026-11-17: la mitad de espera y un 10 % más rápido); ya no vuelven a salir
     (`estado.ocultas`). Si vuelve a jugar para cazar más, se enseñan de nuevo y se esfuman otra vez.
   - Rendimiento en el móvil: cada globo se dibuja una vez en un canvas aparte y luego solo se copia; como mucho
@@ -166,7 +166,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   - Frase (`datos.frase`): "Quien fuera tu ombligo para estar a la sombra de tus tetas". El juego acaba con los bloques
     fuera **y** todas las palabras cazadas: sin bloques se sigue jugando, con Briska volviendo enseguida (0,7 s) y
     soltando 2 cacas por visita; perder las 3 pelotas sigue siendo perder. Después las palabras cazadas se enseñan y se
-    esfuman **al mismo ritmo que en globos** (1,25 s de espera, una cada 0,91 s) y toca escribir la frase con el mismo
+    esfuman **al mismo ritmo que en globos** (1,25 s de espera, una cada 3 s) y toca escribir la frase con el mismo
     sistema de intentos y pistas. La comprobación final la hace el servidor (`ComprobarArkanoid`), sin tildes ni comas.
   - **Cacas** (Javier, 2026-11-17): con bloques, 3 o 4 visitas al azar sueltan una 💩 que cae. Si cae en la pala, esta
     se mancha de marrón durante 10 s (parpadea los 2 últimos, con cuenta atrás) y deja de seguir al dedo al momento:

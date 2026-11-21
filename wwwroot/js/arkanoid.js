@@ -36,7 +36,7 @@
     palaVelManchada: 0.75,   // con la pala manchada, la pala sigue al dedo a esta velocidad (anchos de pantalla por segundo)
     entradilla: 3200,        // ms de la presentación de BriskaBird al empezar (un toque la salta)
     esfumaEspera: 1250,      // ms que se ven las palabras al acabar antes de empezar a esfumarse (igual que en globos)
-    esfumaCada: 910,         // ms entre palabra y palabra que se esfuma (igual que en globos)
+    esfumaCada: 3000,        // ms entre palabra y palabra que se esfuma (igual que en globos)
   };
   const COLORES = ['#ff5d73', '#ffb84d', '#6bcb77', '#38c6d9', '#4d96ff', '#b07cff', '#ff8fab'];
   const bbImg = new Image(); bbImg.src = '/img/briska/briskabird.png';

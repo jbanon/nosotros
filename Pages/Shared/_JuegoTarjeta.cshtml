@@ -17,7 +17,7 @@
                     <li>Los <b>corazones dorados</b> esconden una palabra y desaparecen enseguida. La que se te escape volverá a salir: hay que cazarlas <b>todas</b>.</li>
                     <li>Si se te escapan <b><span id="gl-max">12</span> globos</b>, vuelta a empezar.</li>
                     <li class="gl-regla-bb"><img src="/img/briska/briskabird.png" alt="" /><span>Cuidado con <b>BriskaBird</b>: sale 10 veces, sin avisar. Cada vez que la caces, puedes dejar escapar 1 globo más.</span></li>
-                    <li>Memoriza las palabras según las cazas: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
+                    <li>Memoriza las palabras según las cazas: no se apuntan en ningún sitio y al acabar se esfuman poco a poco.</li>
                 </ul>
             }
             <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(Model.Resuelta ? "Jugar otra vez" : Model.Diario ? "Jugar la partida de hoy" : "¡Empezar!")</button>
@@ -42,7 +42,7 @@ else if (Model.Tipo == TipoCasilla.Arkanoid)
                     <li>Arrastra el dedo para mover la <b>pala</b> y toca para lanzar la pelota. Tira todos los bloques sin que se te caiga.</li>
                     <li>Tienes <b><span id="ak-vidas-max">3</span> vidas</b>. Si las pierdes, vuelta a empezar.</li>
                     <li class="gl-regla-bb"><img src="/img/briska/briskabird.png" alt="" /><span><b>BriskaBird</b> revolotea entre los bloques. Cada vez que le des con la pelota, suelta una <b>palabra</b> de la frase. La que se escape vuelve a salir: sin bloques se sigue jugando hasta cazarlas todas. Y ojo con sus cacas 💩: si te cae una en la pala, irá más lenta 10 segundos.</span></li>
-                    <li>Memoriza las palabras según salen: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
+                    <li>Memoriza las palabras según salen: no se apuntan en ningún sitio y al acabar se esfuman poco a poco.</li>
                 </ul>
             }
             <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(Model.Resuelta ? "Jugar otra vez" : Model.Diario ? "Jugar la partida de hoy" : "¡Empezar!")</button>
@@ -67,7 +67,7 @@ else if (Model.Tipo == TipoCasilla.Comecocos)
                     <li><b>Desliza el dedo</b> hacia donde quieras girar el carrito: va solo por los pasillos y gira en el siguiente cruce. Recoge <b>toda la compra</b> (los puntitos).</li>
                     <li>Te persiguen <b>el ticket kilométrico</b> y <b>la oferta 3x2</b>. Los <b>cafés</b> ☕ de las esquinas te dan un chute de velocidad. Tienes <b><span id="cc-vidas-max">3</span> vidas</b>; sin vidas, vuelta a empezar.</li>
                     <li class="gl-regla-bb"><img src="/img/briska/briskanguro.png" alt="" /><span><b>Briskanguro</b> va dando saltitos por los pasillos. Cada vez que la pilles, suelta una <b>palabra</b> de la frase. La que se escape volverá a salir.</span></li>
-                    <li>Memoriza las palabras según salen: no se apuntan en ningún sitio y al acabar se esfuman enseguida.</li>
+                    <li>Memoriza las palabras según salen: no se apuntan en ningún sitio y al acabar se esfuman poco a poco.</li>
                 </ul>
             }
             <button class="btn adv-btn primario ancho" id="gl-empezar" type="button">@(Model.Resuelta ? "Jugar otra vez" : Model.Diario ? "Jugar la partida de hoy" : "¡Empezar!")</button>

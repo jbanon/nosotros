@@ -38,7 +38,7 @@
     entradilla: 3200,        // ms de la presentación de Briskanguro al empezar (un toque la salta)
     muerte: 1400,            // ms de pausa al pillarte (los primeros 800 con el carrito patas arriba)
     esfumaEspera: 1250,      // ms que se ven las palabras al acabar antes de empezar a esfumarse (igual que en globos)
-    esfumaCada: 910,         // ms entre palabra y palabra que se esfuma (igual que en globos)
+    esfumaCada: 3000,        // ms entre palabra y palabra que se esfuma (igual que en globos)
   };
   // Laberinto propio: # pared · . compra · o café (bola grande) · ' ' pasillo vacío · c almacén de los perseguidores · - su puerta · P salida del carrito.
   // La fila 7 es un túnel: por los extremos se sale por un lado y se entra por el otro.

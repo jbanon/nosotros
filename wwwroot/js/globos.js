@@ -26,7 +26,7 @@
     ],
     volMusica: 0.22,         // volumen de la musiquita de ladridos (0-1)
     esfumaEspera: 1250,      // ms que se ven todas las palabras al acabar antes de empezar a esfumarse
-    esfumaCada: 910,         // ms entre palabra y palabra que se esfuma
+    esfumaCada: 3000,        // ms entre palabra y palabra que se esfuma
     pulso: [0.3, 0.23],      // segundos por negra de la música: al empezar y con todas las palabras cazadas
   };
   const bbImg = new Image(); bbImg.src = '/img/briska/briskabird.png';
