@@ -19,7 +19,7 @@
 @foreach (var (it, i) in Model.Items.Select((x, i) => (x, i)))
 {
     <article class="ef-articulo" id="ef-@i">
-        <p class="ef-anio"><span class="ef-emoji">@it.Emoji</span> @it.Anio</p>
+        <p class="ef-anio"><span class="ef-emoji">@it.Emoji</span> @it.Anio@if (Love.Services.EfemeridesService.EsNaciste(it)) { <span class="ef-naciste">🎂 El año que naciste</span> }</p>
         <h2>@it.Titular</h2>
         @foreach (var par in it.Articulo.Replace("\r", "").Split("\n\n", StringSplitOptions.RemoveEmptyEntries)) { <p>@par.Trim()</p> }
         @if (!string.IsNullOrWhiteSpace(it.Fuente)) { <p class="suave peq">Fuente: @it.Fuente</p> }

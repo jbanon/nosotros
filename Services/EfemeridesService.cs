@@ -6,12 +6,16 @@ using Microsoft.EntityFrameworkCore;
 namespace Love.Services;
 
 /// <summary>
-/// Efemérides del día ("tal día como hoy"): el agente escribe tres, graciosas o muy llamativas, para cada día del año.
+/// Efemérides del día ("tal día como hoy"): el agente escribe tres, graciosas o muy llamativas, más una de 1980 (el año en que nació Raquel), para cada día del año.
 /// Se guardan por mes y día y se reutilizan los años siguientes.
 /// </summary>
 public class EfemeridesService(AppDb db, AgenteService agente)
 {
     public record Item(string Anio, string Emoji, string Titular, string Resumen, string Articulo, string Fuente);
+
+    /// <summary>Raquel nació en 1980: cada día, una de las efemérides es de ese año («El año que naciste»).</summary>
+    public const string AnioNaciste = "1980";
+    public static bool EsNaciste(Item i) => i.Anio.Trim() == AnioNaciste;
 
     public static string Clave(DateOnly d) => $"{d.Month:00}-{d.Day:00}";
 
@@ -41,7 +45,10 @@ public class EfemeridesService(AppDb db, AgenteService agente)
         foreach (var d in new[] { hoy, hoy.AddDays(1) })
         {
             var k = Clave(d);
-            if (await db.Efemerides.AnyAsync(x => x.Mes == d.Month && x.Dia == d.Day) || await Preparando(d)) continue;
+            if (await Preparando(d)) continue;
+            var e = await db.Efemerides.FirstOrDefaultAsync(x => x.Mes == d.Month && x.Dia == d.Day);
+            // Las que se hicieron antes de la de 1980 se rehacen una vez (sin borrarlas mientras tanto)
+            if (e != null && (Items(e).Any(EsNaciste) || await db.TareasAgente.CountAsync(t => t.Tipo == TipoTareaAgente.Efemerides && t.Entrada == k) >= 2)) continue;
             if (await db.TareasAgente.AnyAsync(t => t.Tipo == TipoTareaAgente.Efemerides && t.Entrada == k && t.Estado == EstadoTarea.Error && t.Creada > desde)) continue;
             await Encargar(d, "programador");
             return;   // de una en una

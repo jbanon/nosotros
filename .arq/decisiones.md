@@ -401,6 +401,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   reutilizan los años siguientes. `EfemeridesProgramador` cada hora encarga las de hoy y las de mañana si faltan
   (de una en una; tras un error espera 6 h). Javi puede pedir otras desde la página.
 - Raquel no ve días futuros; puede ir hacia atrás.
+- Javier, 2026-11-21: siempre una cuarta del mismo día de **1980** (año en que nació Raquel), la última, con la
+  etiqueta «🎂 El año que naciste». Las guardadas sin ella se rehacen una vez cuando les toca (máx. 2 tareas por día).
 
 ## Bloques (Arkanoid) fuera del adviento
 - Javier, 2026-11-21: el Arkanoid («Bloques») se abre ya en Juegos (`JuegosDiarios.Activos`), sin esperar a su

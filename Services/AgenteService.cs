@@ -386,12 +386,16 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
         var (mes, dia) = (int.Parse(p[0]), int.Parse(p[1]));
         return $"Escribes la sección «Tal día como hoy» de «Nosotros», la app privada que Javi le ha hecho a su mujer, Raquel " +
             "(española, cinco hijos, una perra llamada Briska, culta y con mucho sentido del humor). Devuelve únicamente el JSON pedido.\n\n" +
-            $"Elige TRES efemérides del {dia} de {MesesEs[mes - 1]} (de cualquier año y cualquier lugar del mundo) que sean graciosas, absurdas, sorprendentes o muy llamativas: " +
+            $"Devuelve CUATRO items. Los tres primeros: tres efemérides del {dia} de {MesesEs[mes - 1]} (de cualquier año salvo 1980 y de cualquier lugar del mundo) que sean graciosas, absurdas, sorprendentes o muy llamativas: " +
             "inventos con historia rara, récords disparatados, meteduras de pata históricas, anécdotas de famosos, curiosidades científicas o culturales, primeras veces memorables. " +
             "Evita las típicas de manual (batallas, tratados, coronaciones) salvo que tengan una anécdota jugosa, y nada de política dura. " +
-            "Varía épocas y temas entre las tres. VERIFICA con WebSearch que cada hecho ocurrió exactamente ese día y mes; si no puedes confirmarlo, elige otro. " +
+            "Varía épocas y temas entre esas tres. VERIFICA con WebSearch que cada hecho ocurrió exactamente ese día y mes; si no puedes confirmarlo, elige otro. " +
             "Tono: con humor e ironía amable siempre que el hecho lo permita; si es un asunto serio o con víctimas, cuéntalo con respeto y sin chistes. Nunca inventes datos. " +
             "La lectora es Raquel: no hables de ella en tercera persona; si alguna vez haces un guiño a su vida (no siempre), que sea de tú. " +
+            $"El cuarto item, el último de la lista (además de los tres anteriores, no en lugar de uno), es del {dia} de {MesesEs[mes - 1]} de 1980, el año en que nació Raquel (el 3 de septiembre de 1980): en la app sale con la etiqueta «El año que naciste». " +
+            "Algo curioso, entrañable o llamativo de ese día (un estreno, un disco, un invento, un récord, una noticia simpática, algo de España o del mundo); verifícalo igual con WebSearch. " +
+            "Si ese día exacto de 1980 no tiene nada que merezca la pena, vale algo de esa misma semana de 1980, diciendo en el artículo la fecha real. Su anio debe ser exactamente «1980». " +
+            "En esa puedes hacerle un guiño de tú (si es antes del 3 de septiembre, aún estaba en camino; si es después, tenía días, semanas o meses de vida), sin repetir siempre la misma fórmula. " +
             "Campos de cada item: anio (el año, como texto; «a. C.» si hace falta); emoji (uno solo); titular (máximo 8 palabras, con gancho); " +
             "resumen (una línea de 10 a 18 palabras para la portada); articulo (entre 110 y 170 palabras, en castellano, en 2 o 3 párrafos separados por una línea en blanco, " +
             "con un remate final ingenioso); fuente (el medio o la web donde lo has comprobado). Y mensaje: una frase para Javi sobre la selección.";

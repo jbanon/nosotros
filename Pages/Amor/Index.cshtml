@@ -148,7 +148,7 @@
         <a class="ef-portada" href="/Efemerides@(Model.Preview ? $"?fecha={Model.Fecha:yyyy-MM-dd}" : "")">
             <div class="ef-portada-cab">📅 Tal día como hoy <span>leer ›</span></div>
             <ul>
-                @foreach (var e in Model.Efemerides) { <li><b>@e.Anio</b><span>@e.Emoji @e.Resumen</span></li> }
+                @foreach (var e in Model.Efemerides) { <li><b>@e.Anio</b><span>@(Love.Services.EfemeridesService.EsNaciste(e) ? "🎂 El año que naciste · " : "")@e.Emoji @e.Resumen</span></li> }
             </ul>
         </a>
     }

@@ -1262,6 +1262,7 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .ef-articulo h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; line-height: 1.2; margin: 2px 0 8px; }
 .ef-anio { margin: 0; font-weight: 800; color: var(--acento); letter-spacing: .03em; }
 .ef-emoji { font-size: 1.2rem; }
+.ef-naciste { margin-left: 8px; padding: 2px 8px; border-radius: 999px; font-size: .75rem; letter-spacing: 0; background: var(--acento); color: #fff; vertical-align: 2px; }
 
 /* Presentación del juego nuevo (Bloques) en la portada */
 .estreno-bloques { position: relative; z-index: 2; display: block; overflow: hidden; margin: 14px 0; padding: 14px 14px 16px; border-radius: 20px; text-decoration: none;
