@@ -144,4 +144,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-21 | Tema Navidad desde el 21 de noviembre (antes el 25) | 12c0acf |
 | 2026-11-21 | Navidad: Papá Noel que se asoma, guirnalda con bastones de caramelo y «Merry Christmas»; Bloques (Arkanoid) abierto en Juegos con tarjeta de estreno en la portada | 7171903 |
 | 2026-11-21 | Juegos: Javi puede editar las frases del día (/Juegos/Frases); la de Bloques de hoy, la suya | e9c05eb |
-| 2026-11-21 | Juegos: tras jugar la frase de Javi, partidas extra con frases sorpresa | (este) |
+| 2026-11-21 | Juegos: tras jugar la frase de Javi, partidas extra con frases sorpresa | 299773f |
