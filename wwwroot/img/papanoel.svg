@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250">
+  <!-- Papá Noel saludando (dibujo propio de la app) -->
+  <defs>
+    <radialGradient id="cara" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ffe0c8"/><stop offset="1" stop-color="#f6c39f"/></radialGradient>
+    <linearGradient id="rojo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8323c"/><stop offset="1" stop-color="#b3141f"/></linearGradient>
+  </defs>
+  <!-- cuerpo -->
+  <path d="M38 250 C40 190 62 160 100 160 C138 160 160 190 162 250 Z" fill="url(#rojo)"/>
+  <rect x="40" y="212" width="120" height="18" rx="4" fill="#2a1a14"/>
+  <rect x="88" y="208" width="24" height="26" rx="4" fill="none" stroke="#f2c14e" stroke-width="5"/>
+  <path d="M100 162 L100 208" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+  <!-- brazo que saluda -->
+  <g class="pn-brazo">
+    <path d="M150 182 C168 168 176 146 178 124" stroke="url(#rojo)" stroke-width="22" stroke-linecap="round" fill="none"/>
+    <ellipse cx="179" cy="114" rx="13" ry="15" fill="#1f6b3a"/>
+    <rect x="164" y="124" width="30" height="9" rx="4" fill="#fff" transform="rotate(8 179 128)"/>
+  </g>
+  <!-- otro brazo -->
+  <path d="M52 182 C40 196 38 214 44 228" stroke="url(#rojo)" stroke-width="22" stroke-linecap="round" fill="none"/>
+  <ellipse cx="46" cy="234" rx="13" ry="12" fill="#1f6b3a"/>
+  <!-- barba -->
+  <path d="M46 104 C44 150 70 186 100 190 C130 186 156 150 154 104 C140 118 120 120 100 120 C80 120 60 118 46 104 Z" fill="#fff"/>
+  <circle cx="60" cy="150" r="14" fill="#fff"/><circle cx="140" cy="150" r="14" fill="#fff"/><circle cx="80" cy="176" r="14" fill="#fff"/><circle cx="120" cy="176" r="14" fill="#fff"/>
+  <!-- cara -->
+  <ellipse cx="100" cy="100" rx="44" ry="40" fill="url(#cara)"/>
+  <circle cx="68" cy="110" r="10" fill="#ff8a8a" opacity=".55"/><circle cx="132" cy="110" r="10" fill="#ff8a8a" opacity=".55"/>
+  <!-- ojos risueños -->
+  <path d="M74 96 Q82 87 90 96" stroke="#3a2418" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M110 96 Q118 87 126 96" stroke="#3a2418" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- bigote y nariz -->
+  <path d="M100 116 C88 104 64 110 60 124 C74 120 88 124 100 122 C112 124 126 120 140 124 C136 110 112 104 100 116 Z" fill="#fff"/>
+  <ellipse cx="100" cy="110" rx="10" ry="8" fill="#ff7070"/>
+  <!-- boca -->
+  <path d="M88 130 Q100 144 112 130 Z" fill="#8a2a2a"/>
+  <!-- cejas -->
+  <path d="M70 82 Q82 74 92 82" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M108 82 Q118 74 130 82" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <!-- gorro -->
+  <path d="M148 74 C144 30 104 6 66 18 C44 26 30 46 24 70 C40 52 54 48 60 58 C50 62 52 70 52 74 Z" fill="url(#rojo)"/>
+  <circle cx="22" cy="76" r="13" fill="#fff"/>
+  <rect x="46" y="64" width="108" height="22" rx="11" fill="#fff"/>
+</svg>

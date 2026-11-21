@@ -54,6 +54,9 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Declaración permanente bajo la tarjeta del día, editable en Admin → Configuración.
 - Pie: "N días juntos" (sin "Llevamos").
 - Tema Navidad desde el 21 de noviembre (Javier lo adelantó del 25 al 21 el 2026-11-21) hasta el 6 de enero.
+  Lleva (Javier, 2026-11-21): guirnalda con cable, bombillas, bastones de caramelo y «Merry Christmas» arriba, y
+  **Papá Noel** (`img/papanoel.svg`, dibujo propio) que se asoma cada 20-40 s por abajo o por un lado; al tocarlo
+  saluda con una frase, cascabeles sintetizados y lluvia de regalos. Partícula «santa» del tema (portada y adviento).
 - Tema otoño: tonos suaves (`--fondo-1:#f9ead4` … `--acento-amor:#a9442a`), hojas 🍂🍁 sin
   la verde. Modo oscuro vía `prefers-color-scheme` en las páginas normales.
 - Lecturas: Javier pega el texto (o sube .txt) en Admin → Lecturas; lector a pantalla completa
@@ -398,3 +401,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   reutilizan los años siguientes. `EfemeridesProgramador` cada hora encarga las de hoy y las de mañana si faltan
   (de una en una; tras un error espera 6 h). Javi puede pedir otras desde la página.
 - Raquel no ve días futuros; puede ir hacia atrás.
+
+## Bloques (Arkanoid) fuera del adviento
+- Javier, 2026-11-21: el Arkanoid («Bloques») se abre ya en Juegos (`JuegosDiarios.Activos`), sin esperar a su
+  casilla. En la portada, tarjeta de estreno hasta que empiece el adviento (todo noviembre). Para la casilla del
+  día 13 se inventará otro juego.

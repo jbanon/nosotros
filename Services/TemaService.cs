@@ -7,7 +7,7 @@ public static class TemaService
 {
     public static readonly Dictionary<string, Tema> Temas = new()
     {
-        ["navidad"]     = new("navidad", "Navidad", "nieve luces", "🎄"),
+        ["navidad"]     = new("navidad", "Navidad", "nieve luces santa", "🎄"),
         ["invierno"]    = new("invierno", "Invierno", "nieve", "❄️"),
         ["valentin"]    = new("valentin", "San Valentín", "corazones", "💘"),
         ["primavera"]   = new("primavera", "Primavera", "petalos", "🌸"),

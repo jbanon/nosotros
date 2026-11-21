@@ -350,8 +350,35 @@ html[data-tema] body .contenido { padding: 0; max-width: none; }
 [data-tema=otono] .p-hoja { opacity: .85; filter: saturate(.9) drop-shadow(0 4px 6px rgba(80,30,20,.2)); }
 [data-tema=invierno] .cielo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
   background: linear-gradient(to top, rgba(255,255,255,.7), transparent); }
-[data-tema=navidad] .luces { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 10px 6px 0; }
-[data-tema=navidad] .luces i { width: 12px; height: 16px; border-radius: 50% 50% 55% 55%; animation: bombilla 1.8s ease-in-out infinite; }
+[data-tema=navidad] .luces { position: absolute; top: 0; left: 0; right: 0; height: 100px; pointer-events: none; }
+[data-tema=navidad] .luces svg { display: block; overflow: visible; }
+.luces .bombilla { animation: bombilla 1.8s ease-in-out infinite; }
+.luces .feliz { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600;
+  font-size: 1.45rem; color: #f5cc5c; letter-spacing: .04em; text-shadow: 0 0 10px rgba(245,204,92,.55), 0 2px 0 rgba(0,0,0,.25); animation: feliz 3.5s ease-in-out infinite; }
+.luces .feliz span { font-style: normal; font-size: .9rem; vertical-align: middle; color: #fff; opacity: .85; }
+@keyframes feliz { 0%,100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.04); filter: brightness(1.25); } }
+[data-tema=navidad] .amor-cab { padding-top: 66px; }
+/* Papá Noel que se asoma (tema Navidad) */
+.papanoel { position: fixed; z-index: 15; width: 118px; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: transform .65s cubic-bezier(.3, 1.35, .5, 1); transform: translate(var(--x0, 0), var(--y0, 0)) rotate(var(--rot, 0)); }
+.papanoel.dentro { transform: translate(var(--x1, 0), var(--y1, 0)) rotate(var(--rot, 0)); }
+.papanoel svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 10px rgba(0,0,0,.3)); }
+.papanoel.abajo-izq { left: 10px; bottom: calc(var(--nav-alto) + env(safe-area-inset-bottom) - 6px); --rot: -7deg; --y0: 120%; --y1: 22%; }
+.papanoel.abajo-der { right: 10px; bottom: calc(var(--nav-alto) + env(safe-area-inset-bottom) - 6px); --rot: 7deg; --y0: 120%; --y1: 22%; }
+.papanoel.izq { left: 0; top: 42%; --rot: 28deg; --x0: -125%; --x1: -28%; }
+.papanoel.der { right: 0; top: 42%; --rot: -28deg; --x0: 125%; --x1: 28%; }
+.papanoel.abajo-der svg, .papanoel.der svg { transform: scaleX(-1); }
+.papanoel .pn-brazo { transform-box: view-box; transform-origin: 150px 182px; animation: pn-saluda .45s ease-in-out infinite alternate; }
+@keyframes pn-saluda { from { transform: rotate(-12deg); } to { transform: rotate(14deg); } }
+.papanoel.rie svg { animation: pn-rie .18s ease-in-out 6; }
+.papanoel.abajo-der.rie svg, .papanoel.der.rie svg { animation-name: pn-rie-espejo; }
+@keyframes pn-rie { 50% { transform: translateY(-4px) rotate(3deg); } }
+@keyframes pn-rie-espejo { 0%,100% { transform: scaleX(-1); } 50% { transform: scaleX(-1) translateY(-4px) rotate(3deg); } }
+.papanoel-dice { position: absolute; bottom: 92%; left: 30%; width: max-content; max-width: 190px; transform: rotate(calc(-1 * var(--rot, 0deg)));
+  background: #fff; color: #5a1d2a; font: 800 .95rem/1.3 Nunito, system-ui, sans-serif; padding: 8px 12px; border-radius: 14px 14px 14px 4px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.25); animation: la-pop .3s ease-out; text-align: left; }
+.papanoel.der .papanoel-dice, .papanoel.abajo-der .papanoel-dice { left: auto; right: 30%; border-radius: 14px 14px 4px 14px; }
+@media (prefers-reduced-motion: reduce) { .papanoel .pn-brazo, .luces .feliz, .luces .bombilla { animation: none; } }
 @keyframes bombilla { 0%,100% { opacity: 1; filter: brightness(1.2) drop-shadow(0 0 6px currentColor); } 50% { opacity: .45; filter: none; } }
 @keyframes respirar { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
@@ -1222,9 +1249,10 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .la-ficha .btn { margin-top: 12px; }
 
 /* ---------- Tal día como hoy (efemérides) ---------- */
-.ef-portada { display: block; color: inherit; text-decoration: none; background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 16px; padding: 12px 14px; margin: 10px 0; box-shadow: var(--sombra); }
-.ef-portada-cab { display: flex; justify-content: space-between; align-items: baseline; font-weight: 800; margin-bottom: 6px; }
-.ef-portada-cab span { font-weight: 600; font-size: .8rem; color: var(--suave); }
+.ef-portada { position: relative; z-index: 2; display: block; color: var(--texto-amor); text-decoration: none; background: var(--tarjeta-amor); border: 1px solid rgba(255,255,255,.25);
+  border-radius: 16px; padding: 12px 14px; margin: 10px 0; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.ef-portada-cab { display: flex; justify-content: space-between; align-items: baseline; font-weight: 800; margin-bottom: 6px; color: var(--acento-amor); }
+.ef-portada-cab span { font-weight: 600; font-size: .8rem; color: var(--texto-amor); opacity: .75; }
 .ef-portada ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .ef-portada li { display: flex; gap: 8px; line-height: 1.3; font-size: .92rem; }
 .ef-portada li b { flex: none; min-width: 3.2em; }
@@ -1234,3 +1262,24 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .ef-articulo h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; line-height: 1.2; margin: 2px 0 8px; }
 .ef-anio { margin: 0; font-weight: 800; color: var(--acento); letter-spacing: .03em; }
 .ef-emoji { font-size: 1.2rem; }
+
+/* Presentación del juego nuevo (Bloques) en la portada */
+.estreno-bloques { position: relative; z-index: 2; display: block; overflow: hidden; margin: 14px 0; padding: 14px 14px 16px; border-radius: 20px; text-decoration: none;
+  color: #fff; background: linear-gradient(160deg, #24124a, #3b1f6e 55%, #5a2a7a); box-shadow: 0 12px 30px rgba(30,10,60,.35); border: 1px solid rgba(255,255,255,.18); }
+.eb-ladrillos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 12px; }
+.eb-ladrillos i { height: 12px; border-radius: 3px; box-shadow: inset 0 -3px 0 rgba(0,0,0,.2); animation: eb-ladrillo 4.5s ease-in-out infinite; }
+.eb-ladrillos i:nth-child(6n+1) { background: #ff5a6e; } .eb-ladrillos i:nth-child(6n+2) { background: #ffb347; animation-delay: .3s; }
+.eb-ladrillos i:nth-child(6n+3) { background: #ffe066; animation-delay: .6s; } .eb-ladrillos i:nth-child(6n+4) { background: #6be38b; animation-delay: .9s; }
+.eb-ladrillos i:nth-child(6n+5) { background: #5ab4ff; animation-delay: 1.2s; } .eb-ladrillos i:nth-child(6n) { background: #c78bff; animation-delay: 1.5s; }
+.eb-ladrillos i:nth-child(8), .eb-ladrillos i:nth-child(15) { animation: eb-rompe 3s ease-in-out infinite; }
+@keyframes eb-ladrillo { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.25); } }
+@keyframes eb-rompe { 0%,40% { opacity: 1; transform: none; } 50% { opacity: 0; transform: scale(1.3) rotate(8deg); } 90% { opacity: 0; } 100% { opacity: 1; } }
+.eb-briska { position: absolute; right: 8px; top: 34px; width: 76px; animation: gl-flota 2s ease-in-out infinite; filter: drop-shadow(0 6px 8px rgba(0,0,0,.35)); }
+.eb-pelota { position: absolute; left: 30%; top: 30px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 0 10px #fff; animation: eb-bota 2.2s ease-in-out infinite; }
+@keyframes eb-bota { 0%,100% { transform: translate(0, 0); } 25% { transform: translate(60px, 50px); } 50% { transform: translate(120px, 6px); } 75% { transform: translate(40px, 44px); } }
+.eb-texto { display: flex; flex-direction: column; gap: 4px; padding-right: 80px; }
+.eb-etiqueta { align-self: flex-start; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; background: #ffe066; color: #3b1f6e; padding: 2px 8px; border-radius: 999px; }
+.eb-texto b { font-size: 1.35rem; line-height: 1.2; }
+.eb-texto > span:not(.eb-etiqueta):not(.eb-boton) { font-size: .92rem; line-height: 1.4; opacity: .92; }
+.eb-boton { align-self: flex-start; margin-top: 6px; background: #fff; color: #3b1f6e; font-weight: 800; padding: 8px 16px; border-radius: 999px; box-shadow: 0 4px 0 rgba(0,0,0,.25); }
+@media (prefers-reduced-motion: reduce) { .eb-ladrillos i, .eb-briska, .eb-pelota { animation: none; } }

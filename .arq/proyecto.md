@@ -58,8 +58,9 @@ dotnet ef migrations add Nombre -o Data/Migrations
 - Pruebas con curl y tarros de cookies: login en `/Login` con el PIN (token antiforgery
   raspado de la página), un tarro para Javi y otro para Raquel, y comprobar el HTML de cada
   página. Los handlers son `?handler=X` en la URL del `action` del formulario.
-- No hay navegador ni Chromium utilizable aquí; el diseño se valida a ciegas y Javier manda
-  capturas.
+- Capturas: `chrome-headless-shell` de Playwright (~/.cache/ms-playwright/chromium_headless_shell-1228) funciona
+  con `LD_LIBRARY_PATH` apuntando a libatk y compañía extraídas en el scratchpad (`libs/usr/lib/x86_64-linux-gnu`;
+  si no están, hay que volver a bajarlas). Javier sigue haciendo la prueba visual final en el móvil.
 - PIN locales y cadena de Postgres en `appsettings.Local.json` (ignorado). Postgres local instalado con
   `sudo LOVE_ENV=App_Data/love.env ./deploy/instalar-postgres.sh` (la contraseña está en ese fichero).
   Migraciones: `ConnectionStrings__Love=... dotnet ef migrations add Nombre --context AppDb -o Data/Migrations`.

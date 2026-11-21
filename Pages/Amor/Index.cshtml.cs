@@ -36,6 +36,9 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
     public PildoraFrances? PildoraNueva { get; set; }
     /// <summary>Efemérides del día (tal día como hoy), para el esquema de la portada.</summary>
     public List<EfemeridesService.Item> Efemerides { get; set; } = new();
+    /// <summary>Presentación del juego nuevo (Bloques/Arkanoid) en la portada hasta que empiece el adviento (Javier, 2026-11-21).</summary>
+    public bool EstrenoBloques { get; set; }
+    public bool BloquesHoyJugado { get; set; }
 
     public async Task OnGet(DateOnly? fecha)
     {
@@ -52,6 +55,8 @@ public class IndexModel(MensajeService mensajes, ConfigService config, AppDb db,
         PildoraNueva = await db.Pildoras.Where(p => p.Fecha <= Fecha && p.Fecha >= Fecha.AddDays(-7) && !p.Entregas.Any(e => e.UsuarioId == yo))
             .OrderByDescending(p => p.Fecha).ThenByDescending(p => p.Id).FirstOrDefaultAsync();
         Efemerides = await efemerides.Del(Fecha);
+        EstrenoBloques = Fecha.Month == 11;
+        if (EstrenoBloques) { var f0 = Fecha; BloquesHoyJugado = await db.JuegoPartidas.AnyAsync(p => p.UsuarioId == yo && p.Juego == "arkanoid" && p.Fecha == f0); }
         LecturaNueva = await db.Lecturas.Where(l => l.Publicada && !l.Leida).OrderByDescending(l => l.Creada).FirstOrDefaultAsync();
 
         var aniversario = await db.FechasEspeciales.Where(x => x.AnioOrigen != null && x.Tema == "aniversario").FirstOrDefaultAsync();

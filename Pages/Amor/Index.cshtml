@@ -71,6 +71,20 @@
         </a>
     }
 
+    @if (Model.EstrenoBloques)
+    {
+        <a class="estreno-bloques" href="/Juegos/Partida/arkanoid">
+            <div class="eb-ladrillos" aria-hidden="true">@for (int i = 0; i < 18; i++) { <i></i> }</div>
+            <img src="/img/briska/briskabird.png" alt="" class="eb-briska" />
+            <span class="eb-pelota" aria-hidden="true"></span>
+            <div class="eb-texto">
+                <span class="eb-etiqueta">✨ Juego nuevo</span>
+                <b>¡Llegan los Bloques!</b>
+                <span>Tira todos los ladrillos con la pelota y dale a BriskaBird para que suelte las palabras de una frase secreta. Una partida al día.</span>
+                <span class="eb-boton">@(Model.BloquesHoyJugado ? "Hoy ya has jugado · mañana, más ›" : "Jugar ahora ›")</span>
+            </div>
+        </a>
+    }
     @if (Model.ObraSemana != null)
     {
         <a class="lectura-aviso" href="/Arte/Ver/@Model.ObraSemana.Id">

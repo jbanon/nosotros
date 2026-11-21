@@ -17,6 +17,9 @@ public class JuegosDiarios(AppDb db)
         new("comecocos", "Comecocos", "🦘", "Comecocos", "Recorre el laberinto y alcanza a Briskanguro para que suelte palabras."),
     ];
 
+    /// <summary>Juegos ya abiertos en Juegos sin esperar a su casilla del adviento (Javier, 2026-11-21: el Arkanoid).</summary>
+    static readonly string[] Activos = ["arkanoid"];
+
     public static Juego? Buscar(string? clave) => Todos.FirstOrDefault(j => j.Clave == clave);
 
     /// <summary>Frases del día: graciosas y con algo de clase. Cada juego toma una distinta cada día.</summary>
@@ -58,6 +61,7 @@ public class JuegosDiarios(AppDb db)
     public async Task<DateOnly?> BloqueadoHasta(Juego j, DateOnly hoy)
     {
         if (!Enum.TryParse<TipoCasilla>(j.Tipo, out var tipo)) return DateOnly.MaxValue;
+        if (Activos.Contains(j.Clave)) return null;
         var anio = AdvientoService.AnioDe(hoy);
         var c = await db.Adviento.Where(x => x.Anio == anio && x.Tipo == tipo).OrderBy(x => x.Dia).FirstOrDefaultAsync();
         return c == null || AdvientoService.Abierta(c, hoy) ? null : AdvientoService.FechaDe(c);

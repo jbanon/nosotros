@@ -13,6 +13,7 @@
   decisiones → Comida); una skill propia de Alexa queda como opción si la piden.
 
 ## Hilos abiertos
+- Inventar un juego nuevo para la casilla del día 13 del adviento (el Arkanoid ya está abierto en Juegos desde el 21-11).
 - **Arte por temas: trabajarlo la semana del 16 de noviembre de 2026** (Javier). El plan y el orden están en
   decisiones → "Arte por temas". Falta implementar:
   - Entidad Tema, con el capítulo de tipo "tour general" o "autor".
@@ -141,3 +142,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-18 | Tal día como hoy: tres efemérides graciosas al día (esquema en portada, artículos al entrar), guardadas por mes y día | c7e33c5 |
 | 2026-11-20 | Gastos: el mes siguiente muestra la previsión de fijos con la hipoteca ya descontada por la compra de más | 202f970 |
 | 2026-11-21 | Tema Navidad desde el 21 de noviembre (antes el 25) | 12c0acf |
+| 2026-11-21 | Navidad: Papá Noel que se asoma, guirnalda con bastones de caramelo y «Merry Christmas»; Bloques (Arkanoid) abierto en Juegos con tarjeta de estreno en la portada | (este) |

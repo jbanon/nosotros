@@ -17,12 +17,8 @@
     };
     (amor.dataset.particulas || '').split(' ').forEach(k => {
       const c = cfg[k];
-      if (k === 'luces') {
-        const l = document.createElement('div'); l.className = 'luces';
-        for (let i = 0; i < 14; i++) { const b = document.createElement('i'); b.style.background = b.style.color = colores[i % colores.length]; b.style.animationDelay = r(0, 2) + 's'; l.appendChild(b); }
-        amor.querySelector('.cielo').appendChild(l);
-        return;
-      }
+      if (k === 'luces') { guirnalda(amor.querySelector('.cielo')); return; }
+      if (k === 'santa') { papaNoel(); return; }
       if (!c) return;
       for (let i = 0; i < c.n; i++) {
         const s = document.createElement('span');
@@ -38,6 +34,79 @@
         cont.appendChild(s);
       }
     });
+    // Guirnalda navideña: cable que cuelga, bombillas que parpadean, bastones de caramelo y el cartel "Merry Christmas"
+    function guirnalda(cielo) {
+      if (!cielo) return;
+      const NS = 'http://www.w3.org/2000/svg';
+      const caja = document.createElement('div'); caja.className = 'luces';
+      cielo.appendChild(caja);
+      const pinta = () => {
+        const w = caja.clientWidth || innerWidth, n = Math.max(5, Math.round(w / 52)), paso = w / n, sag = 30, top = 6;
+        let d = `M0 ${top}`, html = '';
+        for (let i = 0; i < n; i++) {
+          const x0 = i * paso, xm = x0 + paso / 2, ym = top + sag / 2;
+          d += ` Q${xm} ${sag + top} ${x0 + paso} ${top}`;
+          const c = colores[i % colores.length];
+          html += `<g class="bombilla" style="color:${c};animation-delay:${(i * 0.37 % 1.8).toFixed(2)}s" transform="translate(${xm} ${ym}) rotate(${i % 2 ? 8 : -8})">` +
+            `<rect x="-3.5" y="0" width="7" height="6" rx="1.5" fill="#2c3a2e"/><ellipse cx="0" cy="13" rx="6" ry="8.5" fill="${c}"/><ellipse cx="-2" cy="10" rx="1.6" ry="3" fill="#fff" opacity=".6"/></g>`;
+          if (i % 2 === 1) html += `<g class="baston" transform="translate(${x0} ${top - 1}) rotate(${i % 4 === 1 ? -10 : 10})">` +
+            `<path d="M0 30 V8 a6 6 0 0 1 12 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>` +
+            `<path d="M0 30 V8 a6 6 0 0 1 12 0" fill="none" stroke="#e23a3a" stroke-width="5" stroke-linecap="round" stroke-dasharray="4 4"/></g>`;
+        }
+        caja.innerHTML = `<svg xmlns="${NS}" width="${w}" height="64" viewBox="0 0 ${w} 64"><path d="${d}" fill="none" stroke="#7d9a6f" stroke-width="2"/>${html}</svg>` +
+          '<div class="feliz"><span>✦</span> Merry Christmas <span>✦</span></div>';
+      };
+      pinta();
+      let rt = 0; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(pinta, 200); });
+    }
+
+    // Papá Noel: se asoma de vez en cuando por abajo o por un lado, saluda y, si lo tocas, suelta regalos
+    function papaNoel() {
+      const FRASES = ['¡Jo, jo, jo!', '¿Te has portado bien este año? 😏', 'Briska ya está en la lista de las buenas 🐾', 'Merry Christmas! 🎁',
+        'Javi me ha encargado algo para ti… 🤫', 'Shhh… no le digas a nadie que me has visto', '¡Este año me paso por tu casa el primero!', 'He traído caramelos 🍬'];
+      let svg = null, fuera = true, visto = 0;
+      fetch('/img/papanoel.svg').then(x => x.text()).then(t => { svg = t; setTimeout(sale, r(3000, 6000)); }).catch(() => { });
+      function sale() {
+        if (document.hidden || !fuera) { setTimeout(sale, 4000); return; }
+        fuera = false;
+        const lados = ['abajo-izq', 'abajo-der', 'izq', 'der'], lado = lados[Math.floor(r(0, lados.length))];
+        const pn = document.createElement('button'); pn.type = 'button'; pn.className = 'papanoel ' + lado; pn.setAttribute('aria-label', 'Papá Noel');
+        pn.innerHTML = svg; document.body.appendChild(pn);
+        requestAnimationFrame(() => requestAnimationFrame(() => pn.classList.add('dentro')));
+        let t = setTimeout(vete, 4200);
+        pn.addEventListener('click', () => {
+          clearTimeout(t); jingle(); regalos(pn);
+          const b = document.createElement('div'); b.className = 'papanoel-dice'; b.textContent = FRASES[visto++ % FRASES.length];
+          pn.appendChild(b); pn.classList.add('rie');
+          t = setTimeout(vete, 2600);
+        }, { once: true });
+        function vete() { pn.classList.remove('dentro'); setTimeout(() => { pn.remove(); fuera = true; }, 700); setTimeout(sale, r(22000, 40000)); }
+      }
+      function regalos(pn) {
+        const q = pn.getBoundingClientRect(), cx = q.left + q.width / 2, cy = q.top + q.height / 3;
+        for (let i = 0; i < 12; i++) {
+          const h = document.createElement('span'); h.className = 'p-estela'; h.textContent = ['🎁', '🍬', '⭐', '❄️'][i % 4];
+          h.style.left = cx + 'px'; h.style.top = cy + 'px';
+          h.style.setProperty('--dx', r(-140, 140) + 'px'); h.style.setProperty('--dy', r(-240, -80) + 'px'); h.style.fontSize = r(16, 28) + 'px';
+          document.body.appendChild(h); setTimeout(() => h.remove(), 1300);
+        }
+      }
+      // Cascabeles sintetizados (sin ficheros)
+      function jingle() {
+        try {
+          const AC = new (window.AudioContext || window.webkitAudioContext)(), t0 = AC.currentTime;
+          [[0, 1319], [0.12, 1319], [0.24, 1319], [0.48, 1568], [0.6, 1047]].forEach(([dt, f]) => {
+            [1, 2.76].forEach((m, j) => {
+              const o = AC.createOscillator(), g = AC.createGain(); o.type = 'sine'; o.frequency.value = f * m;
+              g.gain.setValueAtTime(0.0001, t0 + dt); g.gain.exponentialRampToValueAtTime(j ? 0.04 : 0.12, t0 + dt + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dt + 0.35);
+              o.connect(g); g.connect(AC.destination); o.start(t0 + dt); o.stop(t0 + dt + 0.4);
+            });
+          });
+          setTimeout(() => AC.close(), 1500);
+        } catch { }
+      }
+    }
+
     // corazón: lluvia de corazones al tocar
     const corazon = document.getElementById('corazon');
     corazon?.addEventListener('click', e => {
