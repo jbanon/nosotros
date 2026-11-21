@@ -4,6 +4,7 @@ using Love.Models;
 using Love.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Love.Pages.Juegos;
 
@@ -18,7 +19,11 @@ public class PartidaModel(JuegosDiarios juegos, AppDb db) : PageModel
     public JuegoPartida? Hoy { get; set; }
     public bool EsAdmin => User.EsAdmin();
     /// <summary>Ya ha gastado la partida de hoy (al admin nunca se le acaba).</summary>
-    public bool YaJugada => Hoy != null && !EsAdmin;
+    public bool YaJugada => Hoy != null && !EsAdmin && !Libre;
+    /// <summary>Ya jugó la frase que puso Javi para hoy: puede seguir con frases sorpresa, sin límite.</summary>
+    public bool Libre { get; set; }
+    /// <summary>La frase de hoy la ha puesto Javi.</summary>
+    public bool Propia { get; set; }
     int Yo => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     async Task<bool> Cargar(string juego)
@@ -29,6 +34,14 @@ public class PartidaModel(JuegosDiarios juegos, AppDb db) : PageModel
         Frase = await juegos.FraseDe(j, Reloj.Hoy);
         Bloqueado = EsAdmin ? null : await juegos.BloqueadoHasta(j, Reloj.Hoy);
         Hoy = await juegos.DeHoy(Yo, j, Reloj.Hoy);
+        Propia = await juegos.EsPropia(j, Reloj.Hoy);
+        if (Hoy != null && !EsAdmin && Propia)
+        {
+            Libre = true;
+            var hoy = Reloj.Hoy; var clave = j.Clave; var yo = Yo;
+            var n = await db.JuegoPartidas.CountAsync(p => p.UsuarioId == yo && p.Juego == clave && p.Fecha == hoy);
+            Frase = JuegosDiarios.FraseSorpresa(j, hoy, n, Frase);
+        }
         return true;
     }
 

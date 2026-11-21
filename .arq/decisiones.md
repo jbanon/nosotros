@@ -408,3 +408,5 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   día 13 se inventará otro juego.
 - Frases del día de los juegos editables por Javi (`/Juegos/Frases`, de hoy a 14 días): se guardan en Config
   (`frase-juego:{juego}:{fecha}`); vacía o igual a la de la lista = la de la lista (Javier, 2026-11-21).
+- Si la frase del día es de Javi y Raquel ya la ha jugado, ese día puede seguir jugando ese juego sin límite con
+  **frases sorpresa** de la lista (una distinta por partida; `JuegosDiarios.FraseSorpresa`) (Javier, 2026-11-21).

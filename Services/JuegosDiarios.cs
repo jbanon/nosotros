@@ -58,6 +58,14 @@ public class JuegosDiarios(AppDb db)
         return Frases[(dia.DayNumber + k * 8) % Frases.Length];
     }
 
+    /// <summary>Frase sorpresa para las partidas extra (tras jugar la de Javi): fija para cada día, juego y número de partida.</summary>
+    public static string FraseSorpresa(Juego j, DateOnly dia, int partida, string excluir)
+    {
+        var lista = Frases.Where(f => f != excluir).ToArray();
+        var k = Array.IndexOf(Todos, j);
+        return lista[new Random(dia.DayNumber * 31 + k * 7 + partida).Next(lista.Length)];
+    }
+
     static string ClaveFrase(Juego j, DateOnly dia) => $"frase-juego:{j.Clave}:{dia:yyyy-MM-dd}";
 
     /// <summary>La frase del día: la que haya escrito Javi para ese juego y día o, si no, la de la lista.</summary>

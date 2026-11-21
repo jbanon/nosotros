@@ -24,8 +24,10 @@
     if (navigator.vibrate) navigator.vibrate([20, 40, 20, 40, 60]);
   };
   // Tras la partida, la tarjeta deja de ofrecer jugar (salvo al admin)
+  const otra = '<p class="msg centrado">¿Otra frase sorpresa?</p><button class="btn adv-btn primario ancho" type="button" onclick="location.reload()">Otra partida ›</button><a class="btn adv-btn fantasma pequeno ancho" href="/Juegos">Volver a Juegos</a>';
   const cierraTarjeta = html => {
     if (datos.admin) return;
+    if (datos.libre || datos.propia) html = otra;
     const ini = document.getElementById('gl-inicio');
     if (ini) ini.innerHTML = html;
   };
@@ -41,7 +43,11 @@
       enviar('Terminar', { gano: true, palabras }).catch(() => { });
       return { ok: true, solucion: datos.vista.frase };
     },
-    ganado: () => { datos.resuelta = true; celebrar(); aviso('¡Frase acertada! Mañana, otra.'); },
+    ganado: () => {
+      datos.resuelta = true; celebrar();
+      // Tras acertar la frase de Javi (o una sorpresa), se puede seguir con frases sorpresa
+      if (datos.libre || datos.propia) { aviso('¡Frase acertada!'); cierraTarjeta(otra); } else aviso('¡Frase acertada! Mañana, otra.');
+    },
     fin: r => {
       enviar('Terminar', r).catch(() => { });
       cierraTarjeta('<p class="msg centrado">La partida de hoy ya está jugada 🐾</p><p class="suave2 centrado">Mañana, otra partida y otra frase.</p><a class="btn adv-btn ancho" href="/Juegos">Volver a Juegos</a>');
