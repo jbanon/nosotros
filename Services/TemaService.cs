@@ -26,7 +26,7 @@ public static class TemaService
             int v = m * 100 + d, a = m1 * 100 + d1, b = m2 * 100 + d2;
             return a <= b ? v >= a && v <= b : v >= a || v <= b;
         }
-        if (entre(11, 25, 1, 6)) return Temas["navidad"];   // desde el 25 de noviembre, con el aviso del adviento
+        if (entre(11, 21, 1, 6)) return Temas["navidad"];   // desde el 21 de noviembre (Javier, 2026-11-21)
         if (entre(10, 25, 11, 1)) return Temas["halloween"];
         if (entre(1, 7, 3, 19)) return Temas["invierno"];
         if (entre(3, 20, 6, 20)) return Temas["primavera"];
