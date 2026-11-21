@@ -140,4 +140,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-18 | Línea del tiempo: álbum del museo con las obras jugadas (año, autor, texto breve de Wikipedia) | c7e33c5 |
 | 2026-11-18 | Tal día como hoy: tres efemérides graciosas al día (esquema en portada, artículos al entrar), guardadas por mes y día | c7e33c5 |
 | 2026-11-20 | Gastos: el mes siguiente muestra la previsión de fijos con la hipoteca ya descontada por la compra de más | 202f970 |
-| 2026-11-21 | Tema Navidad desde el 21 de noviembre (antes el 25) | (este) |
+| 2026-11-21 | Tema Navidad desde el 21 de noviembre (antes el 25) | 12c0acf |
