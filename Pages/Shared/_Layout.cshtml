@@ -36,12 +36,17 @@
 <body class="@(sinNav ? "sin-nav" : "")" data-quien="@(nina?.Slug)">
     <main class="contenido">
         @RenderBody()
+        @if (!sinNav && !esNina && User.Identity?.IsAuthenticated == true)
+        {
+            <p class="salir-pie"><a class="btn fantasma pequeno" href="/Login?salir=true" onclick="return confirm('¿Cerrar sesión? Para volver a entrar hará falta el PIN.')">🚪 Cerrar sesión</a></p>
+        }
     </main>
     @if (!sinNav && esNina)
     {
         <nav class="barra">
             <a href="/Hola" class="@act("/Hola")"><span class="ico">⭐</span><span>Para ti</span></a>
             <a href="/Juegos" class="@act("/Juegos")"><span class="ico">🎲</span><span>Juegos</span></a>
+            <a href="/Login?salir=true" onclick="return confirm('¿Salir? Para volver a entrar hará falta el PIN.')"><span class="ico">🚪</span><span>Salir</span></a>
         </nav>
     }
     else if (!sinNav && User.Identity?.IsAuthenticated == true)

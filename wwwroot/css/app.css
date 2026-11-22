@@ -1391,3 +1391,6 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .jg-tablas .jg-vista { background: radial-gradient(120% 120% at 50% 0%, #5b2a86, #1f1140); color: #fff; }
 .jg-tablas-op { font-size: 1.7rem; font-weight: 900; color: #ff9ccc; text-shadow: 0 0 12px rgba(255,95,162,.6); }
 .jg-tablas-est { color: #ffd84d; letter-spacing: 1px; }
+
+/* Cerrar sesión: al pie de cada página (los niños lo tienen en la barra) */
+.salir-pie { text-align: center; margin: 2.5rem 0 .5rem; }
