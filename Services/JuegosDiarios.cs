@@ -51,41 +51,12 @@ public class JuegosDiarios(AppDb db)
         "Me haces reír hasta cuando me robas las patatas",
     ];
 
-    /// <summary>Las de Miranda (11 años): de risa, nada de amor de pareja.</summary>
-    static readonly string[] FrasesMiranda =
-    [
-        "Briska baila mejor que tú pero no se lo digas",
-        "Los rizos rubios son muelles llenos de alegría",
-        "Quien hace el tonto en el coche nunca llega aburrida",
-        "Mi peluche favorito sabe todos mis secretos",
-        "Un pedo a tiempo vale más que mil chistes",
-        "Hoy me maquillo de tigre y salgo a rugir",
-        "Las caras raras en el semáforo son puro arte",
-        "Briska quiere un canal de YouTube con mil seguidores",
-        "Bailar en la cocina hace que la cena sepa mejor",
-        "Soy tan alta que saludo a las nubes por la mañana",
-        "El pintalabios va en los labios y no en la nariz",
-        "Un vídeo más y me voy a dormir dijo nadie nunca",
-        "Mi perra me roba los calcetines y no se arrepiente",
-        "Las tonterías en el coche se pagan con carcajadas",
-        "Si me peino los rizos se ponen a protestar",
-        "Hoy he bailado tanto que el suelo pide vacaciones",
-        "Mis muñecos hacen una fiesta cuando apago la luz",
-        "Briska se comió los deberes y no tengo pruebas",
-        "Papá canta fatal pero baila todavía peor",
-        "El mejor escenario del mundo es la ducha a todo volumen",
-        "Los lunes deberían empezar siempre a las doce",
-        "Un chiste malo bien contado es un chiste buenísimo",
-        "Las cosquillas están prohibidas antes del desayuno",
-        "Con purpurina hasta los martes parecen viernes",
-    ];
-
-    static string[] Lista(bool miranda) => miranda ? FrasesMiranda : Frases;
+    static string[] Lista(Nina? nina) => nina?.FrasesJuegos ?? Frases;
 
     /// <summary>Frase por defecto (de la lista fija).</summary>
-    public static string Frase(Juego j, DateOnly dia, bool miranda = false)
+    public static string Frase(Juego j, DateOnly dia, Nina? nina = null)
     {
-        var k = Array.IndexOf(Todos, j); var l = Lista(miranda);
+        var k = Array.IndexOf(Todos, j); var l = Lista(nina);
         return l[(dia.DayNumber + k * 8) % l.Length];
     }
 
@@ -100,12 +71,12 @@ public class JuegosDiarios(AppDb db)
     static string ClaveFrase(Juego j, DateOnly dia) => $"frase-juego:{j.Clave}:{dia:yyyy-MM-dd}";
 
     /// <summary>La frase del día: la que haya escrito Javi para ese juego y día o, si no, la de la lista.
-    /// Miranda tiene siempre la de su lista (las de Javi son para Raquel).</summary>
-    public async Task<string> FraseDe(Juego j, DateOnly dia, bool miranda = false) =>
-        miranda ? Frase(j, dia, true)
+    /// Las niñas tienen siempre la de su lista (las de Javi son para Raquel).</summary>
+    public async Task<string> FraseDe(Juego j, DateOnly dia, Nina? nina = null) =>
+        nina != null ? Frase(j, dia, nina)
         : (await db.Configs.FindAsync(ClaveFrase(j, dia)))?.Valor is { Length: > 0 } f ? f : Frase(j, dia);
 
-    public async Task<bool> EsPropia(Juego j, DateOnly dia, bool miranda = false) => !miranda && await db.Configs.FindAsync(ClaveFrase(j, dia)) != null;
+    public async Task<bool> EsPropia(Juego j, DateOnly dia, Nina? nina = null) => nina == null && await db.Configs.FindAsync(ClaveFrase(j, dia)) != null;
 
     /// <summary>Guarda la frase de Javi para ese día (vacía o igual a la de la lista: vuelve a la de la lista).</summary>
     public async Task GuardarFrase(Juego j, DateOnly dia, string? texto)

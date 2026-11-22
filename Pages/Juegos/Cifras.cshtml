@@ -1,8 +1,8 @@
 @page
 @{
     ViewData["Title"] = "Cifras";
-    // Miranda: números fáciles (objetivo de dos cifras que siempre se puede clavar) y sin reloj
-    var facil = User.EsMiranda();
+    // Las niñas: números fáciles (objetivo de dos cifras que siempre se puede clavar) y sin reloj
+    var facil = User.EsNina();
 }
 <div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Cifras</h1><span class="jg-record suave peq" id="cf-record"></span></div>
 @if (!facil) { <a class="cf-retar" href="/Juegos/Duelo">⚔️ Duelo a dos: retar al otro</a> }

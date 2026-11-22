@@ -16,9 +16,10 @@ Fechas clave: juntos desde 20/05/2024; cumpleaños de Raquel 03/09/1980.
   repo: `/etc/love.env` en producción, `appsettings.Local.json` en local). Hasta 2026-11-13 fue SQLite.
   Sin frameworks CSS/JS: `wwwroot/css/app.css` y `wwwroot/js/app.js`, versionados por hash
   (`asp-append-version`).
-- Auth por cookie con PIN. Usuarios `Javi` (rol Admin), `Raquel` y `Miranda` (hija de Javi, 11 años; desde
-  2026-11-21). `User.EsAdmin()`/`EsMiranda()` en `Services/PinAuth.cs`. La carpeta `/Admin` exige el rol Admin;
-  Miranda solo puede abrir `/Miranda` y `/Juegos` (menos el Duelo): un middleware en `Program.cs` la redirige.
+- Auth por cookie con PIN. Usuarios `Javi` (rol Admin), `Raquel` y las niñas `Miranda` (hija de Javi, 11 años) y
+  `Aroa` (10 años), con su perfil en `Services/Ninas.cs`. `User.EsAdmin()`/`EsNina()` en `Services/PinAuth.cs`. La
+  carpeta `/Admin` exige el rol Admin; las niñas solo pueden abrir `/Hola` y `/Juegos` (menos el Duelo): un
+  middleware en `Program.cs` las redirige.
 - Migraciones EF en `Data/Migrations` (Postgres). `Data/MigracionesSqlite` + `AppDbSqlite` son de la base antigua:
   solo para importar un love.db y para la copia de seguridad. **Cada cambio de modelo lleva DOS migraciones**
   (si no, la copia de seguridad falla): `--context AppDb -o Data/Migrations` y

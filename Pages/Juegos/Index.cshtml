@@ -8,7 +8,7 @@
     var reto = Duelo.RetoPara(yo);
     var lineaMia = await Linea.DeSemana(yo, LineaArte.Lunes(Reloj.Hoy));
     var lineaJugada = lineaMia?.Fin != null && !User.EsAdmin();
-    var miranda = User.EsMiranda();
+    var miranda = User.EsNina();
     var diarios = new List<(JuegosDiarios.Juego j, DateOnly? bloq, Love.Models.JuegoPartida? hoy)>();
     foreach (var j in JuegosDiarios.Todos)
     {
@@ -19,6 +19,20 @@
 }
 <div class="cab"><h1>Juegos</h1>@if (User.EsAdmin()) { <a class="accion" href="/Juegos/Frases">✏️ Frases</a> }</div>
 <p class="suave peq" style="margin-top:0">@(miranda ? "Un ratito para pensar y reírse. Sin prisas." : "Un ratito para pensar. Sin prisas… salvo en Cifras.")</p>
+@{
+    void TarjetaTablas()
+    {
+        <a class="jg-tarjeta jg-tablas" href="/Juegos/Tablas">
+            <div class="jg-vista" aria-hidden="true"><span class="jg-tablas-op">7×8</span><span class="jg-tablas-est">★★☆</span></div>
+            <div class="jg-texto">
+                <h2>Tablas de multiplicar</h2>
+                <p>Aprende cada tabla con trucos, gana estrellas en los retos y bate tu récord en el modo relámpago.</p>
+                <p class="jg-stats" data-stats="tablas"></p>
+            </div>
+        </a>
+    }
+}
+@if (miranda) { TarjetaTablas(); }
 <a class="jg-tarjeta jg-cifras" href="/Juegos/Cifras">
     <div class="jg-vista" aria-hidden="true">
         <div class="cf-marcador mini"><span>7</span><span>4</span><span>2</span></div>
@@ -79,6 +93,11 @@
         </a>
     }
 }
+@if (!miranda)
+{
+    <h2 class="jg-seccion">Para practicar <span class="suave peq" style="font-weight:600">· y ayudar con los deberes</span></h2>
+    TarjetaTablas();
+}
 @section Scripts {
 <script>
 (() => {
@@ -89,6 +108,9 @@
   const cr = lee('cruci-stats');
   const el2 = document.querySelector('[data-stats="cruci"]');
   if (cr && cr.hechos) el2.textContent = `${cr.hechos} resuelto${cr.hechos === 1 ? '' : 's'}`;
+  const tb = lee('tablas:@(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value)');
+  const el3 = document.querySelector('[data-stats="tablas"]');
+  if (tb && el3) { const est = [1,2,3,4,5,6,7,8,9,10].reduce((s, t) => s + [8, 20, 40].filter(u => (tb.dom[t] || 0) >= u).length, 0); if (est || tb.relampago) el3.textContent = `${est} de 30 ⭐` + (tb.relampago ? ` · récord relámpago: ${tb.relampago}` : ''); }
 })();
 </script>
 }

@@ -15,7 +15,7 @@ public class CrucigramaModel(CrucigramaGenerador gen, CruciCompartido compartido
     public void OnGet(int n = 0)
     {
         N = Math.Max(0, n);
-        Semilla = CrucigramaGenerador.Semilla(Reloj.Hoy, N, User.EsMiranda());
+        Semilla = CrucigramaGenerador.Semilla(Reloj.Hoy, N, Ninas.De(User));
         Rejilla = gen.Generar(Semilla);
     }
 
@@ -23,6 +23,6 @@ public class CrucigramaModel(CrucigramaGenerador gen, CruciCompartido compartido
 
     /// <summary>Consulta y cambios en una sola llamada: manda el cursor y las letras pendientes, devuelve el estado.</summary>
     public async Task<IActionResult> OnPostSync([FromBody] Op op) =>
-        (op.Semilla >= CrucigramaGenerador.OffsetMiranda) != User.EsMiranda() && !User.EsAdmin() ? Forbid() : new JsonResult(await compartido.Operar(op.Semilla, Yo, op.K, op.Dir,
+        CrucigramaGenerador.OffsetDe(op.Semilla) != (Ninas.De(User)?.OffsetCruci ?? 0) && !User.EsAdmin() ? Forbid() : new JsonResult(await compartido.Operar(op.Semilla, Yo, op.K, op.Dir,
             (op.Letras ?? new()).Select(x => (x.Key, x.Value)), op.Ayuda, op.Rendirse));
 }

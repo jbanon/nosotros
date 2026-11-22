@@ -118,7 +118,7 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             TipoTareaAgente.Pildora => await PreparaPildora(db, t, ct),
             TipoTareaAgente.PildoraCorreccion => await PreparaCorreccion(db, t, ct),
             TipoTareaAgente.Efemerides => (PromptEfemerides(t), EsquemaEfemerides, "WebSearch,WebFetch", (string?)null),
-            TipoTareaAgente.FrasesMiranda => await PreparaFrasesMiranda(db, t, ct),
+            TipoTareaAgente.FrasesNina => await PreparaFrasesNina(db, t, ct),
             _ => throw new InvalidOperationException()
         };
 
@@ -154,8 +154,8 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             await AplicarCorreccion(db, t, res.Salida, ct);
         if (t.Tipo == TipoTareaAgente.Efemerides)
             await AplicarEfemerides(db, t, res.Salida, ct);
-        if (t.Tipo == TipoTareaAgente.FrasesMiranda)
-            await AplicarFrasesMiranda(db, t, res.Salida, ct);
+        if (t.Tipo == TipoTareaAgente.FrasesNina)
+            await AplicarFrasesNina(db, t, res.Salida, ct);
         log.LogInformation("Agente: tarea {Id} ({Tipo}) lista en {Ms} ms", t.Id, t.Tipo, sw.ElapsedMilliseconds);
     }
 
@@ -430,35 +430,34 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
          "required":["items","mensaje"]}
         """;
 
-    // ---------- Frases del día de Miranda ----------
-    async Task<(string, string, string, string?)> PreparaFrasesMiranda(AppDb db, TareaAgente t, CancellationToken ct)
+    // ---------- Frases del día de las niñas (Miranda, Aroa) ----------
+    async Task<(string, string, string, string?)> PreparaFrasesNina(AppDb db, TareaAgente t, CancellationToken ct)
     {
         var desde = DateOnly.ParseExact(t.Entrada, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        var n = int.TryParse(t.Notas, out var x) ? Math.Clamp(x, 1, 31) : MirandaService.Tanda;
+        var (nina, n) = NinasService.LeerNotas(t.Notas);
+        n = Math.Clamp(n, 1, 31);
         var cultura = CultureInfo.GetCultureInfo("es-ES");
         var dias = string.Join("; ", Enumerable.Range(0, n).Select(i => desde.AddDays(i)).Select(d => d.ToString("dddd d 'de' MMMM", cultura)));
-        var anteriores = await MirandaService.Anteriores(db, 60, ct);
-        var prompt = "Escribes la «frase del día» de Miranda en «Nosotros», la app que ha hecho su padre, Javi. Devuelve únicamente el JSON pedido.\n\n" +
-            $"Miranda nació el 10 de marzo de 2015 (ahora tiene {Edad(MirandaService.Nacimiento, desde)} años). Es alta y delgada, rubia y con el pelo rizado. " +
-            "Le encanta bailar, le gusta el maquillaje y todavía juega con muñecos. Ve muchos vídeos de YouTube (más tonterías de las que a su padre le gustaría). " +
-            "Es muy graciosa y divertida: a veces le da por hacer el tonto en el coche y todos se parten, y se tira pedos de cachondeo. En casa hay una perra, Briska. " +
+        var anteriores = await NinasService.Anteriores(db, nina, 60, ct);
+        var cumple = nina.Nacimiento is DateOnly nac ? $" Si alguno de los días es {nac.Day} de {MesesEs[nac.Month - 1]}, esa es la de su cumpleaños." : "";
+        var prompt = $"Escribes la «frase del día» de {nina.Nombre} en «Nosotros», una app familiar privada. Devuelve únicamente el JSON pedido.\n\n" +
+            $"{nina.Perfil} Ahora tiene {nina.EdadEn(desde)} años." +
             $"\n\nEscribe {n} frases, una para cada uno de estos días, en este orden: {dias}. " +
             "Cada frase la lee nada más abrir la app: tiene que hacerle gracia de verdad a una niña de su edad. Humor absurdo, observaciones con giro inesperado, " +
             "datos falsos muy serios, retos tontos para el día, preguntas imposibles, exageraciones. Que NO sean obvias ni cursis: nada de «eres la mejor», «brilla», «cree en ti», " +
             "ni moralejas, ni frases de taza, ni consejos de adulto. Castellano de España, de tú, sin palabrotas. Entre 10 y 30 palabras cada una, con algún emoji como mucho. " +
-            "Guiños a sus cosas (baile, maquillaje, muñecos, YouTube, el coche, Briska, su pelo, lo alta que es, los pedos) de vez en cuando, muy repartidos: no metas lo mismo dos días seguidos " +
-            "y no todas tienen que hablar de ella. Aprovecha el día de la semana si da juego (lunes, viernes…). Si alguno de los días es 10 de marzo, esa es la de su cumpleaños. " +
-            "No menciones a nadie más que a papá y a Briska. Firma: no hace falta, ya pone «Papá» debajo." +
+            "Los guiños a sus cosas, de vez en cuando y muy repartidos: no metas lo mismo dos días seguidos y no todas tienen que hablar de ella. " +
+            "Aprovecha el día de la semana si da juego (lunes, viernes…)." + cumple +
+            $" No menciones a nadie más que a Briska y a quien firma. Firma: no hace falta, ya pone «{nina.Firma}» debajo." +
             (anteriores.Count > 0 ? "\n\nNo repitas ideas ni chistes de estas, que ya ha leído:\n- " + string.Join("\n- ", anteriores) : "") +
             "\n\nCampos: frases (exactamente " + n + ", en el orden de los días); mensaje (una frase para Javi sobre la tanda).";
-        return (prompt, EsquemaFrasesMiranda, "", null);
+        return (prompt, EsquemaFrasesNina, "", null);
     }
 
-    static int Edad(DateOnly nac, DateOnly d) => d.Year - nac.Year - (d < nac.AddYears(d.Year - nac.Year) ? 1 : 0);
-
-    async Task AplicarFrasesMiranda(AppDb db, TareaAgente t, JsonObject f, CancellationToken ct)
+    async Task AplicarFrasesNina(AppDb db, TareaAgente t, JsonObject f, CancellationToken ct)
     {
         var desde = DateOnly.ParseExact(t.Entrada, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        var (nina, _) = NinasService.LeerNotas(t.Notas);
         var frases = f["frases"] is JsonArray a ? a.Select(x => x is JsonValue v && v.TryGetValue<string>(out var s) ? s.Trim() : "").ToList() : new();
         if (frases.Count(s => s != "") == 0)
         {
@@ -468,14 +467,14 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
         for (int i = 0; i < frases.Count; i++)
         {
             if (frases[i] == "") continue;
-            var k = MirandaService.Clave(desde.AddDays(i));
+            var k = NinasService.Clave(nina, desde.AddDays(i));
             if (await db.Configs.FindAsync([k], ct) == null) db.Configs.Add(new Config { Clave = k, Valor = frases[i] });
         }
         t.Aplicada = DateTime.UtcNow;
         await db.SaveChangesAsync(ct);
     }
 
-    public const string EsquemaFrasesMiranda = """
+    public const string EsquemaFrasesNina = """
         {"type":"object","additionalProperties":false,
          "properties":{"frases":{"type":"array","items":{"type":"string"}},"mensaje":{"type":"string"}},
          "required":["frases","mensaje"]}

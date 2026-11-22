@@ -14,8 +14,10 @@ public class CrucigramaGenerador(IWebHostEnvironment env)
     public record Def(int Num, string Dir, int Fila, int Col, int Largo, string Pista, string Palabra);
     public record Rejilla(int Filas, int Cols, List<Def> Defs);
 
-    /// <summary>Las semillas de Miranda van aparte (su banco, para 11 años, y su propia partida, no compartida).</summary>
-    public const int OffsetMiranda = 1_000_000_000;
+    /// <summary>Las semillas de las niñas van aparte (banco infantil y partida propia, no compartida): cada una suma su
+    /// <see cref="Nina.OffsetCruci"/> (desde 1e9).</summary>
+    public const int OffsetNinas = 1_000_000_000;
+    public static int OffsetDe(int semilla) => Ninas.Todas.Where(n => semilla >= n.OffsetCruci).Select(n => n.OffsetCruci).DefaultIfEmpty(0).Max();
 
     List<(string palabra, string pista)>? banco, bancoMiranda;
 
@@ -27,7 +29,7 @@ public class CrucigramaGenerador(IWebHostEnvironment env)
         .Deserialize<List<string[]>>(File.ReadAllText(Path.Combine(env.ContentRootPath, "Seed", fichero)))!
         .Select(x => (Criptofrase.SoloLetras(x[0]), x[1])).Where(x => x.Item1.Length >= 3 && x.Item1.Length <= Max).ToList();
 
-    public static int Semilla(DateOnly dia, int n, bool miranda = false) => dia.DayNumber * 31 + n * 7919 + (miranda ? OffsetMiranda : 0);
+    public static int Semilla(DateOnly dia, int n, Nina? nina = null) => dia.DayNumber * 31 + n * 7919 + (nina?.OffsetCruci ?? 0);
 
     readonly System.Collections.Concurrent.ConcurrentDictionary<int, Rejilla> cache = new();
 
@@ -46,7 +48,7 @@ public class CrucigramaGenerador(IWebHostEnvironment env)
     {
         var rnd = new Random(semilla);
         // Una pista por palabra (si hay varias, al azar)
-        var palabras = Banco(semilla >= OffsetMiranda).GroupBy(x => x.palabra).Select(g => g.ElementAt(rnd.Next(g.Count()))).ToList();
+        var palabras = Banco(semilla >= OffsetNinas).GroupBy(x => x.palabra).Select(g => g.ElementAt(rnd.Next(g.Count()))).ToList();
         Rejilla? mejor = null; double puntos = -1;
         for (int intento = 0; intento < 40; intento++)
         {

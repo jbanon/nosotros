@@ -67,11 +67,11 @@ builder.Services.AddSingleton<AgenteService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<AgenteService>());
 builder.Services.AddScoped<FrancesService>();
 builder.Services.AddScoped<EfemeridesService>();
-builder.Services.AddScoped<MirandaService>();
+builder.Services.AddScoped<NinasService>();
 builder.Services.AddScoped<LineaArte>();
 builder.Services.AddHostedService<FrancesProgramador>();
 builder.Services.AddHostedService<EfemeridesProgramador>();
-builder.Services.AddHostedService<MirandaProgramador>();
+builder.Services.AddHostedService<NinasProgramador>();
 builder.Services.AddAntiforgery(o => o.HeaderName = "RequestVerificationToken");
 
 var app = builder.Build();
@@ -92,12 +92,12 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-// Miranda solo ve su página y los Juegos: cualquier otra ruta la manda a su inicio
+// Las niñas solo ven su página y los Juegos: cualquier otra ruta las manda a su inicio
 app.Use(async (ctx, next) =>
 {
-    if (ctx.User.EsMiranda() && !UserExt.PermitidoMiranda(ctx.Request.Path.Value ?? "/"))
+    if (ctx.User.EsNina() && !UserExt.PermitidoNina(ctx.Request.Path.Value ?? "/"))
     {
-        if (HttpMethods.IsGet(ctx.Request.Method)) ctx.Response.Redirect("/Miranda");
+        if (HttpMethods.IsGet(ctx.Request.Method)) ctx.Response.Redirect("/Hola");
         else ctx.Response.StatusCode = StatusCodes.Status403Forbidden;
         return;
     }

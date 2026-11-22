@@ -413,14 +413,26 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Si la frase del día es de Javi y Raquel ya la ha jugado, ese día puede seguir jugando ese juego sin límite con
   **frases sorpresa** de la lista (una distinta por partida; `JuegosDiarios.FraseSorpresa`) (Javier, 2026-11-21).
 
-## Miranda (versión para la hija de Javi)
+## Las niñas: Miranda y Aroa (su versión de la app)
 - Javier, 2026-11-21: Miranda (nacida el 10/03/2015; alta, delgada, rubia y rizada; le gustan el baile, el
   maquillaje, los muñecos y YouTube; muy graciosa) tiene su propio PIN y solo ve su página (`/Miranda`: frase del
   día firmada «Papá» y acceso a los juegos) y `/Juegos`. Nada de lo de Raquel; sin Duelo ni teaser.
-- Frase del día: la escribe el agente de 14 en 14 (`MirandaService`, `TipoTareaAgente.FrasesMiranda`, en Config
-  `miranda-frase:yyyy-MM-dd`); divertidas y **no obvias** (nada cursi ni moralina). Si falta, una de reserva.
-  Javi la ve y la cambia en `/Miranda?fecha=`. El 10 de marzo, tarjeta de cumpleaños.
+- Javier, 2026-11-22: **Aroa** (10 años; le encantan las guerreras del k-pop), PIN propio, lo mismo que Miranda:
+  frase del día (firma «Javi») y juegos, con frases para su edad. Todo lo de cada niña (perfil para el agente,
+  frases de juegos, de reserva, firma, semillas del crucigrama) en `Services/Ninas.cs`; la página es `/Hola`.
+- Frase del día: la escribe el agente de 14 en 14 (`NinasService`, `TipoTareaAgente.FrasesNina`, notas
+  «slug|14», en Config `{slug}-frase:yyyy-MM-dd`); divertidas y **no obvias** (nada cursi ni moralina). Si falta,
+  una de reserva. Javi la ve y la cambia en `/Hola?nina=aroa&fecha=`. El día del cumpleaños (si se sabe), tarjeta.
 - Juegos: Cifras fácil (objetivo de dos cifras que siempre sale exacto, sin reloj, botón de rendirse);
   crucigrama propio (banco `Seed/crucigrama-miranda.json`, semillas aparte, no compartido); Bloques/Globos/
   Comecocos con sus frases (`FrasesMiranda` en `JuegosDiarios`; las de Javi son solo para Raquel).
 - PIN: nunca en el repo. `Pins:Miranda` si está al crear el usuario; si no, Javi lo pone en Admin › Config.
+
+## Tablas de multiplicar
+- Javier, 2026-11-22: juego para aprender las tablas con gusto, pensado para el móvil (a partir de un HTML de
+  ejemplo que pasó él): `/Juegos/Tablas`. Para las niñas, arriba del todo en Juegos; para Raquel (que se lo pone a
+  Aroa en su móvil) y Javi, abajo del todo.
+- Modos: Aprender (tabla con trucos al tocar y opción de tapar), Reto (15 preguntas, teclado en pantalla, rachas,
+  BriskaBird cada 5 seguidas; lo fallado vuelve a salir a las 3 y sale más a menudo en partidas siguientes) y
+  Relámpago (60 s, récord). Estrellas por tabla (dominio: +1 acierto, −2 fallo; 8/20/40) y niveles hasta
+  «Leyenda de las tablas». Todo en el móvil (`localStorage`, clave por usuario), sin servidor.

@@ -1,0 +1,80 @@
+@page
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Tablas";
+    var uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+<div class="cab"><a class="volver" href="/Juegos">‹</a><h1>Tablas</h1>
+    <button type="button" class="tb-sonido" id="tb-sonido" aria-label="Sonido">🔊</button></div>
+<div class="tb" id="tb" data-uid="@uid">
+    <section id="tb-menu">
+        <div class="tb-escenario">
+            <div class="tb-focos" aria-hidden="true"><i></i><i></i><i></i></div>
+            <p class="tb-nivel" id="tb-nivel">Aprendiz</p>
+            <p class="tb-estrellas"><span id="tb-total">0</span> / 30 ⭐</p>
+            <div class="tb-barra"><div id="tb-barra"></div></div>
+            <p class="tb-sig suave2" id="tb-sig"></p>
+        </div>
+        <p class="tb-ayuda">Elige tablas (una o varias). Sin elegir ninguna, salen todas.</p>
+        <div class="tb-mapa" id="tb-mapa"></div>
+        <div class="tb-modos">
+            <button type="button" class="tb-modo" data-modo="aprender"><span class="tb-modo-ico">📖</span><span><b>Aprender</b><small>Mira la tabla, tápala y descubre trucos</small></span></button>
+            <button type="button" class="tb-modo" data-modo="reto"><span class="tb-modo-ico">🎯</span><span><b>Reto</b><small>15 preguntas · ganas estrellas</small></span></button>
+            <button type="button" class="tb-modo" data-modo="relampago"><span class="tb-modo-ico">⚡</span><span><b>Relámpago</b><small>60 segundos · <span id="tb-record">¿cuántas aciertas?</span></small></span></button>
+        </div>
+    </section>
+
+    <section id="tb-aprender" hidden>
+        <div class="tb-chips" id="tb-chips"></div>
+        <div class="tb-tabla" id="tb-tabla"></div>
+        <div class="tb-truco" id="tb-truco"><b>💡 Toca una multiplicación</b><p>y te cuento un truco para no olvidarla.</p></div>
+        <div class="fila tb-acc">
+            <button type="button" class="btn crece" id="tb-tapar">🙈 Tapar resultados</button>
+            <button type="button" class="btn primario crece" id="tb-retar">🎯 Retarme</button>
+        </div>
+        <button type="button" class="btn fantasma ancho" data-volver>‹ Volver</button>
+    </section>
+
+    <section id="tb-juego" hidden>
+        <div class="tb-hud">
+            <div><small>Puntos</small><b id="tb-puntos">0</b></div>
+            <div id="tb-racha-caja"><small>Racha</small><b><span id="tb-racha">0</span><span id="tb-fuego" hidden>🔥</span></b></div>
+            <div class="tb-prog"><small id="tb-prog-txt">1 de 15</small><div class="tb-barra"><div id="tb-prog"></div></div></div>
+        </div>
+        <div class="tb-pregunta" id="tb-pregunta">
+            <p class="tb-aviso" id="tb-aviso">¿Cuánto es?</p>
+            <div class="tb-op"><span id="tb-a">7</span><i>×</i><span id="tb-b">8</span><i>=</i><span class="tb-resp" id="tb-resp">?</span></div>
+            <p class="tb-correccion" id="tb-correccion"></p>
+        </div>
+        <div class="tb-teclado" id="tb-teclado">
+            <button type="button">1</button><button type="button">2</button><button type="button">3</button>
+            <button type="button">4</button><button type="button">5</button><button type="button">6</button>
+            <button type="button">7</button><button type="button">8</button><button type="button">9</button>
+            <button type="button" data-k="borrar" aria-label="Borrar">⌫</button><button type="button">0</button><button type="button" data-k="ok" class="ok">OK</button>
+        </div>
+        <button type="button" class="btn fantasma ancho" id="tb-salir">Terminar</button>
+    </section>
+
+    <section id="tb-fin" hidden>
+        <div class="tb-fin-ico" id="tb-fin-ico">🏆</div>
+        <h2 id="tb-fin-tit">¡Reto completado!</h2>
+        <p class="suave" id="tb-fin-sub"></p>
+        <div class="tb-stats">
+            <div><small>Puntos</small><b id="tb-f-puntos">0</b></div>
+            <div><small>Aciertos</small><b id="tb-f-acierto">0%</b></div>
+            <div><small>Mejor racha</small><b id="tb-f-racha">0</b></div>
+        </div>
+        <div class="tb-ganadas" id="tb-ganadas"></div>
+        <div class="tb-falladas" id="tb-falladas" hidden>
+            <p><b>🎯 Para repasar</b></p>
+            <div id="tb-falladas-lista"></div>
+            <button type="button" class="btn ancho" id="tb-practicar">Practicar estas</button>
+        </div>
+        <div class="fila tb-acc">
+            <button type="button" class="btn crece" data-volver>Menú</button>
+            <button type="button" class="btn primario crece" id="tb-otra">Otra vez</button>
+        </div>
+    </section>
+    <img class="tb-bb" id="tb-bb" src="/img/briska/briskabird.png" alt="" hidden />
+</div>
+@section Scripts { <script src="/js/tablas.js" asp-append-version="true"></script> }

@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Love.Models;
 
-/// <summary>Miranda (la hija de Javi, desde 2026-11-21): solo su página con la frase del día y los Juegos.</summary>
-public enum Rol { Admin, Raquel, Miranda }
+/// <summary>Miranda (2026-11-21) y Aroa (2026-11-22): solo su página con la frase del día y los Juegos (ver <c>Ninas</c>).</summary>
+public enum Rol { Admin, Raquel, Miranda, Aroa }
 public enum TipoMensaje { Frase, Poema }
 public enum Zona { Fruteria, Charcuteria, Carniceria, Pescaderia, Otros }
 public enum TipoGasto { Veva, Compra, Hipoteca }
@@ -315,7 +315,7 @@ public class ListaElemento
     public int Orden { get; set; }
 }
 
-public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta, Pildora, PildoraCorreccion, Efemerides, FrasesMiranda }
+public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta, Pildora, PildoraCorreccion, Efemerides, FrasesNina }
 public enum EstadoTarea { Pendiente, EnCurso, Lista, Error }
 
 /// <summary>Una petición al agente (claude -p): crear una ficha de película o una receta, con rondas de cambios.</summary>

@@ -22,6 +22,6 @@ public class LoginModel(PinAuth auth) : PageModel
         var u = await auth.Validar(pin ?? "", ip);
         if (u == null) { Error = "Ese PIN no es"; return Page(); }
         await PinAuth.Entrar(HttpContext, u);
-        return Redirect(u.Rol switch { Models.Rol.Admin => "/Gastos", Models.Rol.Miranda => "/Miranda", _ => "/Amor" });
+        return Redirect(u.Rol switch { Models.Rol.Admin => "/Gastos", Models.Rol.Miranda or Models.Rol.Aroa => "/Hola", _ => "/Amor" });
     }
 }
