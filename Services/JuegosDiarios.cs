@@ -61,9 +61,9 @@ public class JuegosDiarios(AppDb db)
     }
 
     /// <summary>Frase sorpresa para las partidas extra (tras jugar la de Javi): fija para cada día, juego y número de partida.</summary>
-    public static string FraseSorpresa(Juego j, DateOnly dia, int partida, string excluir)
+    public static string FraseSorpresa(Juego j, DateOnly dia, int partida, string excluir, Nina? nina = null)
     {
-        var lista = Frases.Where(f => f != excluir).ToArray();
+        var lista = Lista(nina).Where(f => f != excluir).ToArray();
         var k = Array.IndexOf(Todos, j);
         return lista[new Random(dia.DayNumber * 31 + k * 7 + partida).Next(lista.Length)];
     }
@@ -97,6 +97,13 @@ public class JuegosDiarios(AppDb db)
         var anio = AdvientoService.AnioDe(hoy);
         var c = await db.Adviento.Where(x => x.Anio == anio && x.Tipo == tipo).OrderBy(x => x.Dia).FirstOrDefaultAsync();
         return c == null || AdvientoService.Abierta(c, hoy) ? null : AdvientoService.FechaDe(c);
+    }
+
+    /// <summary>Como <see cref="BloqueadoHasta"/>, pero las niñas (que no tienen adviento) los tienen todos abiertos.</summary>
+    public async Task<DateOnly?> BloqueadoPara(Juego j, DateOnly hoy, bool nina)
+    {
+        var b = await BloqueadoHasta(j, hoy);
+        return nina && b != DateOnly.MaxValue ? null : b;
     }
 
     public Task<JuegoPartida?> DeHoy(int usuario, Juego j, DateOnly hoy) =>

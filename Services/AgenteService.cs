@@ -430,7 +430,7 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
          "required":["items","mensaje"]}
         """;
 
-    // ---------- Frases del día de las niñas (Miranda, Aroa) ----------
+    // ---------- Frases del día de los niños (Miranda, Aroa, Elsa, Marcos) ----------
     async Task<(string, string, string, string?)> PreparaFrasesNina(AppDb db, TareaAgente t, CancellationToken ct)
     {
         var desde = DateOnly.ParseExact(t.Entrada, "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -443,7 +443,7 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
         var prompt = $"Escribes la «frase del día» de {nina.Nombre} en «Nosotros», una app familiar privada. Devuelve únicamente el JSON pedido.\n\n" +
             $"{nina.Perfil} Ahora tiene {nina.EdadEn(desde)} años." +
             $"\n\nEscribe {n} frases, una para cada uno de estos días, en este orden: {dias}. " +
-            "Cada frase la lee nada más abrir la app: tiene que hacerle gracia de verdad a una niña de su edad. Humor absurdo, observaciones con giro inesperado, " +
+            "Cada frase la lee nada más abrir la app: tiene que hacerle gracia de verdad a alguien de su edad. Humor absurdo, observaciones con giro inesperado, " +
             "datos falsos muy serios, retos tontos para el día, preguntas imposibles, exageraciones. Que NO sean obvias ni cursis: nada de «eres la mejor», «brilla», «cree en ti», " +
             "ni moralejas, ni frases de taza, ni consejos de adulto. Castellano de España, de tú, sin palabrotas. Entre 10 y 30 palabras cada una, con algún emoji como mucho. " +
             "Los guiños a sus cosas, de vez en cuando y muy repartidos: no metas lo mismo dos días seguidos y no todas tienen que hablar de ella. " +

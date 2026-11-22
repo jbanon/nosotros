@@ -24,6 +24,8 @@ public class PartidaModel(JuegosDiarios juegos, AppDb db) : PageModel
     public bool Libre { get; set; }
     /// <summary>La frase de hoy la ha puesto Javi.</summary>
     public bool Propia { get; set; }
+    /// <summary>Puede seguir con frases sorpresa tras la primera partida: si la frase es de Javi, o siempre para los niños.</summary>
+    public bool SinLimite => Propia || User.EsNina();
     int Yo => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     async Task<bool> Cargar(string juego)
@@ -32,15 +34,15 @@ public class PartidaModel(JuegosDiarios juegos, AppDb db) : PageModel
         if (j == null || !Enum.TryParse<TipoCasilla>(j.Tipo, out var tipo)) return false;
         Juego = j; Tipo = tipo;
         Frase = await juegos.FraseDe(j, Reloj.Hoy, Ninas.De(User));
-        Bloqueado = EsAdmin ? null : await juegos.BloqueadoHasta(j, Reloj.Hoy);
+        Bloqueado = EsAdmin ? null : await juegos.BloqueadoPara(j, Reloj.Hoy, User.EsNina());
         Hoy = await juegos.DeHoy(Yo, j, Reloj.Hoy);
         Propia = await juegos.EsPropia(j, Reloj.Hoy, Ninas.De(User));
-        if (Hoy != null && !EsAdmin && Propia)
+        if (Hoy != null && !EsAdmin && SinLimite)
         {
             Libre = true;
             var hoy = Reloj.Hoy; var clave = j.Clave; var yo = Yo;
             var n = await db.JuegoPartidas.CountAsync(p => p.UsuarioId == yo && p.Juego == clave && p.Fecha == hoy);
-            Frase = JuegosDiarios.FraseSorpresa(j, hoy, n, Frase);
+            Frase = JuegosDiarios.FraseSorpresa(j, hoy, n, Frase, Ninas.De(User));
         }
         return true;
     }

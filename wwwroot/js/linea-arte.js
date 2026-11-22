@@ -142,7 +142,7 @@
     const otros = (D.otros || []).map(o => `<p class="centrado">${esc(o.nombre)}: <b>${o.puntos}</b> de ${D.maximo}</p>`).join('');
     escena(`<div class="la-nota"><span>${puntos}</span> de ${D.maximo}</div>
       <p class="suave peq centrado">1 punto por cada cuadro bien colgado y 1 por cada autor acertado.</p>${otros}
-      ${D.admin ? '<button class="btn ancho" type="button" onclick="location.reload()">Otra vez (solo Javi)</button>' : '<p class="centrado suave">El lunes, cinco obras nuevas.</p>'}`);
+      ${D.admin ? '<button class="btn ancho" type="button" onclick="location.reload()">Otra vez</button>' : '<p class="centrado suave">El lunes, cinco obras nuevas.</p>'}`);
     pintaLinea(false);
     await post('Terminar', { puntos });
   }

@@ -38,7 +38,7 @@ public class IndexModel(NinasService ninas, JuegosDiarios juegos, AppDb db) : Pa
         var yo = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         foreach (var j in JuegosDiarios.Todos)
         {
-            if (await juegos.BloqueadoHasta(j, Fecha) != null) continue;
+            if (await juegos.BloqueadoPara(j, Fecha, true) != null) continue;
             var clave = j.Clave; var dia = Fecha;
             Diarios.Add((j, await db.JuegoPartidas.AnyAsync(p => p.UsuarioId == yo && p.Juego == clave && p.Fecha == dia)));
         }

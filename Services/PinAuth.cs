@@ -57,12 +57,11 @@ public class PinAuth(AppDb db)
 public static class UserExt
 {
     public static bool EsAdmin(this ClaimsPrincipal u) => u.IsInRole("Admin");
-    /// <summary>Miranda o Aroa: su versión de la app (solo su página y los Juegos).</summary>
+    /// <summary>Miranda, Aroa o Elsa: su versión de la app (solo su página y los Juegos).</summary>
     public static bool EsNina(this ClaimsPrincipal u) => Ninas.De(u) != null;
     /// <summary>Página de inicio de cada uno.</summary>
     public static string Inicio(this ClaimsPrincipal u) => u.EsAdmin() ? "/Gastos" : u.EsNina() ? "/Hola" : "/Amor";
-    /// <summary>Lo único que pueden abrir las niñas (además de los ficheros estáticos).</summary>
+    /// <summary>Lo único que pueden abrir las niñas (además de los ficheros estáticos): su página y todos los juegos.</summary>
     public static bool PermitidoNina(string ruta) =>
-        !ruta.StartsWith("/Juegos/Duelo", StringComparison.OrdinalIgnoreCase) &&
         (ruta == "/" || new[] { "/Hola", "/Juegos", "/Login" }.Any(p => ruta.Equals(p, StringComparison.OrdinalIgnoreCase) || ruta.StartsWith(p + "/", StringComparison.OrdinalIgnoreCase)));
 }

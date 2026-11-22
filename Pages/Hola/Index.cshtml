@@ -31,7 +31,7 @@
             <li>✖️ <b>Tablas</b> · multiplica y sube de nivel</li>
             <li>🔢 <b>Cifras</b> · sin reloj</li>
             <li>✏️ <b>Crucigrama</b> · uno nuevo cada día</li>
-            @foreach (var (j, jugado) in Model.Diarios) { <li>@j.Emoji <b>@j.Nombre</b> · @(jugado ? "hoy ya jugado ✓" : "¡te toca hoy!")</li> }
+            @foreach (var (j, jugado) in Model.Diarios) { <li>@j.Emoji <b>@j.Nombre</b> · @(jugado ? "¿otra partida?" : "¡te toca hoy!")</li> }
             <li>🖼️ <b>Línea del tiempo</b> · cuadros nuevos cada lunes</li>
         </ul>
     </a>

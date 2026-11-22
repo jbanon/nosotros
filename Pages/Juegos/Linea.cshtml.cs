@@ -17,7 +17,9 @@ public class LineaModel(LineaArte linea, AppDb db) : PageModel
     /// <summary>Resultados de la semana de los demás (nombre, puntos), si ya han jugado.</summary>
     public List<(string Nombre, int Puntos)> Otros { get; set; } = new();
     public bool EsAdmin => User.EsAdmin();
-    public bool YaJugada => Mia?.Fin != null && !EsAdmin;
+    /// <summary>Javi y los niños juegan las veces que quieran.</summary>
+    public bool SinLimite => EsAdmin || User.EsNina();
+    public bool YaJugada => Mia?.Fin != null && !SinLimite;
     int Yo => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     async Task Cargar()
@@ -40,7 +42,7 @@ public class LineaModel(LineaArte linea, AppDb db) : PageModel
     public async Task<IActionResult> OnPostEmpezar()
     {
         await Cargar();
-        if (Mia != null && !EsAdmin) return new JsonResult(new { ok = false, mensaje = "Ya has jugado esta semana. ¡El lunes, obras nuevas!" });
+        if (Mia != null && !SinLimite) return new JsonResult(new { ok = false, mensaje = "Ya has jugado esta semana. ¡El lunes, obras nuevas!" });
         db.JuegoPartidas.Add(new JuegoPartida { UsuarioId = Yo, Juego = LineaArte.Clave, Fecha = LunesSemana, Total = LineaArte.Maximo });
         await db.SaveChangesAsync();
         return new JsonResult(new { ok = true });

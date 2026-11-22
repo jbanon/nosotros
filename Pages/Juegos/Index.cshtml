@@ -7,12 +7,12 @@
     var yo = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value);
     var reto = Duelo.RetoPara(yo);
     var lineaMia = await Linea.DeSemana(yo, LineaArte.Lunes(Reloj.Hoy));
-    var lineaJugada = lineaMia?.Fin != null && !User.EsAdmin();
+    var lineaJugada = lineaMia?.Fin != null && !User.EsAdmin() && !User.EsNina();
     var miranda = User.EsNina();
     var diarios = new List<(JuegosDiarios.Juego j, DateOnly? bloq, Love.Models.JuegoPartida? hoy)>();
     foreach (var j in JuegosDiarios.Todos)
     {
-        var bloq = User.EsAdmin() ? null : await Diarios.BloqueadoHasta(j, Reloj.Hoy);
+        var bloq = User.EsAdmin() ? null : await Diarios.BloqueadoPara(j, Reloj.Hoy, User.EsNina());
         if (bloq == DateOnly.MaxValue) continue;   // juego aún sin hacer
         diarios.Add((j, bloq, await Diarios.DeHoy(yo, j, Reloj.Hoy)));
     }
@@ -44,7 +44,6 @@
         <p class="jg-stats" data-stats="cifras"></p>
     </div>
 </a>
-@if (!miranda) {
 <a class="jg-tarjeta jg-duelo" href="/Juegos/Duelo">
     <div class="jg-vista" aria-hidden="true">⚔️</div>
     <div class="jg-texto">
@@ -52,7 +51,6 @@
         <p>@(reto != null ? $"{reto} te ha retado. Mismos números, a la vez: ¿quién se acerca más?" : "Los dos a la vez con los mismos números. Gana quien más se acerque.")</p>
     </div>
 </a>
-}
 <a class="jg-tarjeta jg-cruci" href="/Juegos/Crucigrama">
     <div class="jg-vista" aria-hidden="true">
         <div class="jg-mini-cruci">
@@ -68,7 +66,7 @@
         <p class="jg-stats" data-stats="cruci"></p>
     </div>
 </a>
-<h2 class="jg-seccion">Una partida a la semana <span class="suave peq" style="font-weight:600">· obras nuevas cada lunes</span></h2>
+<h2 class="jg-seccion">@(miranda ? "Arte" : "Una partida a la semana") <span class="suave peq" style="font-weight:600">· obras nuevas cada lunes</span></h2>
 <a class="jg-tarjeta jg-diario @(lineaJugada ? "jugada" : "")" href="/Juegos/Linea">
     <div class="jg-vista" aria-hidden="true"><img src="/img/briska-pintora.png" alt="" style="width:64px" /></div>
     <div class="jg-texto">
@@ -79,10 +77,10 @@
 </a>
 @if (diarios.Count > 0)
 {
-    <h2 class="jg-seccion">Una partida al día <span class="suave peq" style="font-weight:600">· con Briska y una frase nueva cada día</span></h2>
+    <h2 class="jg-seccion">@(miranda ? "Con Briska" : "Una partida al día") <span class="suave peq" style="font-weight:600">· @(miranda ? "juega las veces que quieras" : "con Briska y una frase nueva cada día")</span></h2>
     foreach (var (j, bloq, hoy) in diarios)
     {
-        var jugada = hoy != null && !User.EsAdmin();
+        var jugada = hoy != null && !User.EsAdmin() && !miranda;
         <a class="jg-tarjeta jg-diario @(bloq != null ? "bloqueado" : "") @(jugada ? "jugada" : "")" href="@(bloq != null ? "#" : $"/Juegos/Partida/{j.Clave}")">
             <div class="jg-vista" aria-hidden="true">@(bloq != null ? "🔒" : j.Emoji)</div>
             <div class="jg-texto">

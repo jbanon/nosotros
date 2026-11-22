@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Love.Models;
 
 /// <summary>Miranda (2026-11-21) y Aroa (2026-11-22): solo su página con la frase del día y los Juegos (ver <c>Ninas</c>).</summary>
-public enum Rol { Admin, Raquel, Miranda, Aroa }
+public enum Rol { Admin, Raquel, Miranda, Aroa, Elsa, Marcos }
 public enum TipoMensaje { Frase, Poema }
 public enum Zona { Fruteria, Charcuteria, Carniceria, Pescaderia, Otros }
 public enum TipoGasto { Veva, Compra, Hipoteca }

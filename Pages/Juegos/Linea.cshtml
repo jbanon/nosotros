@@ -6,7 +6,7 @@
     {
         cartas = Model.Cartas.Select(c => new { id = c.Id, titulo = c.Titulo, autor = c.Autor, anio = c.Anio, autores = c.Autores }),
         maximo = LineaArte.Maximo,
-        admin = Model.EsAdmin,
+        admin = Model.SinLimite,
         otros = Model.Otros.Select(o => new { nombre = o.Nombre, puntos = o.Puntos }),
     };
     string Img(string id) => $"/Juegos/Linea?handler=Imagen&id={Uri.EscapeDataString(id)}";

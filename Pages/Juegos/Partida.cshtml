@@ -3,7 +3,7 @@
 @{
     var j = Model.Juego;
     ViewData["Title"] = j.Nombre;
-    var datos = AdvientoService.Serializar(new { tipo = Model.Tipo.ToString(), vista = new { frase = Model.Frase }, resuelta = false, estado = (string?)null, diario = true, admin = Model.EsAdmin, libre = Model.Libre, propia = Model.Propia && !Model.Libre });
+    var datos = AdvientoService.Serializar(new { tipo = Model.Tipo.ToString(), vista = new { frase = Model.Frase }, resuelta = false, estado = (string?)null, diario = true, admin = Model.EsAdmin, libre = Model.Libre, propia = Model.SinLimite && !Model.Libre });
 }
 <div class="adviento dia" data-particulas="nieve">
     <div class="cielo"></div>
