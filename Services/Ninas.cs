@@ -4,7 +4,7 @@ using Love.Models;
 namespace Love.Services;
 
 /// <summary>
-/// Las niñas que tienen su propia versión de la app (Miranda desde 2026-11-21; Aroa, Elsa y Marcos desde 2026-11-22). «Niñas» por costumbre: Marcos también: solo su página
+/// Las niñas que tienen su propia versión de la app (Miranda desde 2026-11-21; Aroa, Elsa, Marcos y Naia desde 2026-11-22). «Niñas» por costumbre: Marcos también: solo su página
 /// con la frase del día y los Juegos. Aquí va su perfil (para el agente), sus frases de los juegos y las de reserva.
 /// </summary>
 public record Nina(Rol Rol, string Nombre, string Slug, DateOnly? Nacimiento, int Edad, string Firma, string Perfil,
@@ -225,7 +225,57 @@ public static class Ninas
         ],
         2_000_000_000);
 
-    public static readonly Nina[] Todas = [Miranda, Aroa, Elsa, Marcos];
+    public static readonly Nina Naia = new(Rol.Naia, "Naia", "naia", new DateOnly(2012, 9, 14), 14, "Javi",
+        "Naia nació el 14 de septiembre de 2012; ya es adolescente, así que nada infantil: humor ingenioso, con un punto irónico, " +
+        "que le haga gracia a alguien de su edad y no le dé vergüenza ajena. Firma Javi. Briska es la perra de Javi. " +
+        "Guiños posibles (genéricos, que aún no sabemos sus gustos): el instituto, los lunes, dormir cinco minutos más, el móvil, la música, " +
+        "las series, las amigas, los exámenes, los mayores que no entienden nada, Briska.",
+        [
+            "Cinco minutos más de sueño valen más que el desayuno",
+            "Los lunes deberían venir con botón de saltar anuncio",
+            "Briska tiene más vida social que todos los de casa",
+            "Estudiar con música cuenta como concierto privado",
+            "La batería del móvil siempre muere en el peor momento",
+            "Los mayores dicen en mis tiempos cada cinco minutos",
+            "Una siesta a tiempo arregla cualquier drama",
+            "El examen sorpresa nunca es una buena sorpresa",
+            "Las mejores ideas llegan justo cuando apagas la luz",
+            "Un capítulo más es la mentira favorita del sofá",
+            "Briska no entiende los audios pero los escucha todos",
+            "Tener razón y no discutir es el nivel experto",
+            "La nevera siempre está llena de nada interesante",
+            "Los viernes huelen distinto desde primera hora",
+            "Mi cama y yo tenemos una relación muy seria",
+            "Las ojeras de los lunes son de coleccionista",
+            "Quien inventó madrugar no tenía cama cómoda",
+            "Los auriculares son la puerta del cuarto portátil",
+            "Un buen meme arregla más que mil consejos",
+            "Hay canciones que solo se cantan en la ducha",
+            "El grupo de clase nunca duerme y nunca calla",
+            "Briska opina que todos los días son sábado",
+            "Las agendas bonitas también se olvidan en casa",
+            "Ser puntual es llegar justo cuando cierran",
+        ],
+        [
+            "Dato científico: el despertador suena más fuerte los lunes. Está comprobado por todas las personas que lo odian.",
+            "Briska ha decidido que hoy no se levanta del sofá. Hay quien tiene la vida resuelta.",
+            "Reto del día: decir «me parece bien» sin poner los ojos en blanco. Nivel de dificultad: imposible.",
+            "Si alguien te pregunta qué tal el día, la respuesta oficial es «bien». Lo demás, solo para quien se lo gane.",
+            "Pregunta seria: ¿por qué los cinco minutos de dormir duran menos que los cinco minutos de clase?",
+            "Lo bueno de los viernes es que ya son viernes. Lo malo es que acaban siendo lunes.",
+            "Hay dos tipos de personas: las que cargan el móvil por la noche y las que viven al uno por ciento. Tú decides tu destino.",
+            "Consejo gratis: los exámenes se parecen mucho a los apuntes. Sospechosamente mucho.",
+            "Si hoy algo sale mal, ponle banda sonora épica. Sigue saliendo mal, pero con mucho más estilo.",
+            "Briska no tiene deberes, ni examen, ni horario. Y aun así se queja. Igual que todos.",
+            "Hoy es buen día para descubrir una canción nueva y ponerla en bucle hasta odiarla.",
+            "Misión: llegar a algún sitio cinco minutos antes. Dicen que se siente algo raro, como paz.",
+            "Los adultos fingen que lo tienen todo controlado. Spoiler: no.",
+            "Un día de estos vas a tener razón en una discusión y nadie lo va a reconocer. Apúntalo, por si acaso.",
+            "La vida es como el wifi del instituto: a ratos va y a ratos hay que tener paciencia.",
+        ],
+        2_100_000_000);
+
+    public static readonly Nina[] Todas = [Miranda, Aroa, Elsa, Marcos, Naia];
 
     public static Nina? De(Rol rol) => Todas.FirstOrDefault(n => n.Rol == rol);
     public static Nina? PorSlug(string? slug) => Todas.FirstOrDefault(n => n.Slug == slug);

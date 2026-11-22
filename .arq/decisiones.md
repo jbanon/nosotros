@@ -413,7 +413,7 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Si la frase del día es de Javi y Raquel ya la ha jugado, ese día puede seguir jugando ese juego sin límite con
   **frases sorpresa** de la lista (una distinta por partida; `JuegosDiarios.FraseSorpresa`) (Javier, 2026-11-21).
 
-## Los niños: Miranda, Aroa, Elsa y Marcos (su versión de la app)
+## Los niños: Miranda, Aroa, Elsa, Marcos y Naia (su versión de la app)
 - Javier, 2026-11-21: Miranda (nacida el 10/03/2015; alta, delgada, rubia y rizada; le gustan el baile, el
   maquillaje, los muñecos y YouTube; muy graciosa) tiene su propio PIN y solo ve su página (`/Miranda`: frase del
   día firmada «Papá» y acceso a los juegos) y `/Juegos`. Nada de lo de Raquel; sin teaser.
@@ -430,6 +430,8 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - Javier, 2026-11-22: **Elsa** (02/08/2014; deportista e inteligente; firma «Javi») y **Marcos** (26/11/2013,
   13 años; videojuegos y deporte; las frases le van dejando caer, sin sermones, que estudiar le renta; firma
   «Javi»). En el código siguen siendo «niñas» (`Ninas`, `EsNina`) aunque Marcos es chico.
+- Javier, 2026-11-22: **Naia** (14/09/2012; firma «Javi»): humor de adolescente, nada infantil; perfil genérico
+  hasta que Javier diga sus gustos.
 - Javier, 2026-11-22: **todos los niños, acceso ilimitado a todos los juegos**: Duelo incluido, los diarios sin
   esperar al adviento y sin límite (tras la primera, frases sorpresa de su lista) y la Línea las veces que quieran.
 

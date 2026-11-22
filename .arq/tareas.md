@@ -150,3 +150,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-21 | Miranda: usuario propio con su frase del día (agente), Cifras fácil sin reloj, crucigrama infantil y frases de juegos para su edad | b98f9c5 |
 | 2026-11-22 | Aroa (10 años, guerreras k-pop) con su versión como Miranda (perfiles en `Ninas.cs`, página `/Hola`) y juego de las tablas de multiplicar para todos | 35fc699 |
 | 2026-11-22 | Elsa (12, deportista) y Marcos (13, que estudiar renta) como Miranda; todos los niños con acceso ilimitado a todos los juegos | dc196fe |
+| 2026-11-22 | Naia (14/09/2012) con su versión como los demás niños; perfil genérico de adolescente | (este) |
