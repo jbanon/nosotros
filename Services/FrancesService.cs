@@ -61,6 +61,17 @@ public class FrancesService(AppDb db, AgenteService agente)
         await Encargar(f, Temas[n % Temas.Length].Clave, null, "programador");
     }
 
+    /// <summary>Las píldoras sin traducción al castellano (las de antes del 2026-11-25) se la encargan al agente.</summary>
+    public async Task AsegurarTraducciones()
+    {
+        if (!agente.Disponible) return;
+        var pendientes = await db.TareasAgente.Where(t => t.Tipo == TipoTareaAgente.PildoraTraduccion && t.PildoraId != null
+            && (t.Estado == EstadoTarea.Pendiente || t.Estado == EstadoTarea.EnCurso || t.Creada > DateTime.UtcNow.AddHours(-6))).Select(t => t.PildoraId!.Value).ToListAsync();
+        foreach (var p in await db.Pildoras.ToListAsync())
+            if (Txt(Json(p.Contenido), "traduccion") == "" && !pendientes.Contains(p.Id))
+                await agente.Encolar(db, new TareaAgente { Tipo = TipoTareaAgente.PildoraTraduccion, Entrada = p.Titulo, PildoraId = p.Id, Autor = "traducción" });
+    }
+
     public Task<TareaAgente> Encargar(DateOnly fecha, string tema, string? idea, string autor) =>
         agente.Encolar(db, new TareaAgente
         {
@@ -140,7 +151,9 @@ public class FrancesProgramador(IServiceScopeFactory scopes, ILogger<FrancesProg
             try
             {
                 using var scope = scopes.CreateScope();
-                await scope.ServiceProvider.GetRequiredService<FrancesService>().Asegurar(Reloj.Hoy);
+                var fr = scope.ServiceProvider.GetRequiredService<FrancesService>();
+                await fr.Asegurar(Reloj.Hoy);
+                await fr.AsegurarTraducciones();
             }
             catch (Exception e) { log.LogError(e, "No se pudo programar la píldora de francés"); }
         }

@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="/css/app.css" asp-append-version="true" />
     @await RenderSectionAsync("Head", required: false)
 </head>
-<body class="@(sinNav ? "sin-nav" : "")" data-quien="@(nina?.Slug)">
+<body class="@(sinNav ? "sin-nav" : "")" data-quien="@(nina?.Slug ?? (User.IsInRole("Raquel") ? "raquel" : null))">
     <main class="contenido">
         @RenderBody()
         @if (!sinNav && !esNina && User.Identity?.IsAuthenticated == true)

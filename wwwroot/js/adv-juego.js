@@ -119,8 +119,11 @@
     const n = objetivo.length;
     const baraja = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
+    // Escribirla o con fichas: lo último que eligió en este móvil; si nunca eligió, Raquel escribe y los demás, fichas
+    const prefiereTeclado = () => { try { const v = localStorage.getItem('gl-teclado'); if (v) return v === '1'; } catch { } return document.body.dataset.quien === 'raquel'; };
     let E = A.estado();
     if (!E || E.fase !== 'escribir') E = null;
+    if (E && E.teclado === undefined) E.teclado = prefiereTeclado();
 
     function huecos(i) {
       const w = objetivo[i];
@@ -150,7 +153,7 @@
         $('gl-comprobar').addEventListener('click', () => comprobar());
         ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); comprobar(); } });
       } else pintaFichas();
-      $('gl-modo').addEventListener('click', () => { E.teclado = !E.teclado; guardarE(); pintaEscribir(); });
+      $('gl-modo').addEventListener('click', () => { E.teclado = !E.teclado; try { localStorage.setItem('gl-teclado', E.teclado ? '1' : '0'); } catch { } guardarE(); pintaEscribir(); });
       if ($('gl-caza')) $('gl-caza').addEventListener('click', caza);
       if ($('gl-otra')) $('gl-otra').addEventListener('click', () => opc.jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
       if (ver && chips) { E.ocultas = true; guardarE(); esfumar(); }
@@ -308,7 +311,7 @@
     // Al ganar la partida: se apuntan las palabras cazadas y empieza la fase de escribir
     function empezar(cazadas) {
       if (D.resuelta) return;
-      E = { fase: 'escribir', palabras: cazadas, intentos: 0, sabidas: [], texto: '', rondas: 0 };
+      E = { fase: 'escribir', palabras: cazadas, intentos: 0, sabidas: [], texto: '', rondas: 0, teclado: prefiereTeclado() };
       guardarE(); pintaEscribir();
       opc.escribir.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }

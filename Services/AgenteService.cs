@@ -119,6 +119,7 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             TipoTareaAgente.PildoraCorreccion => await PreparaCorreccion(db, t, ct),
             TipoTareaAgente.Efemerides => (PromptEfemerides(t), EsquemaEfemerides, "WebSearch,WebFetch", (string?)null),
             TipoTareaAgente.FrasesNina => await PreparaFrasesNina(db, t, ct),
+            TipoTareaAgente.PildoraTraduccion => await PreparaTraduccion(db, t, ct),
             _ => throw new InvalidOperationException()
         };
 
@@ -156,6 +157,8 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             await AplicarEfemerides(db, t, res.Salida, ct);
         if (t.Tipo == TipoTareaAgente.FrasesNina)
             await AplicarFrasesNina(db, t, res.Salida, ct);
+        if (t.Tipo == TipoTareaAgente.PildoraTraduccion)
+            await AplicarTraduccion(db, t, res.Salida, ct);
         log.LogInformation("Agente: tarea {Id} ({Tipo}) lista en {Ms} ms", t.Id, t.Tipo, sw.ElapsedMilliseconds);
     }
 
@@ -282,6 +285,7 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
             "De vez en cuando (no siempre) puedes guiñar a su vida: la casa llena de niños, la perra Briska, la compra, el marido que cocina. Si el tema es una noticia, usa WebSearch para encontrar una real y reciente y pon en «fuente» el medio y la fecha; si no, deja «fuente» vacía. " +
             "Campos (todo en francés salvo lo que se indica): titulo (corto y con gracia); emoji (uno solo); tema (" + tema.Clave + "); entradilla (una frase de gancho, graciosa); " +
             "texto (entre 180 y 280 palabras, párrafos separados por una línea en blanco); " +
+            "traduccion (EN CASTELLANO: traducción fiel y natural de la entradilla y del texto, con los mismos párrafos separados por una línea en blanco; Raquel solo la ve si la pide); " +
             "glosario (de 6 a 9 entradas: fr = la palabra o expresión EXACTAMENTE como aparece en el texto, es = su traducción o explicación breve en castellano); " +
             "imagen (dos o tres palabras en francés para buscar una foto ilustrativa en Wikipedia, como «croissant» o «Tour Eiffel»; vacía si no tiene sentido); " +
             "preguntas (2 o 3 preguntas abiertas, de comprensión con trampa o de opinión con humor, que se contesten en 1-3 frases); " +
@@ -328,6 +332,33 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
         return null;
     }
 
+    // Traducción al castellano de una píldora ya publicada (las anteriores a 2026-11-25 no la traían)
+    async Task<(string, string, string, string?)> PreparaTraduccion(AppDb db, TareaAgente t, CancellationToken ct)
+    {
+        var p = await db.Pildoras.FindAsync([t.PildoraId ?? 0], ct) ?? throw new InvalidOperationException("La píldora ya no existe.");
+        var c = FrancesService.Json(p.Contenido);
+        var prompt = "Traduce al castellano de España este texto francés de una app familiar (nivel B2-C1, con humor). Traducción fiel y natural, " +
+            "que conserve los chistes y juegos de palabras (si uno no tiene equivalente, adáptalo con gracia) y los mismos párrafos separados por una línea en blanco. " +
+            "Devuelve únicamente el JSON pedido, con la entradilla traducida como primer párrafo.\n\n" +
+            $"Entradilla: {FrancesService.Txt(c, "entradilla")}\n\nTexto:\n{FrancesService.Txt(c, "texto")}";
+        return (prompt, EsquemaTraduccion, "", null);
+    }
+
+    async Task AplicarTraduccion(AppDb db, TareaAgente t, JsonObject f, CancellationToken ct)
+    {
+        var p = await db.Pildoras.FindAsync([t.PildoraId ?? 0], ct);
+        if (p == null || f["traduccion"] is not JsonValue v || !v.TryGetValue<string>(out var tr) || string.IsNullOrWhiteSpace(tr)) return;
+        var c = FrancesService.Json(p.Contenido);
+        c["traduccion"] = tr.Trim();
+        p.Contenido = c.ToJsonString(JsonOpc);
+        t.Aplicada = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+    }
+
+    public const string EsquemaTraduccion = """
+        {"type":"object","additionalProperties":false,"properties":{"traduccion":{"type":"string"}},"required":["traduccion"]}
+        """;
+
     async Task<(string, string, string, string?)> PreparaCorreccion(AppDb db, TareaAgente t, CancellationToken ct)
     {
         var e = await db.PildoraEntregas.Include(x => x.Pildora).FirstOrDefaultAsync(x => x.Id == t.EntregaId, ct) ?? throw new InvalidOperationException("Entrega no encontrada");
@@ -361,13 +392,13 @@ public class AgenteService(IServiceScopeFactory scopes, IConfiguration cfg, File
 
     public const string EsquemaPildora = """
         {"type":"object","additionalProperties":false,
-         "properties":{"titulo":{"type":"string"},"emoji":{"type":"string"},"tema":{"type":"string"},"entradilla":{"type":"string"},"texto":{"type":"string"},
+         "properties":{"titulo":{"type":"string"},"emoji":{"type":"string"},"tema":{"type":"string"},"entradilla":{"type":"string"},"texto":{"type":"string"},"traduccion":{"type":"string"},
                        "glosario":{"type":"array","items":{"type":"object","additionalProperties":false,"properties":{"fr":{"type":"string"},"es":{"type":"string"}},"required":["fr","es"]}},
                        "imagen":{"type":"string"},"preguntas":{"type":"array","items":{"type":"string"}},
                        "huecos":{"type":"array","items":{"type":"object","additionalProperties":false,"properties":{"frase":{"type":"string"},"solucion":{"type":"string"},"pista":{"type":"string"}},"required":["frase","solucion","pista"]}},
                        "vocabulario":{"type":"array","items":{"type":"object","additionalProperties":false,"properties":{"pregunta":{"type":"string"},"opciones":{"type":"array","items":{"type":"string"}},"correcta":{"type":"integer"},"explicacion":{"type":"string"}},"required":["pregunta","opciones","correcta","explicacion"]}},
                        "comentario":{"type":"string"},"fuente":{"type":"string"},"mensaje":{"type":"string"}},
-         "required":["titulo","emoji","tema","entradilla","texto","glosario","imagen","preguntas","huecos","vocabulario","comentario","fuente","mensaje"]}
+         "required":["titulo","emoji","tema","entradilla","texto","traduccion","glosario","imagen","preguntas","huecos","vocabulario","comentario","fuente","mensaje"]}
         """;
 
     public const string EsquemaCorreccion = """

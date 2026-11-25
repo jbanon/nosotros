@@ -152,3 +152,10 @@ document.querySelectorAll('input[type=file][accept*="image"]:not([data-sin-reduc
     inp.files = dt.files;
   } catch (e) { console.warn('No se pudo reducir la imagen', e); }
 }));
+
+// Chips con radio/checkbox dentro: la clase .on marca la elegida también en navegadores sin :has()
+(() => {
+  const sync = () => document.querySelectorAll('.chip > input[type=radio], .chip > input[type=checkbox]').forEach(i => i.parentElement.classList.toggle('on', i.checked));
+  document.addEventListener('change', e => { if (e.target.matches && e.target.matches('.chip > input')) sync(); });
+  addEventListener('load', sync);
+})();

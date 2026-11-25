@@ -5,13 +5,14 @@
   const contenido = document.getElementById('contenido'), puntos = document.getElementById('puntos');
   const btnSig = document.getElementById('sig'), btnAtras = document.getElementById('atras'), btnExplorar = document.getElementById('explorar');
   const token = document.querySelector('input[name=__RequestVerificationToken]')?.value;
-  const post = (h, body) => fetch(`${location.pathname}?handler=${h}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token }, body: JSON.stringify(body || {}) }).then(r => r.ok ? r.json() : null).catch(() => null);
+  const post = (h, body) => fetch(`${location.pathname}?handler=${h}`, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token }, body: JSON.stringify(body || {}) }).then(r => r.ok ? r.json() : null).catch(() => null);
   const esc = s => (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const parrafos = s => (s || '').split(/\n+/).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('');
 
   const visor = VisorArte(escena, img, { ancho: d.ancho, alto: d.alto, marcador: document.getElementById('marca'), margenInferior: () => tarjeta.offsetHeight });
   const total = d.paradas.length + 2; // intro + paradas + final
-  let paso = 0, vista = false;
+  let paso = 0, vista = false, guardaResp = () => { };
+  addEventListener('pagehide', () => guardaResp());
 
   // Primero la versión reducida; la grande se descarga por detrás y la sustituye sin salto.
   // Solo la primera carga encuadra la obra entera; al cambiar a la grande se mantiene la parada en curso.
@@ -26,6 +27,7 @@
 
   const volverCap = document.getElementById('volver-cap');
   function pintar() {
+    guardaResp(); guardaResp = () => { };
     [...puntos.children].forEach((b, i) => b.className = i === paso ? 'on' : i < paso ? 'hecho' : '');
     btnAtras.disabled = paso === 0;
     // Si la obra es de un capítulo, al final del paseo se ofrece volver a él.
@@ -41,12 +43,21 @@
       visor.irA(p);
     } else {
       contenido.innerHTML = (d.frase ? `<div class="visor-frase">${parrafos(d.frase)}<span>— ${esc(d.firma)}</span></div>` : `<h2>${esc(d.titulo)}</h2>`)
-        + `<label class="visor-respuesta"><span>¿Me dices algo?</span><textarea id="resp" rows="2" placeholder="Una línea basta…">${esc(d.respuesta)}</textarea></label>`;
+        + `<label class="visor-respuesta"><span>¿Me dices algo? <em id="resp-estado" class="visor-resp-estado">${d.respuesta ? 'Guardado ✓' : ''}</em></span><textarea id="resp" rows="2" placeholder="Una línea basta…">${esc(d.respuesta)}</textarea></label>`;
       btnSig.textContent = 'Volver a empezar';
       visor.irA({ zoom: 1 });
       if (!vista) { vista = true; post('Vista'); }
       const resp = document.getElementById('resp');
-      let t; resp.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { d.respuesta = resp.value; post('Responder', { texto: resp.value }); }, 900); });
+      // Se guarda sola al dejar de escribir, al salir de la caja, al cambiar de paso y al irse de la página
+      const estado = document.getElementById('resp-estado');
+      let t, pendiente = false;
+      guardaResp = () => {
+        clearTimeout(t); if (!pendiente) return; pendiente = false;
+        d.respuesta = resp.value; estado.textContent = 'Guardando…';
+        post('Responder', { texto: resp.value }).then(r => { estado.textContent = r ? (resp.value.trim() ? 'Guardado ✓' : '') : 'No se ha podido guardar'; });
+      };
+      resp.addEventListener('input', () => { pendiente = true; estado.textContent = ''; clearTimeout(t); t = setTimeout(guardaResp, 800); });
+      resp.addEventListener('blur', () => guardaResp());
     }
     // La tarjeta cambia de alto con el texto: recolocar el encuadre cuando se haya pintado.
     requestAnimationFrame(() => { if (!visor.libre) visor.irA(paso === 0 || paso > d.paradas.length ? { zoom: 1 } : d.paradas[paso - 1]); });

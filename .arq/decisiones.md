@@ -156,7 +156,9 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
     chips que se esfuman, intentos con pistas, `Resolver`). Desde 2026-11-25 (Javier: «algo más táctil que
     escribirla») se resuelve con **fichas**: todas las palabras de la frase desordenadas (la primera en minúscula)
     más 1–6 trampas (más cuantas menos cazaste); se tocan en orden, al llenar los huecos se comprueba y las que no
-    van vuelven. «⌨️ Prefiero escribirla» deja el teclado de antes (`E.teclado`). La música de «Jingle Bells» sigue siendo solo de globos.
+    van vuelven. «⌨️ Prefiero escribirla» deja el teclado de antes (`E.teclado`). Raquel quiso volver a escribirla
+    (2026-11-25): lo elegido se recuerda en el móvil (`localStorage['gl-teclado']`); sin elección, Raquel escribe y
+    los demás, fichas (`body[data-quien]`). La música de «Jingle Bells» sigue siendo solo de globos.
 - Mini Arkanoid (`TipoCasilla.Arkanoid`, día 13 en lugar de su crucigrama "Junto al fuego", misma letra U; `js/arkanoid.js`,
   canvas a pantalla completa como los globos; Javier, 2026-11-17). Pala que se arrastra con el dedo (soltar con la pelota
   pegada la lanza), pelota que acelera un poco con cada bloque, 42 bloques de colores (6 × 7), 3 vidas; sin vidas, vuelta
@@ -445,3 +447,14 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   BriskaBird cada 5 seguidas; lo fallado vuelve a salir a las 3 y sale más a menudo en partidas siguientes) y
   Relámpago (60 s, récord). Estrellas por tabla (dominio: +1 acierto, −2 fallo; 8/20/40) y niveles hasta
   «Leyenda de las tablas». Todo en el móvil (`localStorage`, clave por usuario), sin servidor.
+
+## Arreglos del 2026-11-25 (lo que contó Raquel)
+- Píldoras de francés: traducción al castellano plegada bajo el texto («🇪🇸 Ver en castellano»). Las nuevas la traen
+  en el JSON (`traduccion`); las anteriores se la encarga `FrancesService.AsegurarTraducciones` al agente
+  (`TipoTareaAgente.PildoraTraduccion`, en la ronda horaria del programador).
+- Chips con radio dentro (Vocabulaire, Gastos…): `app.js` pone `.on` en la elegida, por si el navegador no tiene
+  `:has()`; el input queda oculto pero no `display:none`.
+- «¿Me dices algo?» del visor de arte: se guarda al dejar de escribir, al salir de la caja, al cambiar de paso y al
+  irse (fetch `keepalive`), y dice «Guardado ✓».
+- Duelo de Cifras: el marcador total es **por pareja** (de `DueloRonda.AId/BId`), no por jugador. Sigue habiendo
+  una sola sala: dos duelos a la vez no caben.

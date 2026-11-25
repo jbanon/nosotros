@@ -315,7 +315,7 @@ public class ListaElemento
     public int Orden { get; set; }
 }
 
-public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta, Pildora, PildoraCorreccion, Efemerides, FrasesNina }
+public enum TipoTareaAgente { FichaPelicula, Receta, RecetaFoto, Vineta, Pildora, PildoraCorreccion, Efemerides, FrasesNina, PildoraTraduccion }
 public enum EstadoTarea { Pendiente, EnCurso, Lista, Error }
 
 /// <summary>Una petición al agente (claude -p): crear una ficha de película o una receta, con rondas de cambios.</summary>

@@ -24,6 +24,14 @@
     </header>
     @if (Model.Corazon) { <div class="fr-corazon">♥ +1 · ¡Copia entregada!</div> }
     <div class="cuerpo">@Html.Raw(FrancesService.Html(FrancesService.Txt(c, "texto"), glosario))</div>
+    @if (FrancesService.Txt(c, "traduccion") is { Length: > 0 } trad)
+    {
+        <details class="fr-traduccion">
+            <summary>🇪🇸 Ver en castellano</summary>
+            @foreach (var par in trad.Replace("\r", "").Split("\n\n", StringSplitOptions.RemoveEmptyEntries)) { <p>@par.Trim()</p> }
+        </details>
+    }
+    else { <p class="suave peq fr-traduccion-viene">🇪🇸 La traducción al castellano llega en un rato.</p> }
     @if (glosario.Any())
     {
         <details class="fr-lexique">

@@ -84,7 +84,7 @@ textarea { min-height: 100px; resize: vertical; }
 input:focus, select:focus, textarea:focus { outline: 2px solid var(--acento); outline-offset: 1px; border-color: transparent; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--linea); background: var(--tarjeta); font-weight: 700; font-size: .9rem; cursor: pointer; }
-.chip input { display: none; }
+.chip input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }   /* oculto pero tocable a través de su etiqueta */
 .chip.on, .chip:has(input:checked) { background: var(--acento); color: #fff; border-color: var(--acento); }
 .chip.veva:has(input:checked) { background: var(--veva); border-color: var(--veva); }
 .chip.hipoteca:has(input:checked) { background: var(--hipoteca); border-color: var(--hipoteca); }
@@ -1407,3 +1407,10 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 .gl-ficha { border: 0; font: inherit; font-weight: 800; font-size: 1.05rem; min-height: 44px; padding: 6px 14px; border-radius: 12px; background: linear-gradient(#ffe48a, #f0b72f); color: #4a3200; box-shadow: 0 3px 0 #b8841c, 0 4px 10px rgba(0,0,0,.25); cursor: pointer; touch-action: manipulation; }
 .gl-ficha:active { transform: translateY(2px); box-shadow: 0 1px 0 #b8841c; }
 .gl-ficha.usada { background: none; box-shadow: none; color: transparent; outline: 2px dashed rgba(255,255,255,.18); outline-offset: -2px; }
+
+/* Píldoras: traducción al castellano, plegada */
+.fr-traduccion { margin: 0 0 1.2em; padding: 10px 14px; border-radius: 14px; background: var(--tarjeta); border: 1px solid var(--linea); }
+.fr-traduccion summary { cursor: pointer; font-family: var(--letra, system-ui), sans-serif; font-weight: 700; font-size: 1rem; }
+.fr-traduccion p { font-size: .95em; }
+.fr-traduccion-viene { margin-top: -.6em; }
+.visor-respuesta span .visor-resp-estado { font-style: normal; text-transform: none; letter-spacing: 0; font-weight: 700; margin-left: 6px; color: #8fd19e; }

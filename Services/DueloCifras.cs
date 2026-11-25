@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Love.Services;
 
 /// <summary>
-/// Duelo de Cifras entre los dos, en memoria (una sola sala). El servidor reparte los números, cronometra y
+/// Duelo de Cifras entre dos, en memoria (una sola sala). El marcador total es por pareja (quién contra quién). El servidor reparte los números, cronometra y
 /// decide: gana quien se queda más cerca; a igualdad, quien llegó antes. Clavarlo acaba la ronda para los dos.
 /// Las rondas terminadas se guardan en <see cref="DueloRonda"/> para el marcador histórico.
 /// </summary>
@@ -31,7 +31,8 @@ public class DueloCifras(IServiceScopeFactory scopes)
     readonly Lock l = new();
     Sala? sala;
     (string nombre, DateTime cuando)? salida;
-    Dictionary<int, int>? historico; int historicoEmpates;
+    /// <summary>Todas las rondas terminadas (quién contra quién y quién ganó): el marcador total es por pareja.</summary>
+    List<(int A, int B, int? G)>? historico;
 
     Sala? Viva()
     {
@@ -133,7 +134,7 @@ public class DueloCifras(IServiceScopeFactory scopes)
             Numeros = string.Join(",", r.Nums), Objetivo = r.Objetivo, AId = s.A.Id, AValor = a.Valor, ASeg = a.Seg,
             BId = s.B.Id, BValor = b.Valor, BSeg = b.Seg, GanadorId = r.Ganador,
         };
-        if (historico != null) { if (r.Ganador is int h) historico[h] = historico.GetValueOrDefault(h) + 1; else historicoEmpates++; }
+        historico?.Add((s.A.Id, s.B.Id, r.Ganador));
         _ = Task.Run(async () =>
         {
             using var sc = scopes.CreateScope();
@@ -148,13 +149,8 @@ public class DueloCifras(IServiceScopeFactory scopes)
         if (historico != null) return;
         using var sc = scopes.CreateScope();
         var db = sc.ServiceProvider.GetRequiredService<AppDb>();
-        var g = await db.DueloRondas.GroupBy(x => x.GanadorId).Select(x => new { x.Key, N = x.Count() }).ToListAsync();
-        lock (l)
-        {
-            if (historico != null) return;
-            historico = g.Where(x => x.Key != null).ToDictionary(x => x.Key!.Value, x => x.N);
-            historicoEmpates = g.Where(x => x.Key == null).Sum(x => x.N);
-        }
+        var filas = await db.DueloRondas.Select(x => new { x.AId, x.BId, x.GanadorId }).ToListAsync();
+        lock (l) historico ??= filas.Select(x => (x.AId, x.BId, x.GanadorId)).ToList();
     }
 
     public async Task<object> Estado(Jugador yo)
@@ -164,7 +160,11 @@ public class DueloCifras(IServiceScopeFactory scopes)
         {
             var s = Viva();
             var ahora = DateTime.UtcNow;
-            object Hist(int rivalId) => new { yo = historico!.GetValueOrDefault(yo.Id), rival = historico!.GetValueOrDefault(rivalId), empates = historicoEmpates };
+            object Hist(int rivalId)
+            {
+                var entre = historico!.Where(x => (x.A == yo.Id && x.B == rivalId) || (x.A == rivalId && x.B == yo.Id)).ToList();
+                return new { yo = entre.Count(x => x.G == yo.Id), rival = entre.Count(x => x.G == rivalId), empates = entre.Count(x => x.G == null) };
+            }
             if (s == null || !Dentro(s, yo.Id))
             {
                 var aviso = salida is { } x && ahora - x.cuando < TimeSpan.FromMinutes(2) && x.nombre != yo.Nombre ? $"{x.nombre} ha salido del duelo" : null;
