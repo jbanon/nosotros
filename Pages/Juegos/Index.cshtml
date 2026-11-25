@@ -77,16 +77,16 @@
 </a>
 @if (diarios.Count > 0)
 {
-    <h2 class="jg-seccion">@(miranda ? "Con Briska" : "Una partida al día") <span class="suave peq" style="font-weight:600">· @(miranda ? "juega las veces que quieras" : "con Briska y una frase nueva cada día")</span></h2>
+    <h2 class="jg-seccion">Con Briska <span class="suave peq" style="font-weight:600">· juega las veces que quieras</span></h2>
     foreach (var (j, bloq, hoy) in diarios)
     {
-        var jugada = hoy != null && !User.EsAdmin() && !miranda;
+        var jugada = false;   // sin límite: se puede jugar siempre (Javier, 2026-11-25)
         <a class="jg-tarjeta jg-diario @(bloq != null ? "bloqueado" : "") @(jugada ? "jugada" : "")" href="@(bloq != null ? "#" : $"/Juegos/Partida/{j.Clave}")">
             <div class="jg-vista" aria-hidden="true">@(bloq != null ? "🔒" : j.Emoji)</div>
             <div class="jg-texto">
                 <h2>@j.Nombre @if (bloq == null && !jugada) { <span class="jg-badge">hoy</span> }</h2>
                 <p>@(bloq != null ? $"Llega con el calendario de adviento: se desbloquea el {bloq.Value:d 'de' MMMM}." : j.Descripcion)</p>
-                @if (jugada) { <p class="jg-stats">@(hoy!.Gano ? "Hoy: ¡frase acertada! 🏆" : hoy.Fin != null ? $"Hoy: {hoy.Palabras} de {hoy.Total} palabras" : "Hoy ya has jugado") · mañana, otra</p> }
+                @if (hoy != null && !User.EsAdmin()) { <p class="jg-stats">@(hoy.Gano ? "Hoy: ¡frase acertada! 🏆" : hoy.Fin != null ? $"Hoy: {hoy.Palabras} de {hoy.Total} palabras" : "Hoy ya has jugado") · ¿otra?</p> }
             </div>
         </a>
     }

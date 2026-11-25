@@ -3,7 +3,7 @@
 @{
     var j = Model.Juego;
     ViewData["Title"] = j.Nombre;
-    var datos = AdvientoService.Serializar(new { tipo = Model.Tipo.ToString(), vista = new { frase = Model.Frase }, resuelta = false, estado = (string?)null, diario = true, admin = Model.EsAdmin, libre = Model.Libre, propia = Model.SinLimite && !Model.Libre });
+    var datos = AdvientoService.Serializar(new { tipo = Model.Tipo.ToString(), vista = new { frase = Model.Frase }, resuelta = false, estado = (string?)null, diario = true, admin = Model.EsAdmin, libre = Model.Libre, propia = !Model.Libre });
 }
 <div class="adviento dia" data-particulas="nieve">
     <div class="cielo"></div>
@@ -11,7 +11,7 @@
     <header class="adv-cab">
         <a class="volver" href="/Juegos" aria-label="Volver">‹</a>
         <div class="crece">
-            <p class="adv-sobre">@(Model.Libre ? "Juegos · partidas extra" : "Juegos · una partida al día")</p>
+            <p class="adv-sobre">@(Model.Libre ? "Juegos · otra partida" : "Juegos · con Briska")</p>
             <h1>@j.Emoji @j.Nombre</h1>
         </div>
     </header>

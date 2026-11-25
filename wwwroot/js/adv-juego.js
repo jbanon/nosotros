@@ -1,5 +1,6 @@
 // Adviento · trozos comunes de los juegos en canvas (globos, arkanoid, comecocos): sonido sintetizado con Web Audio
-// y la fase final de escribir la frase (palabras que se esfuman, intentos con pistas, comprobación en el servidor).
+// y la fase final de resolver la frase (palabras que se esfuman; fichas que se tocan en orden o, si se prefiere,
+// escribirla; intentos con pistas; comprobación en el servidor).
 // Se carga después de adviento.js (usa window.adv) y antes del juego, que llama a window.advJuego.
 (() => {
   const A = window.adv;
@@ -136,19 +137,74 @@
       opc.escribir.innerHTML = `
         <p class="adv-sobre">Tus palabras${perdidas ? ` · se te escaparon ${perdidas}` : ''}${ver && chips ? ' · ¡memorízalas!' : ''}</p>
         <div class="gl-chips" id="gl-chips">${chips || sinChips}</div>
-        ${E.intentos > 0 ? `<div class="gl-plantilla">${objetivo.map((_, i) => huecos(i)).join('')}</div>` : ''}
+        ${E.intentos > 0 && E.teclado ? `<div class="gl-plantilla">${objetivo.map((_, i) => huecos(i)).join('')}</div>` : ''}
         <p class="gl-ayuda">${ayuda()}</p>
-        <textarea id="gl-frase" rows="2" autocomplete="off" autocapitalize="sentences" placeholder="Escribe la frase completa…"></textarea>
-        <button class="btn adv-btn primario ancho" id="gl-comprobar" type="button">Comprobar</button>
+        ${E.teclado ? `<textarea id="gl-frase" rows="2" autocomplete="off" autocapitalize="sentences" placeholder="Escribe la frase completa…"></textarea>
+        <button class="btn adv-btn primario ancho" id="gl-comprobar" type="button">Comprobar</button>` : '<div id="gl-fichas-zona"></div>'}
         ${E.intentos < 3 ? `<button class="btn adv-btn ancho gl-btn-comodin" type="button" disabled>🔒 Pista: caza palabras · se abre tras ${3 - E.intentos === 1 ? '1 intento más' : (3 - E.intentos) + ' intentos'}</button>` : ''}
         ${E.intentos >= 3 && E.sabidas.length < n ? `<button class="btn adv-btn ancho gl-btn-comodin" id="gl-caza" type="button">🎯 Pista: caza palabras (${Math.round(rondaMs() / 1000)} s)</button>` : ''}
+        <button class="btn adv-btn fantasma pequeno ancho" id="gl-modo" type="button">${E.teclado ? '🧩 Mejor con fichas' : '⌨️ Prefiero escribirla'}</button>
         ${D.diario ? '' : '<button class="btn adv-btn fantasma pequeno ancho" id="gl-otra" type="button">Volver a jugar para verlas otra vez</button>'}`;
-      const ta = $('gl-frase'); ta.value = E.texto || '';
-      $('gl-comprobar').addEventListener('click', comprobar);
+      if (E.teclado) {
+        const ta = $('gl-frase'); ta.value = E.texto || '';
+        $('gl-comprobar').addEventListener('click', () => comprobar());
+        ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); comprobar(); } });
+      } else pintaFichas();
+      $('gl-modo').addEventListener('click', () => { E.teclado = !E.teclado; guardarE(); pintaEscribir(); });
       if ($('gl-caza')) $('gl-caza').addEventListener('click', caza);
-      ta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); comprobar(); } });
       if ($('gl-otra')) $('gl-otra').addEventListener('click', () => opc.jugar(cazadas => { E.palabras = [...new Set(E.palabras.concat(cazadas))]; E.ocultas = false; guardarE(); pintaEscribir(); }));
       if (ver && chips) { E.ocultas = true; guardarE(); esfumar(); }
+    }
+    // ---------- Resolver con fichas (sin teclado) ----------
+    // Todas las palabras de la frase, desordenadas, más alguna trampa (más cuantas menos palabras cazaste):
+    // se tocan en orden y van llenando los huecos; tocar un hueco devuelve su ficha. Al llenarlos todos, se comprueba.
+    function preparaFichas() {
+      if (E.fichas && E.puestos && E.puestos.length === n) return;
+      const perdidas = n - E.palabras.length;
+      const nt = Math.min(6, 1 + perdidas + Math.floor(n / 6));
+      const tr = baraja(TRAMPAS.filter(w => !objetivo.includes(limpia(w)))).slice(0, nt);
+      E.fichas = baraja(visibles.map((w, i) => i === 0 ? w[0].toLowerCase() + w.slice(1) : w).concat(tr));   // la mayúscula del principio delataría la primera
+      E.puestos = Array(n).fill(null);
+    }
+    const usadas = () => new Set(E.puestos.filter(k => k != null));
+    // Las palabras ya sabidas (verdes) se quedan fijas en su hueco con una ficha que diga lo mismo
+    function fijaSabidas() {
+      for (const i of E.sabidas) {
+        const k = E.puestos[i];
+        if (k != null && limpia(E.fichas[k]) === objetivo[i]) continue;
+        E.puestos[i] = null;
+        const u = usadas();
+        let libre = E.fichas.findIndex((w, j) => !u.has(j) && limpia(w) === objetivo[i]);
+        if (libre < 0) {   // la tiene puesta otro hueco que no es el suyo: se la quitamos
+          const s2 = E.puestos.findIndex((x, s) => x != null && !E.sabidas.includes(s) && limpia(E.fichas[x]) === objetivo[i]);
+          if (s2 >= 0) { libre = E.puestos[s2]; E.puestos[s2] = null; }
+        }
+        if (libre >= 0) E.puestos[i] = libre;
+      }
+    }
+    function pintaFichas() {
+      const zona = $('gl-fichas-zona'); if (!zona) return;
+      preparaFichas(); fijaSabidas();
+      const u = usadas(), sig = E.puestos.findIndex(k => k == null);
+      const hueco = i => {
+        const k = E.puestos[i];
+        if (k != null) return E.sabidas.includes(i)
+          ? `<span class="gl-slot bien">${E.fichas[k]}</span>`
+          : `<button type="button" class="gl-slot lleno" data-s="${i}">${E.fichas[k]}</button>`;
+        return `<span class="gl-slot vacio ${i === sig ? 'sig' : ''}">${E.intentos >= 1 ? huecos(i) : ''}</span>`;
+      };
+      zona.innerHTML = `
+        <div class="gl-slots">${objetivo.map((_, i) => hueco(i)).join('')}</div>
+        <div class="gl-fichas">${E.fichas.map((w, k) => u.has(k) ? `<span class="gl-ficha usada">${w}</span>` : `<button type="button" class="gl-ficha" data-k="${k}">${w}</button>`).join('')}</div>
+        ${E.puestos.some((k, i) => k != null && !E.sabidas.includes(i)) ? '<button type="button" class="btn adv-btn fantasma pequeno ancho" id="gl-quitar">↺ Quitar las puestas</button>' : ''}`;
+      zona.querySelectorAll('.gl-ficha[data-k]').forEach(b => b.addEventListener('click', () => {
+        const i = E.puestos.findIndex(k => k == null); if (i < 0) return;
+        E.puestos[i] = +b.dataset.k; if (navigator.vibrate) navigator.vibrate(10);
+        guardarE(); pintaFichas();
+        if (!E.puestos.includes(null)) setTimeout(() => comprobar(E.puestos.map(k => E.fichas[k]).join(' ')), 300);
+      }));
+      zona.querySelectorAll('.gl-slot[data-s]').forEach(b => b.addEventListener('click', () => { E.puestos[+b.dataset.s] = null; guardarE(); pintaFichas(); }));
+      $('gl-quitar')?.addEventListener('click', () => { E.puestos = E.puestos.map((k, i) => E.sabidas.includes(i) ? k : null); guardarE(); pintaFichas(); });
     }
     // Tras la espera, se va esfumando una palabra cada poco (opc.esfumaEspera y opc.esfumaCada)
     let esfumando = 0;
@@ -163,8 +219,8 @@
       esfumando = setTimeout(quita, opc.esfumaEspera);
     }
     function ayuda() {
-      if (E.intentos === 0) return 'Ordénalas y completa lo que falte. Sin preocuparte de tildes ni comas.';
-      if (E.intentos === 1) return 'Casi. Las verdes ya están en su sitio; los huecos te dicen cuántas letras tiene cada palabra.';
+      if (E.intentos === 0) return E.teclado ? 'Ordénalas y completa lo que falte. Sin preocuparte de tildes ni comas.' : 'Toca las fichas en orden para montar la frase. ¡Ojo, alguna es una trampa!';
+      if (E.intentos === 1) return E.teclado ? 'Casi. Las verdes ya están en su sitio; los huecos te dicen cuántas letras tiene cada palabra.' : 'Casi. Las verdes ya están en su sitio; los huecos te dicen cuántas letras tiene cada palabra que falta.';
       if (E.intentos === 2) return 'Te doy la primera letra de cada palabra que falta.';
       if (!E.rondas) return '¿Atascada? Pide pista: las palabras salen un instante y, si las tocas, se quedan fijas. ¡Cuidado con las trampas!';
       if (E.rondas >= 2 && E.intentos >= 4) return 'Te regalo una palabra más. ¡Ya casi!';
@@ -230,8 +286,8 @@
       requestAnimationFrame(paso);
     }
     function guardarE() { A.guardarEstado(E); }
-    async function comprobar() {
-      const ta = $('gl-frase'), txt = ta.value.trim();
+    async function comprobar(dado) {
+      const txt = (dado ?? $('gl-frase')?.value ?? '').trim();
       if (!txt) return;
       const toks = txt.split(/\s+/).map(limpia).filter(Boolean);
       if (toks.length === n && toks.every((w, i) => w === objetivo[i])) {
@@ -242,9 +298,10 @@
         } catch { A.aviso('No se pudo comprobar', true); }
         return;
       }
-      E.intentos++; E.texto = txt;
+      E.intentos++; if (E.teclado) E.texto = txt;
       toks.forEach((w, i) => { if (w === objetivo[i] && !E.sabidas.includes(i)) E.sabidas.push(i); });
       if (E.rondas >= 2 && E.intentos >= 4) { const f = objetivo.findIndex((_, i) => !E.sabidas.includes(i)); if (f >= 0) E.sabidas.push(f); }
+      if (E.puestos) E.puestos = E.puestos.map((k, i) => E.sabidas.includes(i) ? k : null);   // las que no van, vuelven
       guardarE(); pintaEscribir();
       A.aviso('Todavía no…', true);
     }

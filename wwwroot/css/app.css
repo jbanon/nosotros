@@ -1394,3 +1394,16 @@ body.sin-nav .briska-bocadillo { bottom: calc(env(safe-area-inset-bottom) + 72px
 
 /* Cerrar sesión: al pie de cada página (los niños lo tienen en la barra) */
 .salir-pie { text-align: center; margin: 2.5rem 0 .5rem; }
+
+/* Resolver la frase con fichas (adv-juego.js): huecos arriba, fichas abajo */
+.gl-slots { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 8px 0 14px; padding: 10px; border-radius: 14px; background: rgba(0,0,0,.18); }
+.gl-slot { min-width: 54px; min-height: 40px; display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 1.02rem; }
+.gl-slot.vacio { border: 2px dashed rgba(255,255,255,.45); }
+.gl-slot.vacio.sig { border-color: #ffd34d; box-shadow: 0 0 0 3px rgba(255,211,77,.25); }
+.gl-slot.vacio .gl-hueco i { width: 11px; height: 18px; border-bottom-width: 2px; font-size: .85rem; }
+.gl-slot.lleno { border: 0; font: inherit; font-weight: 800; background: linear-gradient(#fff6d6, #ffe08a); color: #4a3200; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor: pointer; animation: gl-entra .2s ease-out; }
+.gl-slot.bien { background: #2f9e5b; color: #fff; }
+.gl-fichas { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0 0 12px; }
+.gl-ficha { border: 0; font: inherit; font-weight: 800; font-size: 1.05rem; min-height: 44px; padding: 6px 14px; border-radius: 12px; background: linear-gradient(#ffe48a, #f0b72f); color: #4a3200; box-shadow: 0 3px 0 #b8841c, 0 4px 10px rgba(0,0,0,.25); cursor: pointer; touch-action: manipulation; }
+.gl-ficha:active { transform: translateY(2px); box-shadow: 0 1px 0 #b8841c; }
+.gl-ficha.usada { background: none; box-shadow: none; color: transparent; outline: 2px dashed rgba(255,255,255,.18); outline-offset: -2px; }

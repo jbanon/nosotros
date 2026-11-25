@@ -152,3 +152,4 @@ Javier las dejó apuntadas para hacer más adelante; también pueden entrar como
 | 2026-11-22 | Elsa (12, deportista) y Marcos (13, que estudiar renta) como Miranda; todos los niños con acceso ilimitado a todos los juegos | dc196fe |
 | 2026-11-22 | Naia (14/09/2012) con su versión como los demás niños; perfil genérico de adolescente | 8d2dbb1 |
 | 2026-11-22 | Botón de cerrar sesión: «🚪 Salir» en la barra de los niños y «Cerrar sesión» al pie de cada página para Javi y Raquel | 3b912ad |
+| 2026-11-25 | Juegos con Briska sin límite de partidas para todos; resolver la frase con fichas táctiles (con trampas) en vez de escribirla | (este) |

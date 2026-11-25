@@ -152,8 +152,11 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
   - Rendimiento en el móvil: cada globo se dibuja una vez en un canvas aparte y luego solo se copia; como mucho
     12 globos a la vez. El toque elige el globo más cercano y cuenta también dónde estaba hace 150 ms.
   - Lo común con el Arkanoid vive en `js/adv-juego.js` (`window.advJuego`): el kit de sonido (`sonido()`: ladridos,
-    aullidos, explosiones, tics, botón 🔊/🔇 con `localStorage['gl-mudo']`) y la fase de escribir la frase (`frase()`:
-    chips que se esfuman, intentos con pistas, `Resolver`). La música de «Jingle Bells» sigue siendo solo de globos.
+    aullidos, explosiones, tics, botón 🔊/🔇 con `localStorage['gl-mudo']`) y la fase de resolver la frase (`frase()`:
+    chips que se esfuman, intentos con pistas, `Resolver`). Desde 2026-11-25 (Javier: «algo más táctil que
+    escribirla») se resuelve con **fichas**: todas las palabras de la frase desordenadas (la primera en minúscula)
+    más 1–6 trampas (más cuantas menos cazaste); se tocan en orden, al llenar los huecos se comprueba y las que no
+    van vuelven. «⌨️ Prefiero escribirla» deja el teclado de antes (`E.teclado`). La música de «Jingle Bells» sigue siendo solo de globos.
 - Mini Arkanoid (`TipoCasilla.Arkanoid`, día 13 en lugar de su crucigrama "Junto al fuego", misma letra U; `js/arkanoid.js`,
   canvas a pantalla completa como los globos; Javier, 2026-11-17). Pala que se arrastra con el dedo (soltar con la pelota
   pegada la lanza), pelota que acelera un poco con cada bloque, 42 bloques de colores (6 × 7), 3 vidas; sin vidas, vuelta
@@ -203,10 +206,9 @@ Criterios fijados con Javier. Si una tarea nueva choca con alguno, avisar antes 
 - **Juegos diarios** (Javier, 2026-11-17): globos, bloques (Arkanoid) y comecocos se quedan también en la zona Juegos
   (`/Juegos/Partida/{globos|arkanoid|comecocos}`), igual que en su casilla pero con una **frase del día** distinta por
   juego (lista de 24 en `Services/JuegosDiarios.cs`).
-  - **Una partida al día** por juego y persona (`JuegoPartida`): se gasta al pulsar Empezar, sin "Otra vez" ni
-    "Volver a jugar"; al acabar se apunta si acertó la frase y cuántas palabras cazó. El admin juega sin límite
-    para probar. Cifras, el duelo y el crucigrama siguen sin límite. **Todo juego nuevo de este tipo entra aquí
-    con el mismo límite.**
+  - ~~Una partida al día~~ → **sin límite** (Javier, 2026-11-25: «que le deje jugar todas las partidas que
+    quiera»): cada partida es una `JuegoPartida` (se apunta si acertó y cuántas palabras cazó); tras la primera del
+    día, frases sorpresa de la lista. **Todo juego nuevo de este tipo, igual.**
   - Cada juego se desbloquea en Juegos el día de su casilla del adviento, para no destriparla.
   - La tarjeta, la pantalla y los scripts de cada juego son parciales compartidos con la casilla
     (`Pages/Shared/_JuegoTarjeta`, `_JuegoPantalla`, `_JuegoScripts`). En Juegos, `js/juego-diario.js` hace de

@@ -24,8 +24,6 @@ public class PartidaModel(JuegosDiarios juegos, AppDb db) : PageModel
     public bool Libre { get; set; }
     /// <summary>La frase de hoy la ha puesto Javi.</summary>
     public bool Propia { get; set; }
-    /// <summary>Puede seguir con frases sorpresa tras la primera partida: si la frase es de Javi, o siempre para los niños.</summary>
-    public bool SinLimite => Propia || User.EsNina();
     int Yo => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     async Task<bool> Cargar(string juego)
@@ -37,7 +35,7 @@ public class PartidaModel(JuegosDiarios juegos, AppDb db) : PageModel
         Bloqueado = EsAdmin ? null : await juegos.BloqueadoPara(j, Reloj.Hoy, User.EsNina());
         Hoy = await juegos.DeHoy(Yo, j, Reloj.Hoy);
         Propia = await juegos.EsPropia(j, Reloj.Hoy, Ninas.De(User));
-        if (Hoy != null && !EsAdmin && SinLimite)
+        if (Hoy != null && !EsAdmin)   // tras la primera, frases sorpresa sin límite (Javier, 2026-11-25: todos, las que quieran)
         {
             Libre = true;
             var hoy = Reloj.Hoy; var clave = j.Clave; var yo = Yo;
